@@ -1,0 +1,711 @@
+tag_id,tag_label,tag_type,facility_count,vocabulary,ref_code,ref_label,ref_category,relation
+kidney-dialysis,Dialysis,service,1038,MeSH,D006435,Renal Dialysis,E02 Therapeutics,curated
+kidney-dialysis,Dialysis,service,1038,ICD-10,Z49,Care involving dialysis,XXI Factors influencing health status and contact with health services,curated
+kidney-failure,Kidney failure / chronic kidney disease,condition,102,MeSH,D051436,"Renal Insufficiency, Chronic","C12 Urogenital Diseases; C23 Pathological Conditions, Signs and Symptoms",curated
+kidney-failure,Kidney failure / chronic kidney disease,condition,102,MeSH,D007676,"Kidney Failure, Chronic","C12 Urogenital Diseases; C23 Pathological Conditions, Signs and Symptoms",curated
+kidney-failure,Kidney failure / chronic kidney disease,condition,102,ICD-10,N18,Chronic kidney disease,XIV Diseases of the genitourinary system,curated
+kidney-failure,Kidney failure / chronic kidney disease,condition,102,ICD-10,N19,Unspecified kidney failure,XIV Diseases of the genitourinary system,curated
+kidney-transplant,Kidney transplant,service,437,MeSH,D016030,Kidney Transplantation,"E02 Therapeutics; E04 Surgical Procedures, Operative",curated
+kidney-transplant,Kidney transplant,service,437,ICD-10,Z94.0,Kidney transplant status,XXI Factors influencing health status and contact with health services,curated
+kidney-stones,Kidney stones,condition,539,MeSH,D007669,Kidney Calculi,"C12 Urogenital Diseases; C23 Pathological Conditions, Signs and Symptoms",curated
+kidney-stones,Kidney stones,condition,539,MeSH,D052878,Urolithiasis,C12 Urogenital Diseases,curated
+kidney-stones,Kidney stones,condition,539,MeSH,D008096,Lithotripsy,"E02 Therapeutics; E04 Surgical Procedures, Operative",curated
+kidney-stones,Kidney stones,condition,539,ICD-10,N20,Calculus of kidney and ureter,XIV Diseases of the genitourinary system,curated
+prostate,Prostate problems,condition,393,MeSH,D011470,Prostatic Hyperplasia,C12 Urogenital Diseases,curated
+prostate,Prostate problems,condition,393,MeSH,D011469,Prostatic Diseases,C12 Urogenital Diseases,curated
+prostate,Prostate problems,condition,393,ICD-10,N40,Hyperplasia of prostate,XIV Diseases of the genitourinary system,curated
+prostate,Prostate problems,condition,393,ICD-10,N42,Other disorders of prostate,XIV Diseases of the genitourinary system,curated
+heart-disease,Heart disease,condition,254,MeSH,D006331,Heart Diseases,C14 Cardiovascular Diseases,curated
+heart-disease,Heart disease,condition,254,MeSH,D003324,Coronary Artery Disease,C14 Cardiovascular Diseases,curated
+heart-disease,Heart disease,condition,254,ICD-10,I20,Angina pectoris,IX Diseases of the circulatory system,curated
+heart-disease,Heart disease,condition,254,ICD-10,I21,Acute myocardial infarction,IX Diseases of the circulatory system,curated
+heart-disease,Heart disease,condition,254,ICD-10,I25,Chronic ischaemic heart disease,IX Diseases of the circulatory system,curated
+heart-disease,Heart disease,condition,254,ICD-10,I50,Heart failure,IX Diseases of the circulatory system,curated
+angiography,Coronary angiography,service,803,MeSH,D017023,Coronary Angiography,E01 Diagnosis,curated
+angiography,Coronary angiography,service,803,MeSH,D006328,Cardiac Catheterization,E01 Diagnosis; E02 Therapeutics; E05 Investigative Techniques,curated
+angioplasty,Angioplasty / stenting,service,404,MeSH,D062645,Percutaneous Coronary Intervention,"E04 Surgical Procedures, Operative",curated
+angioplasty,Angioplasty / stenting,service,404,MeSH,D017130,Angioplasty,"E02 Therapeutics; E04 Surgical Procedures, Operative; E05 Investigative Techniques",curated
+angioplasty,Angioplasty / stenting,service,404,MeSH,D015607,Stents,E07 Equipment and Supplies,curated
+cardiac-surgery,Heart surgery (bypass / valve),service,514,MeSH,D006348,Cardiac Surgical Procedures,"E04 Surgical Procedures, Operative",curated
+cardiac-surgery,Heart surgery (bypass / valve),service,514,MeSH,D001026,Coronary Artery Bypass,"E04 Surgical Procedures, Operative",curated
+cardiac-surgery,Heart surgery (bypass / valve),service,514,MeSH,D019918,Heart Valve Prosthesis Implantation,"E04 Surgical Procedures, Operative",curated
+pacemaker,Pacemaker implantation,service,234,MeSH,D010138,"Pacemaker, Artificial",E07 Equipment and Supplies,curated
+pacemaker,Pacemaker implantation,service,234,MeSH,D002304,"Cardiac Pacing, Artificial",E02 Therapeutics,curated
+pacemaker,Pacemaker implantation,service,234,ICD-10,Z95.0,Presence of electronic cardiac devices,XXI Factors influencing health status and contact with health services,curated
+echocardiography,Echocardiography,service,843,MeSH,D004452,Echocardiography,E01 Diagnosis,curated
+ecg,ECG,service,855,MeSH,D004562,Electrocardiography,E01 Diagnosis,curated
+stress-test,Treadmill / stress test (TMT),service,448,MeSH,D005080,Exercise Test,E01 Diagnosis; E05 Investigative Techniques,curated
+hypertension,High blood pressure,condition,202,MeSH,D006973,Hypertension,C14 Cardiovascular Diseases,curated
+hypertension,High blood pressure,condition,202,ICD-10,I10,Essential (primary) hypertension,IX Diseases of the circulatory system,curated
+varicose-veins,Varicose veins,condition,154,MeSH,D014648,Varicose Veins,C14 Cardiovascular Diseases,curated
+varicose-veins,Varicose veins,condition,154,ICD-10,I83,Varicose veins of lower extremities,IX Diseases of the circulatory system,curated
+mri,MRI scan,service,941,MeSH,D008279,Magnetic Resonance Imaging,E01 Diagnosis,curated
+ct-scan,CT scan,service,1502,MeSH,D014057,"Tomography, X-Ray Computed",E01 Diagnosis,curated
+x-ray,X-ray,service,2469,MeSH,D011859,Radiography,E01 Diagnosis,curated
+ultrasound,Ultrasound / sonography,service,2025,MeSH,D014463,Ultrasonography,E01 Diagnosis,curated
+ultrasound,Ultrasound / sonography,service,2025,MeSH,D018608,"Ultrasonography, Doppler",E01 Diagnosis,curated
+mammography,Mammography,service,311,MeSH,D008327,Mammography,E01 Diagnosis,curated
+pet-ct,PET-CT scan,service,224,MeSH,D000072078,Positron Emission Tomography Computed Tomography,E01 Diagnosis,curated
+bone-density,Bone density (DEXA),service,196,MeSH,D015502,"Absorptiometry, Photon",E01 Diagnosis; E05 Investigative Techniques,curated
+bone-density,Bone density (DEXA),service,196,MeSH,D015519,Bone Density,G11 Musculoskeletal and Neural Physiological Phenomena,curated
+pathology-lab,Pathology / blood tests,service,2193,MeSH,D064790,Clinical Laboratory Services,N02 Health Care Facilities Workforce and Services,curated
+pathology-lab,Pathology / blood tests,service,2193,MeSH,D019411,Clinical Laboratory Techniques,E01 Diagnosis; E05 Investigative Techniques,curated
+health-checkup,Health check-up,service,1323,MeSH,D010808,Physical Examination,E01 Diagnosis,curated
+health-checkup,Health check-up,service,1323,MeSH,D008403,Mass Screening,"E01 Diagnosis; E05 Investigative Techniques; N02 Health Care Facilities Workforce and Services; N05 Health Care Quality, Access, and Evaluation; N06 Environment and Public Health",curated
+health-checkup,Health check-up,service,1323,ICD-10,Z00.0,General medical examination,XXI Factors influencing health status and contact with health services,curated
+cancer,Cancer,condition,2316,MeSH,D009369,Neoplasms,C04 Neoplasms,curated
+cancer,Cancer,condition,2316,ICD-10,II,Neoplasms,II Neoplasms,curated
+chemotherapy,Chemotherapy,service,290,MeSH,D000970,Antineoplastic Agents,D27 Chemical Actions and Uses,curated
+chemotherapy,Chemotherapy,service,290,MeSH,D017024,"Chemotherapy, Adjuvant",E02 Therapeutics,curated
+chemotherapy,Chemotherapy,service,290,ICD-10,Z51.1,Chemotherapy session for neoplasm,XXI Factors influencing health status and contact with health services,curated
+radiotherapy,Radiation therapy,service,340,MeSH,D011878,Radiotherapy,E02 Therapeutics,curated
+radiotherapy,Radiation therapy,service,340,ICD-10,Z51.0,Radiotherapy session,XXI Factors influencing health status and contact with health services,curated
+bone-marrow-transplant,Bone marrow transplant,service,151,MeSH,D016026,Bone Marrow Transplantation,"E02 Therapeutics; E04 Surgical Procedures, Operative",curated
+bone-marrow-transplant,Bone marrow transplant,service,151,MeSH,D018380,Hematopoietic Stem Cell Transplantation,"E02 Therapeutics; E04 Surgical Procedures, Operative",curated
+pregnancy-delivery,Pregnancy & childbirth,service,1778,MeSH,D036861,"Delivery, Obstetric","E04 Surgical Procedures, Operative",curated
+pregnancy-delivery,Pregnancy & childbirth,service,1778,MeSH,D011295,Prenatal Care,E02 Therapeutics; N02 Health Care Facilities Workforce and Services,curated
+pregnancy-delivery,Pregnancy & childbirth,service,1778,ICD-10,O80,Single spontaneous delivery,"XV Pregnancy, childbirth and the puerperium",curated
+pregnancy-delivery,Pregnancy & childbirth,service,1778,ICD-10,Z34,Supervision of normal pregnancy,XXI Factors influencing health status and contact with health services,curated
+c-section,Caesarean section,service,438,MeSH,D002585,Cesarean Section,"E04 Surgical Procedures, Operative",curated
+c-section,Caesarean section,service,438,ICD-10,O82,Single delivery by caesarean section,"XV Pregnancy, childbirth and the puerperium",curated
+high-risk-pregnancy,High-risk pregnancy,condition,410,MeSH,D018566,"Pregnancy, High-Risk",G08 Reproductive and Urinary Physiological Phenomena,curated
+high-risk-pregnancy,High-risk pregnancy,condition,410,ICD-10,Z35,Supervision of high-risk pregnancy,XXI Factors influencing health status and contact with health services,curated
+infertility,Infertility,condition,1312,MeSH,D007246,Infertility,C12 Urogenital Diseases,curated
+infertility,Infertility,condition,1312,MeSH,D007247,"Infertility, Female",C12 Urogenital Diseases,curated
+infertility,Infertility,condition,1312,MeSH,D007248,"Infertility, Male",C12 Urogenital Diseases,curated
+infertility,Infertility,condition,1312,ICD-10,N97,Female infertility,XIV Diseases of the genitourinary system,curated
+infertility,Infertility,condition,1312,ICD-10,N46,Male infertility,XIV Diseases of the genitourinary system,curated
+ivf,IVF,service,851,MeSH,D005307,Fertilization in Vitro,E02 Therapeutics; E05 Investigative Techniques,curated
+ivf,IVF,service,851,MeSH,D020554,"Sperm Injections, Intracytoplasmic",E02 Therapeutics; E05 Investigative Techniques,curated
+ivf,IVF,service,851,MeSH,D004624,Embryo Transfer,E02 Therapeutics; E05 Investigative Techniques,curated
+iui,IUI,service,469,MeSH,D007315,"Insemination, Artificial",E02 Therapeutics; E05 Investigative Techniques; G08 Reproductive and Urinary Physiological Phenomena,curated
+pcos,PCOS / PCOD,condition,243,MeSH,D011085,Polycystic Ovary Syndrome,C04 Neoplasms; C12 Urogenital Diseases; C19 Endocrine System Diseases,curated
+pcos,PCOS / PCOD,condition,243,ICD-10,E28.2,Polycystic ovarian syndrome,"IV Endocrine, nutritional and metabolic diseases",curated
+hysterectomy,Hysterectomy,service,433,MeSH,D007044,Hysterectomy,"E04 Surgical Procedures, Operative",curated
+pregnancy-termination,Medical termination of pregnancy,service,185,MeSH,D000028,"Abortion, Induced","E04 Surgical Procedures, Operative",curated
+pregnancy-termination,Medical termination of pregnancy,service,185,ICD-10,O04,Medical abortion,"XV Pregnancy, childbirth and the puerperium",curated
+family-planning,Family planning / contraception,service,667,MeSH,D005193,Family Planning Services,N02 Health Care Facilities Workforce and Services,curated
+family-planning,Family planning / contraception,service,667,MeSH,D003267,Contraception,E02 Therapeutics,curated
+family-planning,Family planning / contraception,service,667,MeSH,D013245,"Sterilization, Reproductive","E02 Therapeutics; E04 Surgical Procedures, Operative",curated
+family-planning,Family planning / contraception,service,667,ICD-10,Z30,Contraceptive management,XXI Factors influencing health status and contact with health services,curated
+nicu,Newborn intensive care (NICU),service,733,MeSH,D007363,"Intensive Care Units, Neonatal",N02 Health Care Facilities Workforce and Services,curated
+picu,Pediatric intensive care (PICU),service,303,MeSH,D015278,"Intensive Care Units, Pediatric",N02 Health Care Facilities Workforce and Services,curated
+vaccination,Vaccination,service,627,MeSH,D014611,Vaccination,E02 Therapeutics; E05 Investigative Techniques; N02 Health Care Facilities Workforce and Services; N06 Environment and Public Health,curated
+vaccination,Vaccination,service,627,MeSH,D007114,Immunization,E02 Therapeutics; E05 Investigative Techniques; N02 Health Care Facilities Workforce and Services; N06 Environment and Public Health,curated
+vaccination,Vaccination,service,627,ICD-10,Z23,Need for immunization against single bacterial diseases,XXI Factors influencing health status and contact with health services,curated
+vaccination,Vaccination,service,627,ICD-10,Z27,Need for immunization against combinations of infectious diseases,XXI Factors influencing health status and contact with health services,curated
+child-development,Autism & child development,condition,135,MeSH,D000067877,Autism Spectrum Disorder,F03 Mental Disorders,curated
+child-development,Autism & child development,condition,135,MeSH,D002658,Developmental Disabilities,F03 Mental Disorders,curated
+child-development,Autism & child development,condition,135,MeSH,D002547,Cerebral Palsy,C10 Nervous System Diseases,curated
+child-development,Autism & child development,condition,135,MeSH,D001289,Attention Deficit Disorder with Hyperactivity,F03 Mental Disorders,curated
+child-development,Autism & child development,condition,135,ICD-10,F84,Pervasive developmental disorders,V Mental and behavioural disorders,curated
+child-development,Autism & child development,condition,135,ICD-10,F90,Hyperkinetic disorders,V Mental and behavioural disorders,curated
+child-development,Autism & child development,condition,135,ICD-10,G80,Cerebral palsy,VI Diseases of the nervous system,curated
+cataract,Cataract,condition,793,MeSH,D002386,Cataract,C11 Eye Diseases,curated
+cataract,Cataract,condition,793,MeSH,D002387,Cataract Extraction,"E04 Surgical Procedures, Operative",curated
+cataract,Cataract,condition,793,MeSH,D018918,Phacoemulsification,"E04 Surgical Procedures, Operative",curated
+cataract,Cataract,condition,793,ICD-10,H25,Senile cataract,VII Diseases of the eye and adnexa,curated
+cataract,Cataract,condition,793,ICD-10,H26,Other cataract,VII Diseases of the eye and adnexa,curated
+glaucoma,Glaucoma,condition,566,MeSH,D005901,Glaucoma,C11 Eye Diseases,curated
+glaucoma,Glaucoma,condition,566,ICD-10,H40,Glaucoma,VII Diseases of the eye and adnexa,curated
+retina,Retina problems / diabetic retinopathy,condition,647,MeSH,D012164,Retinal Diseases,C11 Eye Diseases,curated
+retina,Retina problems / diabetic retinopathy,condition,647,MeSH,D003930,Diabetic Retinopathy,C11 Eye Diseases; C14 Cardiovascular Diseases; C19 Endocrine System Diseases,curated
+retina,Retina problems / diabetic retinopathy,condition,647,MeSH,D057586,Vitreoretinal Surgery,"E04 Surgical Procedures, Operative",curated
+retina,Retina problems / diabetic retinopathy,condition,647,ICD-10,H33,Retinal detachments and breaks,VII Diseases of the eye and adnexa,curated
+retina,Retina problems / diabetic retinopathy,condition,647,ICD-10,H35,Other retinal disorders,VII Diseases of the eye and adnexa,curated
+retina,Retina problems / diabetic retinopathy,condition,647,ICD-10,H36,Retinal disorders in diseases classified elsewhere,VII Diseases of the eye and adnexa,curated
+refractive-surgery,LASIK / vision correction,service,545,MeSH,D054140,Refractive Surgical Procedures,"E04 Surgical Procedures, Operative",curated
+refractive-surgery,LASIK / vision correction,service,545,MeSH,D020731,"Keratomileusis, Laser In Situ","E02 Therapeutics; E04 Surgical Procedures, Operative",curated
+refractive-surgery,LASIK / vision correction,service,545,ICD-10,H52,Disorders of refraction and accommodation,VII Diseases of the eye and adnexa,curated
+squint,Squint / strabismus,condition,341,MeSH,D013285,Strabismus,C10 Nervous System Diseases; C11 Eye Diseases,curated
+squint,Squint / strabismus,condition,341,ICD-10,H49,Paralytic strabismus,VII Diseases of the eye and adnexa,curated
+squint,Squint / strabismus,condition,341,ICD-10,H50,Other strabismus,VII Diseases of the eye and adnexa,curated
+cornea,Cornea problems / transplant,condition,464,MeSH,D003316,Corneal Diseases,C11 Eye Diseases,curated
+cornea,Cornea problems / transplant,condition,464,MeSH,D015948,"Keratoplasty, Penetrating","E02 Therapeutics; E04 Surgical Procedures, Operative",curated
+cornea,Cornea problems / transplant,condition,464,MeSH,D007640,Keratoconus,C11 Eye Diseases,curated
+cornea,Cornea problems / transplant,condition,464,ICD-10,H16,Keratitis,VII Diseases of the eye and adnexa,curated
+cornea,Cornea problems / transplant,condition,464,ICD-10,H17,Corneal scars and opacities,VII Diseases of the eye and adnexa,curated
+cornea,Cornea problems / transplant,condition,464,ICD-10,H18,Other disorders of cornea,VII Diseases of the eye and adnexa,curated
+joint-replacement,Knee / hip replacement,service,1381,MeSH,D019645,"Arthroplasty, Replacement, Knee","E04 Surgical Procedures, Operative",curated
+joint-replacement,Knee / hip replacement,service,1381,MeSH,D019644,"Arthroplasty, Replacement, Hip","E04 Surgical Procedures, Operative",curated
+joint-replacement,Knee / hip replacement,service,1381,ICD-10,Z96.6,Presence of orthopaedic joint implants,XXI Factors influencing health status and contact with health services,curated
+arthroscopy,Arthroscopy,service,724,MeSH,D001182,Arthroscopy,"E01 Diagnosis; E04 Surgical Procedures, Operative",curated
+spine-surgery,Spine surgery,service,784,MeSH,D013123,Spinal Fusion,"E04 Surgical Procedures, Operative",curated
+spine-surgery,Spine surgery,service,784,MeSH,D017586,Diskectomy,"E02 Therapeutics; E04 Surgical Procedures, Operative",curated
+spine-surgery,Spine surgery,service,784,MeSH,D007796,Laminectomy,"E02 Therapeutics; E04 Surgical Procedures, Operative",curated
+spine-surgery,Spine surgery,service,784,ICD-10,M51,Other intervertebral disc disorders,XIII Diseases of the musculoskeletal system and connective tissue,curated
+fracture-trauma,Fractures & trauma,condition,1260,MeSH,D050723,"Fractures, Bone",C26 Wounds and Injuries,curated
+fracture-trauma,Fractures & trauma,condition,1260,MeSH,D014947,Wounds and Injuries,C26 Wounds and Injuries,curated
+fracture-trauma,Fractures & trauma,condition,1260,MeSH,D014193,Trauma Centers,N02 Health Care Facilities Workforce and Services; N04 Health Services Administration,curated
+fracture-trauma,Fractures & trauma,condition,1260,ICD-10,XIX,"Injury, poisoning and certain other consequences of external causes","XIX Injury, poisoning and certain other consequences of external causes",curated
+arthritis,Arthritis,condition,365,MeSH,D001168,Arthritis,C05 Musculoskeletal Diseases,curated
+arthritis,Arthritis,condition,365,MeSH,D010003,Osteoarthritis,C05 Musculoskeletal Diseases,curated
+arthritis,Arthritis,condition,365,MeSH,D001172,"Arthritis, Rheumatoid",C05 Musculoskeletal Diseases; C17 Skin and Connective Tissue Diseases; C20 Immune System Diseases,curated
+arthritis,Arthritis,condition,365,MeSH,D006073,Gout,"C05 Musculoskeletal Diseases; C16 Congenital, Hereditary, and Neonatal Diseases and Abnormalities; C18 Nutritional and Metabolic Diseases",curated
+arthritis,Arthritis,condition,365,ICD-10,M05,Seropositive rheumatoid arthritis,XIII Diseases of the musculoskeletal system and connective tissue,curated
+arthritis,Arthritis,condition,365,ICD-10,M06,Other rheumatoid arthritis,XIII Diseases of the musculoskeletal system and connective tissue,curated
+arthritis,Arthritis,condition,365,ICD-10,M10,Gout,XIII Diseases of the musculoskeletal system and connective tissue,curated
+arthritis,Arthritis,condition,365,ICD-10,M15-M19,Arthrosis,XIII Diseases of the musculoskeletal system and connective tissue,curated
+back-pain,Back & neck pain,condition,304,MeSH,D001416,Back Pain,"C23 Pathological Conditions, Signs and Symptoms; F02 Psychological Phenomena; G11 Musculoskeletal and Neural Physiological Phenomena",curated
+back-pain,Back & neck pain,condition,304,MeSH,D019547,Neck Pain,"C23 Pathological Conditions, Signs and Symptoms; F02 Psychological Phenomena; G11 Musculoskeletal and Neural Physiological Phenomena",curated
+back-pain,Back & neck pain,condition,304,MeSH,D012585,Sciatica,"C10 Nervous System Diseases; C23 Pathological Conditions, Signs and Symptoms",curated
+back-pain,Back & neck pain,condition,304,MeSH,D055009,Spondylosis,C05 Musculoskeletal Diseases,curated
+back-pain,Back & neck pain,condition,304,ICD-10,M54,Dorsalgia,XIII Diseases of the musculoskeletal system and connective tissue,curated
+back-pain,Back & neck pain,condition,304,ICD-10,M47,Spondylosis,XIII Diseases of the musculoskeletal system and connective tissue,curated
+physiotherapy,Physiotherapy & rehabilitation,service,1913,MeSH,D026741,Physical Therapy Modalities,E02 Therapeutics,curated
+physiotherapy,Physiotherapy & rehabilitation,service,1913,MeSH,D012046,Rehabilitation,E02 Therapeutics; H02 Health Occupations; N02 Health Care Facilities Workforce and Services,curated
+stroke,Stroke,condition,360,MeSH,D020521,Stroke,C10 Nervous System Diseases; C14 Cardiovascular Diseases,curated
+stroke,Stroke,condition,360,MeSH,D015912,Thrombolytic Therapy,E02 Therapeutics,curated
+stroke,Stroke,condition,360,MeSH,D010243,Paralysis,"C10 Nervous System Diseases; C23 Pathological Conditions, Signs and Symptoms",curated
+stroke,Stroke,condition,360,ICD-10,I63,Cerebral infarction,IX Diseases of the circulatory system,curated
+stroke,Stroke,condition,360,ICD-10,I64,"Stroke, not specified as haemorrhage or infarction",IX Diseases of the circulatory system,curated
+stroke,Stroke,condition,360,ICD-10,G81,Hemiplegia,VI Diseases of the nervous system,curated
+epilepsy,Epilepsy / seizures,condition,153,MeSH,D004827,Epilepsy,C10 Nervous System Diseases,curated
+epilepsy,Epilepsy / seizures,condition,153,MeSH,D012640,Seizures,"C10 Nervous System Diseases; C23 Pathological Conditions, Signs and Symptoms",curated
+epilepsy,Epilepsy / seizures,condition,153,ICD-10,G40,Epilepsy,VI Diseases of the nervous system,curated
+epilepsy,Epilepsy / seizures,condition,153,ICD-10,G41,Status epilepticus,VI Diseases of the nervous system,curated
+neurosurgery,Brain surgery,service,1049,MeSH,D019635,Neurosurgical Procedures,"E04 Surgical Procedures, Operative",curated
+neurosurgery,Brain surgery,service,1049,MeSH,D003399,Craniotomy,"E04 Surgical Procedures, Operative",curated
+neurosurgery,Brain surgery,service,1049,MeSH,D001932,Brain Neoplasms,C04 Neoplasms; C10 Nervous System Diseases,curated
+eeg-emg,EEG / EMG / nerve conduction,service,297,MeSH,D004569,Electroencephalography,E01 Diagnosis,curated
+eeg-emg,EEG / EMG / nerve conduction,service,297,MeSH,D004576,Electromyography,E01 Diagnosis,curated
+eeg-emg,EEG / EMG / nerve conduction,service,297,MeSH,D009431,Neural Conduction,G07 Physiological Phenomena; G11 Musculoskeletal and Neural Physiological Phenomena,curated
+headache-migraine,Headache & migraine,condition,231,MeSH,D008881,Migraine Disorders,C10 Nervous System Diseases,curated
+headache-migraine,Headache & migraine,condition,231,MeSH,D006261,Headache,"C23 Pathological Conditions, Signs and Symptoms; F02 Psychological Phenomena; G11 Musculoskeletal and Neural Physiological Phenomena",curated
+headache-migraine,Headache & migraine,condition,231,ICD-10,G43,Migraine,VI Diseases of the nervous system,curated
+headache-migraine,Headache & migraine,condition,231,ICD-10,G44,Other headache syndromes,VI Diseases of the nervous system,curated
+parkinsons-dementia,Parkinson's & dementia,condition,121,MeSH,D010300,Parkinson Disease,C10 Nervous System Diseases,curated
+parkinsons-dementia,Parkinson's & dementia,condition,121,MeSH,D003704,Dementia,C10 Nervous System Diseases; F03 Mental Disorders,curated
+parkinsons-dementia,Parkinson's & dementia,condition,121,MeSH,D000544,Alzheimer Disease,C10 Nervous System Diseases; F03 Mental Disorders,curated
+parkinsons-dementia,Parkinson's & dementia,condition,121,MeSH,D009069,Movement Disorders,C10 Nervous System Diseases,curated
+parkinsons-dementia,Parkinson's & dementia,condition,121,ICD-10,G20,Parkinson disease,VI Diseases of the nervous system,curated
+parkinsons-dementia,Parkinson's & dementia,condition,121,ICD-10,G30,Alzheimer disease,VI Diseases of the nervous system,curated
+parkinsons-dementia,Parkinson's & dementia,condition,121,ICD-10,F03,Unspecified dementia,V Mental and behavioural disorders,curated
+endoscopy,Endoscopy / colonoscopy,service,954,MeSH,D016099,"Endoscopy, Gastrointestinal","E01 Diagnosis; E04 Surgical Procedures, Operative",curated
+endoscopy,Endoscopy / colonoscopy,service,954,MeSH,D003113,Colonoscopy,"E01 Diagnosis; E04 Surgical Procedures, Operative",curated
+endoscopy,Endoscopy / colonoscopy,service,954,MeSH,D002760,"Cholangiopancreatography, Endoscopic Retrograde","E01 Diagnosis; E04 Surgical Procedures, Operative",curated
+gallstones,Gallstones,condition,433,MeSH,D042882,Gallstones,"C06 Digestive System Diseases; C23 Pathological Conditions, Signs and Symptoms",curated
+gallstones,Gallstones,condition,433,MeSH,D002763,Cholecystectomy,"E04 Surgical Procedures, Operative",curated
+gallstones,Gallstones,condition,433,ICD-10,K80,Cholelithiasis,XI Diseases of the digestive system,curated
+hernia,Hernia,condition,601,MeSH,D006547,Hernia,"C23 Pathological Conditions, Signs and Symptoms",curated
+hernia,Hernia,condition,601,MeSH,D059685,Herniorrhaphy,"E04 Surgical Procedures, Operative",curated
+hernia,Hernia,condition,601,ICD-10,K40-K46,Hernia,XI Diseases of the digestive system,curated
+piles-fistula,"Piles, fissure & fistula",condition,765,MeSH,D006484,Hemorrhoids,C06 Digestive System Diseases; C14 Cardiovascular Diseases,curated
+piles-fistula,"Piles, fissure & fistula",condition,765,MeSH,D012003,Rectal Fistula,"C06 Digestive System Diseases; C23 Pathological Conditions, Signs and Symptoms",curated
+piles-fistula,"Piles, fissure & fistula",condition,765,MeSH,D005401,Fissure in Ano,C06 Digestive System Diseases,curated
+piles-fistula,"Piles, fissure & fistula",condition,765,MeSH,D010864,Pilonidal Sinus,C04 Neoplasms,curated
+piles-fistula,"Piles, fissure & fistula",condition,765,ICD-10,K64,Haemorrhoids and perianal venous thrombosis,XI Diseases of the digestive system,curated
+piles-fistula,"Piles, fissure & fistula",condition,765,ICD-10,K60,Fissure and fistula of anal and rectal regions,XI Diseases of the digestive system,curated
+piles-fistula,"Piles, fissure & fistula",condition,765,ICD-10,L05,Pilonidal cyst,XII Diseases of the skin and subcutaneous tissue,curated
+appendicitis,Appendicitis,condition,262,MeSH,D001064,Appendicitis,C01 Infections; C06 Digestive System Diseases,curated
+appendicitis,Appendicitis,condition,262,MeSH,D001062,Appendectomy,"E04 Surgical Procedures, Operative",curated
+appendicitis,Appendicitis,condition,262,ICD-10,K35,Acute appendicitis,XI Diseases of the digestive system,curated
+appendicitis,Appendicitis,condition,262,ICD-10,K36,Other appendicitis,XI Diseases of the digestive system,curated
+appendicitis,Appendicitis,condition,262,ICD-10,K37,Unspecified appendicitis,XI Diseases of the digestive system,curated
+liver-disease,Liver disease,condition,290,MeSH,D008107,Liver Diseases,C06 Digestive System Diseases,curated
+liver-disease,Liver disease,condition,290,MeSH,D008103,Liver Cirrhosis,"C06 Digestive System Diseases; C23 Pathological Conditions, Signs and Symptoms",curated
+liver-disease,Liver disease,condition,290,MeSH,D006505,Hepatitis,C06 Digestive System Diseases,curated
+liver-disease,Liver disease,condition,290,MeSH,D005234,Fatty Liver,C06 Digestive System Diseases,curated
+liver-disease,Liver disease,condition,290,ICD-10,K70-K77,Diseases of liver,XI Diseases of the digestive system,curated
+liver-disease,Liver disease,condition,290,ICD-10,B15-B19,Viral hepatitis,I Certain infectious and parasitic diseases,curated
+liver-transplant,Liver transplant,service,157,MeSH,D016031,Liver Transplantation,"E02 Therapeutics; E04 Surgical Procedures, Operative",curated
+liver-transplant,Liver transplant,service,157,ICD-10,Z94.4,Liver transplant status,XXI Factors influencing health status and contact with health services,curated
+bariatric-surgery,Weight-loss (bariatric) surgery,service,340,MeSH,D050110,Bariatric Surgery,"E02 Therapeutics; E04 Surgical Procedures, Operative",curated
+ent,"Ear, nose & throat (ENT)",service,1574,MeSH,D010038,Otorhinolaryngologic Diseases,C09 Otorhinolaryngologic Diseases,curated
+ent,"Ear, nose & throat (ENT)",service,1574,MeSH,D010036,Otolaryngology,H02 Health Occupations,curated
+ent,"Ear, nose & throat (ENT)",service,1574,ICD-10,VIII,Diseases of the ear and mastoid process,VIII Diseases of the ear and mastoid process,curated
+sinus,Sinus problems,condition,394,MeSH,D012852,Sinusitis,C01 Infections; C08 Respiratory Tract Diseases; C09 Otorhinolaryngologic Diseases,curated
+sinus,Sinus problems,condition,394,MeSH,D009298,Nasal Polyps,"C08 Respiratory Tract Diseases; C09 Otorhinolaryngologic Diseases; C23 Pathological Conditions, Signs and Symptoms",curated
+sinus,Sinus problems,condition,394,ICD-10,J01,Acute sinusitis,X Diseases of the respiratory system,curated
+sinus,Sinus problems,condition,394,ICD-10,J32,Chronic sinusitis,X Diseases of the respiratory system,curated
+sinus,Sinus problems,condition,394,ICD-10,J33,Nasal polyp,X Diseases of the respiratory system,curated
+hearing,Hearing loss / hearing aids,condition,399,MeSH,D034381,Hearing Loss,"C09 Otorhinolaryngologic Diseases; C10 Nervous System Diseases; C23 Pathological Conditions, Signs and Symptoms",curated
+hearing,Hearing loss / hearing aids,condition,399,MeSH,D006310,Hearing Aids,E07 Equipment and Supplies,curated
+hearing,Hearing loss / hearing aids,condition,399,MeSH,D003054,Cochlear Implants,E07 Equipment and Supplies,curated
+hearing,Hearing loss / hearing aids,condition,399,MeSH,D001299,Audiometry,E01 Diagnosis,curated
+hearing,Hearing loss / hearing aids,condition,399,ICD-10,H90,Conductive and sensorineural hearing loss,VIII Diseases of the ear and mastoid process,curated
+hearing,Hearing loss / hearing aids,condition,399,ICD-10,H91,Other hearing loss,VIII Diseases of the ear and mastoid process,curated
+tonsils,Tonsils & adenoids,condition,212,MeSH,D014069,Tonsillitis,C01 Infections; C07 Stomatognathic Diseases; C08 Respiratory Tract Diseases; C09 Otorhinolaryngologic Diseases,curated
+tonsils,Tonsils & adenoids,condition,212,MeSH,D014068,Tonsillectomy,"E04 Surgical Procedures, Operative",curated
+tonsils,Tonsils & adenoids,condition,212,MeSH,D000234,Adenoids,A04 Respiratory System; A10 Tissues; A14 Stomatognathic System; A15 Hemic and Immune Systems,curated
+tonsils,Tonsils & adenoids,condition,212,ICD-10,J03,Acute tonsillitis,X Diseases of the respiratory system,curated
+tonsils,Tonsils & adenoids,condition,212,ICD-10,J35,Chronic diseases of tonsils and adenoids,X Diseases of the respiratory system,curated
+asthma-copd,Asthma / COPD,condition,235,MeSH,D001249,Asthma,C08 Respiratory Tract Diseases; C20 Immune System Diseases,curated
+asthma-copd,Asthma / COPD,condition,235,MeSH,D029424,"Pulmonary Disease, Chronic Obstructive","C08 Respiratory Tract Diseases; C23 Pathological Conditions, Signs and Symptoms",curated
+asthma-copd,Asthma / COPD,condition,235,MeSH,D001991,Bronchitis,C01 Infections; C08 Respiratory Tract Diseases,curated
+asthma-copd,Asthma / COPD,condition,235,ICD-10,J44,Other chronic obstructive pulmonary disease,X Diseases of the respiratory system,curated
+asthma-copd,Asthma / COPD,condition,235,ICD-10,J45,Asthma,X Diseases of the respiratory system,curated
+asthma-copd,Asthma / COPD,condition,235,ICD-10,J40,"Bronchitis, not specified as acute or chronic",X Diseases of the respiratory system,curated
+tuberculosis,Tuberculosis (TB),condition,218,MeSH,D014376,Tuberculosis,C01 Infections,curated
+tuberculosis,Tuberculosis (TB),condition,218,ICD-10,A15-A19,Tuberculosis,I Certain infectious and parasitic diseases,curated
+pulmonary-function,Lung function test (PFT),service,426,MeSH,D012129,Respiratory Function Tests,E01 Diagnosis,curated
+pulmonary-function,Lung function test (PFT),service,426,MeSH,D013147,Spirometry,E01 Diagnosis,curated
+pulmonary-function,Lung function test (PFT),service,426,MeSH,D001999,Bronchoscopy,"E01 Diagnosis; E04 Surgical Procedures, Operative",curated
+sleep-apnea,Sleep apnea / sleep study,condition,226,MeSH,D012891,Sleep Apnea Syndromes,C08 Respiratory Tract Diseases; C10 Nervous System Diseases,curated
+sleep-apnea,Sleep apnea / sleep study,condition,226,MeSH,D017286,Polysomnography,E01 Diagnosis,curated
+sleep-apnea,Sleep apnea / sleep study,condition,226,MeSH,D012913,Snoring,"C23 Pathological Conditions, Signs and Symptoms",curated
+sleep-apnea,Sleep apnea / sleep study,condition,226,ICD-10,G47.3,Sleep apnoea,VI Diseases of the nervous system,curated
+diabetes,Diabetes,condition,1315,MeSH,D003920,Diabetes Mellitus,C18 Nutritional and Metabolic Diseases; C19 Endocrine System Diseases,curated
+diabetes,Diabetes,condition,1315,ICD-10,E10-E14,Diabetes mellitus,"IV Endocrine, nutritional and metabolic diseases",curated
+thyroid,Thyroid disorders,condition,624,MeSH,D013959,Thyroid Diseases,C19 Endocrine System Diseases,curated
+thyroid,Thyroid disorders,condition,624,MeSH,D006042,Goiter,C19 Endocrine System Diseases,curated
+thyroid,Thyroid disorders,condition,624,ICD-10,E00-E07,Disorders of thyroid gland,"IV Endocrine, nutritional and metabolic diseases",curated
+obesity,Obesity & weight management,condition,329,MeSH,D009765,Obesity,"C18 Nutritional and Metabolic Diseases; C23 Pathological Conditions, Signs and Symptoms",curated
+obesity,Obesity & weight management,condition,329,MeSH,D061217,Weight Reduction Programs,H02 Health Occupations; N02 Health Care Facilities Workforce and Services,curated
+obesity,Obesity & weight management,condition,329,ICD-10,E66,Obesity,"IV Endocrine, nutritional and metabolic diseases",curated
+fever-infections,"Fever, dengue, malaria & typhoid",condition,464,MeSH,D005334,Fever,"C23 Pathological Conditions, Signs and Symptoms",curated
+fever-infections,"Fever, dengue, malaria & typhoid",condition,464,MeSH,D003715,Dengue,C01 Infections,curated
+fever-infections,"Fever, dengue, malaria & typhoid",condition,464,MeSH,D008288,Malaria,C01 Infections,curated
+fever-infections,"Fever, dengue, malaria & typhoid",condition,464,MeSH,D014435,Typhoid Fever,C01 Infections,curated
+fever-infections,"Fever, dengue, malaria & typhoid",condition,464,MeSH,D065632,Chikungunya Fever,C01 Infections,curated
+fever-infections,"Fever, dengue, malaria & typhoid",condition,464,ICD-10,R50,Fever of other and unknown origin,"XVIII Symptoms, signs and abnormal clinical and laboratory findings, not elsewhere classified",curated
+fever-infections,"Fever, dengue, malaria & typhoid",condition,464,ICD-10,A97,Dengue,I Certain infectious and parasitic diseases,curated
+fever-infections,"Fever, dengue, malaria & typhoid",condition,464,ICD-10,B50,Plasmodium falciparum malaria,I Certain infectious and parasitic diseases,curated
+fever-infections,"Fever, dengue, malaria & typhoid",condition,464,ICD-10,B51,Plasmodium vivax malaria,I Certain infectious and parasitic diseases,curated
+fever-infections,"Fever, dengue, malaria & typhoid",condition,464,ICD-10,B52,Plasmodium malariae malaria,I Certain infectious and parasitic diseases,curated
+fever-infections,"Fever, dengue, malaria & typhoid",condition,464,ICD-10,B53,Other parasitologically confirmed malaria,I Certain infectious and parasitic diseases,curated
+fever-infections,"Fever, dengue, malaria & typhoid",condition,464,ICD-10,B54,Unspecified malaria,I Certain infectious and parasitic diseases,curated
+fever-infections,"Fever, dengue, malaria & typhoid",condition,464,ICD-10,A01.0,Typhoid fever,I Certain infectious and parasitic diseases,curated
+fever-infections,"Fever, dengue, malaria & typhoid",condition,464,ICD-10,A92.0,Chikungunya virus disease,I Certain infectious and parasitic diseases,curated
+hiv,HIV / AIDS,condition,145,MeSH,D015658,HIV Infections,C01 Infections; C12 Urogenital Diseases; C20 Immune System Diseases,curated
+hiv,HIV / AIDS,condition,145,MeSH,D000163,Acquired Immunodeficiency Syndrome,C01 Infections; C12 Urogenital Diseases; C20 Immune System Diseases,curated
+hiv,HIV / AIDS,condition,145,ICD-10,B20-B24,Human immunodeficiency virus [HIV] disease,I Certain infectious and parasitic diseases,curated
+snakebite-rabies,Snakebite & rabies,condition,25,MeSH,D012909,Snake Bites,C25 Chemically-Induced Disorders; C26 Wounds and Injuries,curated
+snakebite-rabies,Snakebite & rabies,condition,25,MeSH,D011818,Rabies,C01 Infections,curated
+snakebite-rabies,Snakebite & rabies,condition,25,MeSH,D000997,Antivenins,"D12 Amino Acids, Peptides, and Proteins; D20 Complex Mixtures",curated
+snakebite-rabies,Snakebite & rabies,condition,25,MeSH,D011819,Rabies Vaccines,D20 Complex Mixtures,curated
+snakebite-rabies,Snakebite & rabies,condition,25,ICD-10,T63.0,Toxic effect: Snake venom,"XIX Injury, poisoning and certain other consequences of external causes",curated
+snakebite-rabies,Snakebite & rabies,condition,25,ICD-10,A82,Rabies,I Certain infectious and parasitic diseases,curated
+skin-disease,Skin conditions,condition,385,MeSH,D012871,Skin Diseases,C17 Skin and Connective Tissue Diseases,curated
+skin-disease,Skin conditions,condition,385,MeSH,D011565,Psoriasis,C17 Skin and Connective Tissue Diseases,curated
+skin-disease,Skin conditions,condition,385,MeSH,D004485,Eczema,C17 Skin and Connective Tissue Diseases,curated
+skin-disease,Skin conditions,condition,385,MeSH,D000152,Acne Vulgaris,C17 Skin and Connective Tissue Diseases,curated
+skin-disease,Skin conditions,condition,385,MeSH,D014820,Vitiligo,C17 Skin and Connective Tissue Diseases,curated
+skin-disease,Skin conditions,condition,385,ICD-10,XII,Diseases of the skin and subcutaneous tissue,XII Diseases of the skin and subcutaneous tissue,curated
+hair-loss,Hair loss / hair transplant,condition,389,MeSH,D000505,Alopecia,"C17 Skin and Connective Tissue Diseases; C23 Pathological Conditions, Signs and Symptoms",curated
+hair-loss,Hair loss / hair transplant,condition,389,ICD-10,L63,Alopecia areata,XII Diseases of the skin and subcutaneous tissue,curated
+hair-loss,Hair loss / hair transplant,condition,389,ICD-10,L64,Androgenic alopecia,XII Diseases of the skin and subcutaneous tissue,curated
+hair-loss,Hair loss / hair transplant,condition,389,ICD-10,L65,Other nonscarring hair loss,XII Diseases of the skin and subcutaneous tissue,curated
+cosmetic-surgery,Cosmetic / plastic surgery,service,1013,MeSH,D013518,"Surgery, Plastic",H02 Health Occupations,curated
+cosmetic-surgery,Cosmetic / plastic surgery,service,1013,MeSH,D003357,Cosmetic Techniques,E02 Therapeutics,curated
+cosmetic-surgery,Cosmetic / plastic surgery,service,1013,MeSH,D015187,Lipectomy,"E02 Therapeutics; E04 Surgical Procedures, Operative",curated
+cosmetic-surgery,Cosmetic / plastic surgery,service,1013,MeSH,D012225,Rhinoplasty,"E02 Therapeutics; E04 Surgical Procedures, Operative",curated
+burns,Burns,condition,229,MeSH,D002056,Burns,C26 Wounds and Injuries,curated
+burns,Burns,condition,229,MeSH,D002053,Burn Units,N02 Health Care Facilities Workforce and Services,curated
+burns,Burns,condition,229,ICD-10,T20-T32,Burns and corrosions,"XIX Injury, poisoning and certain other consequences of external causes",curated
+root-canal,Root canal treatment,service,1595,MeSH,D012390,Root Canal Therapy,E06 Dentistry,curated
+root-canal,Root canal treatment,service,1595,MeSH,D004708,Endodontics,E06 Dentistry; H02 Health Occupations,curated
+root-canal,Root canal treatment,service,1595,ICD-10,K04,Diseases of pulp and periapical tissues,XI Diseases of the digestive system,curated
+dental-implants,Dental implants,service,1529,MeSH,D015921,Dental Implants,"D25 Biomedical and Dental Materials; E06 Dentistry; E07 Equipment and Supplies; J01 Technology, Industry, and Agriculture",curated
+dental-implants,Dental implants,service,1529,MeSH,D003757,Dental Implantation,"E04 Surgical Procedures, Operative; E06 Dentistry",curated
+orthodontics,Braces & aligners,service,1478,MeSH,D009970,Orthodontics,E06 Dentistry; H02 Health Occupations,curated
+orthodontics,Braces & aligners,service,1478,MeSH,D009967,Orthodontic Appliances,E06 Dentistry,curated
+orthodontics,Braces & aligners,service,1478,ICD-10,K07,Dentofacial anomalies [including malocclusion],XI Diseases of the digestive system,curated
+dentures,Dentures,service,853,MeSH,D003778,Dentures,E06 Dentistry; E07 Equipment and Supplies,curated
+tooth-extraction,Tooth extraction,service,864,MeSH,D014081,Tooth Extraction,"E04 Surgical Procedures, Operative; E06 Dentistry",curated
+gum-disease,Gum disease,condition,799,MeSH,D010510,Periodontal Diseases,C07 Stomatognathic Diseases,curated
+gum-disease,Gum disease,condition,799,MeSH,D005891,Gingivitis,C01 Infections; C07 Stomatognathic Diseases,curated
+gum-disease,Gum disease,condition,799,ICD-10,K05,Gingivitis and periodontal diseases,XI Diseases of the digestive system,curated
+mental-health,"Mental health (depression, anxiety)",condition,930,MeSH,D001523,Mental Disorders,F03 Mental Disorders,curated
+mental-health,"Mental health (depression, anxiety)",condition,930,MeSH,D003863,Depression,F01 Behavior and Behavior Mechanisms,curated
+mental-health,"Mental health (depression, anxiety)",condition,930,MeSH,D001008,Anxiety Disorders,F03 Mental Disorders,curated
+mental-health,"Mental health (depression, anxiety)",condition,930,MeSH,D011570,Psychiatry,F04 Behavioral Disciplines and Activities; H02 Health Occupations,curated
+mental-health,"Mental health (depression, anxiety)",condition,930,ICD-10,V,Mental and behavioural disorders,V Mental and behavioural disorders,curated
+addiction,De-addiction,condition,139,MeSH,D019966,Substance-Related Disorders,C25 Chemically-Induced Disorders; F03 Mental Disorders,curated
+addiction,De-addiction,condition,139,MeSH,D000437,Alcoholism,C25 Chemically-Induced Disorders; F03 Mental Disorders,curated
+addiction,De-addiction,condition,139,ICD-10,F10-F19,Mental and behavioural disorders due to psychoactive substance use,V Mental and behavioural disorders,curated
+emergency-24x7,24/7 emergency,service,3392,MeSH,D004636,"Emergency Service, Hospital",N02 Health Care Facilities Workforce and Services; N04 Health Services Administration,curated
+emergency-24x7,24/7 emergency,service,3392,MeSH,D004632,Emergency Medical Services,N02 Health Care Facilities Workforce and Services,curated
+icu,Intensive care (ICU),service,2434,MeSH,D007362,Intensive Care Units,N02 Health Care Facilities Workforce and Services,curated
+icu,Intensive care (ICU),service,2434,MeSH,D003422,Critical Care,E02 Therapeutics; N02 Health Care Facilities Workforce and Services,curated
+icu,Intensive care (ICU),service,2434,MeSH,D012122,"Ventilators, Mechanical",E07 Equipment and Supplies,curated
+ambulance,Ambulance,service,1154,MeSH,D000552,Ambulances,"J01 Technology, Industry, and Agriculture; N02 Health Care Facilities Workforce and Services",curated
+blood-bank,Blood bank,service,629,MeSH,D001771,Blood Banks,N02 Health Care Facilities Workforce and Services,curated
+blood-bank,Blood bank,service,629,MeSH,D001803,Blood Transfusion,E02 Therapeutics,curated
+palliative-care,Palliative care,service,179,MeSH,D010166,Palliative Care,E02 Therapeutics; N02 Health Care Facilities Workforce and Services,curated
+palliative-care,Palliative care,service,179,MeSH,D017051,Hospice Care,E02 Therapeutics; N02 Health Care Facilities Workforce and Services,curated
+palliative-care,Palliative care,service,179,ICD-10,Z51.5,Palliative care,XXI Factors influencing health status and contact with health services,curated
+specialty:internalMedicine,Internal Medicine,specialty,6861,NUCC,207R00000X,Internal Medicine Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:familyMedicine,Family Medicine,specialty,5195,NUCC,207Q00000X,Family Medicine Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:gynecologyAndObstetrics,Gynecology & Obstetrics,specialty,4526,NUCC,207V00000X,Obstetrics & Gynecology Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:dentistry,Dentistry,specialty,4215,NUCC,122300000X,Dentist,Dental Providers,equivalent
+specialty:orthopedicSurgery,Orthopedic Surgery,specialty,3555,NUCC,207X00000X,Orthopaedic Surgery Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:pediatrics,Pediatrics,specialty,3442,NUCC,208000000X,Pediatrics Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:generalSurgery,General Surgery,specialty,3203,NUCC,208600000X,Surgery Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:cardiology,Cardiology,specialty,3019,NUCC,207RC0000X,Cardiovascular Disease Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:radiology,Radiology,specialty,3008,NUCC,2085R0202X,Diagnostic Radiology Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:ophthalmology,Ophthalmology,specialty,2832,NUCC,207W00000X,Ophthalmology Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:otolaryngology,Otolaryngology,specialty,2726,NUCC,207Y00000X,Otolaryngology Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:urology,Urology,specialty,2635,NUCC,208800000X,Urology Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:gastroenterology,Gastroenterology,specialty,2429,NUCC,207RG0100X,Gastroenterology Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:dermatology,Dermatology,specialty,2337,NUCC,207N00000X,Dermatology Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:pathology,Pathology,specialty,2260,NUCC,207ZP0102X,Anatomic Pathology & Clinical Pathology Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:nephrology,Nephrology,specialty,2163,NUCC,207RN0300X,Nephrology Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:emergencyMedicine,Emergency Medicine,specialty,2087,NUCC,207P00000X,Emergency Medicine Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:neurology,Neurology,specialty,1968,NUCC,2084N0400X,Neurology Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:endocrinologyAndDiabetesAndMetabolism,Endocrinology & Diabetes & Metabolism,specialty,1902,NUCC,207RE0101X,"Endocrinology, Diabetes & Metabolism Physician",Allopathic & Osteopathic Physicians,equivalent
+specialty:reproductiveEndocrinologyAndInfertility,Reproductive Endocrinology & Infertility,specialty,1873,NUCC,207VE0102X,Reproductive Endocrinology Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:endodontics,Endodontics,specialty,1806,NUCC,1223E0200X,Endodontics,Dental Providers,equivalent
+specialty:neurosurgery,Neurosurgery,specialty,1699,NUCC,207T00000X,Neurological Surgery Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:criticalCareMedicine,Critical Care Medicine,specialty,1689,NUCC,207RC0200X,Critical Care Medicine (Internal Medicine) Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:orthodontics,Orthodontics,specialty,1686,NUCC,1223X0400X,Orthodontics and Dentofacial Orthopedics Dentistry,Dental Providers,equivalent
+specialty:oralAndMaxillofacialSurgery,Oral & Maxillofacial Surgery,specialty,1683,NUCC,204E00000X,Oral & Maxillofacial Surgery (D.M.D.),Allopathic & Osteopathic Physicians,equivalent
+specialty:pulmonology,Pulmonology,specialty,1619,NUCC,207RP1001X,Pulmonary Disease Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:physicalMedicineAndRehabilitation,Physical Medicine & Rehabilitation,specialty,1597,NUCC,208100000X,Physical Medicine & Rehabilitation Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:plasticSurgery,Plastic Surgery,specialty,1588,NUCC,208200000X,Plastic Surgery Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:medicalOncology,Medical Oncology,specialty,1485,NUCC,207RX0202X,Medical Oncology Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:anesthesia,Anesthesia,specialty,1427,NUCC,207L00000X,Anesthesiology Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:prosthodontics,Prosthodontics,specialty,1364,NUCC,1223P0700X,Prosthodontics,Dental Providers,equivalent
+specialty:neonatologyPerinatalMedicine,Neonatology Perinatal Medicine,specialty,1273,NUCC,2080N0001X,Neonatal-Perinatal Medicine Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:psychiatry,Psychiatry,specialty,1176,NUCC,2084P0800X,Psychiatry Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:pediatricDentistry,Pediatric Dentistry,specialty,1109,NUCC,1223P0221X,Pediatric Dentistry,Dental Providers,equivalent
+specialty:surgicalOncology,Surgical Oncology,specialty,982,NUCC,2086X0206X,Surgical Oncology Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:infectiousDiseases,Infectious Diseases,specialty,969,NUCC,207RI0200X,Infectious Disease Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:aestheticDentistry,Aesthetic Dentistry,specialty,875,NUCC,122300000X,Dentist,Dental Providers,broader
+specialty:maternalFetalMedicineOrPerinatology,Maternal Fetal Medicine or Perinatology,specialty,742,NUCC,207VM0101X,Maternal & Fetal Medicine Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:spineNeurosurgery,Spine Neurosurgery,specialty,689,NUCC,207T00000X,Neurological Surgery Physician,Allopathic & Osteopathic Physicians,broader
+specialty:cataractAndAnteriorSegmentSurgery,Cataract & Anterior Segment Surgery,specialty,683,NUCC,207W00000X,Ophthalmology Physician,Allopathic & Osteopathic Physicians,broader
+specialty:pediatricSurgery,Pediatric Surgery,specialty,674,NUCC,2086S0120X,Pediatric Surgery Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:periodontics,Periodontics,specialty,643,NUCC,1223P0300X,Periodontics,Dental Providers,equivalent
+specialty:cosmeticDentistry,Cosmetic Dentistry,specialty,608,NUCC,122300000X,Dentist,Dental Providers,broader
+specialty:retinaAndVitreoretinalOphthalmology,Retina & Vitreoretinal Ophthalmology,specialty,605,NUCC,207WX0107X,Retina Specialist (Ophthalmology) Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:cardiacSurgery,Cardiac Surgery,specialty,590,NUCC,208G00000X,Thoracic Surgery (Cardiothoracic Vascular Surgery) Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:clinicalPathology,Clinical Pathology,specialty,540,NUCC,207ZC0006X,Clinical Pathology Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:jointReconstructionSurgery,Joint Reconstruction Surgery,specialty,523,NUCC,207XS0114X,Adult Reconstructive Orthopaedic Surgery Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:rheumatology,Rheumatology,specialty,512,NUCC,207RR0500X,Rheumatology Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:preventiveMedicine,Preventive Medicine,specialty,502,NUCC,2083P0901X,Public Health & General Preventive Medicine Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:hematology,Hematology,specialty,496,NUCC,207RH0000X,Hematology (Internal Medicine) Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:corneaOphthalmology,Cornea Ophthalmology,specialty,492,NUCC,207WX0120X,Cornea and External Diseases Specialist Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:glaucomaOphthalmology,Glaucoma Ophthalmology,specialty,486,NUCC,207WX0009X,Glaucoma Specialist (Ophthalmology) Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:vascularSurgery,Vascular Surgery,specialty,476,NUCC,2086S0129X,Vascular Surgery Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:refractiveSurgeryOphthalmology,Refractive Surgery Ophthalmology,specialty,473,NUCC,207W00000X,Ophthalmology Physician,Allopathic & Osteopathic Physicians,broader
+specialty:transplantSurgery,Transplant Surgery,specialty,468,NUCC,204F00000X,Transplant Surgery Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:colorectalSurgery,Colorectal Surgery,specialty,453,NUCC,208C00000X,Colon & Rectal Surgery Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:dentoalveolarSurgery,Dentoalveolar Surgery,specialty,435,NUCC,1223S0112X,Oral and Maxillofacial Surgery (Dentist),Dental Providers,broader
+specialty:oculoplasticsAndReconstructiveOrbitalSurgery,Oculoplastics & Reconstructive Orbital Surgery,specialty,429,NUCC,207WX0200X,Ophthalmic Plastic and Reconstructive Surgery Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:cosmeticDermatology,Cosmetic Dermatology,specialty,404,NUCC,207N00000X,Dermatology Physician,Allopathic & Osteopathic Physicians,broader
+specialty:minimallyInvasiveSurgeryAndEndourology,Minimally Invasive Surgery & Endourology,specialty,379,NUCC,208800000X,Urology Physician,Allopathic & Osteopathic Physicians,broader
+specialty:bariatricSurgery,Bariatric Surgery,specialty,372,NUCC,208600000X,Surgery Physician,Allopathic & Osteopathic Physicians,broader
+specialty:gynecology,Gynecology,specialty,371,NUCC,207VG0400X,Gynecology Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:obstetricsAndMaternityCare,Obstetrics & Maternity Care,specialty,362,NUCC,207VX0000X,Obstetrics Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:pediatricsAndStrabismusOphthalmology,Pediatrics & Strabismus Ophthalmology,specialty,361,NUCC,207WX0110X,Pediatric Ophthalmology and Strabismus Specialist Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:interventionalRadiology,Interventional Radiology,specialty,297,NUCC,2085R0204X,Vascular & Interventional Radiology Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:painMedicinePMR,Pain Medicine PMR,specialty,293,NUCC,2081P2900X,Pain Medicine (Physical Medicine & Rehabilitation) Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:allergyAndImmunology,Allergy & Immunology,specialty,291,NUCC,207K00000X,Allergy & Immunology Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:andrologyAndMaleFertility,Andrology & Male Fertility,specialty,279,NUCC,208800000X,Urology Physician,Allopathic & Osteopathic Physicians,broader
+specialty:shoulderAndElbowOrthopedicSurgery,Shoulder & Elbow Orthopedic Surgery,specialty,279,NUCC,207X00000X,Orthopaedic Surgery Physician,Allopathic & Osteopathic Physicians,broader
+specialty:eyeTraumaAndEmergencyEyeCare,Eye Trauma & Emergency Eye Care,specialty,267,NUCC,207W00000X,Ophthalmology Physician,Allopathic & Osteopathic Physicians,broader
+specialty:geriatricsInternalMedicine,Geriatrics Internal Medicine,specialty,254,NUCC,207RG0300X,Geriatric Medicine (Internal Medicine) Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:hepatopancreatobiliarySurgery,Hepatopancreatobiliary Surgery,specialty,224,NUCC,208600000X,Surgery Physician,Allopathic & Osteopathic Physicians,broader
+specialty:headacheMedicine,Headache Medicine,specialty,222,NUCC,2084N0400X,Neurology Physician,Allopathic & Osteopathic Physicians,broader
+specialty:pediatricCriticalCareMedicine,Pediatric Critical Care Medicine,specialty,219,NUCC,2080P0203X,Pediatric Critical Care Medicine Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:chronicDiseasePreventionAndLifestyleMedicine,Chronic Disease Prevention & Lifestyle Medicine,specialty,218,NUCC,,,,unmapped
+specialty:pediatricCardiology,Pediatric Cardiology,specialty,215,NUCC,2080P0202X,Pediatric Cardiology Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:gynecologicalOncology,Gynecological Oncology,specialty,214,NUCC,207VX0201X,Gynecologic Oncology Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:sleepMedicine,Sleep Medicine,specialty,210,NUCC,207QS1201X,Sleep Medicine (Family Medicine) Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:familyPlanningAndComplexContraception,Family Planning & Complex Contraception,specialty,204,NUCC,207VC0300X,Complex Family Planning Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:headAndNeckSurgeryOtolaryngology,Head & Neck Surgery Otolaryngology,specialty,197,NUCC,207Y00000X,Otolaryngology Physician,Allopathic & Osteopathic Physicians,broader
+specialty:pediatricOrthopedicSurgery,Pediatric Orthopedic Surgery,specialty,197,NUCC,207XP3100X,Pediatric Orthopaedic Surgery Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:cardiothoracicSurgery,Cardiothoracic Surgery,specialty,196,NUCC,208G00000X,Thoracic Surgery (Cardiothoracic Vascular Surgery) Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:addictionPsychiatry,Addiction Psychiatry,specialty,183,NUCC,2084P0802X,Addiction Psychiatry Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:reconstructivePlasticSurgery,Reconstructive Plastic Surgery,specialty,183,NUCC,2086S0122X,Plastic and Reconstructive Surgery Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:diagnosticRadiology,Diagnostic Radiology,specialty,174,NUCC,2085R0202X,Diagnostic Radiology Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:oralMedicine,Oral Medicine,specialty,174,NUCC,125Q00000X,Oral Medicine Dentistry,Dental Providers,equivalent
+specialty:hospiceAndPalliativeInternalMedicine,Hospice & Palliative Internal Medicine,specialty,164,NUCC,207RH0002X,Hospice and Palliative Medicine (Internal Medicine) Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:craniofacialAndCleftOralMaxillofacialSurgery,Craniofacial & Cleft Oral Maxillofacial Surgery,specialty,159,NUCC,1223S0112X,Oral and Maxillofacial Surgery (Dentist),Dental Providers,broader
+specialty:podiatry,Podiatry,specialty,157,NUCC,213E00000X,Podiatrist,Podiatric Medicine & Surgery Service Providers,equivalent
+specialty:nuclearMedicineAndMolecularImaging,Nuclear Medicine & Molecular Imaging,specialty,156,NUCC,207U00000X,Nuclear Medicine Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:neuroOphthalmology,Neuro Ophthalmology,specialty,151,NUCC,207WX0109X,Neuro-ophthalmology Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:developmentalBehavioralPediatrics,Developmental Behavioral Pediatrics,specialty,146,NUCC,2080P0006X,Developmental - Behavioral Pediatrics Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:skullBaseNeurosurgery,Skull Base Neurosurgery,specialty,144,NUCC,207T00000X,Neurological Surgery Physician,Allopathic & Osteopathic Physicians,broader
+specialty:breastImaging,Breast Imaging,specialty,142,NUCC,2085R0202X,Diagnostic Radiology Physician,Allopathic & Osteopathic Physicians,broader
+specialty:epilepsyNeurology,Epilepsy Neurology,specialty,136,NUCC,2084E0001X,Epilepsy Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:uveitisOphthalmology,Uveitis Ophthalmology,specialty,135,NUCC,207WX0108X,Uveitis and Ocular Inflammatory Disease (Ophthalmology) Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:burnAndTraumaPlasticSurgery,Burn & Trauma Plastic Surgery,specialty,131,NUCC,208200000X,Plastic Surgery Physician,Allopathic & Osteopathic Physicians,broader
+specialty:sportsMedicinePMR,Sports Medicine PMR,specialty,131,NUCC,2081S0010X,Sports Medicine (Physical Medicine & Rehabilitation) Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:adolescentMedicine,Adolescent Medicine,specialty,130,NUCC,207QA0000X,Adolescent Medicine (Family Medicine) Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:pediatricUrology,Pediatric Urology,specialty,129,NUCC,2088P0231X,Pediatric Urology Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:neuropsychiatry,Neuropsychiatry,specialty,127,NUCC,2084B0040X,Behavioral Neurology & Neuropsychiatry Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:pediatricHematologyOncology,Pediatric Hematology Oncology,specialty,126,NUCC,2080P0207X,Pediatric Hematology & Oncology Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:maternalAndChildHealth,Maternal & Child Health,specialty,124,NUCC,,,,unmapped
+specialty:urologicOncology,Urologic Oncology,specialty,122,NUCC,208800000X,Urology Physician,Allopathic & Osteopathic Physicians,broader
+specialty:pediatricEndocrinology,Pediatric Endocrinology,specialty,121,NUCC,2080P0205X,Pediatric Endocrinology Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:anatomicPathology,Anatomic Pathology,specialty,118,NUCC,207ZP0101X,Anatomic Pathology Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:dentalImplants,Dental Implants,specialty,116,NUCC,122300000X,Dentist,Dental Providers,broader
+specialty:pediatricOtolaryngology,Pediatric Otolaryngology,specialty,114,NUCC,207YP0228X,Pediatric Otolaryngology Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:orthopedicSpineSurgery,Orthopedic Spine Surgery,specialty,113,NUCC,207XS0117X,Orthopaedic Surgery of the Spine Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:radiationOncology,Radiation Oncology,specialty,112,NUCC,2085R0001X,Radiation Oncology Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:renalTransplantationUrology,Renal Transplantation Urology,specialty,112,NUCC,208800000X,Urology Physician,Allopathic & Osteopathic Physicians,broader
+specialty:breastSurgery,Breast Surgery,specialty,107,NUCC,208600000X,Surgery Physician,Allopathic & Osteopathic Physicians,broader
+specialty:clinicalNeurophysiology,Clinical Neurophysiology,specialty,106,NUCC,2084N0600X,Clinical Neurophysiology Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:pediatricOphthalmology,Pediatric Ophthalmology,specialty,106,NUCC,207WX0110X,Pediatric Ophthalmology and Strabismus Specialist Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:nutritionAndDietetics,Nutrition & Dietetics,specialty,104,NUCC,133V00000X,Registered Dietitian,Dietary & Nutritional Service Providers,equivalent
+specialty:pediatricGastroenterology,Pediatric Gastroenterology,specialty,102,NUCC,2080P0206X,Pediatric Gastroenterology Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:pediatricNephrology,Pediatric Nephrology,specialty,97,NUCC,2080P0210X,Pediatric Nephrology Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:pediatricNeurodevelopmentalDisabilities,Pediatric Neurodevelopmental Disabilities,specialty,96,NUCC,2080P0008X,Pediatric Neurodevelopmental Disabilities Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:urogynecologyAndReconstructivePelvisSurgery,Urogynecology & Reconstructive Pelvis Surgery,specialty,93,NUCC,207VF0040X,Urogynecology and Reconstructive Pelvic Surgery (Obstetrics & Gynecology) Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:childAndAdolescentPsychiatry,Child & Adolescent Psychiatry,specialty,92,NUCC,2084P0804X,Child & Adolescent Psychiatry Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:dentalAnesthesia,Dental Anesthesia,specialty,92,NUCC,1223D0004X,Dental Anesthesiology,Dental Providers,equivalent
+specialty:orthopedicOncology,Orthopedic Oncology,specialty,92,NUCC,207X00000X,Orthopaedic Surgery Physician,Allopathic & Osteopathic Physicians,broader
+specialty:pediatricDermatology,Pediatric Dermatology,specialty,90,NUCC,207NP0225X,Pediatric Dermatology Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:microbiology,Microbiology,specialty,89,NUCC,207ZM0300X,Medical Microbiology Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:publicHealth,Public Health,specialty,88,NUCC,2083P0901X,Public Health & General Preventive Medicine Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:pediatricPulmonology,Pediatric Pulmonology,specialty,84,NUCC,2080P0214X,Pediatric Pulmonology Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:footAndAnkleOrthopedicSurgery,Foot & Ankle Orthopedic Surgery,specialty,83,NUCC,207XX0004X,Orthopaedic Foot and Ankle Surgery Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:pediatricNeurosurgery,Pediatric Neurosurgery,specialty,79,NUCC,207T00000X,Neurological Surgery Physician,Allopathic & Osteopathic Physicians,broader
+specialty:pediatricAllergyAndImmunology,Pediatric Allergy & Immunology,specialty,78,NUCC,2080P0201X,Pediatric Allergy/Immunology Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:aestheticAndCosmeticSurgery,Aesthetic & Cosmetic Surgery,specialty,77,NUCC,208200000X,Plastic Surgery Physician,Allopathic & Osteopathic Physicians,broader
+specialty:pediatricNeurology,Pediatric Neurology,specialty,75,NUCC,2084N0402X,Neurology with Special Qualifications in Child Neurology Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:physiotherapy,Physiotherapy,specialty,74,NUCC,225100000X,Physical Therapist,"Respiratory, Developmental, Rehabilitative and Restorative Service Providers",equivalent
+specialty:hairAndNailDisorders,Hair & Nail Disorders,specialty,66,NUCC,207N00000X,Dermatology Physician,Allopathic & Osteopathic Physicians,broader
+specialty:movementDisorders,Movement Disorders,specialty,65,NUCC,2084N0400X,Neurology Physician,Allopathic & Osteopathic Physicians,broader
+specialty:endocrineSurgery,Endocrine Surgery,specialty,64,NUCC,208600000X,Surgery Physician,Allopathic & Osteopathic Physicians,broader
+specialty:orthopedicSportsMedicine,Orthopedic Sports Medicine,specialty,63,NUCC,207XX0005X,Sports Medicine (Orthopaedic Surgery) Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:pediatricRehabilitationMedicine,Pediatric Rehabilitation Medicine,specialty,63,NUCC,2081P0010X,Pediatric Rehabilitation Medicine Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:handOrUpperExtremityAndPeripheralNerveSurgery,Hand or Upper Extremity & Peripheral Nerve Surgery,specialty,61,NUCC,207XS0106X,Orthopaedic Hand Surgery Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:pediatricInfectiousDiseases,Pediatric Infectious Diseases,specialty,60,NUCC,2080P0208X,Pediatric Infectious Diseases Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:proceduralDermatology,Procedural Dermatology,specialty,60,NUCC,207NS0135X,Procedural Dermatology Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:sleepMedicineOtolaryngology,Sleep Medicine Otolaryngology,specialty,56,NUCC,207YS0012X,Sleep Medicine (Otolaryngology) Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:menopauseAndMidlifeHealth,Menopause & Midlife Health,specialty,55,NUCC,,,,unmapped
+specialty:ocularOncology,Ocular Oncology,specialty,51,NUCC,207W00000X,Ophthalmology Physician,Allopathic & Osteopathic Physicians,broader
+specialty:andrology,Andrology,specialty,50,NUCC,208800000X,Urology Physician,Allopathic & Osteopathic Physicians,broader
+specialty:cosmeticMaxillofacialSurgery,Cosmetic Maxillofacial Surgery,specialty,50,NUCC,204E00000X,Oral & Maxillofacial Surgery (D.M.D.),Allopathic & Osteopathic Physicians,broader
+specialty:upperGIAndForegutSurgery,Upper GI & Foregut Surgery,specialty,49,NUCC,208600000X,Surgery Physician,Allopathic & Osteopathic Physicians,broader
+specialty:interventionalCardiology,Interventional Cardiology,specialty,48,NUCC,207RI0011X,Interventional Cardiology Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:neuroOncology,Neuro Oncology,specialty,48,NUCC,2084N0400X,Neurology Physician,Allopathic & Osteopathic Physicians,broader
+specialty:addictionMedicinePM,Addiction Medicine PM,specialty,47,NUCC,2083A0300X,Addiction Medicine (Preventive Medicine) Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:pediatricEmergencyMedicine,Pediatric Emergency Medicine,specialty,46,NUCC,207PP0204X,Pediatric Emergency Medicine (Emergency Medicine) Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:surgicalGastroenterology,Surgical Gastroenterology,specialty,44,NUCC,208600000X,Surgery Physician,Allopathic & Osteopathic Physicians,broader
+specialty:neuromuscularMedicinePMR,Neuromuscular Medicine PMR,specialty,42,NUCC,2081N0008X,Neuromuscular Medicine (Physical Medicine & Rehabilitation) Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:neuroradiology,Neuroradiology,specialty,42,NUCC,2085N0700X,Neuroradiology Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:orthognathicSurgery,Orthognathic Surgery,specialty,42,NUCC,,,,unmapped
+specialty:sportsInternalMedicine,Sports Internal Medicine,specialty,41,NUCC,207RS0010X,Sports Medicine (Internal Medicine) Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:genitourinaryReconstructiveSurgery,Genitourinary Reconstructive Surgery,specialty,40,NUCC,,,,unmapped
+specialty:geriatricPsychiatry,Geriatric Psychiatry,specialty,38,NUCC,2084P0805X,Geriatric Psychiatry Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:oralPathology,Oral Pathology,specialty,38,NUCC,1223P0106X,Oral and Maxillofacial Pathology Dentistry,Dental Providers,equivalent
+specialty:psychology,Psychology,specialty,38,NUCC,103T00000X,Psychologist,Behavioral Health & Social Service Providers,equivalent
+specialty:laryngology,Laryngology,specialty,37,NUCC,207Y00000X,Otolaryngology Physician,Allopathic & Osteopathic Physicians,broader
+specialty:cardiothoracicRadiology,Cardiothoracic Radiology,specialty,36,NUCC,,,,unmapped
+specialty:childNeurology,Child Neurology,specialty,35,NUCC,2084N0402X,Neurology with Special Qualifications in Child Neurology Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:cosmeticSurgery,Cosmetic Surgery,specialty,35,NUCC,208200000X,Plastic Surgery Physician,Allopathic & Osteopathic Physicians,broader
+specialty:laserDentistry,Laser Dentistry,specialty,35,NUCC,,,,unmapped
+specialty:handAndUpperExtremitiesSurgery,Hand & Upper Extremities Surgery,specialty,33,NUCC,207XS0106X,Orthopaedic Hand Surgery Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:woundHealingAndDermatologicRegenerativeMedicine,Wound Healing & Dermatologic Regenerative Medicine,specialty,32,NUCC,,,,unmapped
+specialty:brainInjuryNeurology,Brain Injury Neurology,specialty,31,NUCC,2084P0301X,Brain Injury Medicine (Psychiatry & Neurology) Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:restorativeDentistry,Restorative Dentistry,specialty,31,NUCC,,,,unmapped
+specialty:hepatology,Hepatology,specialty,30,NUCC,207RI0008X,Hepatology Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:spinalCordInjuryMedicine,Spinal Cord Injury Medicine,specialty,30,NUCC,2081P0004X,Spinal Cord Injury Medicine Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:generalThoracicSurgery,General Thoracic Surgery,specialty,29,NUCC,208G00000X,Thoracic Surgery (Cardiothoracic Vascular Surgery) Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:gynecologicalSurgery,Gynecological Surgery,specialty,29,NUCC,207V00000X,Obstetrics & Gynecology Physician,Allopathic & Osteopathic Physicians,broader
+specialty:neurosciences,Neurosciences,specialty,29,NUCC,,,,unmapped
+specialty:pediatricRadiology,Pediatric Radiology,specialty,29,NUCC,2085P0229X,Pediatric Radiology Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:amputeeAndProstheticsAndOrthoticsRehabilitation,Amputee & Prosthetics & Orthotics Rehabilitation,specialty,28,NUCC,,,,unmapped
+specialty:painManagement,Pain Management,specialty,28,NUCC,207LP2900X,Pain Medicine (Anesthesiology) Physician,Allopathic & Osteopathic Physicians,broader
+specialty:pediatricsAndNeonatology,Pediatrics & Neonatology,specialty,28,NUCC,208000000X,Pediatrics Physician,Allopathic & Osteopathic Physicians,broader
+specialty:vascularNeurology,Vascular Neurology,specialty,28,NUCC,2084V0102X,Vascular Neurology Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:biochemistry,Biochemistry,specialty,27,NUCC,,,,unmapped
+specialty:gastrointestinalSurgery,Gastrointestinal Surgery,specialty,27,NUCC,208600000X,Surgery Physician,Allopathic & Osteopathic Physicians,broader
+specialty:histopathology,Histopathology,specialty,27,NUCC,207ZP0101X,Anatomic Pathology Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:boneMarrowTransplant,Bone Marrow Transplant,specialty,26,NUCC,,,,unmapped
+specialty:clinicalPsychology,Clinical Psychology,specialty,26,NUCC,103TC0700X,Clinical Psychologist,Behavioral Health & Social Service Providers,equivalent
+specialty:pediatricOncology,Pediatric Oncology,specialty,26,NUCC,2080P0207X,Pediatric Hematology & Oncology Physician,Allopathic & Osteopathic Physicians,broader
+specialty:cerebrovascularNeurosurgery,Cerebrovascular Neurosurgery,specialty,25,NUCC,,,,unmapped
+specialty:underseaAndHyperbaricMedicine,Undersea & Hyperbaric Medicine,specialty,25,NUCC,207PE0005X,Undersea and Hyperbaric Medicine (Emergency Medicine) Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:pediatricRheumatology,Pediatric Rheumatology,specialty,24,NUCC,2080P0216X,Pediatric Rheumatology Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:preventiveDentistry,Preventive Dentistry,specialty,24,NUCC,,,,unmapped
+specialty:neuroimmunology,Neuroimmunology,specialty,23,NUCC,,,,unmapped
+specialty:occupationalAndVocationalRehabilitation,Occupational & Vocational Rehabilitation,specialty,23,NUCC,,,,unmapped
+specialty:orthopedicTraumaAndFractureSurgery,Orthopedic Trauma & Fracture Surgery,specialty,23,NUCC,207XX0801X,Orthopaedic Trauma Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:audiology,Audiology,specialty,22,NUCC,231H00000X,Audiologist,"Speech, Language and Hearing Service Providers",equivalent
+specialty:cognitiveAndBehavioralNeurology,Cognitive & Behavioral Neurology,specialty,22,NUCC,,,,unmapped
+specialty:podiatricDiabeticLimbSalvageAndWoundCare,Podiatric Diabetic Limb Salvage & Wound Care,specialty,22,NUCC,,,,unmapped
+specialty:conservativeDentistry,Conservative Dentistry,specialty,21,NUCC,,,,unmapped
+specialty:handOrUpperExtremitiesSurgery,Hand or Upper Extremities Surgery,specialty,21,NUCC,,,,unmapped
+specialty:neurotologyAndOtology,Neurotology & Otology,specialty,21,NUCC,207YX0901X,Otology & Neurotology Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:nuclearMedicine,Nuclear Medicine,specialty,21,NUCC,207U00000X,Nuclear Medicine Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:rhinology,Rhinology,specialty,21,NUCC,207Y00000X,Otolaryngology Physician,Allopathic & Osteopathic Physicians,broader
+specialty:diabeticRetinopathy,Diabetic Retinopathy,specialty,20,NUCC,,,,unmapped
+specialty:genderAffirmingSurgery,Gender Affirming Surgery,specialty,19,NUCC,,,,unmapped
+specialty:neurocriticalCare,Neurocritical Care,specialty,19,NUCC,2084A2900X,Neurocritical Care Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:oculoplasty,Oculoplasty,specialty,19,NUCC,,,,unmapped
+specialty:sleepMedicineNeurology,Sleep Medicine Neurology,specialty,19,NUCC,2084S0012X,Sleep Medicine (Psychiatry & Neurology) Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:maxillofacialSurgery,Maxillofacial Surgery,specialty,18,NUCC,204E00000X,Oral & Maxillofacial Surgery (D.M.D.),Allopathic & Osteopathic Physicians,equivalent
+specialty:painMedicineAnesthesiology,Pain Medicine Anesthesiology,specialty,18,NUCC,207LP2900X,Pain Medicine (Anesthesiology) Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:polytrauma,Polytrauma,specialty,18,NUCC,,,,unmapped
+specialty:proctology,Proctology,specialty,18,NUCC,,,,unmapped
+specialty:transfusionMedicine,Transfusion Medicine,specialty,18,NUCC,,,,unmapped
+specialty:addictionInternalMedicine,Addiction Internal Medicine,specialty,17,NUCC,207RA0401X,Addiction Medicine (Internal Medicine) Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:ayurveda,Ayurveda,specialty,17,NUCC,,,,unmapped
+specialty:immunology,Immunology,specialty,17,NUCC,,,,unmapped
+specialty:pediatricAnesthesiology,Pediatric Anesthesiology,specialty,17,NUCC,207LP3000X,Pediatric Anesthesiology Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:roboticSurgery,Robotic Surgery,specialty,17,NUCC,,,,unmapped
+specialty:sportsMedicine,Sports Medicine,specialty,17,NUCC,207PS0010X,Sports Medicine (Emergency Medicine) Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:tmjSurgery,TMJ Surgery,specialty,17,NUCC,204E00000X,Oral & Maxillofacial Surgery (D.M.D.),Allopathic & Osteopathic Physicians,broader
+specialty:dermatopathology,Dermatopathology,specialty,16,NUCC,207ND0900X,Dermatopathology Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:neuroanesthesiology,Neuroanesthesiology,specialty,16,NUCC,207L00000X,Anesthesiology Physician,Allopathic & Osteopathic Physicians,broader
+specialty:occupationalAndEnvironmentalMedicine,Occupational & Environmental Medicine,specialty,16,NUCC,,,,unmapped
+specialty:oncologyAndReconstructiveOralAndMaxillofacialSurgery,Oncology & Reconstructive Oral & Maxillofacial Surgery,specialty,16,NUCC,,,,unmapped
+specialty:oralMedicineAndRadiology,Oral Medicine & Radiology,specialty,16,NUCC,,,,unmapped
+specialty:pediatricOrthopedics,Pediatric Orthopedics,specialty,16,NUCC,,,,unmapped
+specialty:laparoscopicSurgery,Laparoscopic Surgery,specialty,15,NUCC,,,,unmapped
+specialty:reconstructiveSurgery,Reconstructive Surgery,specialty,15,NUCC,,,,unmapped
+specialty:serology,Serology,specialty,15,NUCC,,,,unmapped
+specialty:endourology,Endourology,specialty,14,NUCC,208800000X,Urology Physician,Allopathic & Osteopathic Physicians,broader
+specialty:handOrUpperExtremitiesAndPeripheralNerveSurgery,Hand or Upper Extremities & Peripheral Nerve Surgery,specialty,14,NUCC,,,,unmapped
+specialty:neuroUrology,Neuro Urology,specialty,14,NUCC,,,,unmapped
+specialty:obstetricAnesthesiology,Obstetric Anesthesiology,specialty,14,NUCC,207L00000X,Anesthesiology Physician,Allopathic & Osteopathic Physicians,broader
+specialty:palliativeRehabilitationAndSupportiveCare,Palliative Rehabilitation & Supportive Care,specialty,14,NUCC,,,,unmapped
+specialty:pediatricAndAdolescentGynecology,Pediatric & Adolescent Gynecology,specialty,14,NUCC,,,,unmapped
+specialty:pediatricSleepMedicine,Pediatric Sleep Medicine,specialty,14,NUCC,,,,unmapped
+specialty:sedationDentistry,Sedation Dentistry,specialty,14,NUCC,,,,unmapped
+specialty:femaleUrology,Female Urology,specialty,13,NUCC,,,,unmapped
+specialty:functionalNeurosurgery,Functional Neurosurgery,specialty,13,NUCC,,,,unmapped
+specialty:gastroSurgery,Gastro Surgery,specialty,13,NUCC,,,,unmapped
+specialty:medicalGastroenterology,Medical Gastroenterology,specialty,13,NUCC,,,,unmapped
+specialty:neurogeneticsAndRareDiseases,Neurogenetics & Rare Diseases,specialty,13,NUCC,,,,unmapped
+specialty:peripheralNerveNeurosurgery,Peripheral Nerve Neurosurgery,specialty,13,NUCC,,,,unmapped
+specialty:alternativeMedicine,Alternative Medicine,specialty,12,NUCC,,,,unmapped
+specialty:cancerRehabilitation,Cancer Rehabilitation,specialty,12,NUCC,,,,unmapped
+specialty:communityMedicine,Community Medicine,specialty,12,NUCC,,,,unmapped
+specialty:cytopathology,Cytopathology,specialty,12,NUCC,207ZC0500X,Cytopathology Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:dialysis,Dialysis,specialty,12,NUCC,,,,unmapped
+specialty:genetics,Genetics,specialty,12,NUCC,,,,unmapped
+specialty:hepatopancreatobiliSurgery,Hepatopancreatobili Surgery,specialty,12,NUCC,,,,unmapped
+specialty:clinicalBiochemistry,Clinical Biochemistry,specialty,11,NUCC,,,,unmapped
+specialty:consultationLiaisonPsychiatry,Consultation Liaison Psychiatry,specialty,11,NUCC,,,,unmapped
+specialty:craniomaxillofacialTraumaSurgery,Craniomaxillofacial Trauma Surgery,specialty,11,NUCC,204E00000X,Oral & Maxillofacial Surgery (D.M.D.),Allopathic & Osteopathic Physicians,broader
+specialty:cytology,Cytology,specialty,11,NUCC,,,,unmapped
+specialty:epidemiology,Epidemiology,specialty,11,NUCC,,,,unmapped
+specialty:laboratoryMedicine,Laboratory Medicine,specialty,11,NUCC,,,,unmapped
+specialty:nonInvasiveCardiology,Non Invasive Cardiology,specialty,11,NUCC,,,,unmapped
+specialty:pharmacology,Pharmacology,specialty,11,NUCC,,,,unmapped
+specialty:publicHealthDentistry,Public Health Dentistry,specialty,11,NUCC,1223D0001X,Public Health Dentistry,Dental Providers,equivalent
+specialty:uveaOphthalmology,Uvea Ophthalmology,specialty,11,NUCC,207WX0108X,Uveitis and Ocular Inflammatory Disease (Ophthalmology) Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:arthroscopy,Arthroscopy,specialty,10,NUCC,,,,unmapped
+specialty:genitourinarySurgery,Genitourinary Surgery,specialty,10,NUCC,,,,unmapped
+specialty:perinatalAndReproductivePsychiatry,Perinatal & Reproductive Psychiatry,specialty,10,NUCC,,,,unmapped
+specialty:anesthesiologyAndCriticalCare,Anesthesiology & Critical Care,specialty,9,NUCC,,,,unmapped
+specialty:clinicalInformatics,Clinical Informatics,specialty,9,NUCC,207ZC0008X,Clinical Informatics (Pathology) Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:cytologyLaboratory,Cytology Laboratory,specialty,9,NUCC,,,,unmapped
+specialty:dentofacialOrthopedics,Dentofacial Orthopedics,specialty,9,NUCC,,,,unmapped
+specialty:dermatologicOncology,Dermatologic Oncology,specialty,9,NUCC,,,,unmapped
+specialty:femalePelvicMedicineAndReconstructiveSurgery,Female Pelvic Medicine & Reconstructive Surgery,specialty,9,NUCC,,,,unmapped
+specialty:footSurgery,Foot Surgery,specialty,9,NUCC,207XX0004X,Orthopaedic Foot and Ankle Surgery Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:generalAndLaparoscopicSurgery,General & Laparoscopic Surgery,specialty,9,NUCC,,,,unmapped
+specialty:geriatricDentistry,Geriatric Dentistry,specialty,9,NUCC,,,,unmapped
+specialty:histopathologyLaboratory,Histopathology Laboratory,specialty,9,NUCC,,,,unmapped
+specialty:immunodermatologyAndComplexMedicalDermatology,Immunodermatology & Complex Medical Dermatology,specialty,9,NUCC,,,,unmapped
+specialty:keratoconus,Keratoconus,specialty,9,NUCC,,,,unmapped
+specialty:occupationalTherapy,Occupational Therapy,specialty,9,NUCC,,,,unmapped
+specialty:pediatricsSportsMedicine,Pediatrics Sports Medicine,specialty,9,NUCC,2080S0010X,Pediatric Sports Medicine Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:thoracicSurgery,Thoracic Surgery,specialty,9,NUCC,208G00000X,Thoracic Surgery (Cardiothoracic Vascular Surgery) Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:uroOncology,Uro Oncology,specialty,9,NUCC,208800000X,Urology Physician,Allopathic & Osteopathic Physicians,broader
+specialty:uroSurgery,Uro Surgery,specialty,9,NUCC,208800000X,Urology Physician,Allopathic & Osteopathic Physicians,broader
+specialty:criticalCareMedicineAnesthesiology,Critical Care Medicine Anesthesiology,specialty,8,NUCC,207LC0200X,Critical Care Medicine (Anesthesiology) Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:geriatricRehabilitation,Geriatric Rehabilitation,specialty,8,NUCC,,,,unmapped
+specialty:headAndNeckOncology,Head & Neck Oncology,specialty,8,NUCC,,,,unmapped
+specialty:homeopathy,Homeopathy,specialty,8,NUCC,,,,unmapped
+specialty:lasikSurgery,Lasik Surgery,specialty,8,NUCC,207W00000X,Ophthalmology Physician,Allopathic & Osteopathic Physicians,broader
+specialty:neuroOncologyNeurosurgery,Neuro Oncology Neurosurgery,specialty,8,NUCC,,,,unmapped
+specialty:neurocriticalCareNeurosurgery,Neurocritical Care Neurosurgery,specialty,8,NUCC,,,,unmapped
+specialty:neurotraumaNeurosurgery,Neurotrauma Neurosurgery,specialty,8,NUCC,,,,unmapped
+specialty:occupationalAndIndustrialHygiene,Occupational & Industrial Hygiene,specialty,8,NUCC,,,,unmapped
+specialty:oralSurgery,Oral Surgery,specialty,8,NUCC,204E00000X,Oral & Maxillofacial Surgery (D.M.D.),Allopathic & Osteopathic Physicians,broader
+specialty:palliativeCare,Palliative Care,specialty,8,NUCC,,,,unmapped
+specialty:physiology,Physiology,specialty,8,NUCC,,,,unmapped
+specialty:prostheticDentistry,Prosthetic Dentistry,specialty,8,NUCC,1223P0700X,Prosthodontics,Dental Providers,equivalent
+specialty:reproductiveMedicine,Reproductive Medicine,specialty,8,NUCC,,,,unmapped
+specialty:squintEyeTreatment,Squint Eye Treatment,specialty,8,NUCC,,,,unmapped
+specialty:ambulatoryAnesthesiology,Ambulatory Anesthesiology,specialty,7,NUCC,,,,unmapped
+specialty:arthroscopicSurgery,Arthroscopic Surgery,specialty,7,NUCC,207X00000X,Orthopaedic Surgery Physician,Allopathic & Osteopathic Physicians,broader
+specialty:chestMedicine,Chest Medicine,specialty,7,NUCC,,,,unmapped
+specialty:electrophysiology,Electrophysiology,specialty,7,NUCC,,,,unmapped
+specialty:endoscopy,Endoscopy,specialty,7,NUCC,,,,unmapped
+specialty:hematoOncology,Hemato Oncology,specialty,7,NUCC,,,,unmapped
+specialty:hepatobiliarySurgery,Hepatobiliary Surgery,specialty,7,NUCC,,,,unmapped
+specialty:liverTransplantation,Liver Transplantation,specialty,7,NUCC,,,,unmapped
+specialty:lowVision,Low Vision,specialty,7,NUCC,,,,unmapped
+specialty:microsurgeryAndTransplantPlasticSurgery,Microsurgery & Transplant Plastic Surgery,specialty,7,NUCC,,,,unmapped
+specialty:minimallyInvasiveSurgery,Minimally Invasive Surgery,specialty,7,NUCC,,,,unmapped
+specialty:neuroMedicine,Neuro Medicine,specialty,7,NUCC,,,,unmapped
+specialty:neuroRehabilitation,Neuro Rehabilitation,specialty,7,NUCC,,,,unmapped
+specialty:oralAndMaxillofacialPathology,Oral & Maxillofacial Pathology,specialty,7,NUCC,1223P0106X,Oral and Maxillofacial Pathology Dentistry,Dental Providers,equivalent
+specialty:oralMaxillofacialSurgery,Oral Maxillofacial Surgery,specialty,7,NUCC,204E00000X,Oral & Maxillofacial Surgery (D.M.D.),Allopathic & Osteopathic Physicians,equivalent
+specialty:organTransplant,Organ Transplant,specialty,7,NUCC,,,,unmapped
+specialty:painMedicine,Pain Medicine,specialty,7,NUCC,207LP2900X,Pain Medicine (Anesthesiology) Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:pediatricHospitalMedicine,Pediatric Hospital Medicine,specialty,7,NUCC,,,,unmapped
+specialty:plasticAndReconstructiveSurgery,Plastic & Reconstructive Surgery,specialty,7,NUCC,2086S0122X,Plastic and Reconstructive Surgery Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:preventiveOncology,Preventive Oncology,specialty,7,NUCC,,,,unmapped
+specialty:psychoOncology,Psycho Oncology,specialty,7,NUCC,,,,unmapped
+specialty:refractiveSurgeries,Refractive Surgeries,specialty,7,NUCC,,,,unmapped
+specialty:retinopathyOfPrematurity,Retinopathy of Prematurity,specialty,7,NUCC,,,,unmapped
+specialty:urologyAndAndrology,Urology & Andrology,specialty,7,NUCC,,,,unmapped
+specialty:biochemistryLab,Biochemistry Lab,specialty,6,NUCC,,,,unmapped
+specialty:cardiacSciences,Cardiac Sciences,specialty,6,NUCC,,,,unmapped
+specialty:cosmeticGynecology,Cosmetic Gynecology,specialty,6,NUCC,207V00000X,Obstetrics & Gynecology Physician,Allopathic & Osteopathic Physicians,broader
+specialty:dentures,Dentures,specialty,6,NUCC,1223P0700X,Prosthodontics,Dental Providers,broader
+specialty:fullMouthRehabilitation,Full Mouth Rehabilitation,specialty,6,NUCC,,,,unmapped
+specialty:interventionalCardiologyCentre,Interventional Cardiology Centre,specialty,6,NUCC,207RI0011X,Interventional Cardiology Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:liverTransplant,Liver Transplant,specialty,6,NUCC,,,,unmapped
+specialty:maxillofacialProsthesis,Maxillofacial Prosthesis,specialty,6,NUCC,,,,unmapped
+specialty:microbiologyLaboratory,Microbiology Laboratory,specialty,6,NUCC,,,,unmapped
+specialty:molecularDiagnostics,Molecular Diagnostics,specialty,6,NUCC,,,,unmapped
+specialty:musculoskeletalRadiology,Musculoskeletal Radiology,specialty,6,NUCC,,,,unmapped
+specialty:mycologyLaboratory,Mycology Laboratory,specialty,6,NUCC,,,,unmapped
+specialty:nephrosurgery,Nephrosurgery,specialty,6,NUCC,,,,unmapped
+specialty:orbitAndOculoplasty,Orbit & Oculoplasty,specialty,6,NUCC,,,,unmapped
+specialty:orthopedicsAndJointReplacement,Orthopedics & Joint Replacement,specialty,6,NUCC,,,,unmapped
+specialty:parasitologyLaboratory,Parasitology Laboratory,specialty,6,NUCC,,,,unmapped
+specialty:periodontalSurgery,Periodontal Surgery,specialty,6,NUCC,,,,unmapped
+specialty:preventiveCardiology,Preventive Cardiology,specialty,6,NUCC,,,,unmapped
+specialty:reconstructiveUrology,Reconstructive Urology,specialty,6,NUCC,,,,unmapped
+specialty:retinaDiseases,Retina Diseases,specialty,6,NUCC,,,,unmapped
+specialty:specialEducation,Special Education,specialty,6,NUCC,,,,unmapped
+specialty:sportsDentistry,Sports Dentistry,specialty,6,NUCC,,,,unmapped
+specialty:teethWhitening,Teeth Whitening,specialty,6,NUCC,,,,unmapped
+specialty:audiologyAndSpeechTherapy,Audiology & Speech Therapy,specialty,5,NUCC,,,,unmapped
+specialty:bariatrics,Bariatrics,specialty,5,NUCC,,,,unmapped
+specialty:cardiacAndPulmonaryRehabilitation,Cardiac & Pulmonary Rehabilitation,specialty,5,NUCC,,,,unmapped
+specialty:communityAndPublicPsychiatry,Community & Public Psychiatry,specialty,5,NUCC,,,,unmapped
+specialty:contouraLasik,Contoura Lasik,specialty,5,NUCC,,,,unmapped
+specialty:crownsAndBridges,Crowns & Bridges,specialty,5,NUCC,,,,unmapped
+specialty:emergencyPsychiatry,Emergency Psychiatry,specialty,5,NUCC,,,,unmapped
+specialty:facialPlasticsAndReconstructiveOtolaryngology,Facial Plastics & Reconstructive Otolaryngology,specialty,5,NUCC,207YS0123X,Facial Plastic Surgery Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:familyDentistry,Family Dentistry,specialty,5,NUCC,,,,unmapped
+specialty:gastrointestinalOncology,Gastrointestinal Oncology,specialty,5,NUCC,,,,unmapped
+specialty:gastrosciences,Gastrosciences,specialty,5,NUCC,,,,unmapped
+specialty:geneticDermatology,Genetic Dermatology,specialty,5,NUCC,,,,unmapped
+specialty:geriatricInternalMedicine,Geriatric Internal Medicine,specialty,5,NUCC,207RG0300X,Geriatric Medicine (Internal Medicine) Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:globalHealthAndInternationalHealth,Global Health & International Health,specialty,5,NUCC,,,,unmapped
+specialty:handSurgery,Hand Surgery,specialty,5,NUCC,207XS0106X,Orthopaedic Hand Surgery Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:hematologyLaboratory,Hematology Laboratory,specialty,5,NUCC,,,,unmapped
+specialty:herniaSurgery,Hernia Surgery,specialty,5,NUCC,,,,unmapped
+specialty:hormonalAssaysLab,Hormonal Assays Lab,specialty,5,NUCC,,,,unmapped
+specialty:iclSurgery,ICL Surgery,specialty,5,NUCC,207W00000X,Ophthalmology Physician,Allopathic & Osteopathic Physicians,broader
+specialty:immunologyLab,Immunology Lab,specialty,5,NUCC,,,,unmapped
+specialty:immunotherapy,Immunotherapy,specialty,5,NUCC,,,,unmapped
+specialty:metabolicSurgery,Metabolic Surgery,specialty,5,NUCC,,,,unmapped
+specialty:molecularBiology,Molecular Biology,specialty,5,NUCC,,,,unmapped
+specialty:multispeciality,Multispeciality,specialty,5,NUCC,,,,unmapped
+specialty:neonatalPerinatal,Neonatal Perinatal,specialty,5,NUCC,,,,unmapped
+specialty:neurointerventionalSurgery,Neurointerventional Surgery,specialty,5,NUCC,,,,unmapped
+specialty:neurovascularSurgery,Neurovascular Surgery,specialty,5,NUCC,,,,unmapped
+specialty:obesity,Obesity,specialty,5,NUCC,,,,unmapped
+specialty:obstetrics,Obstetrics,specialty,5,NUCC,207VX0000X,Obstetrics Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:organTransplantation,Organ Transplantation,specialty,5,NUCC,,,,unmapped
+specialty:painPalliativeMedicine,Pain Palliative Medicine,specialty,5,NUCC,,,,unmapped
+specialty:palliativeMedicine,Palliative Medicine,specialty,5,NUCC,207RH0002X,Hospice and Palliative Medicine (Internal Medicine) Physician,Allopathic & Osteopathic Physicians,broader
+specialty:pediatricHematoOncology,Pediatric Hemato Oncology,specialty,5,NUCC,2080P0207X,Pediatric Hematology & Oncology Physician,Allopathic & Osteopathic Physicians,equivalent
+specialty:pediatricsNeonatology,Pediatrics Neonatology,specialty,5,NUCC,,,,unmapped
+specialty:prkSurgery,PRK Surgery,specialty,5,NUCC,207W00000X,Ophthalmology Physician,Allopathic & Osteopathic Physicians,broader
+specialty:radiotherapy,Radiotherapy,specialty,5,NUCC,,,,unmapped
+specialty:refractiveSurgery,Refractive Surgery,specialty,5,NUCC,,,,unmapped
+specialty:rehabilitation,Rehabilitation,specialty,5,NUCC,,,,unmapped
+specialty:rheumatologyAndImmunology,Rheumatology & Immunology,specialty,5,NUCC,207RR0500X,Rheumatology Physician,Allopathic & Osteopathic Physicians,broader
+specialty:serologyLab,Serology Lab,specialty,5,NUCC,,,,unmapped
+specialty:sexology,Sexology,specialty,5,NUCC,,,,unmapped
+specialty:smileDesign,Smile Design,specialty,5,NUCC,,,,unmapped
+specialty:speechTherapy,Speech Therapy,specialty,5,NUCC,,,,unmapped
+specialty:squint,Squint,specialty,5,NUCC,,,,unmapped
+specialty:thoracicOncology,Thoracic Oncology,specialty,5,NUCC,,,,unmapped
+specialty:virologyLab,Virology Lab,specialty,5,NUCC,,,,unmapped
