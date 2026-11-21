@@ -1,0 +1,485 @@
+id,label,type,group,facility_count
+physiotherapy,Physiotherapy & rehabilitation,service,"Bones, joints & spine",1913
+joint-replacement,Knee / hip replacement,service,"Bones, joints & spine",1381
+fracture-trauma,Fractures & trauma,condition,"Bones, joints & spine",1260
+spine-surgery,Spine surgery,service,"Bones, joints & spine",784
+arthroscopy,Arthroscopy,service,"Bones, joints & spine",724
+arthritis,Arthritis,condition,"Bones, joints & spine",365
+back-pain,Back & neck pain,condition,"Bones, joints & spine",304
+neurosurgery,Brain surgery,service,Brain & nerves,1049
+stroke,Stroke,condition,Brain & nerves,360
+eeg-emg,EEG / EMG / nerve conduction,service,Brain & nerves,297
+headache-migraine,Headache & migraine,condition,Brain & nerves,231
+epilepsy,Epilepsy / seizures,condition,Brain & nerves,153
+parkinsons-dementia,Parkinson's & dementia,condition,Brain & nerves,121
+cancer,Cancer,condition,Cancer,2316
+radiotherapy,Radiation therapy,service,Cancer,340
+chemotherapy,Chemotherapy,service,Cancer,290
+bone-marrow-transplant,Bone marrow transplant,service,Cancer,151
+nicu,Newborn intensive care (NICU),service,Children & newborns,733
+vaccination,Vaccination,service,Children & newborns,627
+picu,Pediatric intensive care (PICU),service,Children & newborns,303
+child-development,Autism & child development,condition,Children & newborns,135
+root-canal,Root canal treatment,service,Dental,1595
+dental-implants,Dental implants,service,Dental,1529
+orthodontics,Braces & aligners,service,Dental,1478
+tooth-extraction,Tooth extraction,service,Dental,864
+dentures,Dentures,service,Dental,853
+gum-disease,Gum disease,condition,Dental,799
+endoscopy,Endoscopy / colonoscopy,service,Digestive & liver,954
+piles-fistula,"Piles, fissure & fistula",condition,Digestive & liver,765
+hernia,Hernia,condition,Digestive & liver,601
+gallstones,Gallstones,condition,Digestive & liver,433
+bariatric-surgery,Weight-loss (bariatric) surgery,service,Digestive & liver,340
+liver-disease,Liver disease,condition,Digestive & liver,290
+appendicitis,Appendicitis,condition,Digestive & liver,262
+liver-transplant,Liver transplant,service,Digestive & liver,157
+ent,"Ear, nose & throat (ENT)",service,"Ear, nose & throat",1574
+hearing,Hearing loss / hearing aids,condition,"Ear, nose & throat",399
+sinus,Sinus problems,condition,"Ear, nose & throat",394
+tonsils,Tonsils & adenoids,condition,"Ear, nose & throat",212
+emergency-24x7,24/7 emergency,service,Emergency & critical care,3392
+icu,Intensive care (ICU),service,Emergency & critical care,2434
+ambulance,Ambulance,service,Emergency & critical care,1154
+blood-bank,Blood bank,service,Emergency & critical care,629
+palliative-care,Palliative care,service,Emergency & critical care,179
+cataract,Cataract,condition,Eyes,793
+retina,Retina problems / diabetic retinopathy,condition,Eyes,647
+glaucoma,Glaucoma,condition,Eyes,566
+refractive-surgery,LASIK / vision correction,service,Eyes,545
+cornea,Cornea problems / transplant,condition,Eyes,464
+squint,Squint / strabismus,condition,Eyes,341
+ecg,ECG,service,Heart & vessels,855
+echocardiography,Echocardiography,service,Heart & vessels,843
+angiography,Coronary angiography,service,Heart & vessels,803
+cardiac-surgery,Heart surgery (bypass / valve),service,Heart & vessels,514
+stress-test,Treadmill / stress test (TMT),service,Heart & vessels,448
+angioplasty,Angioplasty / stenting,service,Heart & vessels,404
+heart-disease,Heart disease,condition,Heart & vessels,254
+pacemaker,Pacemaker implantation,service,Heart & vessels,234
+hypertension,High blood pressure,condition,Heart & vessels,202
+varicose-veins,Varicose veins,condition,Heart & vessels,154
+diabetes,Diabetes,condition,Hormones & metabolism,1315
+thyroid,Thyroid disorders,condition,Hormones & metabolism,624
+obesity,Obesity & weight management,condition,Hormones & metabolism,329
+x-ray,X-ray,service,Imaging & diagnostics,2469
+pathology-lab,Pathology / blood tests,service,Imaging & diagnostics,2193
+ultrasound,Ultrasound / sonography,service,Imaging & diagnostics,2025
+ct-scan,CT scan,service,Imaging & diagnostics,1502
+health-checkup,Health check-up,service,Imaging & diagnostics,1323
+mri,MRI scan,service,Imaging & diagnostics,941
+mammography,Mammography,service,Imaging & diagnostics,311
+pet-ct,PET-CT scan,service,Imaging & diagnostics,224
+bone-density,Bone density (DEXA),service,Imaging & diagnostics,196
+fever-infections,"Fever, dengue, malaria & typhoid",condition,Infections,464
+hiv,HIV / AIDS,condition,Infections,145
+snakebite-rabies,Snakebite & rabies,condition,Infections,25
+kidney-dialysis,Dialysis,service,Kidney & urinary,1038
+kidney-stones,Kidney stones,condition,Kidney & urinary,539
+kidney-transplant,Kidney transplant,service,Kidney & urinary,437
+prostate,Prostate problems,condition,Kidney & urinary,393
+kidney-failure,Kidney failure / chronic kidney disease,condition,Kidney & urinary,102
+pulmonary-function,Lung function test (PFT),service,Lungs & breathing,426
+asthma-copd,Asthma / COPD,condition,Lungs & breathing,235
+sleep-apnea,Sleep apnea / sleep study,condition,Lungs & breathing,226
+tuberculosis,Tuberculosis (TB),condition,Lungs & breathing,218
+mental-health,"Mental health (depression, anxiety)",condition,Mental health,930
+addiction,De-addiction,condition,Mental health,139
+cosmetic-surgery,Cosmetic / plastic surgery,service,"Skin, hair & cosmetic",1013
+hair-loss,Hair loss / hair transplant,condition,"Skin, hair & cosmetic",389
+skin-disease,Skin conditions,condition,"Skin, hair & cosmetic",385
+burns,Burns,condition,"Skin, hair & cosmetic",229
+pregnancy-delivery,Pregnancy & childbirth,service,Women's health & fertility,1778
+infertility,Infertility,condition,Women's health & fertility,1312
+ivf,IVF,service,Women's health & fertility,851
+family-planning,Family planning / contraception,service,Women's health & fertility,667
+iui,IUI,service,Women's health & fertility,469
+c-section,Caesarean section,service,Women's health & fertility,438
+hysterectomy,Hysterectomy,service,Women's health & fertility,433
+high-risk-pregnancy,High-risk pregnancy,condition,Women's health & fertility,410
+pcos,PCOS / PCOD,condition,Women's health & fertility,243
+pregnancy-termination,Medical termination of pregnancy,service,Women's health & fertility,185
+specialty:internalMedicine,Internal Medicine,specialty,,6861
+specialty:familyMedicine,Family Medicine,specialty,,5195
+specialty:gynecologyAndObstetrics,Gynecology & Obstetrics,specialty,,4526
+specialty:dentistry,Dentistry,specialty,,4215
+specialty:orthopedicSurgery,Orthopedic Surgery,specialty,,3555
+specialty:pediatrics,Pediatrics,specialty,,3442
+specialty:generalSurgery,General Surgery,specialty,,3203
+specialty:cardiology,Cardiology,specialty,,3019
+specialty:radiology,Radiology,specialty,,3008
+specialty:ophthalmology,Ophthalmology,specialty,,2832
+specialty:otolaryngology,Otolaryngology,specialty,,2726
+specialty:urology,Urology,specialty,,2635
+specialty:gastroenterology,Gastroenterology,specialty,,2429
+specialty:dermatology,Dermatology,specialty,,2337
+specialty:pathology,Pathology,specialty,,2260
+specialty:nephrology,Nephrology,specialty,,2163
+specialty:emergencyMedicine,Emergency Medicine,specialty,,2087
+specialty:neurology,Neurology,specialty,,1968
+specialty:endocrinologyAndDiabetesAndMetabolism,Endocrinology & Diabetes & Metabolism,specialty,,1902
+specialty:reproductiveEndocrinologyAndInfertility,Reproductive Endocrinology & Infertility,specialty,,1873
+specialty:endodontics,Endodontics,specialty,,1806
+specialty:neurosurgery,Neurosurgery,specialty,,1699
+specialty:criticalCareMedicine,Critical Care Medicine,specialty,,1689
+specialty:orthodontics,Orthodontics,specialty,,1686
+specialty:oralAndMaxillofacialSurgery,Oral & Maxillofacial Surgery,specialty,,1683
+specialty:pulmonology,Pulmonology,specialty,,1619
+specialty:physicalMedicineAndRehabilitation,Physical Medicine & Rehabilitation,specialty,,1597
+specialty:plasticSurgery,Plastic Surgery,specialty,,1588
+specialty:medicalOncology,Medical Oncology,specialty,,1485
+specialty:anesthesia,Anesthesia,specialty,,1427
+specialty:prosthodontics,Prosthodontics,specialty,,1364
+specialty:neonatologyPerinatalMedicine,Neonatology Perinatal Medicine,specialty,,1273
+specialty:psychiatry,Psychiatry,specialty,,1176
+specialty:pediatricDentistry,Pediatric Dentistry,specialty,,1109
+specialty:surgicalOncology,Surgical Oncology,specialty,,982
+specialty:infectiousDiseases,Infectious Diseases,specialty,,969
+specialty:aestheticDentistry,Aesthetic Dentistry,specialty,,875
+specialty:maternalFetalMedicineOrPerinatology,Maternal Fetal Medicine or Perinatology,specialty,,742
+specialty:spineNeurosurgery,Spine Neurosurgery,specialty,,689
+specialty:cataractAndAnteriorSegmentSurgery,Cataract & Anterior Segment Surgery,specialty,,683
+specialty:pediatricSurgery,Pediatric Surgery,specialty,,674
+specialty:periodontics,Periodontics,specialty,,643
+specialty:cosmeticDentistry,Cosmetic Dentistry,specialty,,608
+specialty:retinaAndVitreoretinalOphthalmology,Retina & Vitreoretinal Ophthalmology,specialty,,605
+specialty:cardiacSurgery,Cardiac Surgery,specialty,,590
+specialty:clinicalPathology,Clinical Pathology,specialty,,540
+specialty:jointReconstructionSurgery,Joint Reconstruction Surgery,specialty,,523
+specialty:rheumatology,Rheumatology,specialty,,512
+specialty:preventiveMedicine,Preventive Medicine,specialty,,502
+specialty:hematology,Hematology,specialty,,496
+specialty:corneaOphthalmology,Cornea Ophthalmology,specialty,,492
+specialty:glaucomaOphthalmology,Glaucoma Ophthalmology,specialty,,486
+specialty:vascularSurgery,Vascular Surgery,specialty,,476
+specialty:refractiveSurgeryOphthalmology,Refractive Surgery Ophthalmology,specialty,,473
+specialty:transplantSurgery,Transplant Surgery,specialty,,468
+specialty:colorectalSurgery,Colorectal Surgery,specialty,,453
+specialty:dentoalveolarSurgery,Dentoalveolar Surgery,specialty,,435
+specialty:oculoplasticsAndReconstructiveOrbitalSurgery,Oculoplastics & Reconstructive Orbital Surgery,specialty,,429
+specialty:cosmeticDermatology,Cosmetic Dermatology,specialty,,404
+specialty:minimallyInvasiveSurgeryAndEndourology,Minimally Invasive Surgery & Endourology,specialty,,379
+specialty:bariatricSurgery,Bariatric Surgery,specialty,,372
+specialty:gynecology,Gynecology,specialty,,371
+specialty:obstetricsAndMaternityCare,Obstetrics & Maternity Care,specialty,,362
+specialty:pediatricsAndStrabismusOphthalmology,Pediatrics & Strabismus Ophthalmology,specialty,,361
+specialty:interventionalRadiology,Interventional Radiology,specialty,,297
+specialty:painMedicinePMR,Pain Medicine PMR,specialty,,293
+specialty:allergyAndImmunology,Allergy & Immunology,specialty,,291
+specialty:andrologyAndMaleFertility,Andrology & Male Fertility,specialty,,279
+specialty:shoulderAndElbowOrthopedicSurgery,Shoulder & Elbow Orthopedic Surgery,specialty,,279
+specialty:eyeTraumaAndEmergencyEyeCare,Eye Trauma & Emergency Eye Care,specialty,,267
+specialty:geriatricsInternalMedicine,Geriatrics Internal Medicine,specialty,,254
+specialty:hepatopancreatobiliarySurgery,Hepatopancreatobiliary Surgery,specialty,,224
+specialty:headacheMedicine,Headache Medicine,specialty,,222
+specialty:pediatricCriticalCareMedicine,Pediatric Critical Care Medicine,specialty,,219
+specialty:chronicDiseasePreventionAndLifestyleMedicine,Chronic Disease Prevention & Lifestyle Medicine,specialty,,218
+specialty:pediatricCardiology,Pediatric Cardiology,specialty,,215
+specialty:gynecologicalOncology,Gynecological Oncology,specialty,,214
+specialty:sleepMedicine,Sleep Medicine,specialty,,210
+specialty:familyPlanningAndComplexContraception,Family Planning & Complex Contraception,specialty,,204
+specialty:headAndNeckSurgeryOtolaryngology,Head & Neck Surgery Otolaryngology,specialty,,197
+specialty:pediatricOrthopedicSurgery,Pediatric Orthopedic Surgery,specialty,,197
+specialty:cardiothoracicSurgery,Cardiothoracic Surgery,specialty,,196
+specialty:addictionPsychiatry,Addiction Psychiatry,specialty,,183
+specialty:reconstructivePlasticSurgery,Reconstructive Plastic Surgery,specialty,,183
+specialty:diagnosticRadiology,Diagnostic Radiology,specialty,,174
+specialty:oralMedicine,Oral Medicine,specialty,,174
+specialty:hospiceAndPalliativeInternalMedicine,Hospice & Palliative Internal Medicine,specialty,,164
+specialty:craniofacialAndCleftOralMaxillofacialSurgery,Craniofacial & Cleft Oral Maxillofacial Surgery,specialty,,159
+specialty:podiatry,Podiatry,specialty,,157
+specialty:nuclearMedicineAndMolecularImaging,Nuclear Medicine & Molecular Imaging,specialty,,156
+specialty:neuroOphthalmology,Neuro Ophthalmology,specialty,,151
+specialty:developmentalBehavioralPediatrics,Developmental Behavioral Pediatrics,specialty,,146
+specialty:skullBaseNeurosurgery,Skull Base Neurosurgery,specialty,,144
+specialty:breastImaging,Breast Imaging,specialty,,142
+specialty:epilepsyNeurology,Epilepsy Neurology,specialty,,136
+specialty:uveitisOphthalmology,Uveitis Ophthalmology,specialty,,135
+specialty:burnAndTraumaPlasticSurgery,Burn & Trauma Plastic Surgery,specialty,,131
+specialty:sportsMedicinePMR,Sports Medicine PMR,specialty,,131
+specialty:adolescentMedicine,Adolescent Medicine,specialty,,130
+specialty:pediatricUrology,Pediatric Urology,specialty,,129
+specialty:neuropsychiatry,Neuropsychiatry,specialty,,127
+specialty:pediatricHematologyOncology,Pediatric Hematology Oncology,specialty,,126
+specialty:maternalAndChildHealth,Maternal & Child Health,specialty,,124
+specialty:urologicOncology,Urologic Oncology,specialty,,122
+specialty:pediatricEndocrinology,Pediatric Endocrinology,specialty,,121
+specialty:anatomicPathology,Anatomic Pathology,specialty,,118
+specialty:dentalImplants,Dental Implants,specialty,,116
+specialty:pediatricOtolaryngology,Pediatric Otolaryngology,specialty,,114
+specialty:orthopedicSpineSurgery,Orthopedic Spine Surgery,specialty,,113
+specialty:radiationOncology,Radiation Oncology,specialty,,112
+specialty:renalTransplantationUrology,Renal Transplantation Urology,specialty,,112
+specialty:breastSurgery,Breast Surgery,specialty,,107
+specialty:clinicalNeurophysiology,Clinical Neurophysiology,specialty,,106
+specialty:pediatricOphthalmology,Pediatric Ophthalmology,specialty,,106
+specialty:nutritionAndDietetics,Nutrition & Dietetics,specialty,,104
+specialty:pediatricGastroenterology,Pediatric Gastroenterology,specialty,,102
+specialty:pediatricNephrology,Pediatric Nephrology,specialty,,97
+specialty:pediatricNeurodevelopmentalDisabilities,Pediatric Neurodevelopmental Disabilities,specialty,,96
+specialty:urogynecologyAndReconstructivePelvisSurgery,Urogynecology & Reconstructive Pelvis Surgery,specialty,,93
+specialty:childAndAdolescentPsychiatry,Child & Adolescent Psychiatry,specialty,,92
+specialty:dentalAnesthesia,Dental Anesthesia,specialty,,92
+specialty:orthopedicOncology,Orthopedic Oncology,specialty,,92
+specialty:pediatricDermatology,Pediatric Dermatology,specialty,,90
+specialty:microbiology,Microbiology,specialty,,89
+specialty:publicHealth,Public Health,specialty,,88
+specialty:pediatricPulmonology,Pediatric Pulmonology,specialty,,84
+specialty:footAndAnkleOrthopedicSurgery,Foot & Ankle Orthopedic Surgery,specialty,,83
+specialty:pediatricNeurosurgery,Pediatric Neurosurgery,specialty,,79
+specialty:pediatricAllergyAndImmunology,Pediatric Allergy & Immunology,specialty,,78
+specialty:aestheticAndCosmeticSurgery,Aesthetic & Cosmetic Surgery,specialty,,77
+specialty:pediatricNeurology,Pediatric Neurology,specialty,,75
+specialty:physiotherapy,Physiotherapy,specialty,,74
+specialty:hairAndNailDisorders,Hair & Nail Disorders,specialty,,66
+specialty:movementDisorders,Movement Disorders,specialty,,65
+specialty:endocrineSurgery,Endocrine Surgery,specialty,,64
+specialty:orthopedicSportsMedicine,Orthopedic Sports Medicine,specialty,,63
+specialty:pediatricRehabilitationMedicine,Pediatric Rehabilitation Medicine,specialty,,63
+specialty:handOrUpperExtremityAndPeripheralNerveSurgery,Hand or Upper Extremity & Peripheral Nerve Surgery,specialty,,61
+specialty:pediatricInfectiousDiseases,Pediatric Infectious Diseases,specialty,,60
+specialty:proceduralDermatology,Procedural Dermatology,specialty,,60
+specialty:sleepMedicineOtolaryngology,Sleep Medicine Otolaryngology,specialty,,56
+specialty:menopauseAndMidlifeHealth,Menopause & Midlife Health,specialty,,55
+specialty:ocularOncology,Ocular Oncology,specialty,,51
+specialty:andrology,Andrology,specialty,,50
+specialty:cosmeticMaxillofacialSurgery,Cosmetic Maxillofacial Surgery,specialty,,50
+specialty:upperGIAndForegutSurgery,Upper GI & Foregut Surgery,specialty,,49
+specialty:interventionalCardiology,Interventional Cardiology,specialty,,48
+specialty:neuroOncology,Neuro Oncology,specialty,,48
+specialty:addictionMedicinePM,Addiction Medicine PM,specialty,,47
+specialty:pediatricEmergencyMedicine,Pediatric Emergency Medicine,specialty,,46
+specialty:surgicalGastroenterology,Surgical Gastroenterology,specialty,,44
+specialty:neuromuscularMedicinePMR,Neuromuscular Medicine PMR,specialty,,42
+specialty:neuroradiology,Neuroradiology,specialty,,42
+specialty:orthognathicSurgery,Orthognathic Surgery,specialty,,42
+specialty:sportsInternalMedicine,Sports Internal Medicine,specialty,,41
+specialty:genitourinaryReconstructiveSurgery,Genitourinary Reconstructive Surgery,specialty,,40
+specialty:geriatricPsychiatry,Geriatric Psychiatry,specialty,,38
+specialty:oralPathology,Oral Pathology,specialty,,38
+specialty:psychology,Psychology,specialty,,38
+specialty:laryngology,Laryngology,specialty,,37
+specialty:cardiothoracicRadiology,Cardiothoracic Radiology,specialty,,36
+specialty:childNeurology,Child Neurology,specialty,,35
+specialty:cosmeticSurgery,Cosmetic Surgery,specialty,,35
+specialty:laserDentistry,Laser Dentistry,specialty,,35
+specialty:handAndUpperExtremitiesSurgery,Hand & Upper Extremities Surgery,specialty,,33
+specialty:woundHealingAndDermatologicRegenerativeMedicine,Wound Healing & Dermatologic Regenerative Medicine,specialty,,32
+specialty:brainInjuryNeurology,Brain Injury Neurology,specialty,,31
+specialty:restorativeDentistry,Restorative Dentistry,specialty,,31
+specialty:hepatology,Hepatology,specialty,,30
+specialty:spinalCordInjuryMedicine,Spinal Cord Injury Medicine,specialty,,30
+specialty:generalThoracicSurgery,General Thoracic Surgery,specialty,,29
+specialty:gynecologicalSurgery,Gynecological Surgery,specialty,,29
+specialty:neurosciences,Neurosciences,specialty,,29
+specialty:pediatricRadiology,Pediatric Radiology,specialty,,29
+specialty:amputeeAndProstheticsAndOrthoticsRehabilitation,Amputee & Prosthetics & Orthotics Rehabilitation,specialty,,28
+specialty:painManagement,Pain Management,specialty,,28
+specialty:pediatricsAndNeonatology,Pediatrics & Neonatology,specialty,,28
+specialty:vascularNeurology,Vascular Neurology,specialty,,28
+specialty:biochemistry,Biochemistry,specialty,,27
+specialty:gastrointestinalSurgery,Gastrointestinal Surgery,specialty,,27
+specialty:histopathology,Histopathology,specialty,,27
+specialty:boneMarrowTransplant,Bone Marrow Transplant,specialty,,26
+specialty:clinicalPsychology,Clinical Psychology,specialty,,26
+specialty:pediatricOncology,Pediatric Oncology,specialty,,26
+specialty:cerebrovascularNeurosurgery,Cerebrovascular Neurosurgery,specialty,,25
+specialty:underseaAndHyperbaricMedicine,Undersea & Hyperbaric Medicine,specialty,,25
+specialty:pediatricRheumatology,Pediatric Rheumatology,specialty,,24
+specialty:preventiveDentistry,Preventive Dentistry,specialty,,24
+specialty:neuroimmunology,Neuroimmunology,specialty,,23
+specialty:occupationalAndVocationalRehabilitation,Occupational & Vocational Rehabilitation,specialty,,23
+specialty:orthopedicTraumaAndFractureSurgery,Orthopedic Trauma & Fracture Surgery,specialty,,23
+specialty:audiology,Audiology,specialty,,22
+specialty:cognitiveAndBehavioralNeurology,Cognitive & Behavioral Neurology,specialty,,22
+specialty:podiatricDiabeticLimbSalvageAndWoundCare,Podiatric Diabetic Limb Salvage & Wound Care,specialty,,22
+specialty:conservativeDentistry,Conservative Dentistry,specialty,,21
+specialty:handOrUpperExtremitiesSurgery,Hand or Upper Extremities Surgery,specialty,,21
+specialty:neurotologyAndOtology,Neurotology & Otology,specialty,,21
+specialty:nuclearMedicine,Nuclear Medicine,specialty,,21
+specialty:rhinology,Rhinology,specialty,,21
+specialty:diabeticRetinopathy,Diabetic Retinopathy,specialty,,20
+specialty:genderAffirmingSurgery,Gender Affirming Surgery,specialty,,19
+specialty:neurocriticalCare,Neurocritical Care,specialty,,19
+specialty:oculoplasty,Oculoplasty,specialty,,19
+specialty:sleepMedicineNeurology,Sleep Medicine Neurology,specialty,,19
+specialty:maxillofacialSurgery,Maxillofacial Surgery,specialty,,18
+specialty:painMedicineAnesthesiology,Pain Medicine Anesthesiology,specialty,,18
+specialty:polytrauma,Polytrauma,specialty,,18
+specialty:proctology,Proctology,specialty,,18
+specialty:transfusionMedicine,Transfusion Medicine,specialty,,18
+specialty:addictionInternalMedicine,Addiction Internal Medicine,specialty,,17
+specialty:ayurveda,Ayurveda,specialty,,17
+specialty:immunology,Immunology,specialty,,17
+specialty:pediatricAnesthesiology,Pediatric Anesthesiology,specialty,,17
+specialty:roboticSurgery,Robotic Surgery,specialty,,17
+specialty:sportsMedicine,Sports Medicine,specialty,,17
+specialty:tmjSurgery,TMJ Surgery,specialty,,17
+specialty:dermatopathology,Dermatopathology,specialty,,16
+specialty:neuroanesthesiology,Neuroanesthesiology,specialty,,16
+specialty:occupationalAndEnvironmentalMedicine,Occupational & Environmental Medicine,specialty,,16
+specialty:oncologyAndReconstructiveOralAndMaxillofacialSurgery,Oncology & Reconstructive Oral & Maxillofacial Surgery,specialty,,16
+specialty:oralMedicineAndRadiology,Oral Medicine & Radiology,specialty,,16
+specialty:pediatricOrthopedics,Pediatric Orthopedics,specialty,,16
+specialty:laparoscopicSurgery,Laparoscopic Surgery,specialty,,15
+specialty:reconstructiveSurgery,Reconstructive Surgery,specialty,,15
+specialty:serology,Serology,specialty,,15
+specialty:endourology,Endourology,specialty,,14
+specialty:handOrUpperExtremitiesAndPeripheralNerveSurgery,Hand or Upper Extremities & Peripheral Nerve Surgery,specialty,,14
+specialty:neuroUrology,Neuro Urology,specialty,,14
+specialty:obstetricAnesthesiology,Obstetric Anesthesiology,specialty,,14
+specialty:palliativeRehabilitationAndSupportiveCare,Palliative Rehabilitation & Supportive Care,specialty,,14
+specialty:pediatricAndAdolescentGynecology,Pediatric & Adolescent Gynecology,specialty,,14
+specialty:pediatricSleepMedicine,Pediatric Sleep Medicine,specialty,,14
+specialty:sedationDentistry,Sedation Dentistry,specialty,,14
+specialty:femaleUrology,Female Urology,specialty,,13
+specialty:functionalNeurosurgery,Functional Neurosurgery,specialty,,13
+specialty:gastroSurgery,Gastro Surgery,specialty,,13
+specialty:medicalGastroenterology,Medical Gastroenterology,specialty,,13
+specialty:neurogeneticsAndRareDiseases,Neurogenetics & Rare Diseases,specialty,,13
+specialty:peripheralNerveNeurosurgery,Peripheral Nerve Neurosurgery,specialty,,13
+specialty:alternativeMedicine,Alternative Medicine,specialty,,12
+specialty:cancerRehabilitation,Cancer Rehabilitation,specialty,,12
+specialty:communityMedicine,Community Medicine,specialty,,12
+specialty:cytopathology,Cytopathology,specialty,,12
+specialty:dialysis,Dialysis,specialty,,12
+specialty:genetics,Genetics,specialty,,12
+specialty:hepatopancreatobiliSurgery,Hepatopancreatobili Surgery,specialty,,12
+specialty:clinicalBiochemistry,Clinical Biochemistry,specialty,,11
+specialty:consultationLiaisonPsychiatry,Consultation Liaison Psychiatry,specialty,,11
+specialty:craniomaxillofacialTraumaSurgery,Craniomaxillofacial Trauma Surgery,specialty,,11
+specialty:cytology,Cytology,specialty,,11
+specialty:epidemiology,Epidemiology,specialty,,11
+specialty:laboratoryMedicine,Laboratory Medicine,specialty,,11
+specialty:nonInvasiveCardiology,Non Invasive Cardiology,specialty,,11
+specialty:pharmacology,Pharmacology,specialty,,11
+specialty:publicHealthDentistry,Public Health Dentistry,specialty,,11
+specialty:uveaOphthalmology,Uvea Ophthalmology,specialty,,11
+specialty:arthroscopy,Arthroscopy,specialty,,10
+specialty:genitourinarySurgery,Genitourinary Surgery,specialty,,10
+specialty:perinatalAndReproductivePsychiatry,Perinatal & Reproductive Psychiatry,specialty,,10
+specialty:anesthesiologyAndCriticalCare,Anesthesiology & Critical Care,specialty,,9
+specialty:clinicalInformatics,Clinical Informatics,specialty,,9
+specialty:cytologyLaboratory,Cytology Laboratory,specialty,,9
+specialty:dentofacialOrthopedics,Dentofacial Orthopedics,specialty,,9
+specialty:dermatologicOncology,Dermatologic Oncology,specialty,,9
+specialty:femalePelvicMedicineAndReconstructiveSurgery,Female Pelvic Medicine & Reconstructive Surgery,specialty,,9
+specialty:footSurgery,Foot Surgery,specialty,,9
+specialty:generalAndLaparoscopicSurgery,General & Laparoscopic Surgery,specialty,,9
+specialty:geriatricDentistry,Geriatric Dentistry,specialty,,9
+specialty:histopathologyLaboratory,Histopathology Laboratory,specialty,,9
+specialty:immunodermatologyAndComplexMedicalDermatology,Immunodermatology & Complex Medical Dermatology,specialty,,9
+specialty:keratoconus,Keratoconus,specialty,,9
+specialty:occupationalTherapy,Occupational Therapy,specialty,,9
+specialty:pediatricsSportsMedicine,Pediatrics Sports Medicine,specialty,,9
+specialty:thoracicSurgery,Thoracic Surgery,specialty,,9
+specialty:uroOncology,Uro Oncology,specialty,,9
+specialty:uroSurgery,Uro Surgery,specialty,,9
+specialty:criticalCareMedicineAnesthesiology,Critical Care Medicine Anesthesiology,specialty,,8
+specialty:geriatricRehabilitation,Geriatric Rehabilitation,specialty,,8
+specialty:headAndNeckOncology,Head & Neck Oncology,specialty,,8
+specialty:homeopathy,Homeopathy,specialty,,8
+specialty:lasikSurgery,Lasik Surgery,specialty,,8
+specialty:neuroOncologyNeurosurgery,Neuro Oncology Neurosurgery,specialty,,8
+specialty:neurocriticalCareNeurosurgery,Neurocritical Care Neurosurgery,specialty,,8
+specialty:neurotraumaNeurosurgery,Neurotrauma Neurosurgery,specialty,,8
+specialty:occupationalAndIndustrialHygiene,Occupational & Industrial Hygiene,specialty,,8
+specialty:oralSurgery,Oral Surgery,specialty,,8
+specialty:palliativeCare,Palliative Care,specialty,,8
+specialty:physiology,Physiology,specialty,,8
+specialty:prostheticDentistry,Prosthetic Dentistry,specialty,,8
+specialty:reproductiveMedicine,Reproductive Medicine,specialty,,8
+specialty:squintEyeTreatment,Squint Eye Treatment,specialty,,8
+specialty:ambulatoryAnesthesiology,Ambulatory Anesthesiology,specialty,,7
+specialty:arthroscopicSurgery,Arthroscopic Surgery,specialty,,7
+specialty:chestMedicine,Chest Medicine,specialty,,7
+specialty:electrophysiology,Electrophysiology,specialty,,7
+specialty:endoscopy,Endoscopy,specialty,,7
+specialty:hematoOncology,Hemato Oncology,specialty,,7
+specialty:hepatobiliarySurgery,Hepatobiliary Surgery,specialty,,7
+specialty:liverTransplantation,Liver Transplantation,specialty,,7
+specialty:lowVision,Low Vision,specialty,,7
+specialty:microsurgeryAndTransplantPlasticSurgery,Microsurgery & Transplant Plastic Surgery,specialty,,7
+specialty:minimallyInvasiveSurgery,Minimally Invasive Surgery,specialty,,7
+specialty:neuroMedicine,Neuro Medicine,specialty,,7
+specialty:neuroRehabilitation,Neuro Rehabilitation,specialty,,7
+specialty:oralAndMaxillofacialPathology,Oral & Maxillofacial Pathology,specialty,,7
+specialty:oralMaxillofacialSurgery,Oral Maxillofacial Surgery,specialty,,7
+specialty:organTransplant,Organ Transplant,specialty,,7
+specialty:painMedicine,Pain Medicine,specialty,,7
+specialty:pediatricHospitalMedicine,Pediatric Hospital Medicine,specialty,,7
+specialty:plasticAndReconstructiveSurgery,Plastic & Reconstructive Surgery,specialty,,7
+specialty:preventiveOncology,Preventive Oncology,specialty,,7
+specialty:psychoOncology,Psycho Oncology,specialty,,7
+specialty:refractiveSurgeries,Refractive Surgeries,specialty,,7
+specialty:retinopathyOfPrematurity,Retinopathy of Prematurity,specialty,,7
+specialty:urologyAndAndrology,Urology & Andrology,specialty,,7
+specialty:biochemistryLab,Biochemistry Lab,specialty,,6
+specialty:cardiacSciences,Cardiac Sciences,specialty,,6
+specialty:cosmeticGynecology,Cosmetic Gynecology,specialty,,6
+specialty:dentures,Dentures,specialty,,6
+specialty:fullMouthRehabilitation,Full Mouth Rehabilitation,specialty,,6
+specialty:interventionalCardiologyCentre,Interventional Cardiology Centre,specialty,,6
+specialty:liverTransplant,Liver Transplant,specialty,,6
+specialty:maxillofacialProsthesis,Maxillofacial Prosthesis,specialty,,6
+specialty:microbiologyLaboratory,Microbiology Laboratory,specialty,,6
+specialty:molecularDiagnostics,Molecular Diagnostics,specialty,,6
+specialty:musculoskeletalRadiology,Musculoskeletal Radiology,specialty,,6
+specialty:mycologyLaboratory,Mycology Laboratory,specialty,,6
+specialty:nephrosurgery,Nephrosurgery,specialty,,6
+specialty:orbitAndOculoplasty,Orbit & Oculoplasty,specialty,,6
+specialty:orthopedicsAndJointReplacement,Orthopedics & Joint Replacement,specialty,,6
+specialty:parasitologyLaboratory,Parasitology Laboratory,specialty,,6
+specialty:periodontalSurgery,Periodontal Surgery,specialty,,6
+specialty:preventiveCardiology,Preventive Cardiology,specialty,,6
+specialty:reconstructiveUrology,Reconstructive Urology,specialty,,6
+specialty:retinaDiseases,Retina Diseases,specialty,,6
+specialty:specialEducation,Special Education,specialty,,6
+specialty:sportsDentistry,Sports Dentistry,specialty,,6
+specialty:teethWhitening,Teeth Whitening,specialty,,6
+specialty:audiologyAndSpeechTherapy,Audiology & Speech Therapy,specialty,,5
+specialty:bariatrics,Bariatrics,specialty,,5
+specialty:cardiacAndPulmonaryRehabilitation,Cardiac & Pulmonary Rehabilitation,specialty,,5
+specialty:communityAndPublicPsychiatry,Community & Public Psychiatry,specialty,,5
+specialty:contouraLasik,Contoura Lasik,specialty,,5
+specialty:crownsAndBridges,Crowns & Bridges,specialty,,5
+specialty:emergencyPsychiatry,Emergency Psychiatry,specialty,,5
+specialty:facialPlasticsAndReconstructiveOtolaryngology,Facial Plastics & Reconstructive Otolaryngology,specialty,,5
+specialty:familyDentistry,Family Dentistry,specialty,,5
+specialty:gastrointestinalOncology,Gastrointestinal Oncology,specialty,,5
+specialty:gastrosciences,Gastrosciences,specialty,,5
+specialty:geneticDermatology,Genetic Dermatology,specialty,,5
+specialty:geriatricInternalMedicine,Geriatric Internal Medicine,specialty,,5
+specialty:globalHealthAndInternationalHealth,Global Health & International Health,specialty,,5
+specialty:handSurgery,Hand Surgery,specialty,,5
+specialty:hematologyLaboratory,Hematology Laboratory,specialty,,5
+specialty:herniaSurgery,Hernia Surgery,specialty,,5
+specialty:hormonalAssaysLab,Hormonal Assays Lab,specialty,,5
+specialty:iclSurgery,ICL Surgery,specialty,,5
+specialty:immunologyLab,Immunology Lab,specialty,,5
+specialty:immunotherapy,Immunotherapy,specialty,,5
+specialty:metabolicSurgery,Metabolic Surgery,specialty,,5
+specialty:molecularBiology,Molecular Biology,specialty,,5
+specialty:multispeciality,Multispeciality,specialty,,5
+specialty:neonatalPerinatal,Neonatal Perinatal,specialty,,5
+specialty:neurointerventionalSurgery,Neurointerventional Surgery,specialty,,5
+specialty:neurovascularSurgery,Neurovascular Surgery,specialty,,5
+specialty:obesity,Obesity,specialty,,5
+specialty:obstetrics,Obstetrics,specialty,,5
+specialty:organTransplantation,Organ Transplantation,specialty,,5
+specialty:painPalliativeMedicine,Pain Palliative Medicine,specialty,,5
+specialty:palliativeMedicine,Palliative Medicine,specialty,,5
+specialty:pediatricHematoOncology,Pediatric Hemato Oncology,specialty,,5
+specialty:pediatricsNeonatology,Pediatrics Neonatology,specialty,,5
+specialty:prkSurgery,PRK Surgery,specialty,,5
+specialty:radiotherapy,Radiotherapy,specialty,,5
+specialty:refractiveSurgery,Refractive Surgery,specialty,,5
+specialty:rehabilitation,Rehabilitation,specialty,,5
+specialty:rheumatologyAndImmunology,Rheumatology & Immunology,specialty,,5
+specialty:serologyLab,Serology Lab,specialty,,5
+specialty:sexology,Sexology,specialty,,5
+specialty:smileDesign,Smile Design,specialty,,5
+specialty:speechTherapy,Speech Therapy,specialty,,5
+specialty:squint,Squint,specialty,,5
+specialty:thoracicOncology,Thoracic Oncology,specialty,,5
+specialty:virologyLab,Virology Lab,specialty,,5
