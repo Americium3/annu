@@ -65,7 +65,8 @@ export function ResultsView({
   onSelectedIdChange,
 }: ResultsViewProps) {
   const [mobileView, setMobileView] = useState<"list" | "map">("list");
-  const [maxDistance, setMaxDistance] = useState(10);
+  const searchRadius = data?.queryContext.searchParameters.radiusKm ?? 10;
+  const [maxDistance, setMaxDistance] = useState(searchRadius);
   const [highConfidenceOnly, setHighConfidenceOnly] = useState(false);
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [detailId, setDetailId] = useState<string>();
@@ -84,6 +85,11 @@ export function ResultsView({
       rank: index + 1,
     }));
   }, [data, highConfidenceOnly, maxDistance, rankingMode]);
+
+  // A new search resets the distance filter to the radius the backend actually searched (it may have widened).
+  useEffect(() => {
+    setMaxDistance(searchRadius);
+  }, [data, searchRadius]);
 
   const detailFacility = data?.results.find((facility) => facility.id === detailId);
 
@@ -124,11 +130,18 @@ export function ResultsView({
             </h2>
             {data && (
               <p className="results-context">
-                Near {data.queryContext.location.resolvedName},{" "}
-                {data.queryContext.location.state} · within{" "}
+                Near {data.queryContext.location.resolvedName}
+                {data.queryContext.location.state ? `, ${data.queryContext.location.state}` : ""} · within{" "}
                 {data.queryContext.searchParameters.radiusKm} km ·{" "}
                 {data.metadata.returnedCount} candidates
               </p>
+            )}
+            {data && data.metadata.warnings.length > 0 && (
+              <ul className="results-notices">
+                {data.metadata.warnings.map((warning) => (
+                  <li key={warning}>{warning}</li>
+                ))}
+              </ul>
             )}
           </div>
           <div className="results-status">
@@ -136,7 +149,7 @@ export function ResultsView({
               <i />
               Explainable ranking
             </span>
-            <span>Rules model v0.1</span>
+            <span>{data?.metadata.rankingVersion ?? "Rules model"}</span>
           </div>
         </div>
 
@@ -176,7 +189,7 @@ export function ResultsView({
                 <button
                   type="button"
                   onClick={() => {
-                    setMaxDistance(10);
+                    setMaxDistance(searchRadius);
                     setHighConfidenceOnly(false);
                   }}
                 >
@@ -189,8 +202,8 @@ export function ResultsView({
                 </span>
                 <input
                   type="range"
-                  min="2"
-                  max="15"
+                  min="1"
+                  max={Math.max(15, Math.ceil(searchRadius))}
                   step="1"
                   value={maxDistance}
                   onChange={(event) => setMaxDistance(Number(event.target.value))}
@@ -235,7 +248,11 @@ export function ResultsView({
               <span>
                 {isLoading ? "Searching…" : `${facilities.length} facilities`}
               </span>
-              <span>Mock results · sample location</span>
+              <span>
+                {data?.metadata.funnel
+                  ? `${data.metadata.funnel.datasetProviders} in dataset · ${data.metadata.funnel.withinRadius} within ${data.metadata.funnel.radiusKm} km`
+                  : "Sample results"}
+              </span>
             </div>
             {isLoading ? (
               <LoadingResults />
@@ -256,13 +273,21 @@ export function ResultsView({
                 <span className="empty-icon">
                   <SlidersHorizontal size={22} />
                 </span>
-                <h3>No facilities match these filters</h3>
-                <p>Increase the distance or remove the confidence filter.</p>
+                <h3>
+                  {data && data.results.length === 0
+                    ? "No supported facility found"
+                    : "No facilities match these filters"}
+                </h3>
+                <p>
+                  {data && data.results.length === 0
+                    ? data.metadata.warnings[0]
+                    : "Increase the distance or remove the confidence filter."}
+                </p>
                 <button
                   className="secondary-button"
                   type="button"
                   onClick={() => {
-                    setMaxDistance(15);
+                    setMaxDistance(searchRadius);
                     setHighConfidenceOnly(false);
                   }}
                 >

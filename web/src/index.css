@@ -3214,3 +3214,75 @@ select:focus-visible {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ---- live API states ---- */
+.api-error {
+  margin: 32px max(32px, calc((100vw - 1240px) / 2)) 0;
+  padding: 18px 22px;
+  color: var(--ink);
+  background: var(--red-pale);
+  border: 1px solid rgba(186, 76, 62, 0.25);
+  border-radius: var(--radius-md);
+}
+
+.api-error strong {
+  color: var(--red);
+}
+
+.api-error p {
+  margin: 6px 0 0;
+  color: var(--ink-soft);
+}
+
+.api-error-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.api-error-suggestions span {
+  color: var(--ink-soft);
+  font-size: 13px;
+}
+
+.api-error-suggestions button {
+  padding: 6px 12px;
+  color: var(--forest);
+  background: var(--white);
+  border: 1px solid var(--line-dark);
+  border-radius: 999px;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.api-error-suggestions button:hover {
+  border-color: var(--teal);
+  color: var(--teal);
+}
+
+.results-notices {
+  display: grid;
+  gap: 8px;
+  margin: 18px 0 0;
+  padding: 14px 18px;
+  list-style: none;
+  color: var(--ink-soft);
+  background: var(--amber-pale);
+  border: 1px solid rgba(204, 138, 35, 0.25);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+}
+
+.results-notices li::before {
+  content: "• ";
+  color: var(--amber);
+}
+
+@media (max-width: 680px) {
+  .api-error {
+    margin: 24px 16px 0;
+  }
+}

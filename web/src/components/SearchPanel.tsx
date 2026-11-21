@@ -9,8 +9,7 @@ import {
   Stethoscope,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { locations, services } from "../data/demo";
-import { resolveLocation, resolveService } from "../lib/demoApi";
+import { fetchLocations, fetchServices } from "../lib/api";
 import type { LocationOption, ServiceOption } from "../types";
 
 export interface SearchValues {
@@ -54,6 +53,8 @@ export function SearchPanel({
   const [locationOpen, setLocationOpen] = useState(false);
   const [geoState, setGeoState] = useState<"idle" | "locating" | "found" | "error">("idle");
   const [coordinates, setCoordinates] = useState<SearchValues["coordinates"]>();
+  const [services, setServices] = useState<ServiceOption[]>([]);
+  const [locationOptions, setLocationOptions] = useState<LocationOption[]>([]);
   const serviceRef = useRef<HTMLDivElement>(null);
   const locationRef = useRef<HTMLDivElement>(null);
 
@@ -76,7 +77,25 @@ export function SearchPanel({
     return () => document.removeEventListener("mousedown", closeOnOutsideClick);
   }, []);
 
-  const serviceMatches = services.filter((item) => matchesService(item, service));
+  // Service catalogue (100 tags) from the backend, loaded once.
+  useEffect(() => {
+    fetchServices()
+      .then(setServices)
+      .catch(() => setServices([]));
+  }, []);
+
+  // Location suggestions (districts, cities, PIN codes) from the backend, debounced.
+  useEffect(() => {
+    if (!locationOpen || coordinates) return;
+    const handle = window.setTimeout(() => {
+      fetchLocations(location)
+        .then(setLocationOptions)
+        .catch(() => setLocationOptions([]));
+    }, 180);
+    return () => window.clearTimeout(handle);
+  }, [location, locationOpen, coordinates]);
+
+  const serviceMatches = services.filter((item) => matchesService(item, service)).slice(0, 8);
 
   function handleServiceSelect(option: ServiceOption) {
     setService(option.name);
@@ -91,13 +110,10 @@ export function SearchPanel({
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const normalizedService = resolveService(service).name;
-    const normalizedLocation = resolveLocation(location);
-    setService(normalizedService);
-    setLocation(`${normalizedLocation.name}, ${normalizedLocation.region}`);
+    // The backend resolves free text (service → tag, location → district / city / PIN / coordinates).
     onSearch({
-      service: normalizedService,
-      location: `${normalizedLocation.name}, ${normalizedLocation.region}`,
+      service: service.trim(),
+      location: location.trim(),
       radiusKm: radius,
       coordinates,
     });
@@ -173,7 +189,7 @@ export function SearchPanel({
                     </span>
                     <span>
                       <strong>{option.name}</strong>
-                      <small>{option.synonyms.slice(0, 2).join(" · ")}</small>
+                      <small>{option.synonyms.slice(0, 2).join(" · ") || option.category}</small>
                     </span>
                     {service === option.name && (
                       <Check className="suggestion-check" size={16} />
@@ -181,7 +197,9 @@ export function SearchPanel({
                   </button>
                 ))
               ) : (
-                <p className="suggestion-empty">Try “dialysis”, “MRI” or “NICU”.</p>
+                <p className="suggestion-empty">
+                  No listed service matches yet – search anyway, or try “dialysis”, “MRI” or “NICU”.
+                </p>
               )}
             </div>
           )}
@@ -239,13 +257,10 @@ export function SearchPanel({
                   <LocateFixed size={13} /> Use my location
                 </button>
               </div>
-              {locations
-                .filter((option) =>
-                  `${option.name} ${option.region}`
-                    .toLowerCase()
-                    .includes(location.toLowerCase()),
-                )
-                .map((option) => (
+              {locationOptions.length === 0 && (
+                <p className="suggestion-empty">Type a district, city, 6-digit PIN or “lat, lon”.</p>
+              )}
+              {locationOptions.map((option) => (
                   <button
                     type="button"
                     className="suggestion-item"
@@ -260,9 +275,14 @@ export function SearchPanel({
                     </span>
                     <span>
                       <strong>{option.name}</strong>
-                      <small>{option.region}</small>
+                      <small>
+                        {option.kind ? `${option.kind} · ` : ""}
+                        {option.region}
+                      </small>
                     </span>
-                    <span className="confidence-dot" aria-label="High-confidence location" />
+                    {option.confidence === "high" && (
+                      <span className="confidence-dot" aria-label="High-confidence location" />
+                    )}
                   </button>
                 ))}
             </div>
