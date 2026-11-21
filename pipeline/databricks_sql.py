@@ -32,6 +32,17 @@ class DatabricksSQL:
         with urllib.request.urlopen(req, timeout=120) as resp:
             return json.load(resp)
 
+    def put_file(self, volume_path: str, data: bytes) -> None:
+        """Upload bytes to a Unity Catalog volume path (Files API), overwriting any existing file."""
+        req = urllib.request.Request(
+            f"{self.host}/api/2.0/fs/files{volume_path}?overwrite=true",
+            method="PUT",
+            data=data,
+            headers={"Authorization": f"Bearer {self.token}", "Content-Type": "application/octet-stream"},
+        )
+        with urllib.request.urlopen(req, timeout=300):
+            pass
+
     def query(self, statement: str) -> tuple[list[str], list[list]]:
         """Run a read-only statement and return (column_names, rows). Results must fit INLINE (25 MiB)."""
         res = self._request("POST", "/api/2.0/sql/statements", {
