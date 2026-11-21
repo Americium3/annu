@@ -16,7 +16,7 @@ web (Vite :5173) ──/api──▶ backend (FastAPI :8000) ──SQL──▶ 
    If none in the whole dataset, the response says so.
 3. **Usable evidence + location**: rows marked `review_blocked` (identity conflict, evidence about another institution,
    coordinates vs PIN conflict, no location) are counted but never recommended.
-4. **Where**: search starts at the radius chosen in the UI and widens 25 → 50 → 100 → 200 km until a provider is found.
+4. **Where**: search starts at 25 km and widens 50 → 100 → 200 km until a provider is found (system decision, not a user setting).
 5. **Order**: evidence tier → attribution clean → distance band → point before PIN area → km → supporting statements.
    The score shown in the UI summarises the same signals; it does not decide the order.
 
@@ -47,6 +47,6 @@ Vite proxies `/api` to port 8000.
 | GET | `/api/health` | data source and row counts |
 | GET | `/api/services` | the 100 service tags (search suggestions) |
 | GET | `/api/locations?q=pun` | district / city / PIN suggestions |
-| POST | `/api/recommendations` | `{serviceText, locationText, radiusKm?, rankingMode, limit, coordinates?}` → `RecommendationResponse` (`web/src/types.ts`) plus `metadata.funnel` |
+| POST | `/api/recommendations` | `{serviceText, locationText}` (or `coordinates` from "Use my location" instead of text) → `RecommendationResponse` (`web/src/types.ts`) plus `metadata.funnel`. Any other field is rejected with 422. |
 
 Errors: 422 `{"detail": {"field": "service" | "location", "message": ..., "suggestions": [...]}}`.

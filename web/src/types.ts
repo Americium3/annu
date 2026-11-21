@@ -1,4 +1,3 @@
-export type RankingMode = "best_match" | "nearest" | "most_evidence";
 export type ConfidenceLevel = "high" | "medium" | "low";
 export type SourceType = "official_site" | "government" | "directory" | "social_media" | "unknown";
 export type EvidenceStrength = "strong" | "medium" | "weak";
@@ -41,9 +40,9 @@ export interface QueryContext {
     confidence: ConfidenceLevel;
   };
   searchParameters: {
+    /** Chosen by the system (search widens until a provider is found), not by the user. */
     radiusKm: number;
     limit: number;
-    rankingMode: RankingMode;
   };
 }
 

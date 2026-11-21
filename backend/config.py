@@ -16,6 +16,7 @@ RADIUS_STEPS_KM = [25, 50, 100, 200]          # search widens until a recommenda
 DISTANCE_BANDS_KM = [0, 10, 30, 60, 100, 200, 500]
 EMERGENCY_TAG = "emergency-24x7"
 K_MAIN, K_SUPPORT = 3, 2                      # lane A / lane B sizes (as in notebook 70)
+RESULT_LIMIT = 8                              # results returned per search (system setting, not a user input)
 RANKING_VERSION = "service-first-rules-v2"
 
 # Extra user wordings → tag id (kept in sync with SERVICE_INPUT_SYNONYMS in facilities_qc/00_config.py)

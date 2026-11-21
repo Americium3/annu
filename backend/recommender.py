@@ -201,8 +201,10 @@ class Recommender:
         raise LocationNotFound(f"Could not find '{raw}'. Try a district, city, 6-digit PIN or 'lat, lon'.", sugg)
 
     # ------------------------------------------------------------------ steps 2–4
-    def recommend(self, service_text: str, location_text: str, radius_km: float | None, ranking_mode: str,
-                  limit: int, coordinates: dict | None) -> dict:
+    def recommend(self, service_text: str, location_text: str, coordinates: dict | None = None) -> dict:
+        """The only inputs are the service and the location (text, or coordinates from "Use my location").
+        Radius, result count and ordering are system decisions."""
+        limit = config.RESULT_LIMIT
         t0 = time.time()
         tag, how, _ = self.match_service(service_text)
         label = self.tags.loc[tag, "label"]
@@ -218,8 +220,7 @@ class Recommender:
         prov["km_point"] = np.where(prov["point_first"] == 0, prov["distance_km"], np.inf)
         ok = prov[prov["eligibility"] == "formal"]
 
-        start = float(radius_km) if radius_km else config.RADIUS_STEPS_KM[0]
-        steps = [start] + [r for r in config.RADIUS_STEPS_KM if r > start]
+        steps = list(config.RADIUS_STEPS_KM)
         radius = next((r for r in steps if (ok["distance_km"] <= r).any()), steps[-1])
         within = ok[ok["distance_km"] <= radius].sort_values(
             ["evidence_tier", "attribution", "band_idx", "point_first", "km_point", "n_explicit_usable"],
@@ -262,7 +263,7 @@ class Recommender:
                 "location": {"type": loc["type"], "inputValue": location_text, "resolvedName": loc["name"],
                              "district": loc["district"], "state": loc["state"], "latitude": loc["lat"],
                              "longitude": loc["lon"], "confidence": loc["confidence"]},
-                "searchParameters": {"radiusKm": radius, "limit": limit, "rankingMode": ranking_mode},
+                "searchParameters": {"radiusKm": radius, "limit": limit},
             },
             "results": results,
             "metadata": {

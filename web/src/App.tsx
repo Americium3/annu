@@ -7,12 +7,11 @@ import { ResultsView } from "./components/ResultsView";
 import { SearchPanel, type SearchValues } from "./components/SearchPanel";
 import { TrustSection } from "./components/TrustSection";
 import { ApiError, getRecommendations, USE_DEMO } from "./lib/api";
-import type { RankingMode, RecommendationResponse } from "./types";
+import type { RecommendationResponse } from "./types";
 
 const defaultSearch: SearchValues = {
   service: "Kidney dialysis",
   location: "Bhubaneswar, Odisha",
-  radiusKm: 10,
 };
 
 function App() {
@@ -20,7 +19,6 @@ function App() {
   const [data, setData] = useState<RecommendationResponse>();
   const [isLoading, setIsLoading] = useState(true);
   const [searchValues, setSearchValues] = useState<SearchValues>(defaultSearch);
-  const [rankingMode, setRankingMode] = useState<RankingMode>("best_match");
   const [selectedId, setSelectedId] = useState<string>();
   const [error, setError] = useState<ApiError>();
 
@@ -28,13 +26,12 @@ function App() {
     () => ({
       service: searchParams.get("service") || defaultSearch.service,
       location: searchParams.get("location") || defaultSearch.location,
-      radiusKm: Number(searchParams.get("radius")) || defaultSearch.radiusKm,
     }),
     [searchParams],
   );
 
   const runSearch = useCallback(
-    async (values: SearchValues, mode: RankingMode, replaceUrl = true) => {
+    async (values: SearchValues, replaceUrl = true) => {
       setIsLoading(true);
       setSelectedId(undefined);
       setSearchValues(values);
@@ -44,7 +41,6 @@ function App() {
           {
             service: values.service,
             location: values.location,
-            radius: String(values.radiusKm),
           },
           { replace: true },
         );
@@ -54,9 +50,6 @@ function App() {
         const response = await getRecommendations({
           serviceText: values.service,
           locationText: values.location,
-          radiusKm: values.radiusKm,
-          rankingMode: mode,
-          limit: 8,
           coordinates: values.coordinates,
         });
         setData(response);
@@ -73,18 +66,13 @@ function App() {
   );
 
   useEffect(() => {
-    void runSearch(urlSearch, "best_match", false);
+    void runSearch(urlSearch, false);
     // Initial URL hydration only; subsequent searches are user-driven.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function handleSearch(values: SearchValues) {
-    void runSearch(values, rankingMode);
-  }
-
-  function handleRankingChange(mode: RankingMode) {
-    setRankingMode(mode);
-    setSelectedId(undefined);
+    void runSearch(values);
   }
 
   return (
@@ -168,7 +156,6 @@ function App() {
           <SearchPanel
             initialService={searchValues.service}
             initialLocation={searchValues.location}
-            radiusKm={searchValues.radiusKm}
             isLoading={isLoading}
             onSearch={handleSearch}
           />
@@ -216,8 +203,6 @@ function App() {
         <ResultsView
           data={data}
           isLoading={isLoading}
-          rankingMode={rankingMode}
-          onRankingModeChange={handleRankingChange}
           selectedId={selectedId}
           onSelectedIdChange={setSelectedId}
         />

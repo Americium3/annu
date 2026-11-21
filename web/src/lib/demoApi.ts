@@ -1,13 +1,14 @@
-import { demoFacilities, locations, services, sortFacilities } from "../data/demo";
+import { demoFacilities, locations, orderFacilities, services } from "../data/demo";
 import type {
   FacilityRecommendation,
   LocationOption,
-  RankingMode,
   RecommendationResponse,
   ServiceOption,
 } from "../types";
 
 const WAIT_TIME_MS = 520;
+const DEMO_RADIUS_KM = 10;
+const DEMO_LIMIT = 8;
 
 interface DemoServiceProfile {
   fieldNames: [string, string, string];
@@ -81,9 +82,6 @@ function delay(milliseconds: number) {
 export interface DemoSearchInput {
   serviceText: string;
   locationText: string;
-  radiusKm: number;
-  rankingMode: RankingMode;
-  limit: number;
   coordinates?: {
     latitude: number;
     longitude: number;
@@ -222,8 +220,8 @@ export async function getDemoRecommendations(
 
   const service = resolveService(input.serviceText);
   const location = resolveLocation(input.locationText);
-  const sorted = sortFacilities(demoFacilities, input.rankingMode)
-    .slice(0, input.limit)
+  const sorted = orderFacilities(demoFacilities)
+    .slice(0, DEMO_LIMIT)
     .map((facility) => adaptFacilityToService(facility, service));
   const requestId = `demo-${Date.now().toString(36)}`;
 
@@ -247,9 +245,8 @@ export async function getDemoRecommendations(
         confidence: location.confidence,
       },
       searchParameters: {
-        radiusKm: input.radiusKm,
-        limit: input.limit,
-        rankingMode: input.rankingMode,
+        radiusKm: DEMO_RADIUS_KM,
+        limit: DEMO_LIMIT,
       },
     },
     results: sorted.map((facility, index) => ({
