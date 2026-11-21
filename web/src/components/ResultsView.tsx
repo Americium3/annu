@@ -1,23 +1,16 @@
-import {
-  ArrowDownWideNarrow,
-  ChevronDown,
-  LoaderCircle,
-  Map,
-  SlidersHorizontal,
-  Sparkles,
-} from "lucide-react";
+import { ChevronDown, List, Map, SlidersHorizontal } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { sortFacilities } from "../data/demo";
 import { useMediaQuery } from "../hooks/useMediaQuery";
+import { isGovernment, useI18n } from "../i18n";
 import type {
-  FacilityRecommendation,
-  QueryContext,
   RankingMode,
   RecommendationResponse,
 } from "../types";
 import { FacilityCard } from "./FacilityCard";
 import { FacilityDetail } from "./FacilityDetail";
 import { FacilityMap } from "./FacilityMap";
+import { RaahiSays } from "./Raahi";
 
 interface ResultsViewProps {
   data?: RecommendationResponse;
@@ -28,15 +21,13 @@ interface ResultsViewProps {
   onSelectedIdChange: (id?: string) => void;
 }
 
-const rankingOptions: Array<{ value: RankingMode; label: string }> = [
-  { value: "best_match", label: "Best match" },
-  { value: "nearest", label: "Nearest" },
-  { value: "most_evidence", label: "Most evidence" },
-];
-
 function LoadingResults() {
+  const { t } = useI18n();
   return (
     <div className="results-loading" aria-live="polite" aria-busy="true">
+      <RaahiSays mood="thinking" size={56}>
+        {t.loadingRaahi}
+      </RaahiSays>
       {[0, 1, 2].map((item) => (
         <div className="skeleton-card" key={item}>
           <div className="skeleton skeleton-rank" />
@@ -48,10 +39,6 @@ function LoadingResults() {
           </div>
         </div>
       ))}
-      <span className="loading-caption">
-        <LoaderCircle className="spin" size={16} />
-        Comparing service evidence and location confidence
-      </span>
     </div>
   );
 }
@@ -67,6 +54,13 @@ export function ResultsView({
   const [mobileView, setMobileView] = useState<"list" | "map">("list");
   const [maxDistance, setMaxDistance] = useState(10);
   const [highConfidenceOnly, setHighConfidenceOnly] = useState(false);
+  const [governmentOnly, setGovernmentOnly] = useState(false);
+  const { t } = useI18n();
+  const rankingOptions: Array<{ value: RankingMode; label: string }> = [
+    { value: "best_match", label: t.sortBest },
+    { value: "nearest", label: t.sortNearest },
+    { value: "most_evidence", label: t.sortEvidence },
+  ];
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [detailId, setDetailId] = useState<string>();
   const isMobileLayout = useMediaQuery("(max-width: 680px)");
@@ -77,13 +71,14 @@ export function ResultsView({
       const withinDistance = facility.distanceKm <= maxDistance;
       const confidenceMatches =
         !highConfidenceOnly || facility.confidence === "high";
-      return withinDistance && confidenceMatches;
+      const operatorMatches = !governmentOnly || isGovernment(facility.operatorType);
+      return withinDistance && confidenceMatches && operatorMatches;
     });
     return sortFacilities(filtered, rankingMode).map((facility, index) => ({
       ...facility,
       rank: index + 1,
     }));
-  }, [data, highConfidenceOnly, maxDistance, rankingMode]);
+  }, [data, governmentOnly, highConfidenceOnly, maxDistance, rankingMode]);
 
   const detailFacility = data?.results.find((facility) => facility.id === detailId);
 
@@ -103,140 +98,115 @@ export function ResultsView({
 
   if (!data && !isLoading) return null;
 
+  const activeFilters = Number(highConfidenceOnly) + Number(governmentOnly) + Number(maxDistance !== 10);
+  const service = data?.queryContext.service.displayName ?? "";
+  function resetFilters(distance = 10) {
+    setMaxDistance(distance);
+    setHighConfidenceOnly(false);
+    setGovernmentOnly(false);
+  }
+
   return (
     <>
       <section className="results-section" aria-labelledby="results-heading">
         <div className="results-header">
-          <div>
-            <span className="results-eyebrow">
-              <Sparkles size={14} />
-              Evidence-first recommendations
-            </span>
-            <h2 id="results-heading">
-              {data ? (
-                <>
-                  Care options for{" "}
-                  <span>{data.queryContext.service.displayName.toLowerCase()}</span>
-                </>
-              ) : (
-                "Finding care options"
-              )}
-            </h2>
-            {data && (
-              <p className="results-context">
-                Near {data.queryContext.location.resolvedName},{" "}
-                {data.queryContext.location.state} · within{" "}
-                {data.queryContext.searchParameters.radiusKm} km ·{" "}
-                {data.metadata.returnedCount} candidates
-              </p>
-            )}
-          </div>
-          <div className="results-status">
-            <span className="status-live">
-              <i />
-              Explainable ranking
-            </span>
-            <span>Rules model v0.1</span>
-          </div>
+          <h2 id="results-heading">
+            {data && !isLoading
+              ? t.resultsTitle(facilities.length, service, data.queryContext.location.resolvedName)
+              : t.resultsSearching}
+          </h2>
+          {data && <p className="results-context">{t.resultsContext(data.queryContext.searchParameters.radiusKm)}</p>}
         </div>
 
         <div className="results-toolbar">
-          <div className="ranking-tabs" role="group" aria-label="Ranking priority">
-            <span className="toolbar-label">
-              <ArrowDownWideNarrow size={15} />
-              Rank by
+          <div className="sort-control">
+            <span className="toolbar-label" id="sort-label">
+              {t.sortBy}
             </span>
-            {rankingOptions.map((option) => (
-              <button
-                key={option.value}
-                type="button"
-                className={rankingMode === option.value ? "is-active" : ""}
-                onClick={() => onRankingModeChange(option.value)}
-                aria-pressed={rankingMode === option.value}
-              >
-                {option.label}
-              </button>
-            ))}
-          </div>
-          <button
-            className={`filter-button ${filtersOpen ? "is-active" : ""}`}
-            type="button"
-            aria-expanded={filtersOpen}
-            onClick={() => setFiltersOpen((open) => !open)}
-          >
-            <SlidersHorizontal size={16} />
-            Filters
-            {highConfidenceOnly && <span className="filter-count">1</span>}
-            <ChevronDown size={14} />
-          </button>
-          {filtersOpen && (
-            <div className="filter-popover">
-              <div className="filter-heading">
-                <strong>Narrow results</strong>
+            <div className="segmented" role="group" aria-labelledby="sort-label">
+              {rankingOptions.map((option) => (
                 <button
+                  key={option.value}
                   type="button"
-                  onClick={() => {
-                    setMaxDistance(10);
-                    setHighConfidenceOnly(false);
-                  }}
+                  onClick={() => onRankingModeChange(option.value)}
+                  aria-pressed={rankingMode === option.value}
                 >
-                  Reset
+                  {option.label}
                 </button>
-              </div>
-              <label className="range-label">
-                <span>
-                  Maximum distance <strong>{maxDistance} km</strong>
-                </span>
-                <input
-                  type="range"
-                  min="2"
-                  max="15"
-                  step="1"
-                  value={maxDistance}
-                  onChange={(event) => setMaxDistance(Number(event.target.value))}
-                />
-              </label>
-              <label className="toggle-label">
-                <span>
-                  <strong>High confidence only</strong>
-                  <small>Official or strong corroborating evidence</small>
-                </span>
-                <input
-                  type="checkbox"
-                  checked={highConfidenceOnly}
-                  onChange={(event) => setHighConfidenceOnly(event.target.checked)}
-                />
-                <i />
-              </label>
+              ))}
             </div>
-          )}
+          </div>
+          <div className="filter-wrap">
+            <button
+              className="filter-button"
+              type="button"
+              aria-expanded={filtersOpen}
+              onClick={() => setFiltersOpen((open) => !open)}
+            >
+              <SlidersHorizontal size={16} aria-hidden="true" />
+              {t.filters}
+              {activeFilters > 0 && <span className="filter-count">{activeFilters}</span>}
+              <ChevronDown size={15} aria-hidden="true" />
+            </button>
+            {filtersOpen && (
+              <div className="filter-popover">
+                <div className="filter-heading">
+                  <strong>{t.filtersTitle}</strong>
+                  <button type="button" onClick={() => resetFilters()}>
+                    {t.reset}
+                  </button>
+                </div>
+                <label className="range-label">
+                  <span>
+                    {t.maxDistance} <strong>{maxDistance} km</strong>
+                  </span>
+                  <input
+                    type="range"
+                    min="2"
+                    max="15"
+                    step="1"
+                    value={maxDistance}
+                    onChange={(event) => setMaxDistance(Number(event.target.value))}
+                  />
+                </label>
+                <label className="check-label">
+                  <input
+                    type="checkbox"
+                    checked={governmentOnly}
+                    onChange={(event) => setGovernmentOnly(event.target.checked)}
+                  />
+                  <span>
+                    <strong>{t.governmentOnly}</strong>
+                    <small>{t.governmentHint}</small>
+                  </span>
+                </label>
+                <label className="check-label">
+                  <input
+                    type="checkbox"
+                    checked={highConfidenceOnly}
+                    onChange={(event) => setHighConfidenceOnly(event.target.checked)}
+                  />
+                  <span>
+                    <strong>{t.highConfidenceOnly}</strong>
+                    <small>{t.highConfidenceHint}</small>
+                  </span>
+                </label>
+              </div>
+            )}
+          </div>
         </div>
 
-        <div className="mobile-view-toggle" role="group" aria-label="Switch result view">
-          <button
-            type="button"
-            className={mobileView === "list" ? "is-active" : ""}
-            onClick={() => setMobileView("list")}
-          >
-            List
+        <div className="segmented mobile-view-toggle" role="group" aria-label={`${t.viewList} / ${t.viewMap}`}>
+          <button type="button" aria-pressed={mobileView === "list"} onClick={() => setMobileView("list")}>
+            <List size={16} aria-hidden="true" /> {t.viewList}
           </button>
-          <button
-            type="button"
-            className={mobileView === "map" ? "is-active" : ""}
-            onClick={() => setMobileView("map")}
-          >
-            <Map size={15} /> Map
+          <button type="button" aria-pressed={mobileView === "map"} onClick={() => setMobileView("map")}>
+            <Map size={16} aria-hidden="true" /> {t.viewMap}
           </button>
         </div>
 
         <div className="results-layout">
           <div className={`results-list-wrap mobile-${mobileView}`}>
-            <div className="list-heading">
-              <span>
-                {isLoading ? "Searching…" : `${facilities.length} facilities`}
-              </span>
-              <span>Mock results · sample location</span>
-            </div>
             {isLoading ? (
               <LoadingResults />
             ) : facilities.length > 0 ? (
@@ -245,6 +215,7 @@ export function ResultsView({
                   <FacilityCard
                     key={facility.id}
                     facility={facility}
+                    service={service}
                     selected={selectedId === facility.id}
                     onSelect={() => onSelectedIdChange(facility.id)}
                     onOpen={() => setDetailId(facility.id)}
@@ -253,20 +224,11 @@ export function ResultsView({
               </div>
             ) : (
               <div className="empty-results">
-                <span className="empty-icon">
-                  <SlidersHorizontal size={22} />
-                </span>
-                <h3>No facilities match these filters</h3>
-                <p>Increase the distance or remove the confidence filter.</p>
-                <button
-                  className="secondary-button"
-                  type="button"
-                  onClick={() => {
-                    setMaxDistance(15);
-                    setHighConfidenceOnly(false);
-                  }}
-                >
-                  Clear filters
+                <RaahiSays mood="concerned" size={64}>
+                  <strong>{t.emptyTitle}</strong> {t.emptyBody}
+                </RaahiSays>
+                <button className="secondary-button" type="button" onClick={() => resetFilters(15)}>
+                  {t.clearFilters}
                 </button>
               </div>
             )}
@@ -286,7 +248,7 @@ export function ResultsView({
           </div>
         </div>
       </section>
-      <FacilityDetail facility={detailFacility} onClose={() => setDetailId(undefined)} />
+      <FacilityDetail facility={detailFacility} service={service} onClose={() => setDetailId(undefined)} />
     </>
   );
 }

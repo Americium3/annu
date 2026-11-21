@@ -1,0 +1,375 @@
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+
+/**
+ * Interface copy in English and Hindi.
+ *
+ * Only the interface is translated. Facility names, addresses and evidence
+ * quotes stay exactly as the source wrote them: a translated quote is no
+ * longer evidence. Hindi copy should be reviewed by a native speaker before
+ * launch; Odia and other regional languages slot in as another dictionary.
+ */
+
+export type Lang = "en" | "hi";
+
+const en = {
+  // header / chrome
+  skipToSearch: "Skip to search",
+  prototypeNote: "Prototype. Hospitals and sources shown are examples, not real listings.",
+  emergency: "Medical emergency?",
+  emergencyCall: "Call 108",
+  navFind: "Find care",
+  navHow: "How ranking works",
+  homeLabel: "CarePath home",
+  themeToDark: "Switch to dark theme",
+  themeToLight: "Switch to light theme",
+  menuOpen: "Open menu",
+  menuClose: "Close menu",
+  language: "Language",
+
+  // hero
+  raahiHello: "Namaste, I'm Raahi.",
+  raahiIntro:
+    "Tell me what care you need and where. I'll show you which hospitals offer it, and the proof.",
+  heroTitle: "Find a hospital that offers the care you need.",
+  heroLede:
+    "We read hospital websites and government listings, and show you the proof behind every result.",
+
+  // search
+  careLabel: "Care you need",
+  carePlaceholder: "e.g. kidney dialysis, MRI, NICU",
+  placeLabel: "City, district or PIN code",
+  placePlaceholder: "e.g. Bhubaneswar or 751012",
+  distanceLabel: "Distance",
+  within: (km: number) => `Within ${km} km`,
+  find: "Find hospitals",
+  finding: "Searching",
+  useLocation: "Use my location",
+  locationError: "We couldn't get your location. Type a city or PIN code instead.",
+  currentLocation: "Current location",
+  suggestionsServices: "Services",
+  suggestionsPlaces: "Places",
+  noServiceMatch: "Try “dialysis”, “MRI” or “NICU”.",
+  commonSearches: "Common searches:",
+
+  // results
+  resultsTitle: (count: number, service: string, place: string) =>
+    `${count} ${count === 1 ? "hospital offers" : "hospitals offer"} ${service.toLowerCase()} near ${place}`,
+  resultsSearching: "Looking for hospitals",
+  resultsContext: (km: number) =>
+    `Within ${km} km. Ranked by how clearly the evidence shows they offer this service.`,
+  sortBy: "Sort by",
+  sortBest: "Best match",
+  sortNearest: "Nearest",
+  sortEvidence: "Most proof",
+  filters: "Filters",
+  filtersTitle: "Narrow results",
+  reset: "Reset",
+  maxDistance: "Maximum distance",
+  highConfidenceOnly: "High confidence only",
+  highConfidenceHint: "Backed by an official or government source",
+  governmentOnly: "Government hospitals only",
+  governmentHint: "Public hospitals usually cost less",
+  viewList: "List",
+  viewMap: "Map",
+  loadingRaahi: "I'm checking hospital websites and government listings…",
+  emptyTitle: "No hospitals match these filters.",
+  emptyBody: "Try a longer distance, or turn off a filter.",
+  clearFilters: "Clear filters",
+
+  // card
+  rank: (n: number) => `Rank ${n}`,
+  matchScore: "match",
+  scoreAria: (n: number) => `Match score ${n} out of 100`,
+  kmAway: (km: string) => `${km} km away`,
+  whyListed: "Why it's listed",
+  strengthStrong: "Strong proof",
+  strengthMedium: "Some proof",
+  strengthWeak: "Weak proof",
+  source: "Source",
+  andMore: (n: number) => `and ${n} more`,
+  seeProof: "See all proof",
+  directions: "Directions",
+  share: "WhatsApp",
+  shareLabel: (name: string) => `Share ${name} on WhatsApp`,
+  call: "Call",
+  noPhone: "No phone number listed",
+  confidenceHigh: "High confidence",
+  confidenceMedium: "Medium confidence",
+  confidenceLow: "Low confidence",
+  operatorPublic: "Government",
+  operatorPrivate: "Private",
+  operatorTrust: "Charitable trust",
+
+  // map
+  mapTitle: "Map",
+  mapLegend: "What the pin colours mean",
+  legendStrong: "Strong match",
+  legendMid: "Fair match",
+  legendLow: "Weak match",
+  mapCenter: "Back to search area",
+  searchArea: "Your search area",
+  mapNote: "Pins use the best location we could confirm.",
+  openDetails: "Open details",
+
+  // detail
+  back: "Back to results",
+  copy: "Copy summary",
+  copied: "Copied",
+  close: "Close",
+  summary: "In short",
+  scoreTitle: "How the score adds up",
+  scoreModel: "Rules model v0.1",
+  scoreService: "Offers this service",
+  scoreEvidence: "Quality of proof",
+  scoreSource: "Trust in sources",
+  scoreDistance: "Distance",
+  scoreLocation: "Location checked",
+  scoreCapacity: "Capacity details",
+  scorePenalty: "Deducted for weak proof",
+  scoreDisclaimer:
+    "Scores compare hospitals for this search only. They do not rate medical quality, safety or outcomes.",
+  proofTitle: "The proof",
+  items: (n: number) => `${n} ${n === 1 ? "item" : "items"}`,
+  polarityPositive: "Supports",
+  polarityUncertain: "Unclear",
+  polarityNegative: "Contradicts",
+  sourcesTitle: "Where it comes from",
+  retrieved: "Checked on",
+  sourceOfficial: "Hospital website",
+  sourceGovernment: "Government listing",
+  sourceDirectory: "Directory",
+  sourceSocial: "Social media",
+  sourceUnknown: "Unknown source",
+  unsureTitle: "What Raahi couldn't confirm",
+  unsureHint: "Read this before you travel. Call the hospital first if you can.",
+  missing: "Missing details:",
+  detailFootnote:
+    "CarePath compares public information. It is not medical advice and does not guarantee treatment is available.",
+
+  // how it works
+  howTitle: "How CarePath ranks hospitals",
+  howLede:
+    "A list is only useful if you can see why each place is on it. Every result shows its proof, and what we could not check.",
+  howRaahi: "If we aren't sure, we will say so.",
+  how1Title: "We match the care you asked for",
+  how1Body: "Including other names for it, so “kidney machine” still finds dialysis.",
+  how2Title: "We check where the hospital is",
+  how2Body: "The address, PIN code and map location must agree before we show distance.",
+  how3Title: "We read the proof",
+  how3Body:
+    "Hospital websites and government listings count for more than directories or social media.",
+  how4Title: "We show what's missing",
+  how4Body: "Old records, conflicting details and missing information stay visible on every card.",
+
+  // footer
+  footerNote: "A research prototype. Not medical advice. In an emergency, call 108.",
+  footerMethod: "How ranking works",
+};
+
+type Dict = typeof en;
+
+const hi: Dict = {
+  skipToSearch: "खोज पर जाएँ",
+  prototypeNote: "प्रोटोटाइप। दिखाए गए अस्पताल और स्रोत उदाहरण हैं, असली सूची नहीं।",
+  emergency: "मेडिकल इमरजेंसी?",
+  emergencyCall: "108 पर कॉल करें",
+  navFind: "इलाज खोजें",
+  navHow: "रैंकिंग कैसे होती है",
+  homeLabel: "CarePath होम",
+  themeToDark: "डार्क थीम चुनें",
+  themeToLight: "लाइट थीम चुनें",
+  menuOpen: "मेनू खोलें",
+  menuClose: "मेनू बंद करें",
+  language: "भाषा",
+
+  raahiHello: "नमस्ते, मैं राही हूँ।",
+  raahiIntro:
+    "बताइए आपको कौन-सा इलाज चाहिए और कहाँ। मैं दिखाऊँगा कि कौन-से अस्पताल यह सेवा देते हैं, और उसका सबूत भी।",
+  heroTitle: "ऐसा अस्पताल खोजें जहाँ आपको चाहिए वह इलाज मिले।",
+  heroLede:
+    "हम अस्पतालों की वेबसाइट और सरकारी सूचियाँ पढ़ते हैं, और हर नतीजे के पीछे का सबूत दिखाते हैं।",
+
+  careLabel: "कौन-सा इलाज चाहिए",
+  carePlaceholder: "जैसे किडनी डायलिसिस, MRI, NICU",
+  placeLabel: "शहर, ज़िला या पिन कोड",
+  placePlaceholder: "जैसे भुवनेश्वर या 751012",
+  distanceLabel: "दूरी",
+  within: (km) => `${km} किमी के अंदर`,
+  find: "अस्पताल खोजें",
+  finding: "खोज रहे हैं",
+  useLocation: "मेरी लोकेशन लें",
+  locationError: "आपकी लोकेशन नहीं मिल सकी। शहर या पिन कोड लिखें।",
+  currentLocation: "मौजूदा लोकेशन",
+  suggestionsServices: "सेवाएँ",
+  suggestionsPlaces: "जगहें",
+  noServiceMatch: "“डायलिसिस”, “MRI” या “NICU” लिखकर देखें।",
+  commonSearches: "अक्सर खोजे गए:",
+
+  resultsTitle: (count, service, place) => `${place} के पास ${count} अस्पताल ${service} की सेवा देते हैं`,
+  resultsSearching: "अस्पताल खोज रहे हैं",
+  resultsContext: (km) =>
+    `${km} किमी के अंदर। क्रम इस पर आधारित है कि सबूत कितना साफ़ दिखाता है कि यह सेवा मिलती है।`,
+  sortBy: "क्रम",
+  sortBest: "सबसे सही",
+  sortNearest: "सबसे पास",
+  sortEvidence: "सबसे ज़्यादा सबूत",
+  filters: "फ़िल्टर",
+  filtersTitle: "नतीजे छाँटें",
+  reset: "रीसेट",
+  maxDistance: "अधिकतम दूरी",
+  highConfidenceOnly: "सिर्फ़ पक्के नतीजे",
+  highConfidenceHint: "आधिकारिक या सरकारी स्रोत से पुष्टि",
+  governmentOnly: "सिर्फ़ सरकारी अस्पताल",
+  governmentHint: "सरकारी अस्पतालों में आमतौर पर खर्च कम होता है",
+  viewList: "सूची",
+  viewMap: "नक्शा",
+  loadingRaahi: "मैं अस्पतालों की वेबसाइट और सरकारी सूचियाँ देख रहा हूँ…",
+  emptyTitle: "इन फ़िल्टर से कोई अस्पताल नहीं मिला।",
+  emptyBody: "दूरी बढ़ाइए, या कोई फ़िल्टर हटाइए।",
+  clearFilters: "फ़िल्टर हटाएँ",
+
+  rank: (n) => `क्रम ${n}`,
+  matchScore: "मेल",
+  scoreAria: (n) => `मेल स्कोर 100 में से ${n}`,
+  kmAway: (km) => `${km} किमी दूर`,
+  whyListed: "यह क्यों दिखाया गया",
+  strengthStrong: "पक्का सबूत",
+  strengthMedium: "कुछ सबूत",
+  strengthWeak: "कमज़ोर सबूत",
+  source: "स्रोत",
+  andMore: (n) => `और ${n} अन्य`,
+  seeProof: "पूरा सबूत देखें",
+  directions: "रास्ता",
+  share: "WhatsApp",
+  shareLabel: (name) => `${name} को WhatsApp पर भेजें`,
+  call: "कॉल करें",
+  noPhone: "फ़ोन नंबर उपलब्ध नहीं",
+  confidenceHigh: "पक्की जानकारी",
+  confidenceMedium: "कुछ हद तक पक्की",
+  confidenceLow: "कम पक्की",
+  operatorPublic: "सरकारी",
+  operatorPrivate: "निजी",
+  operatorTrust: "धर्मार्थ ट्रस्ट",
+
+  mapTitle: "नक्शा",
+  mapLegend: "पिन के रंगों का मतलब",
+  legendStrong: "अच्छा मेल",
+  legendMid: "ठीक मेल",
+  legendLow: "कमज़ोर मेल",
+  mapCenter: "खोज वाले इलाके पर लौटें",
+  searchArea: "आपका खोज इलाका",
+  mapNote: "पिन सबसे पक्की मिली लोकेशन पर हैं।",
+  openDetails: "जानकारी खोलें",
+
+  back: "नतीजों पर लौटें",
+  copy: "सारांश कॉपी करें",
+  copied: "कॉपी हो गया",
+  close: "बंद करें",
+  summary: "संक्षेप में",
+  scoreTitle: "स्कोर कैसे बना",
+  scoreModel: "नियम मॉडल v0.1",
+  scoreService: "यह सेवा देता है",
+  scoreEvidence: "सबूत की गुणवत्ता",
+  scoreSource: "स्रोत पर भरोसा",
+  scoreDistance: "दूरी",
+  scoreLocation: "लोकेशन की जाँच",
+  scoreCapacity: "क्षमता की जानकारी",
+  scorePenalty: "कमज़ोर सबूत के लिए कटौती",
+  scoreDisclaimer:
+    "स्कोर सिर्फ़ इस खोज के अस्पतालों की तुलना करता है। यह इलाज की गुणवत्ता, सुरक्षा या नतीजों को नहीं आँकता।",
+  proofTitle: "सबूत",
+  items: (n) => `${n} चीज़ें`,
+  polarityPositive: "समर्थन करता है",
+  polarityUncertain: "साफ़ नहीं",
+  polarityNegative: "विरोध करता है",
+  sourcesTitle: "जानकारी कहाँ से आई",
+  retrieved: "जाँच की तारीख",
+  sourceOfficial: "अस्पताल की वेबसाइट",
+  sourceGovernment: "सरकारी सूची",
+  sourceDirectory: "डायरेक्टरी",
+  sourceSocial: "सोशल मीडिया",
+  sourceUnknown: "अज्ञात स्रोत",
+  unsureTitle: "जो राही पक्का नहीं कर सका",
+  unsureHint: "जाने से पहले इसे पढ़ें। हो सके तो पहले अस्पताल को फ़ोन करें।",
+  missing: "जो जानकारी नहीं मिली:",
+  detailFootnote:
+    "CarePath सार्वजनिक जानकारी की तुलना करता है। यह डॉक्टरी सलाह नहीं है और इलाज मिलने की गारंटी नहीं देता।",
+
+  howTitle: "CarePath अस्पतालों का क्रम कैसे तय करता है",
+  howLede:
+    "सूची तभी काम की है जब आप देख सकें कि हर अस्पताल उसमें क्यों है। हर नतीजा अपना सबूत दिखाता है, और वह भी जो हम जाँच नहीं सके।",
+  howRaahi: "अगर हमें पक्का नहीं पता, तो हम साफ़ बताएँगे।",
+  how1Title: "आपने जो इलाज माँगा, उससे मिलान",
+  how1Body: "उसके दूसरे नामों से भी, ताकि “किडनी मशीन” लिखने पर भी डायलिसिस मिले।",
+  how2Title: "अस्पताल कहाँ है, इसकी जाँच",
+  how2Body: "दूरी दिखाने से पहले पता, पिन कोड और नक्शे की लोकेशन मेल खानी चाहिए।",
+  how3Title: "सबूत पढ़ना",
+  how3Body: "अस्पताल की वेबसाइट और सरकारी सूचियों को डायरेक्टरी या सोशल मीडिया से ज़्यादा महत्व मिलता है।",
+  how4Title: "जो नहीं मिला, वह भी दिखाना",
+  how4Body: "पुराने रिकॉर्ड, उलटी जानकारी और छूटी हुई बातें हर कार्ड पर दिखती हैं।",
+
+  footerNote: "एक रिसर्च प्रोटोटाइप। डॉक्टरी सलाह नहीं। इमरजेंसी में 108 पर कॉल करें।",
+  footerMethod: "रैंकिंग कैसे होती है",
+};
+
+const dictionaries: Record<Lang, Dict> = { en, hi };
+const STORAGE_KEY = "carepath-lang";
+
+function readSaved(): Lang {
+  try {
+    const value = localStorage.getItem(STORAGE_KEY);
+    if (value === "en" || value === "hi") return value;
+  } catch {
+    /* storage unavailable */
+  }
+  // First visit: a Hindi browser gets Hindi; everyone else gets English.
+  return navigator.language?.toLowerCase().startsWith("hi") ? "hi" : "en";
+}
+
+interface I18nValue {
+  lang: Lang;
+  setLang: (lang: Lang) => void;
+  t: Dict;
+}
+
+const I18nContext = createContext<I18nValue | null>(null);
+
+export function I18nProvider({ children }: { children: React.ReactNode }) {
+  const [lang, setLangState] = useState<Lang>(readSaved);
+
+  useEffect(() => {
+    document.documentElement.lang = lang === "hi" ? "hi" : "en-IN";
+  }, [lang]);
+
+  const setLang = useCallback((next: Lang) => {
+    setLangState(next);
+    try {
+      localStorage.setItem(STORAGE_KEY, next);
+    } catch {
+      /* the choice lasts for this visit only */
+    }
+  }, []);
+
+  const value = useMemo(() => ({ lang, setLang, t: dictionaries[lang] }), [lang, setLang]);
+  return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;
+}
+
+export function useI18n() {
+  const value = useContext(I18nContext);
+  if (!value) throw new Error("useI18n must be used inside I18nProvider");
+  return value;
+}
+
+/** Facility operator as a person would say it. */
+export function operatorLabel(t: Dict, operator: string) {
+  const key = operator.toLowerCase();
+  if (key === "public" || key === "government") return t.operatorPublic;
+  if (key === "private") return t.operatorPrivate;
+  if (key === "trust") return t.operatorTrust;
+  return operator;
+}
+
+export function isGovernment(operator: string) {
+  const key = operator.toLowerCase();
+  return key === "public" || key === "government";
+}

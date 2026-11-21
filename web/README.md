@@ -35,12 +35,24 @@ pnpm preview
 
 All colours, type sizes, radii and shadows are tokens in the `:root` block at the top of `src/index.css` ("Calm clinic"). Components read only tokens, so changing the theme means editing that one block.
 
-- **Light and dark.** The page follows the OS setting. The header's moon/sun button overrides it, and the choice is saved in `localStorage` (`carepath-theme`). `index.html` applies the saved choice before first paint so the page doesn't flash.
-- **One action colour.** Deep teal (`--brand`) means "you can press this". Warm colours are used only for caution states and small decorative details, never for buttons.
-- **Status is never colour alone.** Good / caution / critical always come with an icon and a word. Every text token meets WCAG AA (≥ 4.5:1) on every surface in both modes.
-- **Readable sizes.** No text is smaller than 12px (`--fs-2xs`).
+- **Light and dark.** The page follows the OS setting. The header's moon/sun button overrides it, and the choice is saved in `localStorage` (`carepath-theme`).
+- **One action colour.** Deep teal (`--brand`) means "you can press this". Warm colours mean caution only.
+- **Status is never colour alone.** Every label is an icon plus words. Every text token meets WCAG AA in both modes.
+- **Squared, not pill-shaped.** Corners are small and consistent (4–12px). There are no uppercase eyebrow labels, gradient blobs or decorative cards. A label is words.
+- **Readable sizes.** No text is smaller than 12px. Body copy is 16px, because most visitors are on a phone.
 
-The direction comes from Sprout's landing page: calm, high-brightness and low-saturation surfaces, dark text, and one obvious next step.
+## Raahi (mascot)
+
+`src/components/Raahi.tsx`. Raahi (राही, "traveller on the path") is a map pin with a face and a leaf: the pin means "care near you", and the leaf ties it to Sprout. As in Sprout, the mascot is where the product signs its name: the header, footer, favicon, and the search-area marker on the map. It also speaks at the moments a person might be unsure: the first screen, while results load, when nothing matches, and next to what could not be confirmed. There are three moods (`happy`, `thinking`, `concerned`), and its colours come from the `--raahi-*` tokens.
+
+Ranked results use the same pin shape, without the face, on both the cards and the map, so the list and the map read as one thing.
+
+## India
+
+- **Language.** `src/i18n.tsx` holds English and Hindi copy for the whole interface. On first visit, a Hindi browser gets Hindi; after that the header switch wins and is saved (`carepath-lang`). Facility names, addresses and evidence quotes are never translated, because a translated quote is no longer evidence. Hindi copy needs a native speaker's review. Odia and other languages slot in as another dictionary. Devanagari renders in Noto Sans Devanagari.
+- **Emergency.** "Medical emergency? Call 108" stays visible at the top of every page.
+- **Next steps on every result:** Call (only when a source lists a number; otherwise the card says so), Directions (Google Maps), and WhatsApp share, since families decide together.
+- **Cost.** Ownership is shown as Government / Private / Charitable trust, and there is a "Government hospitals only" filter.
 
 ## 数据说明
 

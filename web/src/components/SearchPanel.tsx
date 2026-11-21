@@ -1,15 +1,7 @@
-import {
-  ArrowRight,
-  Check,
-  Crosshair,
-  LoaderCircle,
-  LocateFixed,
-  MapPin,
-  Search,
-  Stethoscope,
-} from "lucide-react";
+import { Check, Crosshair, LoaderCircle, LocateFixed, MapPin, Search } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { locations, services } from "../data/demo";
+import { useI18n } from "../i18n";
 import { resolveLocation, resolveService } from "../lib/demoApi";
 import type { LocationOption, ServiceOption } from "../types";
 
@@ -30,6 +22,8 @@ interface SearchPanelProps {
   isLoading: boolean;
   onSearch: (values: SearchValues) => void;
 }
+
+const commonSearches = ["Kidney dialysis", "MRI scan", "Emergency C-section", "NICU"];
 
 function matchesService(service: ServiceOption, query: string) {
   const normalized = query.toLowerCase().trim();
@@ -56,6 +50,7 @@ export function SearchPanel({
   const [coordinates, setCoordinates] = useState<SearchValues["coordinates"]>();
   const serviceRef = useRef<HTMLDivElement>(null);
   const locationRef = useRef<HTMLDivElement>(null);
+  const { t } = useI18n();
 
   useEffect(() => {
     setService(initialService);
@@ -91,7 +86,11 @@ export function SearchPanel({
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const normalizedService = resolveService(service).name;
+    submit(service);
+  }
+
+  function submit(serviceText: string) {
+    const normalizedService = resolveService(serviceText).name;
     const normalizedLocation = resolveLocation(location);
     setService(normalizedService);
     setLocation(`${normalizedLocation.name}, ${normalizedLocation.region}`);
@@ -117,7 +116,7 @@ export function SearchPanel({
           longitude: position.coords.longitude,
         };
         setCoordinates(nextCoordinates);
-        setLocation("Current location");
+        setLocation(t.currentLocation);
         setGeoState("found");
       },
       () => setGeoState("error"),
@@ -126,12 +125,12 @@ export function SearchPanel({
   }
 
   return (
-    <form className="search-panel" onSubmit={handleSubmit} id="search">
-      <div className="search-fields">
-        <div className="search-field" ref={serviceRef}>
-          <label htmlFor="service-input">What care do you need?</label>
+    <div className="search-wrap">
+      <form className="search-panel" onSubmit={handleSubmit} id="search">
+        <div className="search-field search-field-care" ref={serviceRef}>
+          <label htmlFor="service-input">{t.careLabel}</label>
           <div className="field-control">
-            <Stethoscope className="field-icon" size={20} aria-hidden="true" />
+            <Search className="field-icon" size={19} aria-hidden="true" />
             <input
               id="service-input"
               value={service}
@@ -147,8 +146,9 @@ export function SearchPanel({
                 }
                 if (event.key === "Escape") setServiceOpen(false);
               }}
-              placeholder="e.g. kidney dialysis, NICU"
+              placeholder={t.carePlaceholder}
               autoComplete="off"
+              enterKeyHint="next"
               aria-autocomplete="list"
               aria-controls="service-suggestions"
               aria-expanded={serviceOpen}
@@ -156,7 +156,7 @@ export function SearchPanel({
           </div>
           {serviceOpen && (
             <div className="suggestions" id="service-suggestions" role="listbox">
-              <div className="suggestions-heading">Services</div>
+              <div className="suggestions-heading">{t.suggestionsServices}</div>
               {serviceMatches.length > 0 ? (
                 serviceMatches.map((option) => (
                   <button
@@ -168,31 +168,24 @@ export function SearchPanel({
                     onMouseDown={(event) => event.preventDefault()}
                     onClick={() => handleServiceSelect(option)}
                   >
-                    <span className="suggestion-icon">
-                      <Search size={15} />
-                    </span>
                     <span>
                       <strong>{option.name}</strong>
                       <small>{option.synonyms.slice(0, 2).join(" · ")}</small>
                     </span>
-                    {service === option.name && (
-                      <Check className="suggestion-check" size={16} />
-                    )}
+                    {service === option.name && <Check className="suggestion-check" size={16} />}
                   </button>
                 ))
               ) : (
-                <p className="suggestion-empty">Try “dialysis”, “MRI” or “NICU”.</p>
+                <p className="suggestion-empty">{t.noServiceMatch}</p>
               )}
             </div>
           )}
         </div>
 
-        <div className="search-divider" aria-hidden="true" />
-
-        <div className="search-field" ref={locationRef}>
-          <label htmlFor="location-input">Where are you looking?</label>
+        <div className="search-field search-field-place" ref={locationRef}>
+          <label htmlFor="location-input">{t.placeLabel}</label>
           <div className="field-control">
-            <MapPin className="field-icon" size={20} aria-hidden="true" />
+            <MapPin className="field-icon" size={19} aria-hidden="true" />
             <input
               id="location-input"
               value={location}
@@ -206,8 +199,9 @@ export function SearchPanel({
               onKeyDown={(event) => {
                 if (event.key === "Escape") setLocationOpen(false);
               }}
-              placeholder="City, district or PIN code"
+              placeholder={t.placePlaceholder}
               autoComplete="off"
+              enterKeyHint="search"
               aria-autocomplete="list"
               aria-controls="location-suggestions"
               aria-expanded={locationOpen}
@@ -216,8 +210,8 @@ export function SearchPanel({
               className={`locate-button ${geoState === "found" ? "is-found" : ""}`}
               type="button"
               onClick={useCurrentLocation}
-              aria-label="Use my current location"
-              title="Use my current location"
+              aria-label={t.useLocation}
+              title={t.useLocation}
             >
               {geoState === "locating" ? (
                 <LoaderCircle className="spin" size={18} />
@@ -228,22 +222,18 @@ export function SearchPanel({
               )}
             </button>
           </div>
-          {geoState === "error" && (
-            <p className="field-message">Location unavailable. Enter a city or PIN instead.</p>
-          )}
+          {geoState === "error" && <p className="field-message">{t.locationError}</p>}
           {locationOpen && (
-            <div className="suggestions location-suggestions" id="location-suggestions" role="listbox">
+            <div className="suggestions" id="location-suggestions" role="listbox">
               <div className="suggestions-heading">
-                <span>Locations</span>
+                <span>{t.suggestionsPlaces}</span>
                 <button type="button" onClick={useCurrentLocation}>
-                  <LocateFixed size={13} /> Use my location
+                  <LocateFixed size={14} /> {t.useLocation}
                 </button>
               </div>
               {locations
                 .filter((option) =>
-                  `${option.name} ${option.region}`
-                    .toLowerCase()
-                    .includes(location.toLowerCase()),
+                  `${option.name} ${option.region}`.toLowerCase().includes(location.toLowerCase()),
                 )
                 .map((option) => (
                   <button
@@ -255,49 +245,52 @@ export function SearchPanel({
                     onMouseDown={(event) => event.preventDefault()}
                     onClick={() => handleLocationSelect(option)}
                   >
-                    <span className="suggestion-icon">
-                      <MapPin size={15} />
-                    </span>
                     <span>
                       <strong>{option.name}</strong>
                       <small>{option.region}</small>
                     </span>
-                    <span className="confidence-dot" aria-label="High-confidence location" />
                   </button>
                 ))}
             </div>
           )}
         </div>
-      </div>
 
-      <div className="search-footer">
-        <label className="radius-field">
-          <span>Search radius</span>
+        <div className="search-field search-field-radius">
+          <label htmlFor="radius-select">{t.distanceLabel}</label>
           <select
+            id="radius-select"
             value={radius}
             onChange={(event) => setRadius(Number(event.target.value))}
-            aria-label="Search radius"
           >
-            <option value={5}>Within 5 km</option>
-            <option value={10}>Within 10 km</option>
-            <option value={20}>Within 20 km</option>
-            <option value={50}>Within 50 km</option>
+            {[5, 10, 20, 50].map((km) => (
+              <option key={km} value={km}>
+                {t.within(km)}
+              </option>
+            ))}
           </select>
-        </label>
+        </div>
+
         <button className="primary-button search-submit" type="submit" disabled={isLoading}>
-          {isLoading ? (
-            <>
-              <LoaderCircle className="spin" size={18} />
-              Finding care
-            </>
-          ) : (
-            <>
-              Find care
-              <ArrowRight size={18} />
-            </>
-          )}
+          {isLoading ? <LoaderCircle className="spin" size={18} /> : <Search size={18} />}
+          {isLoading ? t.finding : t.find}
         </button>
-      </div>
-    </form>
+      </form>
+
+      <p className="common-searches">
+        <span>{t.commonSearches}</span>
+        {commonSearches.map((name) => (
+          <button
+            key={name}
+            type="button"
+            onClick={() => {
+              setService(name);
+              submit(name);
+            }}
+          >
+            {name}
+          </button>
+        ))}
+      </p>
+    </div>
   );
 }

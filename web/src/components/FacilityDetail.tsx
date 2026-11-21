@@ -1,20 +1,15 @@
-import {
-  ArrowLeft,
-  Check,
-  Copy,
-  ExternalLink,
-  Info,
-  MapPin,
-  ShieldAlert,
-  X,
-} from "lucide-react";
+import { ArrowLeft, Check, Copy, ExternalLink, X } from "lucide-react";
 import { useEffect, useState } from "react";
+import { operatorLabel, useI18n } from "../i18n";
 import type { FacilityRecommendation, SourceType } from "../types";
 import { ConfidenceBadge } from "./ConfidenceBadge";
+import { FacilityActions } from "./FacilityActions";
+import { Raahi } from "./Raahi";
 import { ScoreRing } from "./ScoreRing";
 
 interface FacilityDetailProps {
   facility?: FacilityRecommendation;
+  service: string;
   onClose: () => void;
 }
 
@@ -23,25 +18,40 @@ type NumericScoreKey = Exclude<
   "totalScore" | "modelVersion"
 >;
 
-const scoreLabels: Array<[NumericScoreKey, string, number]> = [
-  ["serviceMatchScore", "Service match", 29],
-  ["evidenceScore", "Evidence quality", 24],
-  ["sourceScore", "Source quality", 15],
-  ["distanceScore", "Distance", 10],
-  ["locationQualityScore", "Location quality", 9],
-  ["capacityScore", "Capacity signals", 7],
+const scoreMaximums: Array<[NumericScoreKey, number]> = [
+  ["serviceMatchScore", 29],
+  ["evidenceScore", 24],
+  ["sourceScore", 15],
+  ["distanceScore", 10],
+  ["locationQualityScore", 9],
+  ["capacityScore", 7],
 ];
 
-const sourceTypeLabels: Record<SourceType, string> = {
-  official_site: "Official",
-  government: "Government",
-  directory: "Directory",
-  social_media: "Social",
-  unknown: "Unknown",
-};
-
-export function FacilityDetail({ facility, onClose }: FacilityDetailProps) {
+export function FacilityDetail({ facility, service, onClose }: FacilityDetailProps) {
   const [copied, setCopied] = useState(false);
+  const { t, lang } = useI18n();
+  const scoreLabels: Record<NumericScoreKey, string> = {
+    serviceMatchScore: t.scoreService,
+    evidenceScore: t.scoreEvidence,
+    sourceScore: t.scoreSource,
+    distanceScore: t.scoreDistance,
+    locationQualityScore: t.scoreLocation,
+    capacityScore: t.scoreCapacity,
+    penaltyScore: t.scorePenalty,
+  };
+  const sourceTypeLabels: Record<SourceType, string> = {
+    official_site: t.sourceOfficial,
+    government: t.sourceGovernment,
+    directory: t.sourceDirectory,
+    social_media: t.sourceSocial,
+    unknown: t.sourceUnknown,
+  };
+  const polarityLabels = {
+    positive: t.polarityPositive,
+    uncertain: t.polarityUncertain,
+    negative: t.polarityNegative,
+  };
+  const strengthLabels = { strong: t.strengthStrong, medium: t.strengthMedium, weak: t.strengthWeak };
 
   useEffect(() => {
     if (!facility) return;
@@ -86,14 +96,19 @@ export function FacilityDetail({ facility, onClose }: FacilityDetailProps) {
         <div className="drawer-topbar">
           <button className="back-button" type="button" onClick={onClose}>
             <ArrowLeft size={18} />
-            Back to results
+            {t.back}
           </button>
           <div className="drawer-actions">
-            <button className="icon-button" type="button" onClick={copyExplanation}>
+            <button
+              className="icon-button"
+              type="button"
+              onClick={copyExplanation}
+              aria-label={copied ? t.copied : t.copy}
+              title={copied ? t.copied : t.copy}
+            >
               {copied ? <Check size={18} /> : <Copy size={18} />}
-              <span className="sr-only">{copied ? "Copied" : "Copy explanation"}</span>
             </button>
-            <button className="icon-button" type="button" onClick={onClose} aria-label="Close details">
+            <button className="icon-button" type="button" onClick={onClose} aria-label={t.close}>
               <X size={20} />
             </button>
           </div>
@@ -102,57 +117,52 @@ export function FacilityDetail({ facility, onClose }: FacilityDetailProps) {
         <div className="drawer-scroll">
           <div className="detail-hero">
             <div>
-              <span className="detail-eyebrow">
-                Rank #{facility.rank} · {facility.type}
-              </span>
+              <p className="detail-kicker">
+                {t.rank(facility.rank)} · {facility.type} · {operatorLabel(t, facility.operatorType)}
+              </p>
               <h2 id="detail-title">{facility.name}</h2>
               <p className="detail-location">
-                <MapPin size={15} />
                 {facility.address}, {facility.district}, {facility.state} {facility.pincode}
               </p>
-              <div className="detail-badges">
+              <p className="detail-meta">
                 <ConfidenceBadge level={facility.confidence} />
-                <span className="plain-badge">{facility.distanceKm.toFixed(1)} km away</span>
-                <span className="plain-badge">{facility.operatorType}</span>
-              </div>
+                <span>{t.kmAway(facility.distanceKm.toFixed(1))}</span>
+              </p>
             </div>
             <ScoreRing score={facility.totalScore} size="large" />
           </div>
 
+          <FacilityActions facility={facility} service={service} />
+
           <div className="detail-summary">
-            <span className="summary-icon">
-              <Info size={18} />
-            </span>
-            <div>
-              <strong>Recommendation summary</strong>
-              <p>{facility.recommendationSummary}</p>
-            </div>
+            <h3>{t.summary}</h3>
+            <p>{facility.recommendationSummary}</p>
           </div>
 
           <section className="detail-section">
             <div className="detail-section-heading">
-              <div>
-                <span className="section-number">01</span>
-                <h3>Score breakdown</h3>
-              </div>
-              <span className="model-label">Rules v0.1 · ML-ready</span>
+              <h3>{t.scoreTitle}</h3>
+              <span className="model-label">{t.scoreModel}</span>
             </div>
             <div className="score-breakdown">
-              {scoreLabels.map(([key, label, maximum]) => {
+              {scoreMaximums.map(([key, maximum]) => {
                 const value = facility.scoreBreakdown[key];
                 return (
                   <div className="score-row" key={key}>
-                    <span>{label}</span>
+                    <span>{scoreLabels[key]}</span>
                     <div className="score-track">
                       <i style={{ width: `${Math.max(0, (value / maximum) * 100)}%` }} />
                     </div>
-                    <strong>{value}</strong>
+                    <strong>
+                      {value}
+                      <small>/{maximum}</small>
+                    </strong>
                   </div>
                 );
               })}
               {facility.scoreBreakdown.penaltyScore !== 0 && (
                 <div className="score-row score-penalty">
-                  <span>Evidence penalty</span>
+                  <span>{scoreLabels.penaltyScore}</span>
                   <div className="score-track">
                     <i
                       style={{
@@ -164,19 +174,13 @@ export function FacilityDetail({ facility, onClose }: FacilityDetailProps) {
                 </div>
               )}
             </div>
-            <p className="score-disclaimer">
-              Scores rank candidates relative to this search. They do not measure clinical quality,
-              safety, or health outcomes.
-            </p>
+            <p className="score-disclaimer">{t.scoreDisclaimer}</p>
           </section>
 
           <section className="detail-section" id="evidence">
             <div className="detail-section-heading">
-              <div>
-                <span className="section-number">02</span>
-                <h3>Evidence behind this match</h3>
-              </div>
-              <span className="evidence-count">{facility.evidence.length} items</span>
+              <h3>{t.proofTitle}</h3>
+              <span className="evidence-count">{t.items(facility.evidence.length)}</span>
             </div>
             <div className="full-evidence-list">
               {facility.evidence.map((evidence) => {
@@ -185,21 +189,19 @@ export function FacilityDetail({ facility, onClose }: FacilityDetailProps) {
                 );
                 return (
                   <article className={`full-evidence evidence-${evidence.polarity}`} key={evidence.id}>
-                    <div className="evidence-header">
-                      <code>{evidence.fieldName}</code>
-                      <div>
-                        <span className={`polarity-badge polarity-${evidence.polarity}`}>
-                          {evidence.polarity}
-                        </span>
-                        <span className={`strength-badge strength-${evidence.strength}`}>
-                          {evidence.strength}
-                        </span>
-                      </div>
-                    </div>
                     <blockquote>“{evidence.quote}”</blockquote>
+                    <p className="evidence-header">
+                      <span className={`polarity polarity-${evidence.polarity}`}>
+                        {polarityLabels[evidence.polarity]}
+                      </span>
+                      <span className={`strength strength-${evidence.strength}`}>
+                        {strengthLabels[evidence.strength]}
+                      </span>
+                      <code>{evidence.fieldName}</code>
+                    </p>
                     <div className="evidence-source">
                       <span className={`source-dot source-${source?.sourceType ?? "unknown"}`} />
-                      <span>{source?.title ?? "Source unavailable"}</span>
+                      <span>{source?.title ?? t.sourceUnknown}</span>
                       {source && (
                         <a href={source.url} target="_blank" rel="noreferrer">
                           {source.domain}
@@ -215,10 +217,7 @@ export function FacilityDetail({ facility, onClose }: FacilityDetailProps) {
 
           <section className="detail-section">
             <div className="detail-section-heading">
-              <div>
-                <span className="section-number">03</span>
-                <h3>Source references</h3>
-              </div>
+              <h3>{t.sourcesTitle}</h3>
             </div>
             <div className="source-list">
               {facility.sources.map((source) => (
@@ -229,17 +228,15 @@ export function FacilityDetail({ facility, onClose }: FacilityDetailProps) {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  <span className={`source-icon source-icon-${source.sourceType}`}>
-                    <ExternalLink size={16} />
-                  </span>
+                  <span className={`source-dot source-${source.sourceType}`} />
                   <span className="source-card-copy">
                     <strong>{source.title}</strong>
                     <span>
                       {sourceTypeLabels[source.sourceType]} · {source.domain}
                     </span>
                     <small>
-                      Retrieved{" "}
-                      {new Intl.DateTimeFormat("en-IN", {
+                      {t.retrieved}{" "}
+                      {new Intl.DateTimeFormat(lang === "hi" ? "hi-IN" : "en-IN", {
                         day: "numeric",
                         month: "short",
                         year: "numeric",
@@ -252,14 +249,13 @@ export function FacilityDetail({ facility, onClose }: FacilityDetailProps) {
             </div>
           </section>
 
-          <section className="uncertainty-panel">
+          <section className="uncertainty-panel" aria-labelledby="unsure-title">
             <div className="uncertainty-heading">
-              <ShieldAlert size={19} />
+              <Raahi size={44} mood="concerned" />
               <div>
-                <strong>What may be missing or uncertain</strong>
-                <span>Read before choosing or travelling</span>
+                <h3 id="unsure-title">{t.unsureTitle}</h3>
+                <p>{t.unsureHint}</p>
               </div>
-              <ConfidenceBadge level={facility.uncertainty.level} compact />
             </div>
             <ul>
               {facility.uncertainty.messages.map((message) => (
@@ -267,20 +263,16 @@ export function FacilityDetail({ facility, onClose }: FacilityDetailProps) {
               ))}
             </ul>
             {facility.uncertainty.missingFields.length > 0 && (
-              <div className="missing-fields">
-                Missing signals:
+              <p className="missing-fields">
+                {t.missing}
                 {facility.uncertainty.missingFields.map((field) => (
                   <code key={field}>{field}</code>
                 ))}
-              </div>
+              </p>
             )}
           </section>
 
-          <div className="detail-footer-note">
-            <Info size={15} />
-            CarePath helps compare publicly available evidence. It does not provide medical advice
-            or guarantee treatment availability. Contact the facility before travelling.
-          </div>
+          <p className="detail-footer-note">{t.detailFootnote}</p>
         </div>
       </section>
     </div>

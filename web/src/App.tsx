@@ -1,12 +1,13 @@
-import { ArrowDown, CheckCircle2, MapPin, ShieldCheck, Sparkles } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
+import { RaahiSays } from "./components/Raahi";
 import { ResultsView } from "./components/ResultsView";
 import { SearchPanel, type SearchValues } from "./components/SearchPanel";
 import { TrustSection } from "./components/TrustSection";
 import { getDemoRecommendations } from "./lib/demoApi";
+import { useI18n } from "./i18n";
 import type { RankingMode, RecommendationResponse } from "./types";
 
 const defaultSearch: SearchValues = {
@@ -22,6 +23,7 @@ function App() {
   const [searchValues, setSearchValues] = useState<SearchValues>(defaultSearch);
   const [rankingMode, setRankingMode] = useState<RankingMode>("best_match");
   const [selectedId, setSelectedId] = useState<string>();
+  const { t } = useI18n();
 
   const urlSearch = useMemo(
     () => ({
@@ -84,75 +86,15 @@ function App() {
     <div className="app-shell">
       <Header />
       <main>
-        <section className="hero">
-          <div className="hero-content">
+        <section className="hero" aria-labelledby="hero-title">
+          <div className="hero-inner">
             <div className="hero-copy">
-              <span className="hero-eyebrow">
-                <span className="eyebrow-icon">
-                  <ShieldCheck size={14} />
-                </span>
-                Evidence before assumptions
-              </span>
-              <h1>
-                Find the right care.
-                <br />
-                See the <em>evidence.</em>
-              </h1>
-              <p className="hero-lede">
-                Search healthcare facilities by service and location. Compare clear, traceable
-                reasons — not just a ranking score.
-              </p>
-              <div className="hero-proof">
-                <span>
-                  <CheckCircle2 size={15} />
-                  Cited service evidence
-                </span>
-                <span>
-                  <CheckCircle2 size={15} />
-                  Source quality signals
-                </span>
-                <span>
-                  <CheckCircle2 size={15} />
-                  Visible uncertainty
-                </span>
-              </div>
+              <h1 id="hero-title">{t.heroTitle}</h1>
+              <p className="hero-lede">{t.heroLede}</p>
             </div>
-
-            <aside className="evidence-card" id="evidence">
-              <div className="evidence-card-head">
-                <div>
-                  <span className="mini-eyebrow">
-                    <Sparkles size={13} />
-                    What makes a result
-                  </span>
-                  <strong>Evidence you can inspect</strong>
-                </div>
-                <span className="evidence-score">94</span>
-              </div>
-              <div className="mini-quote">
-                <span>“</span>
-                <p>Dedicated dialysis bays with reverse-osmosis water treatment.</p>
-              </div>
-              <div className="mini-source">
-                <span className="source-dot source-official_site" />
-                <span>
-                  Official site
-                  <small>services · dialysis</small>
-                </span>
-                <span className="mini-verified">
-                  <CheckCircle2 size={12} />
-                  Strong
-                </span>
-              </div>
-              <div className="mini-divider" />
-              <div className="mini-signal-row">
-                <span>
-                  <MapPin size={14} />
-                  High location confidence
-                </span>
-                <strong>+9</strong>
-              </div>
-            </aside>
+            <RaahiSays className="hero-raahi" size={104}>
+              <strong>{t.raahiHello}</strong> {t.raahiIntro}
+            </RaahiSays>
           </div>
 
           <SearchPanel
@@ -162,17 +104,6 @@ function App() {
             isLoading={isLoading}
             onSearch={handleSearch}
           />
-
-          <div className="hero-bottom">
-            <a className="scroll-cue" href="#results-heading">
-              <span>Explore sample results</span>
-              <ArrowDown size={16} />
-            </a>
-            <p>
-              <span className="hero-demo-label">Prototype</span>
-              Facilities and source links shown below are illustrative demo data.
-            </p>
-          </div>
         </section>
 
         <ResultsView

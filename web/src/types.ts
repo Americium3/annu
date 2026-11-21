@@ -96,6 +96,8 @@ export interface FacilityRecommendation {
   district: string;
   state: string;
   pincode: string;
+  /** Front-desk number in E.164 or local form. Absent when no source lists one. */
+  phone?: string;
   latitude: number;
   longitude: number;
   distanceKm: number;

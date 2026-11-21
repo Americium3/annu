@@ -1,30 +1,31 @@
-import {
-  ArrowRight,
-  Building2,
-  Clock3,
-  ExternalLink,
-  MapPin,
-  ShieldAlert,
-} from "lucide-react";
+import { ArrowRight, Clock3, ShieldAlert } from "lucide-react";
+import { operatorLabel, useI18n } from "../i18n";
 import type { FacilityRecommendation } from "../types";
 import { ConfidenceBadge } from "./ConfidenceBadge";
+import { FacilityActions } from "./FacilityActions";
 import { ScoreRing } from "./ScoreRing";
 
 interface FacilityCardProps {
   facility: FacilityRecommendation;
+  service: string;
   selected: boolean;
   onSelect: () => void;
   onOpen: () => void;
 }
 
-export function FacilityCard({
-  facility,
-  selected,
-  onSelect,
-  onOpen,
-}: FacilityCardProps) {
+export function scoreBand(score: number) {
+  return score >= 85 ? "strong" : score >= 70 ? "mid" : "low";
+}
+
+export function FacilityCard({ facility, service, selected, onSelect, onOpen }: FacilityCardProps) {
+  const { t } = useI18n();
   const topEvidence = facility.evidence.slice(0, 2);
   const primarySource = facility.sources[0];
+  const strengthLabel = {
+    strong: t.strengthStrong,
+    medium: t.strengthMedium,
+    weak: t.strengthWeak,
+  };
 
   return (
     <article
@@ -32,72 +33,63 @@ export function FacilityCard({
       onClick={onSelect}
       aria-labelledby={`facility-${facility.id}-name`}
     >
-      <div className="facility-rank" aria-label={`Rank ${facility.rank}`}>
-        {facility.rank}
-      </div>
-      <div className="card-main">
-        <div className="card-topline">
-          <div>
-            <div className="card-title-row">
-              <h3 id={`facility-${facility.id}-name`}>{facility.name}</h3>
-              <ConfidenceBadge level={facility.confidence} compact />
-            </div>
-            <p className="facility-meta">
-              <Building2 size={14} aria-hidden="true" />
-              {facility.type} <span>·</span> {facility.operatorType}
-            </p>
-          </div>
-          <ScoreRing score={facility.totalScore} />
+      <header className="card-head">
+        {/* Same pin as on the map, so list and map read as one thing. */}
+        <span
+          className={`rank-pin rank-pin-${scoreBand(facility.totalScore)}`}
+          aria-label={t.rank(facility.rank)}
+        >
+          <span>{facility.rank}</span>
+        </span>
+        <div className="card-title">
+          <h3 id={`facility-${facility.id}-name`}>{facility.name}</h3>
+          <p className="facility-meta">
+            {facility.type} · <span className="operator">{operatorLabel(t, facility.operatorType)}</span> ·{" "}
+            <strong>{t.kmAway(facility.distanceKm.toFixed(1))}</strong>
+          </p>
+          <p className="facility-address">{facility.address}</p>
+        </div>
+        <ScoreRing score={facility.totalScore} />
+      </header>
+
+      <div className="card-body">
+        <div className="card-summary">
+          <ConfidenceBadge level={facility.confidence} />
+          <p>{facility.recommendationSummary}</p>
         </div>
 
-        <div className="location-line">
-          <MapPin size={14} aria-hidden="true" />
-          <span>{facility.address}</span>
-          <span className="middot">·</span>
-          <strong>{facility.distanceKm.toFixed(1)} km</strong>
-        </div>
-
-        <p className="recommendation-summary">{facility.recommendationSummary}</p>
-
-        <div className="evidence-preview">
-          <div className="section-kicker">
-            Why this facility
-            <span>{topEvidence.length} strongest signals</span>
-          </div>
-          {topEvidence.map((evidence) => {
-            const source = facility.sources.find((item) => item.id === evidence.sourceId);
-            return (
-              <div className="evidence-quote" key={evidence.id}>
-                <p>“{evidence.quote}”</p>
-                <span>
-                  <code>{evidence.fieldName}</code>
-                  <span className={`strength-strength-${evidence.strength}`}>
-                    {evidence.strength} evidence
-                  </span>
+        <h4 className="card-subhead">{t.whyListed}</h4>
+        <ul className="quote-list">
+          {topEvidence.map((evidence) => (
+            <li key={evidence.id}>
+              <blockquote>“{evidence.quote}”</blockquote>
+              <p className="quote-meta">
+                <span className={`strength strength-${evidence.strength}`}>
+                  {strengthLabel[evidence.strength]}
                 </span>
-              </div>
-            );
-          })}
-        </div>
+                <code>{evidence.fieldName}</code>
+              </p>
+            </li>
+          ))}
+        </ul>
+
+        {primarySource && (
+          <p className="card-source">
+            {t.source}:{" "}
+            <a
+              href={primarySource.url}
+              target="_blank"
+              rel="noreferrer"
+              onClick={(event) => event.stopPropagation()}
+            >
+              {primarySource.domain}
+            </a>
+            {facility.sources.length > 1 && <> {t.andMore(facility.sources.length - 1)}</>}
+          </p>
+        )}
 
         <div className="card-footer">
-          <div className="card-sources">
-            {primarySource && (
-              <a
-                href={primarySource.url}
-                target="_blank"
-                rel="noreferrer"
-                onClick={(event) => event.stopPropagation()}
-              >
-                <span className={`source-dot source-${primarySource.sourceType}`} />
-                {primarySource.domain}
-                <ExternalLink size={12} />
-              </a>
-            )}
-            {facility.sources.length > 1 && (
-              <span className="more-sources">+{facility.sources.length - 1} source</span>
-            )}
-          </div>
+          <FacilityActions facility={facility} service={service} />
           <button
             className="text-button"
             type="button"
@@ -106,22 +98,22 @@ export function FacilityCard({
               onOpen();
             }}
           >
-            See evidence
-            <ArrowRight size={15} />
+            {t.seeProof}
+            <ArrowRight size={16} />
           </button>
         </div>
-
-        {facility.uncertainty.level !== "low" && (
-          <div className={`uncertainty-strip uncertainty-${facility.uncertainty.level}`}>
-            {facility.uncertainty.level === "high" ? (
-              <ShieldAlert size={15} aria-hidden="true" />
-            ) : (
-              <Clock3 size={15} aria-hidden="true" />
-            )}
-            <span>{facility.uncertainty.messages[0]}</span>
-          </div>
-        )}
       </div>
+
+      {facility.uncertainty.level !== "low" && (
+        <p className={`uncertainty-strip uncertainty-${facility.uncertainty.level}`}>
+          {facility.uncertainty.level === "high" ? (
+            <ShieldAlert size={16} aria-hidden="true" />
+          ) : (
+            <Clock3 size={16} aria-hidden="true" />
+          )}
+          <span>{facility.uncertainty.messages[0]}</span>
+        </p>
+      )}
     </article>
   );
 }

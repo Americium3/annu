@@ -1,60 +1,81 @@
-import { CircleHelp, Database, Menu, Moon, Sun, X } from "lucide-react";
+import { Menu, Moon, Phone, Sun, X } from "lucide-react";
 import { useState } from "react";
 import { useTheme } from "../hooks/useTheme";
+import { useI18n, type Lang } from "../i18n";
 import { Brand } from "./Brand";
+
+const languages: Array<{ value: Lang; label: string }> = [
+  { value: "en", label: "English" },
+  { value: "hi", label: "हिंदी" },
+];
 
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const { theme, toggle } = useTheme();
-  const nextLabel = theme === "dark" ? "Switch to light theme" : "Switch to dark theme";
+  const { t, lang, setLang } = useI18n();
+  const themeLabel = theme === "dark" ? t.themeToLight : t.themeToDark;
 
   return (
-    <header className="site-header">
-      <div className="header-inner">
-        <Brand />
-        <nav className={`primary-nav ${menuOpen ? "is-open" : ""}`} aria-label="Primary">
-          <a className="nav-link is-active" href="#search">
-            Find care
+    <>
+      <a className="skip-link" href="#search">
+        {t.skipToSearch}
+      </a>
+      {/* Always visible: the one thing this site must never get in the way of. */}
+      <div className="top-strip">
+        <div className="top-strip-inner">
+          <p className="top-strip-note">{t.prototypeNote}</p>
+          <a className="top-strip-emergency" href="tel:108">
+            <Phone size={14} aria-hidden="true" />
+            <span>{t.emergency}</span> <strong>{t.emergencyCall}</strong>
           </a>
-          <a className="nav-link" href="#how-it-works">
-            How it works
-          </a>
-          <a className="nav-link" href="#evidence">
-            Our evidence
-          </a>
-        </nav>
-        <div className="header-actions">
-          <span className="demo-pill">
-            <Database size={13} aria-hidden="true" />
-            Demo data
-          </span>
-          <button
-            className="icon-button theme-button"
-            type="button"
-            aria-label={nextLabel}
-            title={nextLabel}
-            onClick={toggle}
-          >
-            {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
-          </button>
-          <a
-            className="icon-button help-button"
-            href="#how-it-works"
-            aria-label="Help and information"
-          >
-            <CircleHelp size={19} />
-          </a>
-          <button
-            className="icon-button menu-button"
-            type="button"
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
-            aria-expanded={menuOpen}
-            onClick={() => setMenuOpen((open) => !open)}
-          >
-            {menuOpen ? <X size={21} /> : <Menu size={21} />}
-          </button>
         </div>
       </div>
-    </header>
+      <header className="site-header">
+        <div className="header-inner">
+          <Brand />
+          <nav className={`primary-nav ${menuOpen ? "is-open" : ""}`} aria-label="Primary">
+            <a className="nav-link" href="#search" aria-current="page" onClick={() => setMenuOpen(false)}>
+              {t.navFind}
+            </a>
+            <a className="nav-link" href="#how-it-works" onClick={() => setMenuOpen(false)}>
+              {t.navHow}
+            </a>
+          </nav>
+          <div className="header-actions">
+            <div className="lang-switch" role="group" aria-label={t.language}>
+              {languages.map((option) => (
+                <button
+                  key={option.value}
+                  type="button"
+                  lang={option.value}
+                  aria-pressed={lang === option.value}
+                  onClick={() => setLang(option.value)}
+                >
+                  {option.label}
+                </button>
+              ))}
+            </div>
+            <button
+              className="icon-button"
+              type="button"
+              aria-label={themeLabel}
+              title={themeLabel}
+              onClick={toggle}
+            >
+              {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+            </button>
+            <button
+              className="icon-button menu-button"
+              type="button"
+              aria-label={menuOpen ? t.menuClose : t.menuOpen}
+              aria-expanded={menuOpen}
+              onClick={() => setMenuOpen((open) => !open)}
+            >
+              {menuOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
+          </div>
+        </div>
+      </header>
+    </>
   );
 }
