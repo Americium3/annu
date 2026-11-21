@@ -15,7 +15,6 @@ import type { LocationOption, ServiceOption } from "../types";
 export interface SearchValues {
   service: string;
   location: string;
-  radiusKm: number;
   coordinates?: {
     latitude: number;
     longitude: number;
@@ -25,7 +24,6 @@ export interface SearchValues {
 interface SearchPanelProps {
   initialService: string;
   initialLocation: string;
-  radiusKm: number;
   isLoading: boolean;
   onSearch: (values: SearchValues) => void;
 }
@@ -42,13 +40,11 @@ function matchesService(service: ServiceOption, query: string) {
 export function SearchPanel({
   initialService,
   initialLocation,
-  radiusKm,
   isLoading,
   onSearch,
 }: SearchPanelProps) {
   const [service, setService] = useState(initialService);
   const [location, setLocation] = useState(initialLocation);
-  const [radius, setRadius] = useState(radiusKm);
   const [serviceOpen, setServiceOpen] = useState(false);
   const [locationOpen, setLocationOpen] = useState(false);
   const [geoState, setGeoState] = useState<"idle" | "locating" | "found" | "error">("idle");
@@ -61,8 +57,7 @@ export function SearchPanel({
   useEffect(() => {
     setService(initialService);
     setLocation(initialLocation);
-    setRadius(radiusKm);
-  }, [initialService, initialLocation, radiusKm]);
+  }, [initialService, initialLocation]);
 
   useEffect(() => {
     function closeOnOutsideClick(event: MouseEvent) {
@@ -114,7 +109,6 @@ export function SearchPanel({
     onSearch({
       service: service.trim(),
       location: location.trim(),
-      radiusKm: radius,
       coordinates,
     });
   }
@@ -291,19 +285,10 @@ export function SearchPanel({
       </div>
 
       <div className="search-footer">
-        <label className="radius-field">
-          <span>Search radius</span>
-          <select
-            value={radius}
-            onChange={(event) => setRadius(Number(event.target.value))}
-            aria-label="Search radius"
-          >
-            <option value={5}>Within 5 km</option>
-            <option value={10}>Within 10 km</option>
-            <option value={20}>Within 20 km</option>
-            <option value={50}>Within 50 km</option>
-          </select>
-        </label>
+        <p className="search-hint">
+          Just the care you need and where you are. We search nearby first and widen automatically
+          (up to 200 km) until we find a facility with evidence.
+        </p>
         <button className="primary-button search-submit" type="submit" disabled={isLoading}>
           {isLoading ? (
             <>

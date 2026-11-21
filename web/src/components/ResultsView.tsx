@@ -1,18 +1,15 @@
 import {
-  ArrowDownWideNarrow,
-  ChevronDown,
   LoaderCircle,
   Map,
   SlidersHorizontal,
   Sparkles,
 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import { sortFacilities } from "../data/demo";
+import { orderFacilities } from "../data/demo";
 import { useMediaQuery } from "../hooks/useMediaQuery";
 import type {
   FacilityRecommendation,
   QueryContext,
-  RankingMode,
   RecommendationResponse,
 } from "../types";
 import { FacilityCard } from "./FacilityCard";
@@ -22,17 +19,9 @@ import { FacilityMap } from "./FacilityMap";
 interface ResultsViewProps {
   data?: RecommendationResponse;
   isLoading: boolean;
-  rankingMode: RankingMode;
-  onRankingModeChange: (mode: RankingMode) => void;
   selectedId?: string;
   onSelectedIdChange: (id?: string) => void;
 }
-
-const rankingOptions: Array<{ value: RankingMode; label: string }> = [
-  { value: "best_match", label: "Best match" },
-  { value: "nearest", label: "Nearest" },
-  { value: "most_evidence", label: "Most evidence" },
-];
 
 function LoadingResults() {
   return (
@@ -59,37 +48,15 @@ function LoadingResults() {
 export function ResultsView({
   data,
   isLoading,
-  rankingMode,
-  onRankingModeChange,
   selectedId,
   onSelectedIdChange,
 }: ResultsViewProps) {
   const [mobileView, setMobileView] = useState<"list" | "map">("list");
-  const searchRadius = data?.queryContext.searchParameters.radiusKm ?? 10;
-  const [maxDistance, setMaxDistance] = useState(searchRadius);
-  const [highConfidenceOnly, setHighConfidenceOnly] = useState(false);
-  const [filtersOpen, setFiltersOpen] = useState(false);
   const [detailId, setDetailId] = useState<string>();
   const isMobileLayout = useMediaQuery("(max-width: 680px)");
 
-  const facilities = useMemo(() => {
-    if (!data) return [];
-    const filtered = data.results.filter((facility) => {
-      const withinDistance = facility.distanceKm <= maxDistance;
-      const confidenceMatches =
-        !highConfidenceOnly || facility.confidence === "high";
-      return withinDistance && confidenceMatches;
-    });
-    return sortFacilities(filtered, rankingMode).map((facility, index) => ({
-      ...facility,
-      rank: index + 1,
-    }));
-  }, [data, highConfidenceOnly, maxDistance, rankingMode]);
-
-  // A new search resets the distance filter to the radius the backend actually searched (it may have widened).
-  useEffect(() => {
-    setMaxDistance(searchRadius);
-  }, [data, searchRadius]);
+  // Shown exactly in the recommender's order: no user-side re-ranking or filtering.
+  const facilities = useMemo(() => (data ? orderFacilities(data.results) : []), [data]);
 
   const detailFacility = data?.results.find((facility) => facility.id === detailId);
 
@@ -153,78 +120,6 @@ export function ResultsView({
           </div>
         </div>
 
-        <div className="results-toolbar">
-          <div className="ranking-tabs" role="group" aria-label="Ranking priority">
-            <span className="toolbar-label">
-              <ArrowDownWideNarrow size={15} />
-              Rank by
-            </span>
-            {rankingOptions.map((option) => (
-              <button
-                key={option.value}
-                type="button"
-                className={rankingMode === option.value ? "is-active" : ""}
-                onClick={() => onRankingModeChange(option.value)}
-                aria-pressed={rankingMode === option.value}
-              >
-                {option.label}
-              </button>
-            ))}
-          </div>
-          <button
-            className={`filter-button ${filtersOpen ? "is-active" : ""}`}
-            type="button"
-            aria-expanded={filtersOpen}
-            onClick={() => setFiltersOpen((open) => !open)}
-          >
-            <SlidersHorizontal size={16} />
-            Filters
-            {highConfidenceOnly && <span className="filter-count">1</span>}
-            <ChevronDown size={14} />
-          </button>
-          {filtersOpen && (
-            <div className="filter-popover">
-              <div className="filter-heading">
-                <strong>Narrow results</strong>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setMaxDistance(searchRadius);
-                    setHighConfidenceOnly(false);
-                  }}
-                >
-                  Reset
-                </button>
-              </div>
-              <label className="range-label">
-                <span>
-                  Maximum distance <strong>{maxDistance} km</strong>
-                </span>
-                <input
-                  type="range"
-                  min="1"
-                  max={Math.max(15, Math.ceil(searchRadius))}
-                  step="1"
-                  value={maxDistance}
-                  onChange={(event) => setMaxDistance(Number(event.target.value))}
-                />
-              </label>
-              <label className="toggle-label">
-                <span>
-                  <strong>High confidence only</strong>
-                  <small>Official or strong corroborating evidence</small>
-                </span>
-                <input
-                  type="checkbox"
-                  checked={highConfidenceOnly}
-                  onChange={(event) => setHighConfidenceOnly(event.target.checked)}
-                />
-                <i />
-              </label>
-            </div>
-          )}
-        </div>
-
         <div className="mobile-view-toggle" role="group" aria-label="Switch result view">
           <button
             type="button"
@@ -273,26 +168,8 @@ export function ResultsView({
                 <span className="empty-icon">
                   <SlidersHorizontal size={22} />
                 </span>
-                <h3>
-                  {data && data.results.length === 0
-                    ? "No supported facility found"
-                    : "No facilities match these filters"}
-                </h3>
-                <p>
-                  {data && data.results.length === 0
-                    ? data.metadata.warnings[0]
-                    : "Increase the distance or remove the confidence filter."}
-                </p>
-                <button
-                  className="secondary-button"
-                  type="button"
-                  onClick={() => {
-                    setMaxDistance(searchRadius);
-                    setHighConfidenceOnly(false);
-                  }}
-                >
-                  Clear filters
-                </button>
+                <h3>No supported facility found</h3>
+                <p>{data?.metadata.warnings[0]}</p>
               </div>
             )}
           </div>

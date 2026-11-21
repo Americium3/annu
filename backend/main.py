@@ -7,11 +7,9 @@ from __future__ import annotations
 import os
 import sys
 from contextlib import asynccontextmanager
-from typing import Literal
-
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 from data_store import get_snapshot
 from recommender import LocationNotFound, Recommender, ServiceNotFound
@@ -33,16 +31,17 @@ app.add_middleware(CORSMiddleware, allow_origins=os.environ.get("CAREPATH_CORS",
 
 
 class Coordinates(BaseModel):
-    latitude: float
-    longitude: float
+    model_config = ConfigDict(extra="forbid")
+    latitude: float = Field(ge=-90, le=90)
+    longitude: float = Field(ge=-180, le=180)
 
 
 class RecommendationRequest(BaseModel):
+    """Exactly two user inputs: the service and the location. `coordinates` is the location given by
+    "Use my location" instead of text. Any other field (radius, ranking, limit, ...) is rejected."""
+    model_config = ConfigDict(extra="forbid")
     serviceText: str = Field(min_length=1, max_length=200)
     locationText: str = Field(default="", max_length=200)
-    radiusKm: float | None = Field(default=None, gt=0, le=500)
-    rankingMode: Literal["best_match", "nearest", "most_evidence"] = "best_match"
-    limit: int = Field(default=8, ge=1, le=50)
     coordinates: Coordinates | None = None
 
 
@@ -58,14 +57,14 @@ def services():
 
 
 @app.get("/api/locations")
-def locations(q: str = Query(default="", max_length=100), limit: int = Query(default=8, ge=1, le=20)):
-    return STATE["rec"].location_suggestions(q, limit)
+def locations(q: str = Query(default="", max_length=100)):
+    return STATE["rec"].location_suggestions(q)
 
 
 @app.post("/api/recommendations")
 def recommendations(req: RecommendationRequest):
     try:
-        return STATE["rec"].recommend(req.serviceText, req.locationText, req.radiusKm, req.rankingMode, req.limit,
+        return STATE["rec"].recommend(req.serviceText, req.locationText,
                                       req.coordinates.model_dump() if req.coordinates else None)
     except ServiceNotFound as e:
         raise HTTPException(422, {"field": "service", "message": str(e), "suggestions": e.suggestions})

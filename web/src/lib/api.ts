@@ -1,4 +1,4 @@
-import type { LocationOption, RankingMode, RecommendationResponse, ServiceOption } from "../types";
+import type { LocationOption, RecommendationResponse, ServiceOption } from "../types";
 import { getDemoRecommendations } from "./demoApi";
 import { locations as demoLocations, services as demoServices } from "../data/demo";
 
@@ -7,12 +7,10 @@ const API_BASE = (import.meta.env.VITE_API_BASE as string | undefined) ?? "";
 /** Set VITE_USE_DEMO=true to run the UI on the bundled mock data without a backend. */
 export const USE_DEMO = import.meta.env.VITE_USE_DEMO === "true";
 
+/** The only user inputs: the service and the location ("Use my location" fills the location as coordinates). */
 export interface SearchInput {
   serviceText: string;
   locationText: string;
-  radiusKm: number;
-  rankingMode: RankingMode;
-  limit: number;
   coordinates?: { latitude: number; longitude: number };
 }
 
