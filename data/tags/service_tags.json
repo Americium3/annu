@@ -1,0 +1,2128 @@
+{
+  "meta": {
+    "generatedAt": "2026-11-21T21:20:45+00:00",
+    "source": {
+      "facilities": "workspace.cardinal_virtues.model_facilities",
+      "evidence": "workspace.cardinal_virtues.model_evidence_items"
+    },
+    "facilityCount": 9989,
+    "facilitiesWithServiceTag": 9153,
+    "evidenceSentencesScanned": 433053
+  },
+  "tags": [
+    {
+      "id": "kidney-dialysis",
+      "label": "Dialysis",
+      "kind": "service",
+      "group": "Kidney & urinary",
+      "synonyms": [
+        "hemodialysis",
+        "renal dialysis",
+        "peritoneal dialysis"
+      ],
+      "facilityCount": 1038,
+      "evidenceSentenceCount": 2814,
+      "negatedSentenceCount": 7,
+      "fieldCounts": {
+        "procedure": 1167,
+        "capability": 967,
+        "equipment": 680
+      },
+      "exampleEvidence": [
+        "Dialysis unit of 20 beds under Pradhan Mantri National Dialysis Programme",
+        "Historically started private-sector dialysis and transplantation services in West Bengal, with Bellevue Clinic as one of the early providers.",
+        "Specializes in Nephrology & Dialysis"
+      ]
+    },
+    {
+      "id": "kidney-failure",
+      "label": "Kidney failure / chronic kidney disease",
+      "kind": "condition",
+      "group": "Kidney & urinary",
+      "synonyms": [
+        "CKD",
+        "renal failure"
+      ],
+      "facilityCount": 102,
+      "evidenceSentenceCount": 163,
+      "negatedSentenceCount": 1,
+      "fieldCounts": {
+        "procedure": 80,
+        "capability": 80,
+        "equipment": 3
+      },
+      "exampleEvidence": [
+        "Treats all types of kidney disease",
+        "3C Care for Cancer, Cardiac disease, and Kidney disease",
+        "Provides dialysis treatment for kidney disease"
+      ]
+    },
+    {
+      "id": "kidney-transplant",
+      "label": "Kidney transplant",
+      "kind": "service",
+      "group": "Kidney & urinary",
+      "synonyms": [
+        "renal transplant"
+      ],
+      "facilityCount": 437,
+      "evidenceSentenceCount": 999,
+      "negatedSentenceCount": 0,
+      "fieldCounts": {
+        "procedure": 599,
+        "capability": 385,
+        "equipment": 15
+      },
+      "exampleEvidence": [
+        "Renal transplant program",
+        "Kidney transplant program",
+        "Kidney transplant program including ABO-incompatible and swap transplants"
+      ]
+    },
+    {
+      "id": "kidney-stones",
+      "label": "Kidney stones",
+      "kind": "condition",
+      "group": "Kidney & urinary",
+      "synonyms": [
+        "renal calculi",
+        "lithotripsy"
+      ],
+      "facilityCount": 539,
+      "evidenceSentenceCount": 1337,
+      "negatedSentenceCount": 0,
+      "fieldCounts": {
+        "procedure": 964,
+        "capability": 234,
+        "equipment": 139
+      },
+      "exampleEvidence": [
+        "Urosciences including Robotic Assisted Prostate Surgeries, Robotic Assisted Nephrectomy, RIRS, TURP, HOLEP, Rezum Therapy, Laparoscopic Prostatectomy & Adrenalectomy, Penile Implantation",
+        "Special clinics including Stone clinic, Cancer clinic, Andrology clinic, Female Urology clinic and Prostate clinic",
+        "Urology and Laser Kidney Stone Clinic led by Dr. Raajiv Dorai"
+      ]
+    },
+    {
+      "id": "prostate",
+      "label": "Prostate problems",
+      "kind": "condition",
+      "group": "Kidney & urinary",
+      "synonyms": [
+        "enlarged prostate",
+        "BPH",
+        "TURP"
+      ],
+      "facilityCount": 393,
+      "evidenceSentenceCount": 790,
+      "negatedSentenceCount": 0,
+      "fieldCounts": {
+        "procedure": 632,
+        "capability": 121,
+        "equipment": 37
+      },
+      "exampleEvidence": [
+        "Transurethral resection of the prostate (TURP) and urologic oncology services",
+        "Urosciences including Robotic Assisted Prostate Surgeries, Robotic Assisted Nephrectomy, RIRS, TURP, HOLEP, Rezum Therapy, Laparoscopic Prostatectomy & Adrenalectomy, Penile Implantation",
+        "Robotic Assisted Radical Prostatectomy"
+      ]
+    },
+    {
+      "id": "heart-disease",
+      "label": "Heart disease",
+      "kind": "condition",
+      "group": "Heart & vessels",
+      "synonyms": [
+        "heart attack",
+        "cardiac disease",
+        "CAD"
+      ],
+      "facilityCount": 254,
+      "evidenceSentenceCount": 491,
+      "negatedSentenceCount": 0,
+      "fieldCounts": {
+        "procedure": 277,
+        "capability": 208,
+        "equipment": 6
+      },
+      "exampleEvidence": [
+        "Non-invasive heart disease treatment programs",
+        "Treats heart disease, diabetes, hypertension and obesity",
+        "Experience in structural heart disease interventions"
+      ]
+    },
+    {
+      "id": "angiography",
+      "label": "Coronary angiography",
+      "kind": "service",
+      "group": "Heart & vessels",
+      "synonyms": [
+        "cath lab"
+      ],
+      "facilityCount": 803,
+      "evidenceSentenceCount": 2146,
+      "negatedSentenceCount": 4,
+      "fieldCounts": {
+        "procedure": 861,
+        "capability": 359,
+        "equipment": 926
+      },
+      "exampleEvidence": [
+        "Advanced cardiac cath lab for interventional cardiology",
+        "Coronary angiography, angioplasty, and stenting capabilities",
+        "Established Agra's first cath lab for angiography, angioplasty and pacemaker implantation"
+      ]
+    },
+    {
+      "id": "angioplasty",
+      "label": "Angioplasty / stenting",
+      "kind": "service",
+      "group": "Heart & vessels",
+      "synonyms": [
+        "stent",
+        "PTCA"
+      ],
+      "facilityCount": 404,
+      "evidenceSentenceCount": 871,
+      "negatedSentenceCount": 2,
+      "fieldCounts": {
+        "procedure": 686,
+        "capability": 137,
+        "equipment": 48
+      },
+      "exampleEvidence": [
+        "Interventional Cardiology procedures including Angioplasty, Stenting, CABG",
+        "Coronary angiography, angioplasty, and stenting capabilities",
+        "Established Agra's first cath lab for angiography, angioplasty and pacemaker implantation"
+      ]
+    },
+    {
+      "id": "cardiac-surgery",
+      "label": "Heart surgery (bypass / valve)",
+      "kind": "service",
+      "group": "Heart & vessels",
+      "synonyms": [
+        "CABG",
+        "bypass surgery",
+        "valve replacement"
+      ],
+      "facilityCount": 514,
+      "evidenceSentenceCount": 1310,
+      "negatedSentenceCount": 3,
+      "fieldCounts": {
+        "procedure": 910,
+        "capability": 377,
+        "equipment": 23
+      },
+      "exampleEvidence": [
+        "KMCH provides emergency care, ICU, trauma care, cardiology, cardiothoracic surgery, transplant surgery, and cancer care",
+        "Cardiothoracic surgery had the highest crossmatch-to-transfusion ratio at 1.92.",
+        "Cardiac Sciences including Valve repairs & replacements, Minimally Invasive Cardiac Surgery, TAVI/TAVR, IVUS-guided procedures, Cardiac Electrophysiology & RFA, CABG, ECMO, Pediatric Cardiology & Cardiac Surgeries"
+      ]
+    },
+    {
+      "id": "pacemaker",
+      "label": "Pacemaker implantation",
+      "kind": "service",
+      "group": "Heart & vessels",
+      "synonyms": [],
+      "facilityCount": 234,
+      "evidenceSentenceCount": 399,
+      "negatedSentenceCount": 0,
+      "fieldCounts": {
+        "procedure": 288,
+        "capability": 63,
+        "equipment": 48
+      },
+      "exampleEvidence": [
+        "Pacemaker, CRT-D, and ICD implantation",
+        "Established Agra's first cath lab for angiography, angioplasty and pacemaker implantation",
+        "Pacemaker implantation"
+      ]
+    },
+    {
+      "id": "echocardiography",
+      "label": "Echocardiography",
+      "kind": "service",
+      "group": "Heart & vessels",
+      "synonyms": [
+        "2D echo"
+      ],
+      "facilityCount": 843,
+      "evidenceSentenceCount": 2147,
+      "negatedSentenceCount": 0,
+      "fieldCounts": {
+        "procedure": 934,
+        "capability": 323,
+        "equipment": 890
+      },
+      "exampleEvidence": [
+        "2D Echo service",
+        "On-site diagnostic imaging and lab capabilities including Digital X-Ray, Ultrasonogram, Echo/ECG, Doppler Studies, and UCG Special Studies",
+        "Diagnostic imaging capabilities include Ultrasonography, Doppler studies, UCG special studies, and Echo/ECG"
+      ]
+    },
+    {
+      "id": "ecg",
+      "label": "ECG",
+      "kind": "service",
+      "group": "Heart & vessels",
+      "synonyms": [],
+      "facilityCount": 855,
+      "evidenceSentenceCount": 1860,
+      "negatedSentenceCount": 0,
+      "fieldCounts": {
+        "procedure": 810,
+        "capability": 339,
+        "equipment": 711
+      },
+      "exampleEvidence": [
+        "24/7 ECG service",
+        "On-site diagnostic imaging and lab capabilities including Digital X-Ray, Ultrasonogram, Echo/ECG, Doppler Studies, and UCG Special Studies",
+        "Diagnostic imaging capabilities include Ultrasonography, Doppler studies, UCG special studies, and Echo/ECG"
+      ]
+    },
+    {
+      "id": "stress-test",
+      "label": "Treadmill / stress test (TMT)",
+      "kind": "service",
+      "group": "Heart & vessels",
+      "synonyms": [],
+      "facilityCount": 448,
+      "evidenceSentenceCount": 899,
+      "negatedSentenceCount": 21,
+      "fieldCounts": {
+        "procedure": 463,
+        "capability": 144,
+        "equipment": 292
+      },
+      "exampleEvidence": [
+        "Diagnostic capabilities including echocardiography (Echo), treadmill testing (TMT), and Holter monitoring",
+        "Cardiac care capabilities including ECG, echocardiography, stress testing, and cardiac catheterization",
+        "Offers in-house diagnostic imaging and laboratory services including digital X-ray, USG, TMT, Echo, Holter, ECG and a pharmacy"
+      ]
+    },
+    {
+      "id": "hypertension",
+      "label": "High blood pressure",
+      "kind": "condition",
+      "group": "Heart & vessels",
+      "synonyms": [
+        "hypertension",
+        "BP"
+      ],
+      "facilityCount": 202,
+      "evidenceSentenceCount": 279,
+      "negatedSentenceCount": 0,
+      "fieldCounts": {
+        "procedure": 121,
+        "capability": 158,
+        "equipment": 0
+      },
+      "exampleEvidence": [
+        "Treats hypertension with or without renal disease",
+        "Advanced Center for Diabetes/Thyroid/Hypertension/Dialysis",
+        "Diabetes, Hypertension and Cardiac Clinic"
+      ]
+    },
+    {
+      "id": "varicose-veins",
+      "label": "Varicose veins",
+      "kind": "condition",
+      "group": "Heart & vessels",
+      "synonyms": [],
+      "facilityCount": 154,
+      "evidenceSentenceCount": 349,
+      "negatedSentenceCount": 1,
+      "fieldCounts": {
+        "procedure": 239,
+        "capability": 75,
+        "equipment": 35
+      },
+      "exampleEvidence": [
+        "Performs RIRS for kidney stones and EVLT for varicose veins",
+        "Pioneer of Endovenous Varicose Veins Treatment",
+        "Offers Endovenous Laser Treatment (EVLT), Foam Sclerotherapy, and Radio Frequency Ablation for Varicose Veins"
+      ]
+    },
+    {
+      "id": "mri",
+      "label": "MRI scan",
+      "kind": "service",
+      "group": "Imaging & diagnostics",
+      "synonyms": [
+        "magnetic resonance imaging"
+      ],
+      "facilityCount": 941,
+      "evidenceSentenceCount": 2839,
+      "negatedSentenceCount": 3,
+      "fieldCounts": {
+        "procedure": 786,
+        "capability": 535,
+        "equipment": 1518
+      },
+      "exampleEvidence": [
+        "CT and MRI diagnostic capabilities available for registered patients",
+        "MRI diagnostic capability",
+        "Regional diagnostic center provides MRI and CT scans"
+      ]
+    },
+    {
+      "id": "ct-scan",
+      "label": "CT scan",
+      "kind": "service",
+      "group": "Imaging & diagnostics",
+      "synonyms": [
+        "computed tomography"
+      ],
+      "facilityCount": 1502,
+      "evidenceSentenceCount": 4693,
+      "negatedSentenceCount": 4,
+      "fieldCounts": {
+        "procedure": 1437,
+        "capability": 805,
+        "equipment": 2451
+      },
+      "exampleEvidence": [
+        "CT and MRI diagnostic capabilities available for registered patients",
+        "24x7 CT-Scan, X-ray and Pathology services",
+        "Diagnostic imaging capability: Digital PET CT services available at Sanchezeti Hospital in Shivaji Nagar, Pune"
+      ]
+    },
+    {
+      "id": "x-ray",
+      "label": "X-ray",
+      "kind": "service",
+      "group": "Imaging & diagnostics",
+      "synonyms": [],
+      "facilityCount": 2469,
+      "evidenceSentenceCount": 6494,
+      "negatedSentenceCount": 5,
+      "fieldCounts": {
+        "procedure": 1947,
+        "capability": 958,
+        "equipment": 3589
+      },
+      "exampleEvidence": [
+        "24x7 CT-Scan, X-ray and Pathology services",
+        "Dual Energy X-Ray Absorptiometry (DEXA) program",
+        "Historical: Started with an X-Ray machine in 1931."
+      ]
+    },
+    {
+      "id": "ultrasound",
+      "label": "Ultrasound / sonography",
+      "kind": "service",
+      "group": "Imaging & diagnostics",
+      "synonyms": [
+        "sonography",
+        "USG",
+        "Doppler"
+      ],
+      "facilityCount": 2025,
+      "evidenceSentenceCount": 6378,
+      "negatedSentenceCount": 1,
+      "fieldCounts": {
+        "procedure": 2379,
+        "capability": 1036,
+        "equipment": 2963
+      },
+      "exampleEvidence": [
+        "Performs retina examination and eye ultrasound as diagnostic services",
+        "Eye ultrasound services available",
+        "Ultrasound including Doppler and fetal/neonatal imaging; whole-body ultrasound; neonatal cranial ultrasound; foetal anomaly scanning; color Doppler studies."
+      ]
+    },
+    {
+      "id": "mammography",
+      "label": "Mammography",
+      "kind": "service",
+      "group": "Imaging & diagnostics",
+      "synonyms": [],
+      "facilityCount": 311,
+      "evidenceSentenceCount": 785,
+      "negatedSentenceCount": 0,
+      "fieldCounts": {
+        "procedure": 261,
+        "capability": 128,
+        "equipment": 396
+      },
+      "exampleEvidence": [
+        "Mammography with tomosynthesis and stereotactic biopsy.",
+        "Offers radiology imaging services including CT, MRI, DEXA, Ultrasound, Mammography, and fluoroscopy",
+        "Provides mammography and bone densitometry (DEXA) services"
+      ]
+    },
+    {
+      "id": "pet-ct",
+      "label": "PET-CT scan",
+      "kind": "service",
+      "group": "Imaging & diagnostics",
+      "synonyms": [],
+      "facilityCount": 224,
+      "evidenceSentenceCount": 933,
+      "negatedSentenceCount": 0,
+      "fieldCounts": {
+        "procedure": 309,
+        "capability": 150,
+        "equipment": 474
+      },
+      "exampleEvidence": [
+        "Diagnostic imaging capability: Digital PET CT services available at Sanchezeti Hospital in Shivaji Nagar, Pune",
+        "PET-CT imaging capability",
+        "Uses CT, MRI, and PET/CT imaging for diagnosis and treatment planning"
+      ]
+    },
+    {
+      "id": "bone-density",
+      "label": "Bone density (DEXA)",
+      "kind": "service",
+      "group": "Imaging & diagnostics",
+      "synonyms": [
+        "DEXA scan",
+        "osteoporosis test"
+      ],
+      "facilityCount": 196,
+      "evidenceSentenceCount": 453,
+      "negatedSentenceCount": 0,
+      "fieldCounts": {
+        "procedure": 161,
+        "capability": 65,
+        "equipment": 227
+      },
+      "exampleEvidence": [
+        "Dual Energy X-Ray Absorptiometry (DEXA) program",
+        "Radiology department provides advanced diagnostic imaging capabilities (MRI, CT, Ultrasound, Doppler, Dexa, Fluoroscopy, X-ray) and interventional procedures",
+        "Offers radiology imaging services including CT, MRI, DEXA, Ultrasound, Mammography, and fluoroscopy"
+      ]
+    },
+    {
+      "id": "pathology-lab",
+      "label": "Pathology / blood tests",
+      "kind": "service",
+      "group": "Imaging & diagnostics",
+      "synonyms": [
+        "lab tests",
+        "blood test"
+      ],
+      "facilityCount": 2193,
+      "evidenceSentenceCount": 5729,
+      "negatedSentenceCount": 11,
+      "fieldCounts": {
+        "procedure": 1579,
+        "capability": 2869,
+        "equipment": 1281
+      },
+      "exampleEvidence": [
+        "Provides complete laboratory services",
+        "The clinical laboratory at Kasturba Hospital supports hematology and clinical pathology testing with pre-analytical, analytical, and post-analytical workflows",
+        "The clinical laboratory employed 33 technical staff during the study period (June 2021 to May 2023)"
+      ]
+    },
+    {
+      "id": "health-checkup",
+      "label": "Health check-up",
+      "kind": "service",
+      "group": "Imaging & diagnostics",
+      "synonyms": [],
+      "facilityCount": 1323,
+      "evidenceSentenceCount": 2987,
+      "negatedSentenceCount": 2,
+      "fieldCounts": {
+        "procedure": 1713,
+        "capability": 1257,
+        "equipment": 17
+      },
+      "exampleEvidence": [
+        "Offers senior citizen health checkup",
+        "Free ante-natal checkups on the 9th of every month",
+        "Free antenatal checkups on the 9th of every month"
+      ]
+    },
+    {
+      "id": "cancer",
+      "label": "Cancer",
+      "kind": "condition",
+      "group": "Cancer",
+      "synonyms": [
+        "oncology",
+        "tumour",
+        "malignancy"
+      ],
+      "facilityCount": 2316,
+      "evidenceSentenceCount": 8405,
+      "negatedSentenceCount": 14,
+      "fieldCounts": {
+        "procedure": 3831,
+        "capability": 4400,
+        "equipment": 174
+      },
+      "exampleEvidence": [
+        "Dr. Prabhat Gupta is a Consultant Surgical Oncologist at Deep Hospital, Ludhiana, Punjab since January 2019.",
+        "Backs up trauma, oncologic surgery, head and neck reconstruction, diabetic foot reconstruction and complex wound management",
+        "Pediatric hematology-oncology services including bone marrow transplantation"
+      ]
+    },
+    {
+      "id": "chemotherapy",
+      "label": "Chemotherapy",
+      "kind": "service",
+      "group": "Cancer",
+      "synonyms": [],
+      "facilityCount": 290,
+      "evidenceSentenceCount": 617,
+      "negatedSentenceCount": 1,
+      "fieldCounts": {
+        "procedure": 412,
+        "capability": 177,
+        "equipment": 28
+      },
+      "exampleEvidence": [
+        "Cancer wing expanded to include surgical oncology and chemotherapy services",
+        "Ocular oncology service with radiotherapy and chemotherapy delivery to the eye",
+        "Oncology department with a chemotherapy unit"
+      ]
+    },
+    {
+      "id": "radiotherapy",
+      "label": "Radiation therapy",
+      "kind": "service",
+      "group": "Cancer",
+      "synonyms": [],
+      "facilityCount": 340,
+      "evidenceSentenceCount": 1334,
+      "negatedSentenceCount": 2,
+      "fieldCounts": {
+        "procedure": 488,
+        "capability": 419,
+        "equipment": 427
+      },
+      "exampleEvidence": [
+        "Radiotherapy Department",
+        "Postgraduate courses in radiotherapy are offered at the Cancer wing of SCB Medical College since 1975",
+        "Postgraduate courses in radiotherapy started in 1975 at SCB Medical College"
+      ]
+    },
+    {
+      "id": "bone-marrow-transplant",
+      "label": "Bone marrow transplant",
+      "kind": "service",
+      "group": "Cancer",
+      "synonyms": [],
+      "facilityCount": 151,
+      "evidenceSentenceCount": 377,
+      "negatedSentenceCount": 2,
+      "fieldCounts": {
+        "procedure": 219,
+        "capability": 139,
+        "equipment": 19
+      },
+      "exampleEvidence": [
+        "Pediatric hematology-oncology services including bone marrow transplantation",
+        "Tissue & Organ Transplantation programs including Kidney, Liver, Small Bowel, Pancreas and Bone Marrow Stem Cell Transplantation",
+        "Center of Excellence: Hematology, Hemato-Oncology and Bone Marrow Transplantation"
+      ]
+    },
+    {
+      "id": "pregnancy-delivery",
+      "label": "Pregnancy & childbirth",
+      "kind": "service",
+      "group": "Women's health & fertility",
+      "synonyms": [
+        "maternity",
+        "antenatal care",
+        "delivery"
+      ],
+      "facilityCount": 1778,
+      "evidenceSentenceCount": 4247,
+      "negatedSentenceCount": 1,
+      "fieldCounts": {
+        "procedure": 1873,
+        "capability": 1860,
+        "equipment": 514
+      },
+      "exampleEvidence": [
+        "Offers labour room services and nursery services.",
+        "Chawla IVF Jalandhar is a unit of Chawla Nursing Home & Maternity Hospital Jalandhar",
+        "Specializes in infertility and maternity services"
+      ]
+    },
+    {
+      "id": "c-section",
+      "label": "Caesarean section",
+      "kind": "service",
+      "group": "Women's health & fertility",
+      "synonyms": [
+        "C-section",
+        "LSCS"
+      ],
+      "facilityCount": 438,
+      "evidenceSentenceCount": 666,
+      "negatedSentenceCount": 0,
+      "fieldCounts": {
+        "procedure": 559,
+        "capability": 104,
+        "equipment": 3
+      },
+      "exampleEvidence": [
+        "Obstetrics and gynaecology including normal delivery and caesarean section",
+        "Delivers normal delivery and caesarean section",
+        "Performs emergency cesarean sections"
+      ]
+    },
+    {
+      "id": "high-risk-pregnancy",
+      "label": "High-risk pregnancy",
+      "kind": "condition",
+      "group": "Women's health & fertility",
+      "synonyms": [],
+      "facilityCount": 410,
+      "evidenceSentenceCount": 837,
+      "negatedSentenceCount": 0,
+      "fieldCounts": {
+        "procedure": 290,
+        "capability": 538,
+        "equipment": 9
+      },
+      "exampleEvidence": [
+        "Fetal Medicine department",
+        "Center of Excellence: Fetal Medicine",
+        "High-risk pregnancy care program"
+      ]
+    },
+    {
+      "id": "infertility",
+      "label": "Infertility",
+      "kind": "condition",
+      "group": "Women's health & fertility",
+      "synonyms": [
+        "fertility treatment"
+      ],
+      "facilityCount": 1312,
+      "evidenceSentenceCount": 4717,
+      "negatedSentenceCount": 13,
+      "fieldCounts": {
+        "procedure": 1611,
+        "capability": 3057,
+        "equipment": 49
+      },
+      "exampleEvidence": [
+        "Centre of Excellence for Complex Fertility Issues",
+        "Offers a complete spectrum of fertility services including IUI, IVF, ICSI, laparoscopy, and hysteroscopy",
+        "Male fertility evaluations, hormonal assessments, sperm analysis, and advanced andrology treatments"
+      ]
+    },
+    {
+      "id": "ivf",
+      "label": "IVF",
+      "kind": "service",
+      "group": "Women's health & fertility",
+      "synonyms": [
+        "in vitro fertilisation",
+        "test tube baby",
+        "ICSI"
+      ],
+      "facilityCount": 851,
+      "evidenceSentenceCount": 5273,
+      "negatedSentenceCount": 13,
+      "fieldCounts": {
+        "procedure": 2415,
+        "capability": 2596,
+        "equipment": 262
+      },
+      "exampleEvidence": [
+        "Offers a complete spectrum of fertility services including IUI, IVF, ICSI, laparoscopy, and hysteroscopy",
+        "High IVF success rates",
+        "Chawla IVF Jalandhar is a unit of Chawla Nursing Home & Maternity Hospital Jalandhar"
+      ]
+    },
+    {
+      "id": "iui",
+      "label": "IUI",
+      "kind": "service",
+      "group": "Women's health & fertility",
+      "synonyms": [],
+      "facilityCount": 469,
+      "evidenceSentenceCount": 1167,
+      "negatedSentenceCount": 0,
+      "fieldCounts": {
+        "procedure": 786,
+        "capability": 370,
+        "equipment": 11
+      },
+      "exampleEvidence": [
+        "Offers a complete spectrum of fertility services including IUI, IVF, ICSI, laparoscopy, and hysteroscopy",
+        "IVF center offering IVF, IUI and test-tube baby services",
+        "Infertility evaluation and treatment including intrauterine insemination (IUI)"
+      ]
+    },
+    {
+      "id": "pcos",
+      "label": "PCOS / PCOD",
+      "kind": "condition",
+      "group": "Women's health & fertility",
+      "synonyms": [
+        "polycystic ovary"
+      ],
+      "facilityCount": 243,
+      "evidenceSentenceCount": 332,
+      "negatedSentenceCount": 1,
+      "fieldCounts": {
+        "procedure": 218,
+        "capability": 113,
+        "equipment": 1
+      },
+      "exampleEvidence": [
+        "Specializes in nutrition care for PCOD/PCOS, dietary deficiency, nutritional disease, diabetes, weight management, and thyroid disorders",
+        "PCOD/PCOS – Homeopathic Treatment in Dehradun (India)",
+        "Dr. Archana has treated Bell's Palsy, Habitual Abortion, Skin Diseases, Secondary Infertility, Piles, Migraine, PCOD, IBS, Depression & Anxiety"
+      ]
+    },
+    {
+      "id": "hysterectomy",
+      "label": "Hysterectomy",
+      "kind": "service",
+      "group": "Women's health & fertility",
+      "synonyms": [],
+      "facilityCount": 433,
+      "evidenceSentenceCount": 684,
+      "negatedSentenceCount": 0,
+      "fieldCounts": {
+        "procedure": 622,
+        "capability": 61,
+        "equipment": 1
+      },
+      "exampleEvidence": [
+        "Hysterectomy and cystectomy available",
+        "Minimally invasive gynecologic surgery including laparoscopic myomectomy and hysterectomy",
+        "Gynecologic surgical procedures including hysterectomy, fibroid removal, ovarian cyst treatment, pelvic adhesion treatment, hysteroscopy, and laparoscopic endometriosis treatment"
+      ]
+    },
+    {
+      "id": "pregnancy-termination",
+      "label": "Medical termination of pregnancy",
+      "kind": "service",
+      "group": "Women's health & fertility",
+      "synonyms": [
+        "MTP",
+        "abortion"
+      ],
+      "facilityCount": 185,
+      "evidenceSentenceCount": 312,
+      "negatedSentenceCount": 1,
+      "fieldCounts": {
+        "procedure": 246,
+        "capability": 64,
+        "equipment": 2
+      },
+      "exampleEvidence": [
+        "Abortion / medical termination of pregnancy (MTP) services",
+        "In 2012, a sting operation led to a case against the doctor under IPC sections 312, 316, 317, 511 and MTP Act sections 3, 4, 5",
+        "Dr. Archana has treated Bell's Palsy, Habitual Abortion, Skin Diseases, Secondary Infertility, Piles, Migraine, PCOD, IBS, Depression & Anxiety"
+      ]
+    },
+    {
+      "id": "family-planning",
+      "label": "Family planning / contraception",
+      "kind": "service",
+      "group": "Women's health & fertility",
+      "synonyms": [],
+      "facilityCount": 667,
+      "evidenceSentenceCount": 953,
+      "negatedSentenceCount": 2,
+      "fieldCounts": {
+        "procedure": 347,
+        "capability": 420,
+        "equipment": 186
+      },
+      "exampleEvidence": [
+        "HPV vaccination and contraception services (IUD placement, family planning)",
+        "Contraception",
+        "Strict sterilization protocol"
+      ]
+    },
+    {
+      "id": "nicu",
+      "label": "Newborn intensive care (NICU)",
+      "kind": "service",
+      "group": "Children & newborns",
+      "synonyms": [
+        "NICU",
+        "SNCU"
+      ],
+      "facilityCount": 733,
+      "evidenceSentenceCount": 1418,
+      "negatedSentenceCount": 0,
+      "fieldCounts": {
+        "procedure": 90,
+        "capability": 975,
+        "equipment": 353
+      },
+      "exampleEvidence": [
+        "10-bed Neonatal Intensive Care Unit (NICU)",
+        "Neonatal Intensive Care Unit (NICU)",
+        "ICU, CCU, NICU, HDU and burn unit"
+      ]
+    },
+    {
+      "id": "picu",
+      "label": "Pediatric intensive care (PICU)",
+      "kind": "service",
+      "group": "Children & newborns",
+      "synonyms": [],
+      "facilityCount": 303,
+      "evidenceSentenceCount": 529,
+      "negatedSentenceCount": 1,
+      "fieldCounts": {
+        "procedure": 30,
+        "capability": 397,
+        "equipment": 102
+      },
+      "exampleEvidence": [
+        "50-bed Paediatric Intensive Care Unit (PICU) with 10 ventilator beds",
+        "Pediatric Intensive Care Unit (PICU)",
+        "Provides CCU, ICU, PICU, BCU, IMCU and HDU"
+      ]
+    },
+    {
+      "id": "vaccination",
+      "label": "Vaccination",
+      "kind": "service",
+      "group": "Children & newborns",
+      "synonyms": [
+        "immunisation"
+      ],
+      "facilityCount": 627,
+      "evidenceSentenceCount": 1199,
+      "negatedSentenceCount": 0,
+      "fieldCounts": {
+        "procedure": 593,
+        "capability": 589,
+        "equipment": 17
+      },
+      "exampleEvidence": [
+        "Collaborator in the rotavirus vaccine effectiveness and impact assessment network",
+        "Organizes health camps and training programs, including pediatric urology surgeries, pap smear camps and cancer awareness talks, pulmonology OPD and PFT screening, infection control training, and vaccination orientation",
+        "BCG vaccination for tuberculosis prevention"
+      ]
+    },
+    {
+      "id": "child-development",
+      "label": "Autism & child development",
+      "kind": "condition",
+      "group": "Children & newborns",
+      "synonyms": [],
+      "facilityCount": 135,
+      "evidenceSentenceCount": 289,
+      "negatedSentenceCount": 1,
+      "fieldCounts": {
+        "procedure": 118,
+        "capability": 170,
+        "equipment": 1
+      },
+      "exampleEvidence": [
+        "Renowned pediatrics institute offering specialized care for children, including health checkups, autism, and genetic diseases.",
+        "Offers ADHD – Homeopathic Treatment In Dehradun (India)",
+        "Specializes in incurable conditions such as cancer, cerebral palsy, and autism"
+      ]
+    },
+    {
+      "id": "cataract",
+      "label": "Cataract",
+      "kind": "condition",
+      "group": "Eyes",
+      "synonyms": [],
+      "facilityCount": 793,
+      "evidenceSentenceCount": 3667,
+      "negatedSentenceCount": 9,
+      "fieldCounts": {
+        "procedure": 2219,
+        "capability": 1122,
+        "equipment": 326
+      },
+      "exampleEvidence": [
+        "Comprehensive eye care including cataract, retina, glaucoma, and pediatric ophthalmology services",
+        " bladeless laser-assisted cataract surgery",
+        "Offers laser refractive and cataract surgery"
+      ]
+    },
+    {
+      "id": "glaucoma",
+      "label": "Glaucoma",
+      "kind": "condition",
+      "group": "Eyes",
+      "synonyms": [],
+      "facilityCount": 566,
+      "evidenceSentenceCount": 1721,
+      "negatedSentenceCount": 0,
+      "fieldCounts": {
+        "procedure": 969,
+        "capability": 722,
+        "equipment": 30
+      },
+      "exampleEvidence": [
+        "General ophthalmology and subspecialty ophthalmology services including glaucoma, cornea, vitreo-retinal, pediatric ophthalmology",
+        "Offers comprehensive eye care services including General Ophthalmology, Pediatric, Glaucoma, Cornea, Vitreo-Retinal, Eye Bank, Community Ophthalmology, Low Vision Aid, Contact Lens Clinic, and Orthoptic",
+        "Specialty ophthalmology departments including paediatrics, glaucoma, retina, cornea, oculoplasty, low vision, and orthoptics"
+      ]
+    },
+    {
+      "id": "retina",
+      "label": "Retina problems / diabetic retinopathy",
+      "kind": "condition",
+      "group": "Eyes",
+      "synonyms": [
+        "diabetic retinopathy",
+        "vitreoretinal"
+      ],
+      "facilityCount": 647,
+      "evidenceSentenceCount": 2626,
+      "negatedSentenceCount": 1,
+      "fieldCounts": {
+        "procedure": 1508,
+        "capability": 977,
+        "equipment": 141
+      },
+      "exampleEvidence": [
+        "General ophthalmology and subspecialty ophthalmology services including glaucoma, cornea, vitreo-retinal, pediatric ophthalmology",
+        "Offers comprehensive eye care services including General Ophthalmology, Pediatric, Glaucoma, Cornea, Vitreo-Retinal, Eye Bank, Community Ophthalmology, Low Vision Aid, Contact Lens Clinic, and Orthoptic",
+        "Specialty ophthalmology departments including paediatrics, glaucoma, retina, cornea, oculoplasty, low vision, and orthoptics"
+      ]
+    },
+    {
+      "id": "refractive-surgery",
+      "label": "LASIK / vision correction",
+      "kind": "service",
+      "group": "Eyes",
+      "synonyms": [
+        "LASIK",
+        "laser eye surgery"
+      ],
+      "facilityCount": 545,
+      "evidenceSentenceCount": 2353,
+      "negatedSentenceCount": 0,
+      "fieldCounts": {
+        "procedure": 1499,
+        "capability": 674,
+        "equipment": 180
+      },
+      "exampleEvidence": [
+        "Comprehensive eye care services including cataract surgery, LASIK, glaucoma treatment, and pediatric eye care",
+        "Comprehensive refractive surgery program including Contoura Vision, LASIK, and ICL",
+        "LASIK laser refractive surgery program."
+      ]
+    },
+    {
+      "id": "squint",
+      "label": "Squint / strabismus",
+      "kind": "condition",
+      "group": "Eyes",
+      "synonyms": [],
+      "facilityCount": 341,
+      "evidenceSentenceCount": 819,
+      "negatedSentenceCount": 0,
+      "fieldCounts": {
+        "procedure": 563,
+        "capability": 254,
+        "equipment": 2
+      },
+      "exampleEvidence": [
+        "Pediatric ophthalmology and squint program.",
+        "Squint treatment program.",
+        "Offers squint correction services"
+      ]
+    },
+    {
+      "id": "cornea",
+      "label": "Cornea problems / transplant",
+      "kind": "condition",
+      "group": "Eyes",
+      "synonyms": [],
+      "facilityCount": 464,
+      "evidenceSentenceCount": 1524,
+      "negatedSentenceCount": 0,
+      "fieldCounts": {
+        "procedure": 902,
+        "capability": 524,
+        "equipment": 98
+      },
+      "exampleEvidence": [
+        "Keratoplasty centre",
+        "General ophthalmology and subspecialty ophthalmology services including glaucoma, cornea, vitreo-retinal, pediatric ophthalmology",
+        "Offers comprehensive eye care services including General Ophthalmology, Pediatric, Glaucoma, Cornea, Vitreo-Retinal, Eye Bank, Community Ophthalmology, Low Vision Aid, Contact Lens Clinic, and Orthoptic"
+      ]
+    },
+    {
+      "id": "joint-replacement",
+      "label": "Knee / hip replacement",
+      "kind": "service",
+      "group": "Bones, joints & spine",
+      "synonyms": [
+        "knee replacement",
+        "hip replacement"
+      ],
+      "facilityCount": 1381,
+      "evidenceSentenceCount": 5292,
+      "negatedSentenceCount": 4,
+      "fieldCounts": {
+        "procedure": 3455,
+        "capability": 1626,
+        "equipment": 211
+      },
+      "exampleEvidence": [
+        "Specializes in Joint Replacement Surgery and Bone and Joint Surgery",
+        "Orthopaedic hospital with spine surgery and arthroplasty capabilities",
+        "Specialized orthopedic departments including Shoulder, Hand & Microvascular, Hip, Spine, Joint Replacement, and Foot and Ankle"
+      ]
+    },
+    {
+      "id": "arthroscopy",
+      "label": "Arthroscopy",
+      "kind": "service",
+      "group": "Bones, joints & spine",
+      "synonyms": [],
+      "facilityCount": 724,
+      "evidenceSentenceCount": 1902,
+      "negatedSentenceCount": 0,
+      "fieldCounts": {
+        "procedure": 1347,
+        "capability": 473,
+        "equipment": 82
+      },
+      "exampleEvidence": [
+        "Knee, hip, ankle, and shoulder arthroscopy services",
+        "Dr. Nandan Rao is an MS Orthopedic Arthroscopy Surgeon specializing in joint preservation, sports orthopedics, ligament injuries and joint fractures.",
+        "Dr. Nandan Rao has 10 years of experience in arthroscopy and joint preservation."
+      ]
+    },
+    {
+      "id": "spine-surgery",
+      "label": "Spine surgery",
+      "kind": "service",
+      "group": "Bones, joints & spine",
+      "synonyms": [],
+      "facilityCount": 784,
+      "evidenceSentenceCount": 1909,
+      "negatedSentenceCount": 2,
+      "fieldCounts": {
+        "procedure": 1176,
+        "capability": 668,
+        "equipment": 65
+      },
+      "exampleEvidence": [
+        "Orthopaedic hospital with spine surgery and arthroplasty capabilities",
+        "Orthopedics, Joint Replacement & Sports Medicine including Robotic Knee Replacement, Hip Replacement & Revisions, Spinal deformity correction, Endoscopic Spine Surgeries",
+        "Department presence including General Medicine, Medical Oncology and Hemato Oncology, Radiation Oncology, Cardiology, Neurology, Neurosurgery, Orthopedics, Spine Surgery, Cranio-Maxillofacial Surgery"
+      ]
+    },
+    {
+      "id": "fracture-trauma",
+      "label": "Fractures & trauma",
+      "kind": "condition",
+      "group": "Bones, joints & spine",
+      "synonyms": [
+        "broken bone"
+      ],
+      "facilityCount": 1260,
+      "evidenceSentenceCount": 2624,
+      "negatedSentenceCount": 5,
+      "fieldCounts": {
+        "procedure": 1172,
+        "capability": 1404,
+        "equipment": 48
+      },
+      "exampleEvidence": [
+        "Sushtruta Trauma Centre",
+        "KMCH provides emergency care, ICU, trauma care, cardiology, cardiothoracic surgery, transplant surgery, and cancer care",
+        "24×7 Emergency & Trauma Care"
+      ]
+    },
+    {
+      "id": "arthritis",
+      "label": "Arthritis",
+      "kind": "condition",
+      "group": "Bones, joints & spine",
+      "synonyms": [
+        "rheumatoid arthritis",
+        "osteoarthritis"
+      ],
+      "facilityCount": 365,
+      "evidenceSentenceCount": 609,
+      "negatedSentenceCount": 0,
+      "fieldCounts": {
+        "procedure": 362,
+        "capability": 241,
+        "equipment": 6
+      },
+      "exampleEvidence": [
+        "Dr. Tanmay Shah specializes in orthopedics (MS Orthopaedics) and has a Fellowship in Arthritis and Joint Replacement",
+        "Tests offered include Anemia Profile, Arthritis Profile, Diabetic Profile, Elderly Male Profile, Full Body Check-Up",
+        "Provides holistic homeopathic treatment for hair fall, anxiety, skin problems, arthritis, weight management, diabetes, stones, women's problems, child problems, gout"
+      ]
+    },
+    {
+      "id": "back-pain",
+      "label": "Back & neck pain",
+      "kind": "condition",
+      "group": "Bones, joints & spine",
+      "synonyms": [],
+      "facilityCount": 304,
+      "evidenceSentenceCount": 596,
+      "negatedSentenceCount": 0,
+      "fieldCounts": {
+        "procedure": 401,
+        "capability": 193,
+        "equipment": 2
+      },
+      "exampleEvidence": [
+        "Spondylitis – Homeopathic Treatment In Dehradun (India)",
+        "Orthopaedic & Lumbar Spine program including Disc Replacement, Hip Replacement, Joint Replacement, Knee Replacement, Spine Surgery, Spondylitis",
+        "Offers spine and back pain care with non-surgical treatment options"
+      ]
+    },
+    {
+      "id": "physiotherapy",
+      "label": "Physiotherapy & rehabilitation",
+      "kind": "service",
+      "group": "Bones, joints & spine",
+      "synonyms": [],
+      "facilityCount": 1913,
+      "evidenceSentenceCount": 4278,
+      "negatedSentenceCount": 5,
+      "fieldCounts": {
+        "procedure": 1696,
+        "capability": 2412,
+        "equipment": 170
+      },
+      "exampleEvidence": [
+        "Physiotherapy Department",
+        "Physiotherapy department",
+        "Offers Physiotherapy services"
+      ]
+    },
+    {
+      "id": "stroke",
+      "label": "Stroke",
+      "kind": "condition",
+      "group": "Brain & nerves",
+      "synonyms": [],
+      "facilityCount": 360,
+      "evidenceSentenceCount": 628,
+      "negatedSentenceCount": 2,
+      "fieldCounts": {
+        "procedure": 298,
+        "capability": 318,
+        "equipment": 12
+      },
+      "exampleEvidence": [
+        "Cerebrovascular department for stroke and related conditions",
+        "District Civil Hospital participates in the National Program for Prevention and Control of Diabetes, Cardio-Vascular Diseases, Cancer and Stroke",
+        "Stroke treatment in Jaipur"
+      ]
+    },
+    {
+      "id": "epilepsy",
+      "label": "Epilepsy / seizures",
+      "kind": "condition",
+      "group": "Brain & nerves",
+      "synonyms": [],
+      "facilityCount": 153,
+      "evidenceSentenceCount": 299,
+      "negatedSentenceCount": 0,
+      "fieldCounts": {
+        "procedure": 154,
+        "capability": 137,
+        "equipment": 8
+      },
+      "exampleEvidence": [
+        "The institution has a Department of Pharmacology that conducts clinical epilepsy research, including prospective studies evaluating newer antiepileptic drugs for refractory epilepsy.",
+        "Functional neurosurgery program for movement disorders, epilepsy, and psychiatric conditions",
+        "Epilepsy diagnostics program"
+      ]
+    },
+    {
+      "id": "neurosurgery",
+      "label": "Brain surgery",
+      "kind": "service",
+      "group": "Brain & nerves",
+      "synonyms": [],
+      "facilityCount": 1049,
+      "evidenceSentenceCount": 2381,
+      "negatedSentenceCount": 0,
+      "fieldCounts": {
+        "procedure": 847,
+        "capability": 1443,
+        "equipment": 91
+      },
+      "exampleEvidence": [
+        "Neurosurgery Department",
+        "Neurosurgery department",
+        "Offers Neurosurgery services"
+      ]
+    },
+    {
+      "id": "eeg-emg",
+      "label": "EEG / EMG / nerve conduction",
+      "kind": "service",
+      "group": "Brain & nerves",
+      "synonyms": [],
+      "facilityCount": 297,
+      "evidenceSentenceCount": 834,
+      "negatedSentenceCount": 0,
+      "fieldCounts": {
+        "procedure": 406,
+        "capability": 88,
+        "equipment": 340
+      },
+      "exampleEvidence": [
+        "Neuro-electrophysiology studies capability (EEG, EMG, nerve conduction studies, evoked potentials)",
+        "Offers Neurology testing including EEG, Video EEG, NCV, EMG, VEP and BERA",
+        "Neurology diagnostics (EEG, Video EEG, NCV, EMG, VEP, BERA)"
+      ]
+    },
+    {
+      "id": "headache-migraine",
+      "label": "Headache & migraine",
+      "kind": "condition",
+      "group": "Brain & nerves",
+      "synonyms": [],
+      "facilityCount": 231,
+      "evidenceSentenceCount": 368,
+      "negatedSentenceCount": 0,
+      "fieldCounts": {
+        "procedure": 205,
+        "capability": 161,
+        "equipment": 2
+      },
+      "exampleEvidence": [
+        "Site for migraine quality of life and disability research using MINI, IDS-C, WHOQOL-BREF and MIDAS",
+        "The migraine quality of life study at AIIMS Rishikesh included 30 subjects from the Psychiatry and Neurology departments",
+        "Operates Headache and Migraine Clinics at Jaslok Hospital in Mumbai, India"
+      ]
+    },
+    {
+      "id": "parkinsons-dementia",
+      "label": "Parkinson's & dementia",
+      "kind": "condition",
+      "group": "Brain & nerves",
+      "synonyms": [],
+      "facilityCount": 121,
+      "evidenceSentenceCount": 234,
+      "negatedSentenceCount": 0,
+      "fieldCounts": {
+        "procedure": 128,
+        "capability": 105,
+        "equipment": 1
+      },
+      "exampleEvidence": [
+        "Functional neurosurgery program for movement disorders, epilepsy, and psychiatric conditions",
+        "Dr. Saurabh Bilala specializes in neuro-intensive care, stroke, dementia, athetosis, migraine disorders, epilepsy, headache, Parkinson's disease, traumatic brain injury and chronic pain",
+        "Functional Neurosurgery with Deep Brain Stimulation (DBS) for Parkinson’s and other movement disorders"
+      ]
+    },
+    {
+      "id": "endoscopy",
+      "label": "Endoscopy / colonoscopy",
+      "kind": "service",
+      "group": "Digestive & liver",
+      "synonyms": [
+        "colonoscopy",
+        "gastroscopy",
+        "ERCP"
+      ],
+      "facilityCount": 954,
+      "evidenceSentenceCount": 2636,
+      "negatedSentenceCount": 0,
+      "fieldCounts": {
+        "procedure": 1520,
+        "capability": 577,
+        "equipment": 539
+      },
+      "exampleEvidence": [
+        "Gastroscopy and colonoscopy procedures offered",
+        "Gastrointestinal Sciences with Endoscopy for Diagnostics & Therapeutic Procedures, Donor Transplant Surgery, Fecal Microbiota Transplant, TIPS, and Minimally Invasive GI & HPB Surgery",
+        "Laparoscopic and gynecological endoscopy procedures"
+      ]
+    },
+    {
+      "id": "gallstones",
+      "label": "Gallstones",
+      "kind": "condition",
+      "group": "Digestive & liver",
+      "synonyms": [
+        "gall bladder removal",
+        "cholecystectomy"
+      ],
+      "facilityCount": 433,
+      "evidenceSentenceCount": 673,
+      "negatedSentenceCount": 0,
+      "fieldCounts": {
+        "procedure": 605,
+        "capability": 61,
+        "equipment": 7
+      },
+      "exampleEvidence": [
+        "Specializes in gallbladder diseases, liver diseases, abdomen and intestinal diseases, piles and hernias",
+        "Laparoscopic surgery training program such as Safe laparoscopic cholecystectomy skill course & live workshop",
+        "Performs liver resection, gallbladder removal, and Whipple procedure"
+      ]
+    },
+    {
+      "id": "hernia",
+      "label": "Hernia",
+      "kind": "condition",
+      "group": "Digestive & liver",
+      "synonyms": [],
+      "facilityCount": 601,
+      "evidenceSentenceCount": 1014,
+      "negatedSentenceCount": 1,
+      "fieldCounts": {
+        "procedure": 917,
+        "capability": 90,
+        "equipment": 7
+      },
+      "exampleEvidence": [
+        "Dr Rajat Kelkar, a surgeon at Noble Heart & Super Speciality Hospital Rohtak, specializes in advanced laparoscopic, GI, hernia and bariatric surgery",
+        "Surgical services including Direct Inguinal Hernia Surgery, Indirect Inguinal Hernia Surgery, Pediatric Hernia Surgery, Obstructed Inguinal Hernia, Strangulated Inguinal Hernia, Umbilical Hernia",
+        "Specializes in gallbladder diseases, liver diseases, abdomen and intestinal diseases, piles and hernias"
+      ]
+    },
+    {
+      "id": "piles-fistula",
+      "label": "Piles, fissure & fistula",
+      "kind": "condition",
+      "group": "Digestive & liver",
+      "synonyms": [
+        "haemorrhoids",
+        "anal fistula"
+      ],
+      "facilityCount": 765,
+      "evidenceSentenceCount": 2145,
+      "negatedSentenceCount": 1,
+      "fieldCounts": {
+        "procedure": 1688,
+        "capability": 393,
+        "equipment": 64
+      },
+      "exampleEvidence": [
+        "Specializes in anorectal diseases including piles, fissures, fistulas, pilonidal sinus, perianal abscess, and sentinel piles",
+        "Specializes in anorectal disorders with proctology and laser surgery expertise",
+        "Specializes in proctology and anorectal disease management"
+      ]
+    },
+    {
+      "id": "appendicitis",
+      "label": "Appendicitis",
+      "kind": "condition",
+      "group": "Digestive & liver",
+      "synonyms": [],
+      "facilityCount": 262,
+      "evidenceSentenceCount": 324,
+      "negatedSentenceCount": 0,
+      "fieldCounts": {
+        "procedure": 309,
+        "capability": 12,
+        "equipment": 3
+      },
+      "exampleEvidence": [
+        "Appendectomy",
+        "Laparoscopic appendectomy",
+        "Appendicitis Treatment"
+      ]
+    },
+    {
+      "id": "liver-disease",
+      "label": "Liver disease",
+      "kind": "condition",
+      "group": "Digestive & liver",
+      "synonyms": [
+        "hepatitis",
+        "cirrhosis"
+      ],
+      "facilityCount": 290,
+      "evidenceSentenceCount": 462,
+      "negatedSentenceCount": 0,
+      "fieldCounts": {
+        "procedure": 156,
+        "capability": 299,
+        "equipment": 7
+      },
+      "exampleEvidence": [
+        "Specialties include: Anaesthesiology; Bariatrics; Cardiology; Dentistry; Dermatology; Emergency Medicine; ENT; Gastroenterology; General Surgery; Hematology; Hepatology; Internal Medicine",
+        "Specialisation includes Pathology, Hematology, Immunology, Pulmonology, Transplantation surgery, Cardiology, Nephrology, Hepatology, and Gastroenterology",
+        "Specializes in gallbladder diseases, liver diseases, abdomen and intestinal diseases, piles and hernias"
+      ]
+    },
+    {
+      "id": "liver-transplant",
+      "label": "Liver transplant",
+      "kind": "service",
+      "group": "Digestive & liver",
+      "synonyms": [],
+      "facilityCount": 157,
+      "evidenceSentenceCount": 477,
+      "negatedSentenceCount": 3,
+      "fieldCounts": {
+        "procedure": 278,
+        "capability": 194,
+        "equipment": 5
+      },
+      "exampleEvidence": [
+        "Dr A. Olithselvan joined Kovai Medical Centre and Hospital (KMCH), Coimbatore as the Director of Liver Transplantation",
+        "KMCH aimed to establish the first liver transplant centre in western Tamilnadu",
+        "Has liver transplant surgeon Dr. Rajeev Ranjan Sinha on staff"
+      ]
+    },
+    {
+      "id": "bariatric-surgery",
+      "label": "Weight-loss (bariatric) surgery",
+      "kind": "service",
+      "group": "Digestive & liver",
+      "synonyms": [],
+      "facilityCount": 340,
+      "evidenceSentenceCount": 837,
+      "negatedSentenceCount": 0,
+      "fieldCounts": {
+        "procedure": 503,
+        "capability": 324,
+        "equipment": 10
+      },
+      "exampleEvidence": [
+        "Specialized bariatric, laparoscopic, endoscopic, colorectal, urologic, breast, and GI surgical services",
+        "Bariatric surgery offered at Continental Hospitals",
+        "Has bariatric surgeon Dr. Amar on staff"
+      ]
+    },
+    {
+      "id": "ent",
+      "label": "Ear, nose & throat (ENT)",
+      "kind": "service",
+      "group": "Ear, nose & throat",
+      "synonyms": [
+        "ENT"
+      ],
+      "facilityCount": 1574,
+      "evidenceSentenceCount": 3830,
+      "negatedSentenceCount": 0,
+      "fieldCounts": {
+        "procedure": 604,
+        "capability": 3106,
+        "equipment": 120
+      },
+      "exampleEvidence": [
+        "ENT Department",
+        "ENT department",
+        "Offers ENT services"
+      ]
+    },
+    {
+      "id": "sinus",
+      "label": "Sinus problems",
+      "kind": "condition",
+      "group": "Ear, nose & throat",
+      "synonyms": [
+        "sinusitis",
+        "FESS"
+      ],
+      "facilityCount": 394,
+      "evidenceSentenceCount": 718,
+      "negatedSentenceCount": 0,
+      "fieldCounts": {
+        "procedure": 577,
+        "capability": 114,
+        "equipment": 27
+      },
+      "exampleEvidence": [
+        "Endoscopic sinus surgery capability",
+        "Specializes in anorectal diseases including piles, fissures, fistulas, pilonidal sinus, perianal abscess, and sentinel piles",
+        "ENT services including endoscopic sinus surgery, ear microsurgery, voice disorders, and skull base surgery"
+      ]
+    },
+    {
+      "id": "hearing",
+      "label": "Hearing loss / hearing aids",
+      "kind": "condition",
+      "group": "Ear, nose & throat",
+      "synonyms": [],
+      "facilityCount": 399,
+      "evidenceSentenceCount": 1957,
+      "negatedSentenceCount": 0,
+      "fieldCounts": {
+        "procedure": 834,
+        "capability": 734,
+        "equipment": 389
+      },
+      "exampleEvidence": [
+        "Cochlear implant program for deaf-mute children initiated November 2023 with Rashtriya Bal Swasthya Karyakram (RBSK) support",
+        "Cochlear implant programme",
+        "Cochlear implant introduced in Rajasthan"
+      ]
+    },
+    {
+      "id": "tonsils",
+      "label": "Tonsils & adenoids",
+      "kind": "condition",
+      "group": "Ear, nose & throat",
+      "synonyms": [],
+      "facilityCount": 212,
+      "evidenceSentenceCount": 374,
+      "negatedSentenceCount": 0,
+      "fieldCounts": {
+        "procedure": 347,
+        "capability": 23,
+        "equipment": 4
+      },
+      "exampleEvidence": [
+        "Tonsillectomy capability",
+        "ENT Department offers FESS surgery, microscopic ear surgery, nose-septoplasty procedures, GI endoscopy, foreign body removal, and tonsil/adenoid/thyroid surgery",
+        "Adenoidectomy"
+      ]
+    },
+    {
+      "id": "asthma-copd",
+      "label": "Asthma / COPD",
+      "kind": "condition",
+      "group": "Lungs & breathing",
+      "synonyms": [],
+      "facilityCount": 235,
+      "evidenceSentenceCount": 468,
+      "negatedSentenceCount": 0,
+      "fieldCounts": {
+        "procedure": 206,
+        "capability": 260,
+        "equipment": 2
+      },
+      "exampleEvidence": [
+        "Pulmonary & Asthma Clinic",
+        "Asthma Management Program",
+        "Specialities include Autism, Bronchitis, Child Immunity, IBS, Infertility, Premenstrual Syndrome, Asthma, Osteoarthritis, Urinary Tract Infections, Allergies"
+      ]
+    },
+    {
+      "id": "tuberculosis",
+      "label": "Tuberculosis (TB)",
+      "kind": "condition",
+      "group": "Lungs & breathing",
+      "synonyms": [],
+      "facilityCount": 218,
+      "evidenceSentenceCount": 437,
+      "negatedSentenceCount": 0,
+      "fieldCounts": {
+        "procedure": 180,
+        "capability": 245,
+        "equipment": 12
+      },
+      "exampleEvidence": [
+        "TB Clinic",
+        "TB testing clinic for UK visa applications",
+        "Regional Center for Tuberculosis as a super specialty facility"
+      ]
+    },
+    {
+      "id": "pulmonary-function",
+      "label": "Lung function test (PFT)",
+      "kind": "service",
+      "group": "Lungs & breathing",
+      "synonyms": [],
+      "facilityCount": 426,
+      "evidenceSentenceCount": 1034,
+      "negatedSentenceCount": 0,
+      "fieldCounts": {
+        "procedure": 521,
+        "capability": 178,
+        "equipment": 335
+      },
+      "exampleEvidence": [
+        "Bronchoscopy available at Care Hospitals (Chaderghat, Hyderabad)",
+        "Pulmonary Function Tests (PFT) available at Care Hospitals (Chaderghat, Hyderabad)",
+        "Organizes health camps and training programs, including pediatric urology surgeries, pap smear camps and cancer awareness talks, pulmonology OPD and PFT screening, infection control training, and vaccination orientation"
+      ]
+    },
+    {
+      "id": "sleep-apnea",
+      "label": "Sleep apnea / sleep study",
+      "kind": "condition",
+      "group": "Lungs & breathing",
+      "synonyms": [],
+      "facilityCount": 226,
+      "evidenceSentenceCount": 481,
+      "negatedSentenceCount": 0,
+      "fieldCounts": {
+        "procedure": 289,
+        "capability": 135,
+        "equipment": 57
+      },
+      "exampleEvidence": [
+        "Snoring and sleep apnea management capability",
+        "Snoring (OSA) & Allergy program",
+        "Snoring (OSA) & Allergy clinic."
+      ]
+    },
+    {
+      "id": "diabetes",
+      "label": "Diabetes",
+      "kind": "condition",
+      "group": "Hormones & metabolism",
+      "synonyms": [
+        "sugar",
+        "diabetic care"
+      ],
+      "facilityCount": 1315,
+      "evidenceSentenceCount": 3373,
+      "negatedSentenceCount": 1,
+      "fieldCounts": {
+        "procedure": 1396,
+        "capability": 1929,
+        "equipment": 48
+      },
+      "exampleEvidence": [
+        "Backs up trauma, oncologic surgery, head and neck reconstruction, diabetic foot reconstruction and complex wound management",
+        "Listed among Top Diabetology Hospitals In Chennai",
+        "Diabetic care specialists on staff"
+      ]
+    },
+    {
+      "id": "thyroid",
+      "label": "Thyroid disorders",
+      "kind": "condition",
+      "group": "Hormones & metabolism",
+      "synonyms": [],
+      "facilityCount": 624,
+      "evidenceSentenceCount": 1180,
+      "negatedSentenceCount": 0,
+      "fieldCounts": {
+        "procedure": 828,
+        "capability": 332,
+        "equipment": 20
+      },
+      "exampleEvidence": [
+        "Thyroidectomy capability",
+        "Advanced Center for Diabetes/Thyroid/Hypertension/Dialysis",
+        "Specializes in nutrition care for PCOD/PCOS, dietary deficiency, nutritional disease, diabetes, weight management, and thyroid disorders"
+      ]
+    },
+    {
+      "id": "obesity",
+      "label": "Obesity & weight management",
+      "kind": "condition",
+      "group": "Hormones & metabolism",
+      "synonyms": [],
+      "facilityCount": 329,
+      "evidenceSentenceCount": 615,
+      "negatedSentenceCount": 1,
+      "fieldCounts": {
+        "procedure": 309,
+        "capability": 305,
+        "equipment": 1
+      },
+      "exampleEvidence": [
+        "Specializes in nutrition care for PCOD/PCOS, dietary deficiency, nutritional disease, diabetes, weight management, and thyroid disorders",
+        "Steplite Obesity Clinics operates within Fathima Hospital, Kozhikode (Bank Road, Kozhikode, Kerala)",
+        "Obesity clinic program available within Fathima Hospital"
+      ]
+    },
+    {
+      "id": "fever-infections",
+      "label": "Fever, dengue, malaria & typhoid",
+      "kind": "condition",
+      "group": "Infections",
+      "synonyms": [],
+      "facilityCount": 464,
+      "evidenceSentenceCount": 663,
+      "negatedSentenceCount": 0,
+      "fieldCounts": {
+        "procedure": 490,
+        "capability": 170,
+        "equipment": 3
+      },
+      "exampleEvidence": [
+        "Treats viral fever",
+        "Provides treatment for viral fever",
+        "Treats viral fever."
+      ]
+    },
+    {
+      "id": "hiv",
+      "label": "HIV / AIDS",
+      "kind": "condition",
+      "group": "Infections",
+      "synonyms": [],
+      "facilityCount": 145,
+      "evidenceSentenceCount": 255,
+      "negatedSentenceCount": 0,
+      "fieldCounts": {
+        "procedure": 129,
+        "capability": 114,
+        "equipment": 12
+      },
+      "exampleEvidence": [
+        "Antiretroviral Therapy Center as a super specialty facility",
+        "Has ART center",
+        "HIV testing capability"
+      ]
+    },
+    {
+      "id": "snakebite-rabies",
+      "label": "Snakebite & rabies",
+      "kind": "condition",
+      "group": "Infections",
+      "synonyms": [],
+      "facilityCount": 25,
+      "evidenceSentenceCount": 39,
+      "negatedSentenceCount": 1,
+      "fieldCounts": {
+        "procedure": 26,
+        "capability": 12,
+        "equipment": 1
+      },
+      "exampleEvidence": [
+        "Handles approximately 350 patients seeking anti-rabies vaccines daily",
+        "Poison and Snake Bite care",
+        "Emergency treatment for snake bites"
+      ]
+    },
+    {
+      "id": "skin-disease",
+      "label": "Skin conditions",
+      "kind": "condition",
+      "group": "Skin, hair & cosmetic",
+      "synonyms": [
+        "psoriasis",
+        "eczema",
+        "acne"
+      ],
+      "facilityCount": 385,
+      "evidenceSentenceCount": 980,
+      "negatedSentenceCount": 0,
+      "fieldCounts": {
+        "procedure": 737,
+        "capability": 231,
+        "equipment": 12
+      },
+      "exampleEvidence": [
+        "Full-spectrum family practice facility with emphasis in skin disorders",
+        "Offers skin disease treatment",
+        "Offers homeopathic treatment for eczema"
+      ]
+    },
+    {
+      "id": "hair-loss",
+      "label": "Hair loss / hair transplant",
+      "kind": "condition",
+      "group": "Skin, hair & cosmetic",
+      "synonyms": [],
+      "facilityCount": 389,
+      "evidenceSentenceCount": 1231,
+      "negatedSentenceCount": 0,
+      "fieldCounts": {
+        "procedure": 798,
+        "capability": 405,
+        "equipment": 28
+      },
+      "exampleEvidence": [
+        "Hair transplantation & Cosmetic surgery",
+        "Hair transplantation (FUE)",
+        "Offers hair transplant procedures"
+      ]
+    },
+    {
+      "id": "cosmetic-surgery",
+      "label": "Cosmetic / plastic surgery",
+      "kind": "service",
+      "group": "Skin, hair & cosmetic",
+      "synonyms": [],
+      "facilityCount": 1013,
+      "evidenceSentenceCount": 2383,
+      "negatedSentenceCount": 0,
+      "fieldCounts": {
+        "procedure": 1166,
+        "capability": 1181,
+        "equipment": 36
+      },
+      "exampleEvidence": [
+        "Burns and Plastic Surgery Department",
+        "Plastic Surgery department",
+        "Offers Plastic Surgery services"
+      ]
+    },
+    {
+      "id": "burns",
+      "label": "Burns",
+      "kind": "condition",
+      "group": "Skin, hair & cosmetic",
+      "synonyms": [],
+      "facilityCount": 229,
+      "evidenceSentenceCount": 393,
+      "negatedSentenceCount": 2,
+      "fieldCounts": {
+        "procedure": 140,
+        "capability": 217,
+        "equipment": 36
+      },
+      "exampleEvidence": [
+        "Burns and Plastic Surgery Department",
+        "Burns unit is a high-referral center for complex burns (thermal, electric and chemical) in coastal and central Karnataka",
+        "Burns ICU provides lifesaving care with multidisciplinary approach emphasizing recovery and rehabilitation"
+      ]
+    },
+    {
+      "id": "root-canal",
+      "label": "Root canal treatment",
+      "kind": "service",
+      "group": "Dental",
+      "synonyms": [],
+      "facilityCount": 1595,
+      "evidenceSentenceCount": 4531,
+      "negatedSentenceCount": 2,
+      "fieldCounts": {
+        "procedure": 3098,
+        "capability": 1272,
+        "equipment": 161
+      },
+      "exampleEvidence": [
+        "SCB Dental College and Hospital, Cuttack, Odisha, India is the affiliation for the Department of Conservative Dentistry and Endodontics at SCB Dental College and Hospital.",
+        "Has a team of specialized dentists including Endodontists, Orthodontists, Periodontists, and Oral Diagnosis specialists",
+        "Offers treatment options such as Gum Treatment, Root Canal treatment, Orthodontic treatment, Scaling, Dental fillings, Teeth whitening, Dental implants, and Pediatric dentistry"
+      ]
+    },
+    {
+      "id": "dental-implants",
+      "label": "Dental implants",
+      "kind": "service",
+      "group": "Dental",
+      "synonyms": [],
+      "facilityCount": 1529,
+      "evidenceSentenceCount": 5285,
+      "negatedSentenceCount": 0,
+      "fieldCounts": {
+        "procedure": 3115,
+        "capability": 2061,
+        "equipment": 109
+      },
+      "exampleEvidence": [
+        "Specializes in orthodontic and dental implant treatments",
+        "Offers treatment options such as Gum Treatment, Root Canal treatment, Orthodontic treatment, Scaling, Dental fillings, Teeth whitening, Dental implants, and Pediatric dentistry",
+        "Dental implant center"
+      ]
+    },
+    {
+      "id": "orthodontics",
+      "label": "Braces & aligners",
+      "kind": "service",
+      "group": "Dental",
+      "synonyms": [],
+      "facilityCount": 1478,
+      "evidenceSentenceCount": 5501,
+      "negatedSentenceCount": 3,
+      "fieldCounts": {
+        "procedure": 3446,
+        "capability": 1958,
+        "equipment": 97
+      },
+      "exampleEvidence": [
+        "Holds MBBS, MS Orthopedics, and Orthodontic Therapist Diploma Scheme from Royal College of Surgeons in London",
+        "Specializes in orthodontics and dentofacial orthopedics",
+        "Dentist at Bright Smiles Dental Care holds MDS in Orthodontics and Dentofacial Orthopedics from The Oxford Dental College, Bangalore (2015) and BDS from V.S. Dental College, Bangalore (2011)"
+      ]
+    },
+    {
+      "id": "dentures",
+      "label": "Dentures",
+      "kind": "service",
+      "group": "Dental",
+      "synonyms": [],
+      "facilityCount": 853,
+      "evidenceSentenceCount": 2007,
+      "negatedSentenceCount": 0,
+      "fieldCounts": {
+        "procedure": 1751,
+        "capability": 239,
+        "equipment": 17
+      },
+      "exampleEvidence": [
+        "Fabricates full mouth dentures and partial dentures",
+        "Prosthodontics program offering dentures, crowns and bridges, flexible dentures, and full mouth reconstruction.",
+        "Crowns, bridges, and dentures provision"
+      ]
+    },
+    {
+      "id": "tooth-extraction",
+      "label": "Tooth extraction",
+      "kind": "service",
+      "group": "Dental",
+      "synonyms": [],
+      "facilityCount": 864,
+      "evidenceSentenceCount": 1600,
+      "negatedSentenceCount": 0,
+      "fieldCounts": {
+        "procedure": 1490,
+        "capability": 106,
+        "equipment": 4
+      },
+      "exampleEvidence": [
+        "Oral & maxillofacial surgery services including oral cancer screening, surgical teeth extraction, wisdom tooth removal, jaw cyst treatment, and tongue-tie treatment.",
+        "Offers restorative dentistry services including Root Canal Treatment, Wisdom Tooth Extraction, Crowns and Bridges",
+        "Offers tooth extraction, braces treatment, smile makeovers, dental implants, children’s dentistry, dentures, and dental surgery"
+      ]
+    },
+    {
+      "id": "gum-disease",
+      "label": "Gum disease",
+      "kind": "condition",
+      "group": "Dental",
+      "synonyms": [],
+      "facilityCount": 799,
+      "evidenceSentenceCount": 1701,
+      "negatedSentenceCount": 0,
+      "fieldCounts": {
+        "procedure": 1112,
+        "capability": 578,
+        "equipment": 11
+      },
+      "exampleEvidence": [
+        "Dental services including Cosmetic Dentistry, General Dentistry, Kids Dentistry, Gum Treatment, and Advanced Adult Dentistry",
+        "Has a team of specialized dentists including Endodontists, Orthodontists, Periodontists, and Oral Diagnosis specialists",
+        "Offers treatment options such as Gum Treatment, Root Canal treatment, Orthodontic treatment, Scaling, Dental fillings, Teeth whitening, Dental implants, and Pediatric dentistry"
+      ]
+    },
+    {
+      "id": "mental-health",
+      "label": "Mental health (depression, anxiety)",
+      "kind": "condition",
+      "group": "Mental health",
+      "synonyms": [],
+      "facilityCount": 930,
+      "evidenceSentenceCount": 2060,
+      "negatedSentenceCount": 4,
+      "fieldCounts": {
+        "procedure": 438,
+        "capability": 1605,
+        "equipment": 17
+      },
+      "exampleEvidence": [
+        "Offers Psychiatry services",
+        "Specialties include neurosciences, cardiac sciences, orthopaedics, urology, nephrology, mental health and behavioural sciences",
+        "Offers Psychiatry."
+      ]
+    },
+    {
+      "id": "addiction",
+      "label": "De-addiction",
+      "kind": "condition",
+      "group": "Mental health",
+      "synonyms": [],
+      "facilityCount": 139,
+      "evidenceSentenceCount": 412,
+      "negatedSentenceCount": 0,
+      "fieldCounts": {
+        "procedure": 144,
+        "capability": 267,
+        "equipment": 1
+      },
+      "exampleEvidence": [
+        "Addiction rehabilitation program",
+        "Centre Of Excellence In Behavioural & Addiction Medicine at Nirvan Hospital, Kalyanpur, Ring Road, Lucknow",
+        "Provides addiction rehabilitation services"
+      ]
+    },
+    {
+      "id": "emergency-24x7",
+      "label": "24/7 emergency",
+      "kind": "service",
+      "group": "Emergency & critical care",
+      "synonyms": [],
+      "facilityCount": 3392,
+      "evidenceSentenceCount": 7910,
+      "negatedSentenceCount": 17,
+      "fieldCounts": {
+        "procedure": 1132,
+        "capability": 6471,
+        "equipment": 307
+      },
+      "exampleEvidence": [
+        "24x7 Emergency Services with a 50-bed emergency ward",
+        "Accident and Emergency Department",
+        "Provides 24/7 emergency services."
+      ]
+    },
+    {
+      "id": "icu",
+      "label": "Intensive care (ICU)",
+      "kind": "service",
+      "group": "Emergency & critical care",
+      "synonyms": [],
+      "facilityCount": 2434,
+      "evidenceSentenceCount": 6586,
+      "negatedSentenceCount": 6,
+      "fieldCounts": {
+        "procedure": 339,
+        "capability": 4494,
+        "equipment": 1753
+      },
+      "exampleEvidence": [
+        "22-bed Level II Intensive Care Unit (ICU) with 11 ventilator beds",
+        "50-bed Paediatric Intensive Care Unit (PICU) with 10 ventilator beds",
+        "10-bed Neonatal Intensive Care Unit (NICU)"
+      ]
+    },
+    {
+      "id": "ambulance",
+      "label": "Ambulance",
+      "kind": "service",
+      "group": "Emergency & critical care",
+      "synonyms": [],
+      "facilityCount": 1154,
+      "evidenceSentenceCount": 1840,
+      "negatedSentenceCount": 3,
+      "fieldCounts": {
+        "procedure": 108,
+        "capability": 1162,
+        "equipment": 570
+      },
+      "exampleEvidence": [
+        "Ambulance service",
+        "Provides 24/7 ambulance service",
+        "Ambulance services"
+      ]
+    },
+    {
+      "id": "blood-bank",
+      "label": "Blood bank",
+      "kind": "service",
+      "group": "Emergency & critical care",
+      "synonyms": [],
+      "facilityCount": 629,
+      "evidenceSentenceCount": 1298,
+      "negatedSentenceCount": 5,
+      "fieldCounts": {
+        "procedure": 148,
+        "capability": 691,
+        "equipment": 459
+      },
+      "exampleEvidence": [
+        "Blood Bank facility linked to DDUH",
+        "Blood bank operates 24/7 to support emergency services, surgical management and critical care",
+        "Modern blood bank following strict regulatory protocols"
+      ]
+    },
+    {
+      "id": "palliative-care",
+      "label": "Palliative care",
+      "kind": "service",
+      "group": "Emergency & critical care",
+      "synonyms": [],
+      "facilityCount": 179,
+      "evidenceSentenceCount": 392,
+      "negatedSentenceCount": 1,
+      "fieldCounts": {
+        "procedure": 123,
+        "capability": 265,
+        "equipment": 4
+      },
+      "exampleEvidence": [
+        "Palliative care services",
+        "Listed as a palliative care centre in the Palliative Care Centres in India directory by JASCAP",
+        "Offers palliative care services"
+      ]
+    }
+  ]
+}

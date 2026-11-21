@@ -5,6 +5,7 @@ Healthcare facility discovery and recommendation project.
 ## Repository layout
 
 - `web/` — React 19, TypeScript, Vite, and Leaflet frontend.
+- `pipeline/` — Databricks data pipeline; `build_tags.py` builds the service/condition tag catalog in `data/tags/` (see [`pipeline/README.md`](pipeline/README.md)).
 - `APP_FRAMEWORK_REQUIREMENTS.en.md` — product, data, API, ranking, and deployment requirements.
 
 ## Frontend

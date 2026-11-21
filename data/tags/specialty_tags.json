@@ -1,0 +1,3564 @@
+{
+  "meta": {
+    "generatedAt": "2026-11-21T21:20:45+00:00",
+    "source": {
+      "facilities": "workspace.cardinal_virtues.model_facilities",
+      "evidence": "workspace.cardinal_virtues.model_evidence_items"
+    },
+    "facilityCount": 9989,
+    "facilitiesWithServiceTag": 9153,
+    "evidenceSentencesScanned": 433053,
+    "minFacilities": 5,
+    "unmappedValues": 1926
+  },
+  "tags": [
+    {
+      "id": "specialty:internalMedicine",
+      "code": "internalMedicine",
+      "label": "Internal Medicine",
+      "facilityCount": 6861,
+      "variants": [
+        "internalMedicine",
+        "generalPhysician",
+        "medicine",
+        "generalInternalMedicine"
+      ]
+    },
+    {
+      "id": "specialty:familyMedicine",
+      "code": "familyMedicine",
+      "label": "Family Medicine",
+      "facilityCount": 5195,
+      "variants": [
+        "familyMedicine"
+      ]
+    },
+    {
+      "id": "specialty:gynecologyAndObstetrics",
+      "code": "gynecologyAndObstetrics",
+      "label": "Gynecology & Obstetrics",
+      "facilityCount": 4526,
+      "variants": [
+        "gynecologyAndObstetrics",
+        "obGy",
+        "obstetricsGynecology"
+      ]
+    },
+    {
+      "id": "specialty:dentistry",
+      "code": "dentistry",
+      "label": "Dentistry",
+      "facilityCount": 4215,
+      "variants": [
+        "dentistry",
+        "generalDentistry",
+        "dental",
+        "dentalSurgery"
+      ]
+    },
+    {
+      "id": "specialty:orthopedicSurgery",
+      "code": "orthopedicSurgery",
+      "label": "Orthopedic Surgery",
+      "facilityCount": 3555,
+      "variants": [
+        "orthopedicSurgery"
+      ]
+    },
+    {
+      "id": "specialty:pediatrics",
+      "code": "pediatrics",
+      "label": "Pediatrics",
+      "facilityCount": 3442,
+      "variants": [
+        "pediatrics"
+      ]
+    },
+    {
+      "id": "specialty:generalSurgery",
+      "code": "generalSurgery",
+      "label": "General Surgery",
+      "facilityCount": 3203,
+      "variants": [
+        "generalSurgery"
+      ]
+    },
+    {
+      "id": "specialty:cardiology",
+      "code": "cardiology",
+      "label": "Cardiology",
+      "facilityCount": 3019,
+      "variants": [
+        "cardiology",
+        "cardiologist"
+      ]
+    },
+    {
+      "id": "specialty:radiology",
+      "code": "radiology",
+      "label": "Radiology",
+      "facilityCount": 3008,
+      "variants": [
+        "radiology"
+      ]
+    },
+    {
+      "id": "specialty:ophthalmology",
+      "code": "ophthalmology",
+      "label": "Ophthalmology",
+      "facilityCount": 2832,
+      "variants": [
+        "ophthalmology"
+      ]
+    },
+    {
+      "id": "specialty:otolaryngology",
+      "code": "otolaryngology",
+      "label": "Otolaryngology",
+      "facilityCount": 2726,
+      "variants": [
+        "otolaryngology"
+      ]
+    },
+    {
+      "id": "specialty:urology",
+      "code": "urology",
+      "label": "Urology",
+      "facilityCount": 2635,
+      "variants": [
+        "urology"
+      ]
+    },
+    {
+      "id": "specialty:gastroenterology",
+      "code": "gastroenterology",
+      "label": "Gastroenterology",
+      "facilityCount": 2429,
+      "variants": [
+        "gastroenterology"
+      ]
+    },
+    {
+      "id": "specialty:dermatology",
+      "code": "dermatology",
+      "label": "Dermatology",
+      "facilityCount": 2337,
+      "variants": [
+        "dermatology"
+      ]
+    },
+    {
+      "id": "specialty:pathology",
+      "code": "pathology",
+      "label": "Pathology",
+      "facilityCount": 2260,
+      "variants": [
+        "pathology"
+      ]
+    },
+    {
+      "id": "specialty:nephrology",
+      "code": "nephrology",
+      "label": "Nephrology",
+      "facilityCount": 2163,
+      "variants": [
+        "nephrology",
+        "nephrologyIncludingDialysis",
+        "nephrologyAndDialysis"
+      ]
+    },
+    {
+      "id": "specialty:emergencyMedicine",
+      "code": "emergencyMedicine",
+      "label": "Emergency Medicine",
+      "facilityCount": 2087,
+      "variants": [
+        "emergencyMedicine",
+        "accidentAndEmergency",
+        "emergencymedicine"
+      ]
+    },
+    {
+      "id": "specialty:neurology",
+      "code": "neurology",
+      "label": "Neurology",
+      "facilityCount": 1968,
+      "variants": [
+        "neurology"
+      ]
+    },
+    {
+      "id": "specialty:endocrinologyAndDiabetesAndMetabolism",
+      "code": "endocrinologyAndDiabetesAndMetabolism",
+      "label": "Endocrinology & Diabetes & Metabolism",
+      "facilityCount": 1902,
+      "variants": [
+        "endocrinologyAndDiabetesAndMetabolism",
+        "diabetology",
+        "endocrinology",
+        "endocrinologyAndDiabetology"
+      ]
+    },
+    {
+      "id": "specialty:reproductiveEndocrinologyAndInfertility",
+      "code": "reproductiveEndocrinologyAndInfertility",
+      "label": "Reproductive Endocrinology & Infertility",
+      "facilityCount": 1873,
+      "variants": [
+        "reproductiveEndocrinologyAndInfertility",
+        "infertilityMedicine"
+      ]
+    },
+    {
+      "id": "specialty:endodontics",
+      "code": "endodontics",
+      "label": "Endodontics",
+      "facilityCount": 1806,
+      "variants": [
+        "endodontics",
+        "endodontist"
+      ]
+    },
+    {
+      "id": "specialty:neurosurgery",
+      "code": "neurosurgery",
+      "label": "Neurosurgery",
+      "facilityCount": 1699,
+      "variants": [
+        "neurosurgery",
+        "neuroSurgery"
+      ]
+    },
+    {
+      "id": "specialty:criticalCareMedicine",
+      "code": "criticalCareMedicine",
+      "label": "Critical Care Medicine",
+      "facilityCount": 1689,
+      "variants": [
+        "criticalCareMedicine",
+        "criticalCare",
+        "intensiveCareUnit",
+        "icuAndCriticalCare"
+      ]
+    },
+    {
+      "id": "specialty:orthodontics",
+      "code": "orthodontics",
+      "label": "Orthodontics",
+      "facilityCount": 1686,
+      "variants": [
+        "orthodontics",
+        "orthodontist"
+      ]
+    },
+    {
+      "id": "specialty:oralAndMaxillofacialSurgery",
+      "code": "oralAndMaxillofacialSurgery",
+      "label": "Oral & Maxillofacial Surgery",
+      "facilityCount": 1683,
+      "variants": [
+        "oralAndMaxillofacialSurgery",
+        "oralAndMaxilloFacialSurgery"
+      ]
+    },
+    {
+      "id": "specialty:pulmonology",
+      "code": "pulmonology",
+      "label": "Pulmonology",
+      "facilityCount": 1619,
+      "variants": [
+        "pulmonology",
+        "pulmonaryMedicine",
+        "respiratoryMedicine",
+        "pulmonologyAndRespiratoryMedicine"
+      ]
+    },
+    {
+      "id": "specialty:physicalMedicineAndRehabilitation",
+      "code": "physicalMedicineAndRehabilitation",
+      "label": "Physical Medicine & Rehabilitation",
+      "facilityCount": 1597,
+      "variants": [
+        "physicalMedicineAndRehabilitation"
+      ]
+    },
+    {
+      "id": "specialty:plasticSurgery",
+      "code": "plasticSurgery",
+      "label": "Plastic Surgery",
+      "facilityCount": 1588,
+      "variants": [
+        "plasticSurgery",
+        "plAsticSurgery",
+        "plasticsurgery"
+      ]
+    },
+    {
+      "id": "specialty:medicalOncology",
+      "code": "medicalOncology",
+      "label": "Medical Oncology",
+      "facilityCount": 1485,
+      "variants": [
+        "medicalOncology",
+        "oncology",
+        "clinicalOncology",
+        "cancerCare"
+      ]
+    },
+    {
+      "id": "specialty:anesthesia",
+      "code": "anesthesia",
+      "label": "Anesthesia",
+      "facilityCount": 1427,
+      "variants": [
+        "anesthesia"
+      ]
+    },
+    {
+      "id": "specialty:prosthodontics",
+      "code": "prosthodontics",
+      "label": "Prosthodontics",
+      "facilityCount": 1364,
+      "variants": [
+        "prosthodontics",
+        "prosthodontist"
+      ]
+    },
+    {
+      "id": "specialty:neonatologyPerinatalMedicine",
+      "code": "neonatologyPerinatalMedicine",
+      "label": "Neonatology Perinatal Medicine",
+      "facilityCount": 1273,
+      "variants": [
+        "neonatologyPerinatalMedicine",
+        "neonatology",
+        "neonatalPerinatalMedicine"
+      ]
+    },
+    {
+      "id": "specialty:psychiatry",
+      "code": "psychiatry",
+      "label": "Psychiatry",
+      "facilityCount": 1176,
+      "variants": [
+        "psychiatry"
+      ]
+    },
+    {
+      "id": "specialty:pediatricDentistry",
+      "code": "pediatricDentistry",
+      "label": "Pediatric Dentistry",
+      "facilityCount": 1109,
+      "variants": [
+        "pediatricDentistry",
+        "pedodonticsAndPreventiveDentistry",
+        "paedodontics",
+        "pedodontist",
+        "paedodontist"
+      ]
+    },
+    {
+      "id": "specialty:surgicalOncology",
+      "code": "surgicalOncology",
+      "label": "Surgical Oncology",
+      "facilityCount": 982,
+      "variants": [
+        "surgicalOncology",
+        "oncosurgery",
+        "oncoSurgery"
+      ]
+    },
+    {
+      "id": "specialty:infectiousDiseases",
+      "code": "infectiousDiseases",
+      "label": "Infectious Diseases",
+      "facilityCount": 969,
+      "variants": [
+        "infectiousDiseases"
+      ]
+    },
+    {
+      "id": "specialty:aestheticDentistry",
+      "code": "aestheticDentistry",
+      "label": "Aesthetic Dentistry",
+      "facilityCount": 875,
+      "variants": [
+        "aestheticDentistry"
+      ]
+    },
+    {
+      "id": "specialty:maternalFetalMedicineOrPerinatology",
+      "code": "maternalFetalMedicineOrPerinatology",
+      "label": "Maternal Fetal Medicine or Perinatology",
+      "facilityCount": 742,
+      "variants": [
+        "maternalFetalMedicineOrPerinatology"
+      ]
+    },
+    {
+      "id": "specialty:spineNeurosurgery",
+      "code": "spineNeurosurgery",
+      "label": "Spine Neurosurgery",
+      "facilityCount": 689,
+      "variants": [
+        "spineNeurosurgery"
+      ]
+    },
+    {
+      "id": "specialty:cataractAndAnteriorSegmentSurgery",
+      "code": "cataractAndAnteriorSegmentSurgery",
+      "label": "Cataract & Anterior Segment Surgery",
+      "facilityCount": 683,
+      "variants": [
+        "cataractAndAnteriorSegmentSurgery"
+      ]
+    },
+    {
+      "id": "specialty:pediatricSurgery",
+      "code": "pediatricSurgery",
+      "label": "Pediatric Surgery",
+      "facilityCount": 674,
+      "variants": [
+        "pediatricSurgery"
+      ]
+    },
+    {
+      "id": "specialty:periodontics",
+      "code": "periodontics",
+      "label": "Periodontics",
+      "facilityCount": 643,
+      "variants": [
+        "periodontics",
+        "periodontology",
+        "periodontist"
+      ]
+    },
+    {
+      "id": "specialty:cosmeticDentistry",
+      "code": "cosmeticDentistry",
+      "label": "Cosmetic Dentistry",
+      "facilityCount": 608,
+      "variants": [
+        "cosmeticDentistry"
+      ]
+    },
+    {
+      "id": "specialty:retinaAndVitreoretinalOphthalmology",
+      "code": "retinaAndVitreoretinalOphthalmology",
+      "label": "Retina & Vitreoretinal Ophthalmology",
+      "facilityCount": 605,
+      "variants": [
+        "retinaAndVitreoretinalOphthalmology"
+      ]
+    },
+    {
+      "id": "specialty:cardiacSurgery",
+      "code": "cardiacSurgery",
+      "label": "Cardiac Surgery",
+      "facilityCount": 590,
+      "variants": [
+        "cardiacSurgery"
+      ]
+    },
+    {
+      "id": "specialty:clinicalPathology",
+      "code": "clinicalPathology",
+      "label": "Clinical Pathology",
+      "facilityCount": 540,
+      "variants": [
+        "clinicalPathology"
+      ]
+    },
+    {
+      "id": "specialty:jointReconstructionSurgery",
+      "code": "jointReconstructionSurgery",
+      "label": "Joint Reconstruction Surgery",
+      "facilityCount": 523,
+      "variants": [
+        "jointReconstructionSurgery",
+        "jointReplacementSurgery"
+      ]
+    },
+    {
+      "id": "specialty:rheumatology",
+      "code": "rheumatology",
+      "label": "Rheumatology",
+      "facilityCount": 512,
+      "variants": [
+        "rheumatology"
+      ]
+    },
+    {
+      "id": "specialty:preventiveMedicine",
+      "code": "preventiveMedicine",
+      "label": "Preventive Medicine",
+      "facilityCount": 502,
+      "variants": [
+        "preventiveMedicine"
+      ]
+    },
+    {
+      "id": "specialty:hematology",
+      "code": "hematology",
+      "label": "Hematology",
+      "facilityCount": 496,
+      "variants": [
+        "hematology"
+      ]
+    },
+    {
+      "id": "specialty:corneaOphthalmology",
+      "code": "corneaOphthalmology",
+      "label": "Cornea Ophthalmology",
+      "facilityCount": 492,
+      "variants": [
+        "corneaOphthalmology"
+      ]
+    },
+    {
+      "id": "specialty:glaucomaOphthalmology",
+      "code": "glaucomaOphthalmology",
+      "label": "Glaucoma Ophthalmology",
+      "facilityCount": 486,
+      "variants": [
+        "glaucomaOphthalmology"
+      ]
+    },
+    {
+      "id": "specialty:vascularSurgery",
+      "code": "vascularSurgery",
+      "label": "Vascular Surgery",
+      "facilityCount": 476,
+      "variants": [
+        "vascularSurgery"
+      ]
+    },
+    {
+      "id": "specialty:refractiveSurgeryOphthalmology",
+      "code": "refractiveSurgeryOphthalmology",
+      "label": "Refractive Surgery Ophthalmology",
+      "facilityCount": 473,
+      "variants": [
+        "refractiveSurgeryOphthalmology"
+      ]
+    },
+    {
+      "id": "specialty:transplantSurgery",
+      "code": "transplantSurgery",
+      "label": "Transplant Surgery",
+      "facilityCount": 468,
+      "variants": [
+        "transplantSurgery"
+      ]
+    },
+    {
+      "id": "specialty:colorectalSurgery",
+      "code": "colorectalSurgery",
+      "label": "Colorectal Surgery",
+      "facilityCount": 453,
+      "variants": [
+        "colorectalSurgery"
+      ]
+    },
+    {
+      "id": "specialty:dentoalveolarSurgery",
+      "code": "dentoalveolarSurgery",
+      "label": "Dentoalveolar Surgery",
+      "facilityCount": 435,
+      "variants": [
+        "dentoalveolarSurgery"
+      ]
+    },
+    {
+      "id": "specialty:oculoplasticsAndReconstructiveOrbitalSurgery",
+      "code": "oculoplasticsAndReconstructiveOrbitalSurgery",
+      "label": "Oculoplastics & Reconstructive Orbital Surgery",
+      "facilityCount": 429,
+      "variants": [
+        "oculoplasticsAndReconstructiveOrbitalSurgery",
+        "oculoPlasticsAndReconstructiveOrbitalSurgery"
+      ]
+    },
+    {
+      "id": "specialty:cosmeticDermatology",
+      "code": "cosmeticDermatology",
+      "label": "Cosmetic Dermatology",
+      "facilityCount": 404,
+      "variants": [
+        "cosmeticDermatology",
+        "cosmetology"
+      ]
+    },
+    {
+      "id": "specialty:minimallyInvasiveSurgeryAndEndourology",
+      "code": "minimallyInvasiveSurgeryAndEndourology",
+      "label": "Minimally Invasive Surgery & Endourology",
+      "facilityCount": 379,
+      "variants": [
+        "minimallyInvasiveSurgeryAndEndourology"
+      ]
+    },
+    {
+      "id": "specialty:bariatricSurgery",
+      "code": "bariatricSurgery",
+      "label": "Bariatric Surgery",
+      "facilityCount": 372,
+      "variants": [
+        "bariatricSurgery"
+      ]
+    },
+    {
+      "id": "specialty:gynecology",
+      "code": "gynecology",
+      "label": "Gynecology",
+      "facilityCount": 371,
+      "variants": [
+        "gynecology"
+      ]
+    },
+    {
+      "id": "specialty:obstetricsAndMaternityCare",
+      "code": "obstetricsAndMaternityCare",
+      "label": "Obstetrics & Maternity Care",
+      "facilityCount": 362,
+      "variants": [
+        "obstetricsAndMaternityCare"
+      ]
+    },
+    {
+      "id": "specialty:pediatricsAndStrabismusOphthalmology",
+      "code": "pediatricsAndStrabismusOphthalmology",
+      "label": "Pediatrics & Strabismus Ophthalmology",
+      "facilityCount": 361,
+      "variants": [
+        "pediatricsAndStrabismusOphthalmology",
+        "pediatricAndStrabismusOphthalmology",
+        "pediatricOphthalmologyAndSquint"
+      ]
+    },
+    {
+      "id": "specialty:interventionalRadiology",
+      "code": "interventionalRadiology",
+      "label": "Interventional Radiology",
+      "facilityCount": 297,
+      "variants": [
+        "interventionalRadiology"
+      ]
+    },
+    {
+      "id": "specialty:painMedicinePMR",
+      "code": "painMedicinePMR",
+      "label": "Pain Medicine PMR",
+      "facilityCount": 293,
+      "variants": [
+        "painMedicinePMR"
+      ]
+    },
+    {
+      "id": "specialty:allergyAndImmunology",
+      "code": "allergyAndImmunology",
+      "label": "Allergy & Immunology",
+      "facilityCount": 291,
+      "variants": [
+        "allergyAndImmunology"
+      ]
+    },
+    {
+      "id": "specialty:andrologyAndMaleFertility",
+      "code": "andrologyAndMaleFertility",
+      "label": "Andrology & Male Fertility",
+      "facilityCount": 279,
+      "variants": [
+        "andrologyAndMaleFertility"
+      ]
+    },
+    {
+      "id": "specialty:shoulderAndElbowOrthopedicSurgery",
+      "code": "shoulderAndElbowOrthopedicSurgery",
+      "label": "Shoulder & Elbow Orthopedic Surgery",
+      "facilityCount": 279,
+      "variants": [
+        "shoulderAndElbowOrthopedicSurgery"
+      ]
+    },
+    {
+      "id": "specialty:eyeTraumaAndEmergencyEyeCare",
+      "code": "eyeTraumaAndEmergencyEyeCare",
+      "label": "Eye Trauma & Emergency Eye Care",
+      "facilityCount": 267,
+      "variants": [
+        "eyeTraumaAndEmergencyEyeCare"
+      ]
+    },
+    {
+      "id": "specialty:geriatricsInternalMedicine",
+      "code": "geriatricsInternalMedicine",
+      "label": "Geriatrics Internal Medicine",
+      "facilityCount": 254,
+      "variants": [
+        "geriatricsInternalMedicine"
+      ]
+    },
+    {
+      "id": "specialty:hepatopancreatobiliarySurgery",
+      "code": "hepatopancreatobiliarySurgery",
+      "label": "Hepatopancreatobiliary Surgery",
+      "facilityCount": 224,
+      "variants": [
+        "hepatopancreatobiliarySurgery"
+      ]
+    },
+    {
+      "id": "specialty:headacheMedicine",
+      "code": "headacheMedicine",
+      "label": "Headache Medicine",
+      "facilityCount": 222,
+      "variants": [
+        "headacheMedicine"
+      ]
+    },
+    {
+      "id": "specialty:pediatricCriticalCareMedicine",
+      "code": "pediatricCriticalCareMedicine",
+      "label": "Pediatric Critical Care Medicine",
+      "facilityCount": 219,
+      "variants": [
+        "pediatricCriticalCareMedicine"
+      ]
+    },
+    {
+      "id": "specialty:chronicDiseasePreventionAndLifestyleMedicine",
+      "code": "chronicDiseasePreventionAndLifestyleMedicine",
+      "label": "Chronic Disease Prevention & Lifestyle Medicine",
+      "facilityCount": 218,
+      "variants": [
+        "chronicDiseasePreventionAndLifestyleMedicine"
+      ]
+    },
+    {
+      "id": "specialty:pediatricCardiology",
+      "code": "pediatricCardiology",
+      "label": "Pediatric Cardiology",
+      "facilityCount": 215,
+      "variants": [
+        "pediatricCardiology"
+      ]
+    },
+    {
+      "id": "specialty:gynecologicalOncology",
+      "code": "gynecologicalOncology",
+      "label": "Gynecological Oncology",
+      "facilityCount": 214,
+      "variants": [
+        "gynecologicalOncology",
+        "gynecologicOncology",
+        "gynaeoncology",
+        "gynaeOncology",
+        "gynaecOncology",
+        "gyneOncology"
+      ]
+    },
+    {
+      "id": "specialty:sleepMedicine",
+      "code": "sleepMedicine",
+      "label": "Sleep Medicine",
+      "facilityCount": 210,
+      "variants": [
+        "sleepMedicine"
+      ]
+    },
+    {
+      "id": "specialty:familyPlanningAndComplexContraception",
+      "code": "familyPlanningAndComplexContraception",
+      "label": "Family Planning & Complex Contraception",
+      "facilityCount": 204,
+      "variants": [
+        "familyPlanningAndComplexContraception"
+      ]
+    },
+    {
+      "id": "specialty:headAndNeckSurgeryOtolaryngology",
+      "code": "headAndNeckSurgeryOtolaryngology",
+      "label": "Head & Neck Surgery Otolaryngology",
+      "facilityCount": 197,
+      "variants": [
+        "headAndNeckSurgeryOtolaryngology"
+      ]
+    },
+    {
+      "id": "specialty:pediatricOrthopedicSurgery",
+      "code": "pediatricOrthopedicSurgery",
+      "label": "Pediatric Orthopedic Surgery",
+      "facilityCount": 197,
+      "variants": [
+        "pediatricOrthopedicSurgery"
+      ]
+    },
+    {
+      "id": "specialty:cardiothoracicSurgery",
+      "code": "cardiothoracicSurgery",
+      "label": "Cardiothoracic Surgery",
+      "facilityCount": 196,
+      "variants": [
+        "cardiothoracicSurgery",
+        "cardioThoracicSurgery"
+      ]
+    },
+    {
+      "id": "specialty:addictionPsychiatry",
+      "code": "addictionPsychiatry",
+      "label": "Addiction Psychiatry",
+      "facilityCount": 183,
+      "variants": [
+        "addictionPsychiatry"
+      ]
+    },
+    {
+      "id": "specialty:reconstructivePlasticSurgery",
+      "code": "reconstructivePlasticSurgery",
+      "label": "Reconstructive Plastic Surgery",
+      "facilityCount": 183,
+      "variants": [
+        "reconstructivePlasticSurgery"
+      ]
+    },
+    {
+      "id": "specialty:diagnosticRadiology",
+      "code": "diagnosticRadiology",
+      "label": "Diagnostic Radiology",
+      "facilityCount": 174,
+      "variants": [
+        "diagnosticRadiology",
+        "radiodiagnosis"
+      ]
+    },
+    {
+      "id": "specialty:oralMedicine",
+      "code": "oralMedicine",
+      "label": "Oral Medicine",
+      "facilityCount": 174,
+      "variants": [
+        "oralMedicine"
+      ]
+    },
+    {
+      "id": "specialty:hospiceAndPalliativeInternalMedicine",
+      "code": "hospiceAndPalliativeInternalMedicine",
+      "label": "Hospice & Palliative Internal Medicine",
+      "facilityCount": 164,
+      "variants": [
+        "hospiceAndPalliativeInternalMedicine"
+      ]
+    },
+    {
+      "id": "specialty:craniofacialAndCleftOralMaxillofacialSurgery",
+      "code": "craniofacialAndCleftOralMaxillofacialSurgery",
+      "label": "Craniofacial & Cleft Oral Maxillofacial Surgery",
+      "facilityCount": 159,
+      "variants": [
+        "craniofacialAndCleftOralMaxillofacialSurgery"
+      ]
+    },
+    {
+      "id": "specialty:podiatry",
+      "code": "podiatry",
+      "label": "Podiatry",
+      "facilityCount": 157,
+      "variants": [
+        "podiatry"
+      ]
+    },
+    {
+      "id": "specialty:nuclearMedicineAndMolecularImaging",
+      "code": "nuclearMedicineAndMolecularImaging",
+      "label": "Nuclear Medicine & Molecular Imaging",
+      "facilityCount": 156,
+      "variants": [
+        "nuclearMedicineAndMolecularImaging"
+      ]
+    },
+    {
+      "id": "specialty:neuroOphthalmology",
+      "code": "neuroOphthalmology",
+      "label": "Neuro Ophthalmology",
+      "facilityCount": 151,
+      "variants": [
+        "neuroOphthalmology"
+      ]
+    },
+    {
+      "id": "specialty:developmentalBehavioralPediatrics",
+      "code": "developmentalBehavioralPediatrics",
+      "label": "Developmental Behavioral Pediatrics",
+      "facilityCount": 146,
+      "variants": [
+        "developmentalBehavioralPediatrics"
+      ]
+    },
+    {
+      "id": "specialty:skullBaseNeurosurgery",
+      "code": "skullBaseNeurosurgery",
+      "label": "Skull Base Neurosurgery",
+      "facilityCount": 144,
+      "variants": [
+        "skullBaseNeurosurgery"
+      ]
+    },
+    {
+      "id": "specialty:breastImaging",
+      "code": "breastImaging",
+      "label": "Breast Imaging",
+      "facilityCount": 142,
+      "variants": [
+        "breastImaging"
+      ]
+    },
+    {
+      "id": "specialty:epilepsyNeurology",
+      "code": "epilepsyNeurology",
+      "label": "Epilepsy Neurology",
+      "facilityCount": 136,
+      "variants": [
+        "epilepsyNeurology"
+      ]
+    },
+    {
+      "id": "specialty:uveitisOphthalmology",
+      "code": "uveitisOphthalmology",
+      "label": "Uveitis Ophthalmology",
+      "facilityCount": 135,
+      "variants": [
+        "uveitisOphthalmology"
+      ]
+    },
+    {
+      "id": "specialty:burnAndTraumaPlasticSurgery",
+      "code": "burnAndTraumaPlasticSurgery",
+      "label": "Burn & Trauma Plastic Surgery",
+      "facilityCount": 131,
+      "variants": [
+        "burnAndTraumaPlasticSurgery"
+      ]
+    },
+    {
+      "id": "specialty:sportsMedicinePMR",
+      "code": "sportsMedicinePMR",
+      "label": "Sports Medicine PMR",
+      "facilityCount": 131,
+      "variants": [
+        "sportsMedicinePMR"
+      ]
+    },
+    {
+      "id": "specialty:adolescentMedicine",
+      "code": "adolescentMedicine",
+      "label": "Adolescent Medicine",
+      "facilityCount": 130,
+      "variants": [
+        "adolescentMedicine"
+      ]
+    },
+    {
+      "id": "specialty:pediatricUrology",
+      "code": "pediatricUrology",
+      "label": "Pediatric Urology",
+      "facilityCount": 129,
+      "variants": [
+        "pediatricUrology"
+      ]
+    },
+    {
+      "id": "specialty:neuropsychiatry",
+      "code": "neuropsychiatry",
+      "label": "Neuropsychiatry",
+      "facilityCount": 127,
+      "variants": [
+        "neuropsychiatry",
+        "neuroPsychiatry"
+      ]
+    },
+    {
+      "id": "specialty:pediatricHematologyOncology",
+      "code": "pediatricHematologyOncology",
+      "label": "Pediatric Hematology Oncology",
+      "facilityCount": 126,
+      "variants": [
+        "pediatricHematologyOncology"
+      ]
+    },
+    {
+      "id": "specialty:maternalAndChildHealth",
+      "code": "maternalAndChildHealth",
+      "label": "Maternal & Child Health",
+      "facilityCount": 124,
+      "variants": [
+        "maternalAndChildHealth"
+      ]
+    },
+    {
+      "id": "specialty:urologicOncology",
+      "code": "urologicOncology",
+      "label": "Urologic Oncology",
+      "facilityCount": 122,
+      "variants": [
+        "urologicOncology"
+      ]
+    },
+    {
+      "id": "specialty:pediatricEndocrinology",
+      "code": "pediatricEndocrinology",
+      "label": "Pediatric Endocrinology",
+      "facilityCount": 121,
+      "variants": [
+        "pediatricEndocrinology"
+      ]
+    },
+    {
+      "id": "specialty:anatomicPathology",
+      "code": "anatomicPathology",
+      "label": "Anatomic Pathology",
+      "facilityCount": 118,
+      "variants": [
+        "anatomicPathology"
+      ]
+    },
+    {
+      "id": "specialty:dentalImplants",
+      "code": "dentalImplants",
+      "label": "Dental Implants",
+      "facilityCount": 116,
+      "variants": [
+        "dentalImplants",
+        "implantology",
+        "implantDentistry",
+        "implantologist",
+        "dentalImplant",
+        "dentalImplantology"
+      ]
+    },
+    {
+      "id": "specialty:pediatricOtolaryngology",
+      "code": "pediatricOtolaryngology",
+      "label": "Pediatric Otolaryngology",
+      "facilityCount": 114,
+      "variants": [
+        "pediatricOtolaryngology"
+      ]
+    },
+    {
+      "id": "specialty:orthopedicSpineSurgery",
+      "code": "orthopedicSpineSurgery",
+      "label": "Orthopedic Spine Surgery",
+      "facilityCount": 113,
+      "variants": [
+        "orthopedicSpineSurgery",
+        "spineSurgery"
+      ]
+    },
+    {
+      "id": "specialty:radiationOncology",
+      "code": "radiationOncology",
+      "label": "Radiation Oncology",
+      "facilityCount": 112,
+      "variants": [
+        "radiationOncology"
+      ]
+    },
+    {
+      "id": "specialty:renalTransplantationUrology",
+      "code": "renalTransplantationUrology",
+      "label": "Renal Transplantation Urology",
+      "facilityCount": 112,
+      "variants": [
+        "renalTransplantationUrology"
+      ]
+    },
+    {
+      "id": "specialty:breastSurgery",
+      "code": "breastSurgery",
+      "label": "Breast Surgery",
+      "facilityCount": 107,
+      "variants": [
+        "breastSurgery"
+      ]
+    },
+    {
+      "id": "specialty:clinicalNeurophysiology",
+      "code": "clinicalNeurophysiology",
+      "label": "Clinical Neurophysiology",
+      "facilityCount": 106,
+      "variants": [
+        "clinicalNeurophysiology"
+      ]
+    },
+    {
+      "id": "specialty:pediatricOphthalmology",
+      "code": "pediatricOphthalmology",
+      "label": "Pediatric Ophthalmology",
+      "facilityCount": 106,
+      "variants": [
+        "pediatricOphthalmology"
+      ]
+    },
+    {
+      "id": "specialty:nutritionAndDietetics",
+      "code": "nutritionAndDietetics",
+      "label": "Nutrition & Dietetics",
+      "facilityCount": 104,
+      "variants": [
+        "nutritionAndDietetics",
+        "dietetics",
+        "dietitianNutritionist",
+        "dieteticsAndNutrition",
+        "nutrition",
+        "dietitian"
+      ]
+    },
+    {
+      "id": "specialty:pediatricGastroenterology",
+      "code": "pediatricGastroenterology",
+      "label": "Pediatric Gastroenterology",
+      "facilityCount": 102,
+      "variants": [
+        "pediatricGastroenterology"
+      ]
+    },
+    {
+      "id": "specialty:pediatricNephrology",
+      "code": "pediatricNephrology",
+      "label": "Pediatric Nephrology",
+      "facilityCount": 97,
+      "variants": [
+        "pediatricNephrology"
+      ]
+    },
+    {
+      "id": "specialty:pediatricNeurodevelopmentalDisabilities",
+      "code": "pediatricNeurodevelopmentalDisabilities",
+      "label": "Pediatric Neurodevelopmental Disabilities",
+      "facilityCount": 96,
+      "variants": [
+        "pediatricNeurodevelopmentalDisabilities"
+      ]
+    },
+    {
+      "id": "specialty:urogynecologyAndReconstructivePelvisSurgery",
+      "code": "urogynecologyAndReconstructivePelvisSurgery",
+      "label": "Urogynecology & Reconstructive Pelvis Surgery",
+      "facilityCount": 93,
+      "variants": [
+        "urogynecologyAndReconstructivePelvisSurgery"
+      ]
+    },
+    {
+      "id": "specialty:childAndAdolescentPsychiatry",
+      "code": "childAndAdolescentPsychiatry",
+      "label": "Child & Adolescent Psychiatry",
+      "facilityCount": 92,
+      "variants": [
+        "childAndAdolescentPsychiatry"
+      ]
+    },
+    {
+      "id": "specialty:dentalAnesthesia",
+      "code": "dentalAnesthesia",
+      "label": "Dental Anesthesia",
+      "facilityCount": 92,
+      "variants": [
+        "dentalAnesthesia"
+      ]
+    },
+    {
+      "id": "specialty:orthopedicOncology",
+      "code": "orthopedicOncology",
+      "label": "Orthopedic Oncology",
+      "facilityCount": 92,
+      "variants": [
+        "orthopedicOncology"
+      ]
+    },
+    {
+      "id": "specialty:pediatricDermatology",
+      "code": "pediatricDermatology",
+      "label": "Pediatric Dermatology",
+      "facilityCount": 90,
+      "variants": [
+        "pediatricDermatology"
+      ]
+    },
+    {
+      "id": "specialty:microbiology",
+      "code": "microbiology",
+      "label": "Microbiology",
+      "facilityCount": 89,
+      "variants": [
+        "microbiology"
+      ]
+    },
+    {
+      "id": "specialty:publicHealth",
+      "code": "publicHealth",
+      "label": "Public Health",
+      "facilityCount": 88,
+      "variants": [
+        "publicHealth"
+      ]
+    },
+    {
+      "id": "specialty:pediatricPulmonology",
+      "code": "pediatricPulmonology",
+      "label": "Pediatric Pulmonology",
+      "facilityCount": 84,
+      "variants": [
+        "pediatricPulmonology"
+      ]
+    },
+    {
+      "id": "specialty:footAndAnkleOrthopedicSurgery",
+      "code": "footAndAnkleOrthopedicSurgery",
+      "label": "Foot & Ankle Orthopedic Surgery",
+      "facilityCount": 83,
+      "variants": [
+        "footAndAnkleOrthopedicSurgery"
+      ]
+    },
+    {
+      "id": "specialty:pediatricNeurosurgery",
+      "code": "pediatricNeurosurgery",
+      "label": "Pediatric Neurosurgery",
+      "facilityCount": 79,
+      "variants": [
+        "pediatricNeurosurgery"
+      ]
+    },
+    {
+      "id": "specialty:pediatricAllergyAndImmunology",
+      "code": "pediatricAllergyAndImmunology",
+      "label": "Pediatric Allergy & Immunology",
+      "facilityCount": 78,
+      "variants": [
+        "pediatricAllergyAndImmunology"
+      ]
+    },
+    {
+      "id": "specialty:aestheticAndCosmeticSurgery",
+      "code": "aestheticAndCosmeticSurgery",
+      "label": "Aesthetic & Cosmetic Surgery",
+      "facilityCount": 77,
+      "variants": [
+        "aestheticAndCosmeticSurgery"
+      ]
+    },
+    {
+      "id": "specialty:pediatricNeurology",
+      "code": "pediatricNeurology",
+      "label": "Pediatric Neurology",
+      "facilityCount": 75,
+      "variants": [
+        "pediatricNeurology"
+      ]
+    },
+    {
+      "id": "specialty:physiotherapy",
+      "code": "physiotherapy",
+      "label": "Physiotherapy",
+      "facilityCount": 74,
+      "variants": [
+        "physiotherapy",
+        "physiotherapist"
+      ]
+    },
+    {
+      "id": "specialty:hairAndNailDisorders",
+      "code": "hairAndNailDisorders",
+      "label": "Hair & Nail Disorders",
+      "facilityCount": 66,
+      "variants": [
+        "hairAndNailDisorders"
+      ]
+    },
+    {
+      "id": "specialty:movementDisorders",
+      "code": "movementDisorders",
+      "label": "Movement Disorders",
+      "facilityCount": 65,
+      "variants": [
+        "movementDisorders"
+      ]
+    },
+    {
+      "id": "specialty:endocrineSurgery",
+      "code": "endocrineSurgery",
+      "label": "Endocrine Surgery",
+      "facilityCount": 64,
+      "variants": [
+        "endocrineSurgery"
+      ]
+    },
+    {
+      "id": "specialty:orthopedicSportsMedicine",
+      "code": "orthopedicSportsMedicine",
+      "label": "Orthopedic Sports Medicine",
+      "facilityCount": 63,
+      "variants": [
+        "orthopedicSportsMedicine"
+      ]
+    },
+    {
+      "id": "specialty:pediatricRehabilitationMedicine",
+      "code": "pediatricRehabilitationMedicine",
+      "label": "Pediatric Rehabilitation Medicine",
+      "facilityCount": 63,
+      "variants": [
+        "pediatricRehabilitationMedicine"
+      ]
+    },
+    {
+      "id": "specialty:handOrUpperExtremityAndPeripheralNerveSurgery",
+      "code": "handOrUpperExtremityAndPeripheralNerveSurgery",
+      "label": "Hand or Upper Extremity & Peripheral Nerve Surgery",
+      "facilityCount": 61,
+      "variants": [
+        "handOrUpperExtremityAndPeripheralNerveSurgery"
+      ]
+    },
+    {
+      "id": "specialty:pediatricInfectiousDiseases",
+      "code": "pediatricInfectiousDiseases",
+      "label": "Pediatric Infectious Diseases",
+      "facilityCount": 60,
+      "variants": [
+        "pediatricInfectiousDiseases"
+      ]
+    },
+    {
+      "id": "specialty:proceduralDermatology",
+      "code": "proceduralDermatology",
+      "label": "Procedural Dermatology",
+      "facilityCount": 60,
+      "variants": [
+        "proceduralDermatology"
+      ]
+    },
+    {
+      "id": "specialty:sleepMedicineOtolaryngology",
+      "code": "sleepMedicineOtolaryngology",
+      "label": "Sleep Medicine Otolaryngology",
+      "facilityCount": 56,
+      "variants": [
+        "sleepMedicineOtolaryngology"
+      ]
+    },
+    {
+      "id": "specialty:menopauseAndMidlifeHealth",
+      "code": "menopauseAndMidlifeHealth",
+      "label": "Menopause & Midlife Health",
+      "facilityCount": 55,
+      "variants": [
+        "menopauseAndMidlifeHealth"
+      ]
+    },
+    {
+      "id": "specialty:ocularOncology",
+      "code": "ocularOncology",
+      "label": "Ocular Oncology",
+      "facilityCount": 51,
+      "variants": [
+        "ocularOncology"
+      ]
+    },
+    {
+      "id": "specialty:andrology",
+      "code": "andrology",
+      "label": "Andrology",
+      "facilityCount": 50,
+      "variants": [
+        "andrology"
+      ]
+    },
+    {
+      "id": "specialty:cosmeticMaxillofacialSurgery",
+      "code": "cosmeticMaxillofacialSurgery",
+      "label": "Cosmetic Maxillofacial Surgery",
+      "facilityCount": 50,
+      "variants": [
+        "cosmeticMaxillofacialSurgery"
+      ]
+    },
+    {
+      "id": "specialty:upperGIAndForegutSurgery",
+      "code": "upperGIAndForegutSurgery",
+      "label": "Upper GI & Foregut Surgery",
+      "facilityCount": 49,
+      "variants": [
+        "upperGIAndForegutSurgery"
+      ]
+    },
+    {
+      "id": "specialty:interventionalCardiology",
+      "code": "interventionalCardiology",
+      "label": "Interventional Cardiology",
+      "facilityCount": 48,
+      "variants": [
+        "interventionalCardiology"
+      ]
+    },
+    {
+      "id": "specialty:neuroOncology",
+      "code": "neuroOncology",
+      "label": "Neuro Oncology",
+      "facilityCount": 48,
+      "variants": [
+        "neuroOncology"
+      ]
+    },
+    {
+      "id": "specialty:addictionMedicinePM",
+      "code": "addictionMedicinePM",
+      "label": "Addiction Medicine PM",
+      "facilityCount": 47,
+      "variants": [
+        "addictionMedicinePM"
+      ]
+    },
+    {
+      "id": "specialty:pediatricEmergencyMedicine",
+      "code": "pediatricEmergencyMedicine",
+      "label": "Pediatric Emergency Medicine",
+      "facilityCount": 46,
+      "variants": [
+        "pediatricEmergencyMedicine"
+      ]
+    },
+    {
+      "id": "specialty:surgicalGastroenterology",
+      "code": "surgicalGastroenterology",
+      "label": "Surgical Gastroenterology",
+      "facilityCount": 44,
+      "variants": [
+        "surgicalGastroenterology",
+        "surgicalGastroEnterology"
+      ]
+    },
+    {
+      "id": "specialty:neuromuscularMedicinePMR",
+      "code": "neuromuscularMedicinePMR",
+      "label": "Neuromuscular Medicine PMR",
+      "facilityCount": 42,
+      "variants": [
+        "neuromuscularMedicinePMR"
+      ]
+    },
+    {
+      "id": "specialty:neuroradiology",
+      "code": "neuroradiology",
+      "label": "Neuroradiology",
+      "facilityCount": 42,
+      "variants": [
+        "neuroradiology"
+      ]
+    },
+    {
+      "id": "specialty:orthognathicSurgery",
+      "code": "orthognathicSurgery",
+      "label": "Orthognathic Surgery",
+      "facilityCount": 42,
+      "variants": [
+        "orthognathicSurgery"
+      ]
+    },
+    {
+      "id": "specialty:sportsInternalMedicine",
+      "code": "sportsInternalMedicine",
+      "label": "Sports Internal Medicine",
+      "facilityCount": 41,
+      "variants": [
+        "sportsInternalMedicine"
+      ]
+    },
+    {
+      "id": "specialty:genitourinaryReconstructiveSurgery",
+      "code": "genitourinaryReconstructiveSurgery",
+      "label": "Genitourinary Reconstructive Surgery",
+      "facilityCount": 40,
+      "variants": [
+        "genitourinaryReconstructiveSurgery"
+      ]
+    },
+    {
+      "id": "specialty:geriatricPsychiatry",
+      "code": "geriatricPsychiatry",
+      "label": "Geriatric Psychiatry",
+      "facilityCount": 38,
+      "variants": [
+        "geriatricPsychiatry"
+      ]
+    },
+    {
+      "id": "specialty:oralPathology",
+      "code": "oralPathology",
+      "label": "Oral Pathology",
+      "facilityCount": 38,
+      "variants": [
+        "oralPathology"
+      ]
+    },
+    {
+      "id": "specialty:psychology",
+      "code": "psychology",
+      "label": "Psychology",
+      "facilityCount": 38,
+      "variants": [
+        "psychology"
+      ]
+    },
+    {
+      "id": "specialty:laryngology",
+      "code": "laryngology",
+      "label": "Laryngology",
+      "facilityCount": 37,
+      "variants": [
+        "laryngology"
+      ]
+    },
+    {
+      "id": "specialty:cardiothoracicRadiology",
+      "code": "cardiothoracicRadiology",
+      "label": "Cardiothoracic Radiology",
+      "facilityCount": 36,
+      "variants": [
+        "cardiothoracicRadiology"
+      ]
+    },
+    {
+      "id": "specialty:childNeurology",
+      "code": "childNeurology",
+      "label": "Child Neurology",
+      "facilityCount": 35,
+      "variants": [
+        "childNeurology"
+      ]
+    },
+    {
+      "id": "specialty:cosmeticSurgery",
+      "code": "cosmeticSurgery",
+      "label": "Cosmetic Surgery",
+      "facilityCount": 35,
+      "variants": [
+        "cosmeticSurgery"
+      ]
+    },
+    {
+      "id": "specialty:laserDentistry",
+      "code": "laserDentistry",
+      "label": "Laser Dentistry",
+      "facilityCount": 35,
+      "variants": [
+        "laserDentistry"
+      ]
+    },
+    {
+      "id": "specialty:handAndUpperExtremitiesSurgery",
+      "code": "handAndUpperExtremitiesSurgery",
+      "label": "Hand & Upper Extremities Surgery",
+      "facilityCount": 33,
+      "variants": [
+        "handAndUpperExtremitiesSurgery"
+      ]
+    },
+    {
+      "id": "specialty:woundHealingAndDermatologicRegenerativeMedicine",
+      "code": "woundHealingAndDermatologicRegenerativeMedicine",
+      "label": "Wound Healing & Dermatologic Regenerative Medicine",
+      "facilityCount": 32,
+      "variants": [
+        "woundHealingAndDermatologicRegenerativeMedicine"
+      ]
+    },
+    {
+      "id": "specialty:brainInjuryNeurology",
+      "code": "brainInjuryNeurology",
+      "label": "Brain Injury Neurology",
+      "facilityCount": 31,
+      "variants": [
+        "brainInjuryNeurology"
+      ]
+    },
+    {
+      "id": "specialty:restorativeDentistry",
+      "code": "restorativeDentistry",
+      "label": "Restorative Dentistry",
+      "facilityCount": 31,
+      "variants": [
+        "restorativeDentistry"
+      ]
+    },
+    {
+      "id": "specialty:hepatology",
+      "code": "hepatology",
+      "label": "Hepatology",
+      "facilityCount": 30,
+      "variants": [
+        "hepatology"
+      ]
+    },
+    {
+      "id": "specialty:spinalCordInjuryMedicine",
+      "code": "spinalCordInjuryMedicine",
+      "label": "Spinal Cord Injury Medicine",
+      "facilityCount": 30,
+      "variants": [
+        "spinalCordInjuryMedicine"
+      ]
+    },
+    {
+      "id": "specialty:generalThoracicSurgery",
+      "code": "generalThoracicSurgery",
+      "label": "General Thoracic Surgery",
+      "facilityCount": 29,
+      "variants": [
+        "generalThoracicSurgery"
+      ]
+    },
+    {
+      "id": "specialty:gynecologicalSurgery",
+      "code": "gynecologicalSurgery",
+      "label": "Gynecological Surgery",
+      "facilityCount": 29,
+      "variants": [
+        "gynecologicalSurgery"
+      ]
+    },
+    {
+      "id": "specialty:neurosciences",
+      "code": "neurosciences",
+      "label": "Neurosciences",
+      "facilityCount": 29,
+      "variants": [
+        "neurosciences",
+        "neuroSciences",
+        "neuroscience",
+        "neuroScience"
+      ]
+    },
+    {
+      "id": "specialty:pediatricRadiology",
+      "code": "pediatricRadiology",
+      "label": "Pediatric Radiology",
+      "facilityCount": 29,
+      "variants": [
+        "pediatricRadiology"
+      ]
+    },
+    {
+      "id": "specialty:amputeeAndProstheticsAndOrthoticsRehabilitation",
+      "code": "amputeeAndProstheticsAndOrthoticsRehabilitation",
+      "label": "Amputee & Prosthetics & Orthotics Rehabilitation",
+      "facilityCount": 28,
+      "variants": [
+        "amputeeAndProstheticsAndOrthoticsRehabilitation"
+      ]
+    },
+    {
+      "id": "specialty:painManagement",
+      "code": "painManagement",
+      "label": "Pain Management",
+      "facilityCount": 28,
+      "variants": [
+        "painManagement"
+      ]
+    },
+    {
+      "id": "specialty:pediatricsAndNeonatology",
+      "code": "pediatricsAndNeonatology",
+      "label": "Pediatrics & Neonatology",
+      "facilityCount": 28,
+      "variants": [
+        "pediatricsAndNeonatology"
+      ]
+    },
+    {
+      "id": "specialty:vascularNeurology",
+      "code": "vascularNeurology",
+      "label": "Vascular Neurology",
+      "facilityCount": 28,
+      "variants": [
+        "vascularNeurology"
+      ]
+    },
+    {
+      "id": "specialty:biochemistry",
+      "code": "biochemistry",
+      "label": "Biochemistry",
+      "facilityCount": 27,
+      "variants": [
+        "biochemistry",
+        "bioChemistry"
+      ]
+    },
+    {
+      "id": "specialty:gastrointestinalSurgery",
+      "code": "gastrointestinalSurgery",
+      "label": "Gastrointestinal Surgery",
+      "facilityCount": 27,
+      "variants": [
+        "gastrointestinalSurgery",
+        "gastroIntestinalSurgery"
+      ]
+    },
+    {
+      "id": "specialty:histopathology",
+      "code": "histopathology",
+      "label": "Histopathology",
+      "facilityCount": 27,
+      "variants": [
+        "histopathology",
+        "histoPathology"
+      ]
+    },
+    {
+      "id": "specialty:boneMarrowTransplant",
+      "code": "boneMarrowTransplant",
+      "label": "Bone Marrow Transplant",
+      "facilityCount": 26,
+      "variants": [
+        "boneMarrowTransplant"
+      ]
+    },
+    {
+      "id": "specialty:clinicalPsychology",
+      "code": "clinicalPsychology",
+      "label": "Clinical Psychology",
+      "facilityCount": 26,
+      "variants": [
+        "clinicalPsychology",
+        "clinicalpsychology"
+      ]
+    },
+    {
+      "id": "specialty:pediatricOncology",
+      "code": "pediatricOncology",
+      "label": "Pediatric Oncology",
+      "facilityCount": 26,
+      "variants": [
+        "pediatricOncology"
+      ]
+    },
+    {
+      "id": "specialty:cerebrovascularNeurosurgery",
+      "code": "cerebrovascularNeurosurgery",
+      "label": "Cerebrovascular Neurosurgery",
+      "facilityCount": 25,
+      "variants": [
+        "cerebrovascularNeurosurgery"
+      ]
+    },
+    {
+      "id": "specialty:underseaAndHyperbaricMedicine",
+      "code": "underseaAndHyperbaricMedicine",
+      "label": "Undersea & Hyperbaric Medicine",
+      "facilityCount": 25,
+      "variants": [
+        "underseaAndHyperbaricMedicine"
+      ]
+    },
+    {
+      "id": "specialty:pediatricRheumatology",
+      "code": "pediatricRheumatology",
+      "label": "Pediatric Rheumatology",
+      "facilityCount": 24,
+      "variants": [
+        "pediatricRheumatology"
+      ]
+    },
+    {
+      "id": "specialty:preventiveDentistry",
+      "code": "preventiveDentistry",
+      "label": "Preventive Dentistry",
+      "facilityCount": 24,
+      "variants": [
+        "preventiveDentistry"
+      ]
+    },
+    {
+      "id": "specialty:neuroimmunology",
+      "code": "neuroimmunology",
+      "label": "Neuroimmunology",
+      "facilityCount": 23,
+      "variants": [
+        "neuroimmunology",
+        "neuroImmunology"
+      ]
+    },
+    {
+      "id": "specialty:occupationalAndVocationalRehabilitation",
+      "code": "occupationalAndVocationalRehabilitation",
+      "label": "Occupational & Vocational Rehabilitation",
+      "facilityCount": 23,
+      "variants": [
+        "occupationalAndVocationalRehabilitation"
+      ]
+    },
+    {
+      "id": "specialty:orthopedicTraumaAndFractureSurgery",
+      "code": "orthopedicTraumaAndFractureSurgery",
+      "label": "Orthopedic Trauma & Fracture Surgery",
+      "facilityCount": 23,
+      "variants": [
+        "orthopedicTraumaAndFractureSurgery"
+      ]
+    },
+    {
+      "id": "specialty:audiology",
+      "code": "audiology",
+      "label": "Audiology",
+      "facilityCount": 22,
+      "variants": [
+        "audiology"
+      ]
+    },
+    {
+      "id": "specialty:cognitiveAndBehavioralNeurology",
+      "code": "cognitiveAndBehavioralNeurology",
+      "label": "Cognitive & Behavioral Neurology",
+      "facilityCount": 22,
+      "variants": [
+        "cognitiveAndBehavioralNeurology"
+      ]
+    },
+    {
+      "id": "specialty:podiatricDiabeticLimbSalvageAndWoundCare",
+      "code": "podiatricDiabeticLimbSalvageAndWoundCare",
+      "label": "Podiatric Diabetic Limb Salvage & Wound Care",
+      "facilityCount": 22,
+      "variants": [
+        "podiatricDiabeticLimbSalvageAndWoundCare"
+      ]
+    },
+    {
+      "id": "specialty:conservativeDentistry",
+      "code": "conservativeDentistry",
+      "label": "Conservative Dentistry",
+      "facilityCount": 21,
+      "variants": [
+        "conservativeDentistry"
+      ]
+    },
+    {
+      "id": "specialty:handOrUpperExtremitiesSurgery",
+      "code": "handOrUpperExtremitiesSurgery",
+      "label": "Hand or Upper Extremities Surgery",
+      "facilityCount": 21,
+      "variants": [
+        "handOrUpperExtremitiesSurgery"
+      ]
+    },
+    {
+      "id": "specialty:neurotologyAndOtology",
+      "code": "neurotologyAndOtology",
+      "label": "Neurotology & Otology",
+      "facilityCount": 21,
+      "variants": [
+        "neurotologyAndOtology"
+      ]
+    },
+    {
+      "id": "specialty:nuclearMedicine",
+      "code": "nuclearMedicine",
+      "label": "Nuclear Medicine",
+      "facilityCount": 21,
+      "variants": [
+        "nuclearMedicine"
+      ]
+    },
+    {
+      "id": "specialty:rhinology",
+      "code": "rhinology",
+      "label": "Rhinology",
+      "facilityCount": 21,
+      "variants": [
+        "rhinology"
+      ]
+    },
+    {
+      "id": "specialty:diabeticRetinopathy",
+      "code": "diabeticRetinopathy",
+      "label": "Diabetic Retinopathy",
+      "facilityCount": 20,
+      "variants": [
+        "diabeticRetinopathy"
+      ]
+    },
+    {
+      "id": "specialty:genderAffirmingSurgery",
+      "code": "genderAffirmingSurgery",
+      "label": "Gender Affirming Surgery",
+      "facilityCount": 19,
+      "variants": [
+        "genderAffirmingSurgery"
+      ]
+    },
+    {
+      "id": "specialty:neurocriticalCare",
+      "code": "neurocriticalCare",
+      "label": "Neurocritical Care",
+      "facilityCount": 19,
+      "variants": [
+        "neurocriticalCare",
+        "neuroCriticalCare"
+      ]
+    },
+    {
+      "id": "specialty:oculoplasty",
+      "code": "oculoplasty",
+      "label": "Oculoplasty",
+      "facilityCount": 19,
+      "variants": [
+        "oculoplasty"
+      ]
+    },
+    {
+      "id": "specialty:sleepMedicineNeurology",
+      "code": "sleepMedicineNeurology",
+      "label": "Sleep Medicine Neurology",
+      "facilityCount": 19,
+      "variants": [
+        "sleepMedicineNeurology"
+      ]
+    },
+    {
+      "id": "specialty:maxillofacialSurgery",
+      "code": "maxillofacialSurgery",
+      "label": "Maxillofacial Surgery",
+      "facilityCount": 18,
+      "variants": [
+        "maxillofacialSurgery",
+        "maxilloFacialSurgery"
+      ]
+    },
+    {
+      "id": "specialty:painMedicineAnesthesiology",
+      "code": "painMedicineAnesthesiology",
+      "label": "Pain Medicine Anesthesiology",
+      "facilityCount": 18,
+      "variants": [
+        "painMedicineAnesthesiology"
+      ]
+    },
+    {
+      "id": "specialty:polytrauma",
+      "code": "polytrauma",
+      "label": "Polytrauma",
+      "facilityCount": 18,
+      "variants": [
+        "polytrauma",
+        "polyTrauma"
+      ]
+    },
+    {
+      "id": "specialty:proctology",
+      "code": "proctology",
+      "label": "Proctology",
+      "facilityCount": 18,
+      "variants": [
+        "proctology"
+      ]
+    },
+    {
+      "id": "specialty:transfusionMedicine",
+      "code": "transfusionMedicine",
+      "label": "Transfusion Medicine",
+      "facilityCount": 18,
+      "variants": [
+        "transfusionMedicine"
+      ]
+    },
+    {
+      "id": "specialty:addictionInternalMedicine",
+      "code": "addictionInternalMedicine",
+      "label": "Addiction Internal Medicine",
+      "facilityCount": 17,
+      "variants": [
+        "addictionInternalMedicine"
+      ]
+    },
+    {
+      "id": "specialty:ayurveda",
+      "code": "ayurveda",
+      "label": "Ayurveda",
+      "facilityCount": 17,
+      "variants": [
+        "ayurveda"
+      ]
+    },
+    {
+      "id": "specialty:immunology",
+      "code": "immunology",
+      "label": "Immunology",
+      "facilityCount": 17,
+      "variants": [
+        "immunology"
+      ]
+    },
+    {
+      "id": "specialty:pediatricAnesthesiology",
+      "code": "pediatricAnesthesiology",
+      "label": "Pediatric Anesthesiology",
+      "facilityCount": 17,
+      "variants": [
+        "pediatricAnesthesiology"
+      ]
+    },
+    {
+      "id": "specialty:roboticSurgery",
+      "code": "roboticSurgery",
+      "label": "Robotic Surgery",
+      "facilityCount": 17,
+      "variants": [
+        "roboticSurgery"
+      ]
+    },
+    {
+      "id": "specialty:sportsMedicine",
+      "code": "sportsMedicine",
+      "label": "Sports Medicine",
+      "facilityCount": 17,
+      "variants": [
+        "sportsMedicine"
+      ]
+    },
+    {
+      "id": "specialty:tmjSurgery",
+      "code": "tmjSurgery",
+      "label": "TMJ Surgery",
+      "facilityCount": 17,
+      "variants": [
+        "tmjSurgery"
+      ]
+    },
+    {
+      "id": "specialty:dermatopathology",
+      "code": "dermatopathology",
+      "label": "Dermatopathology",
+      "facilityCount": 16,
+      "variants": [
+        "dermatopathology"
+      ]
+    },
+    {
+      "id": "specialty:neuroanesthesiology",
+      "code": "neuroanesthesiology",
+      "label": "Neuroanesthesiology",
+      "facilityCount": 16,
+      "variants": [
+        "neuroanesthesiology",
+        "neuroAnesthesiology"
+      ]
+    },
+    {
+      "id": "specialty:occupationalAndEnvironmentalMedicine",
+      "code": "occupationalAndEnvironmentalMedicine",
+      "label": "Occupational & Environmental Medicine",
+      "facilityCount": 16,
+      "variants": [
+        "occupationalAndEnvironmentalMedicine"
+      ]
+    },
+    {
+      "id": "specialty:oncologyAndReconstructiveOralAndMaxillofacialSurgery",
+      "code": "oncologyAndReconstructiveOralAndMaxillofacialSurgery",
+      "label": "Oncology & Reconstructive Oral & Maxillofacial Surgery",
+      "facilityCount": 16,
+      "variants": [
+        "oncologyAndReconstructiveOralAndMaxillofacialSurgery"
+      ]
+    },
+    {
+      "id": "specialty:oralMedicineAndRadiology",
+      "code": "oralMedicineAndRadiology",
+      "label": "Oral Medicine & Radiology",
+      "facilityCount": 16,
+      "variants": [
+        "oralMedicineAndRadiology"
+      ]
+    },
+    {
+      "id": "specialty:pediatricOrthopedics",
+      "code": "pediatricOrthopedics",
+      "label": "Pediatric Orthopedics",
+      "facilityCount": 16,
+      "variants": [
+        "pediatricOrthopedics"
+      ]
+    },
+    {
+      "id": "specialty:laparoscopicSurgery",
+      "code": "laparoscopicSurgery",
+      "label": "Laparoscopic Surgery",
+      "facilityCount": 15,
+      "variants": [
+        "laparoscopicSurgery"
+      ]
+    },
+    {
+      "id": "specialty:reconstructiveSurgery",
+      "code": "reconstructiveSurgery",
+      "label": "Reconstructive Surgery",
+      "facilityCount": 15,
+      "variants": [
+        "reconstructiveSurgery"
+      ]
+    },
+    {
+      "id": "specialty:serology",
+      "code": "serology",
+      "label": "Serology",
+      "facilityCount": 15,
+      "variants": [
+        "serology"
+      ]
+    },
+    {
+      "id": "specialty:endourology",
+      "code": "endourology",
+      "label": "Endourology",
+      "facilityCount": 14,
+      "variants": [
+        "endourology",
+        "endoUrology"
+      ]
+    },
+    {
+      "id": "specialty:handOrUpperExtremitiesAndPeripheralNerveSurgery",
+      "code": "handOrUpperExtremitiesAndPeripheralNerveSurgery",
+      "label": "Hand or Upper Extremities & Peripheral Nerve Surgery",
+      "facilityCount": 14,
+      "variants": [
+        "handOrUpperExtremitiesAndPeripheralNerveSurgery"
+      ]
+    },
+    {
+      "id": "specialty:neuroUrology",
+      "code": "neuroUrology",
+      "label": "Neuro Urology",
+      "facilityCount": 14,
+      "variants": [
+        "neuroUrology",
+        "neurourology"
+      ]
+    },
+    {
+      "id": "specialty:obstetricAnesthesiology",
+      "code": "obstetricAnesthesiology",
+      "label": "Obstetric Anesthesiology",
+      "facilityCount": 14,
+      "variants": [
+        "obstetricAnesthesiology"
+      ]
+    },
+    {
+      "id": "specialty:palliativeRehabilitationAndSupportiveCare",
+      "code": "palliativeRehabilitationAndSupportiveCare",
+      "label": "Palliative Rehabilitation & Supportive Care",
+      "facilityCount": 14,
+      "variants": [
+        "palliativeRehabilitationAndSupportiveCare"
+      ]
+    },
+    {
+      "id": "specialty:pediatricAndAdolescentGynecology",
+      "code": "pediatricAndAdolescentGynecology",
+      "label": "Pediatric & Adolescent Gynecology",
+      "facilityCount": 14,
+      "variants": [
+        "pediatricAndAdolescentGynecology"
+      ]
+    },
+    {
+      "id": "specialty:pediatricSleepMedicine",
+      "code": "pediatricSleepMedicine",
+      "label": "Pediatric Sleep Medicine",
+      "facilityCount": 14,
+      "variants": [
+        "pediatricSleepMedicine"
+      ]
+    },
+    {
+      "id": "specialty:sedationDentistry",
+      "code": "sedationDentistry",
+      "label": "Sedation Dentistry",
+      "facilityCount": 14,
+      "variants": [
+        "sedationDentistry"
+      ]
+    },
+    {
+      "id": "specialty:femaleUrology",
+      "code": "femaleUrology",
+      "label": "Female Urology",
+      "facilityCount": 13,
+      "variants": [
+        "femaleUrology"
+      ]
+    },
+    {
+      "id": "specialty:functionalNeurosurgery",
+      "code": "functionalNeurosurgery",
+      "label": "Functional Neurosurgery",
+      "facilityCount": 13,
+      "variants": [
+        "functionalNeurosurgery"
+      ]
+    },
+    {
+      "id": "specialty:gastroSurgery",
+      "code": "gastroSurgery",
+      "label": "Gastro Surgery",
+      "facilityCount": 13,
+      "variants": [
+        "gastroSurgery",
+        "gastrosurgery"
+      ]
+    },
+    {
+      "id": "specialty:medicalGastroenterology",
+      "code": "medicalGastroenterology",
+      "label": "Medical Gastroenterology",
+      "facilityCount": 13,
+      "variants": [
+        "medicalGastroenterology"
+      ]
+    },
+    {
+      "id": "specialty:neurogeneticsAndRareDiseases",
+      "code": "neurogeneticsAndRareDiseases",
+      "label": "Neurogenetics & Rare Diseases",
+      "facilityCount": 13,
+      "variants": [
+        "neurogeneticsAndRareDiseases"
+      ]
+    },
+    {
+      "id": "specialty:peripheralNerveNeurosurgery",
+      "code": "peripheralNerveNeurosurgery",
+      "label": "Peripheral Nerve Neurosurgery",
+      "facilityCount": 13,
+      "variants": [
+        "peripheralNerveNeurosurgery"
+      ]
+    },
+    {
+      "id": "specialty:alternativeMedicine",
+      "code": "alternativeMedicine",
+      "label": "Alternative Medicine",
+      "facilityCount": 12,
+      "variants": [
+        "alternativeMedicine"
+      ]
+    },
+    {
+      "id": "specialty:cancerRehabilitation",
+      "code": "cancerRehabilitation",
+      "label": "Cancer Rehabilitation",
+      "facilityCount": 12,
+      "variants": [
+        "cancerRehabilitation"
+      ]
+    },
+    {
+      "id": "specialty:communityMedicine",
+      "code": "communityMedicine",
+      "label": "Community Medicine",
+      "facilityCount": 12,
+      "variants": [
+        "communityMedicine"
+      ]
+    },
+    {
+      "id": "specialty:cytopathology",
+      "code": "cytopathology",
+      "label": "Cytopathology",
+      "facilityCount": 12,
+      "variants": [
+        "cytopathology"
+      ]
+    },
+    {
+      "id": "specialty:dialysis",
+      "code": "dialysis",
+      "label": "Dialysis",
+      "facilityCount": 12,
+      "variants": [
+        "dialysis"
+      ]
+    },
+    {
+      "id": "specialty:genetics",
+      "code": "genetics",
+      "label": "Genetics",
+      "facilityCount": 12,
+      "variants": [
+        "genetics"
+      ]
+    },
+    {
+      "id": "specialty:hepatopancreatobiliSurgery",
+      "code": "hepatopancreatobiliSurgery",
+      "label": "Hepatopancreatobili Surgery",
+      "facilityCount": 12,
+      "variants": [
+        "hepatopancreatobiliSurgery"
+      ]
+    },
+    {
+      "id": "specialty:clinicalBiochemistry",
+      "code": "clinicalBiochemistry",
+      "label": "Clinical Biochemistry",
+      "facilityCount": 11,
+      "variants": [
+        "clinicalBiochemistry"
+      ]
+    },
+    {
+      "id": "specialty:consultationLiaisonPsychiatry",
+      "code": "consultationLiaisonPsychiatry",
+      "label": "Consultation Liaison Psychiatry",
+      "facilityCount": 11,
+      "variants": [
+        "consultationLiaisonPsychiatry"
+      ]
+    },
+    {
+      "id": "specialty:craniomaxillofacialTraumaSurgery",
+      "code": "craniomaxillofacialTraumaSurgery",
+      "label": "Craniomaxillofacial Trauma Surgery",
+      "facilityCount": 11,
+      "variants": [
+        "craniomaxillofacialTraumaSurgery"
+      ]
+    },
+    {
+      "id": "specialty:cytology",
+      "code": "cytology",
+      "label": "Cytology",
+      "facilityCount": 11,
+      "variants": [
+        "cytology"
+      ]
+    },
+    {
+      "id": "specialty:epidemiology",
+      "code": "epidemiology",
+      "label": "Epidemiology",
+      "facilityCount": 11,
+      "variants": [
+        "epidemiology"
+      ]
+    },
+    {
+      "id": "specialty:laboratoryMedicine",
+      "code": "laboratoryMedicine",
+      "label": "Laboratory Medicine",
+      "facilityCount": 11,
+      "variants": [
+        "laboratoryMedicine"
+      ]
+    },
+    {
+      "id": "specialty:nonInvasiveCardiology",
+      "code": "nonInvasiveCardiology",
+      "label": "Non Invasive Cardiology",
+      "facilityCount": 11,
+      "variants": [
+        "nonInvasiveCardiology",
+        "noninvasiveCardiology"
+      ]
+    },
+    {
+      "id": "specialty:pharmacology",
+      "code": "pharmacology",
+      "label": "Pharmacology",
+      "facilityCount": 11,
+      "variants": [
+        "pharmacology"
+      ]
+    },
+    {
+      "id": "specialty:publicHealthDentistry",
+      "code": "publicHealthDentistry",
+      "label": "Public Health Dentistry",
+      "facilityCount": 11,
+      "variants": [
+        "publicHealthDentistry"
+      ]
+    },
+    {
+      "id": "specialty:uveaOphthalmology",
+      "code": "uveaOphthalmology",
+      "label": "Uvea Ophthalmology",
+      "facilityCount": 11,
+      "variants": [
+        "uveaOphthalmology"
+      ]
+    },
+    {
+      "id": "specialty:arthroscopy",
+      "code": "arthroscopy",
+      "label": "Arthroscopy",
+      "facilityCount": 10,
+      "variants": [
+        "arthroscopy"
+      ]
+    },
+    {
+      "id": "specialty:genitourinarySurgery",
+      "code": "genitourinarySurgery",
+      "label": "Genitourinary Surgery",
+      "facilityCount": 10,
+      "variants": [
+        "genitourinarySurgery"
+      ]
+    },
+    {
+      "id": "specialty:perinatalAndReproductivePsychiatry",
+      "code": "perinatalAndReproductivePsychiatry",
+      "label": "Perinatal & Reproductive Psychiatry",
+      "facilityCount": 10,
+      "variants": [
+        "perinatalAndReproductivePsychiatry"
+      ]
+    },
+    {
+      "id": "specialty:anesthesiologyAndCriticalCare",
+      "code": "anesthesiologyAndCriticalCare",
+      "label": "Anesthesiology & Critical Care",
+      "facilityCount": 9,
+      "variants": [
+        "anesthesiologyAndCriticalCare"
+      ]
+    },
+    {
+      "id": "specialty:clinicalInformatics",
+      "code": "clinicalInformatics",
+      "label": "Clinical Informatics",
+      "facilityCount": 9,
+      "variants": [
+        "clinicalInformatics"
+      ]
+    },
+    {
+      "id": "specialty:cytologyLaboratory",
+      "code": "cytologyLaboratory",
+      "label": "Cytology Laboratory",
+      "facilityCount": 9,
+      "variants": [
+        "cytologyLaboratory"
+      ]
+    },
+    {
+      "id": "specialty:dentofacialOrthopedics",
+      "code": "dentofacialOrthopedics",
+      "label": "Dentofacial Orthopedics",
+      "facilityCount": 9,
+      "variants": [
+        "dentofacialOrthopedics"
+      ]
+    },
+    {
+      "id": "specialty:dermatologicOncology",
+      "code": "dermatologicOncology",
+      "label": "Dermatologic Oncology",
+      "facilityCount": 9,
+      "variants": [
+        "dermatologicOncology"
+      ]
+    },
+    {
+      "id": "specialty:femalePelvicMedicineAndReconstructiveSurgery",
+      "code": "femalePelvicMedicineAndReconstructiveSurgery",
+      "label": "Female Pelvic Medicine & Reconstructive Surgery",
+      "facilityCount": 9,
+      "variants": [
+        "femalePelvicMedicineAndReconstructiveSurgery"
+      ]
+    },
+    {
+      "id": "specialty:footSurgery",
+      "code": "footSurgery",
+      "label": "Foot Surgery",
+      "facilityCount": 9,
+      "variants": [
+        "footSurgery"
+      ]
+    },
+    {
+      "id": "specialty:generalAndLaparoscopicSurgery",
+      "code": "generalAndLaparoscopicSurgery",
+      "label": "General & Laparoscopic Surgery",
+      "facilityCount": 9,
+      "variants": [
+        "generalAndLaparoscopicSurgery"
+      ]
+    },
+    {
+      "id": "specialty:geriatricDentistry",
+      "code": "geriatricDentistry",
+      "label": "Geriatric Dentistry",
+      "facilityCount": 9,
+      "variants": [
+        "geriatricDentistry"
+      ]
+    },
+    {
+      "id": "specialty:histopathologyLaboratory",
+      "code": "histopathologyLaboratory",
+      "label": "Histopathology Laboratory",
+      "facilityCount": 9,
+      "variants": [
+        "histopathologyLaboratory"
+      ]
+    },
+    {
+      "id": "specialty:immunodermatologyAndComplexMedicalDermatology",
+      "code": "immunodermatologyAndComplexMedicalDermatology",
+      "label": "Immunodermatology & Complex Medical Dermatology",
+      "facilityCount": 9,
+      "variants": [
+        "immunodermatologyAndComplexMedicalDermatology"
+      ]
+    },
+    {
+      "id": "specialty:keratoconus",
+      "code": "keratoconus",
+      "label": "Keratoconus",
+      "facilityCount": 9,
+      "variants": [
+        "keratoconus"
+      ]
+    },
+    {
+      "id": "specialty:occupationalTherapy",
+      "code": "occupationalTherapy",
+      "label": "Occupational Therapy",
+      "facilityCount": 9,
+      "variants": [
+        "occupationalTherapy"
+      ]
+    },
+    {
+      "id": "specialty:pediatricsSportsMedicine",
+      "code": "pediatricsSportsMedicine",
+      "label": "Pediatrics Sports Medicine",
+      "facilityCount": 9,
+      "variants": [
+        "pediatricsSportsMedicine"
+      ]
+    },
+    {
+      "id": "specialty:thoracicSurgery",
+      "code": "thoracicSurgery",
+      "label": "Thoracic Surgery",
+      "facilityCount": 9,
+      "variants": [
+        "thoracicSurgery"
+      ]
+    },
+    {
+      "id": "specialty:uroOncology",
+      "code": "uroOncology",
+      "label": "Uro Oncology",
+      "facilityCount": 9,
+      "variants": [
+        "uroOncology"
+      ]
+    },
+    {
+      "id": "specialty:uroSurgery",
+      "code": "uroSurgery",
+      "label": "Uro Surgery",
+      "facilityCount": 9,
+      "variants": [
+        "uroSurgery",
+        "urosurgery"
+      ]
+    },
+    {
+      "id": "specialty:criticalCareMedicineAnesthesiology",
+      "code": "criticalCareMedicineAnesthesiology",
+      "label": "Critical Care Medicine Anesthesiology",
+      "facilityCount": 8,
+      "variants": [
+        "criticalCareMedicineAnesthesiology"
+      ]
+    },
+    {
+      "id": "specialty:geriatricRehabilitation",
+      "code": "geriatricRehabilitation",
+      "label": "Geriatric Rehabilitation",
+      "facilityCount": 8,
+      "variants": [
+        "geriatricRehabilitation"
+      ]
+    },
+    {
+      "id": "specialty:headAndNeckOncology",
+      "code": "headAndNeckOncology",
+      "label": "Head & Neck Oncology",
+      "facilityCount": 8,
+      "variants": [
+        "headAndNeckOncology"
+      ]
+    },
+    {
+      "id": "specialty:homeopathy",
+      "code": "homeopathy",
+      "label": "Homeopathy",
+      "facilityCount": 8,
+      "variants": [
+        "homeopathy"
+      ]
+    },
+    {
+      "id": "specialty:lasikSurgery",
+      "code": "lasikSurgery",
+      "label": "Lasik Surgery",
+      "facilityCount": 8,
+      "variants": [
+        "lasikSurgery"
+      ]
+    },
+    {
+      "id": "specialty:neuroOncologyNeurosurgery",
+      "code": "neuroOncologyNeurosurgery",
+      "label": "Neuro Oncology Neurosurgery",
+      "facilityCount": 8,
+      "variants": [
+        "neuroOncologyNeurosurgery"
+      ]
+    },
+    {
+      "id": "specialty:neurocriticalCareNeurosurgery",
+      "code": "neurocriticalCareNeurosurgery",
+      "label": "Neurocritical Care Neurosurgery",
+      "facilityCount": 8,
+      "variants": [
+        "neurocriticalCareNeurosurgery",
+        "neuroCriticalCareNeurosurgery"
+      ]
+    },
+    {
+      "id": "specialty:neurotraumaNeurosurgery",
+      "code": "neurotraumaNeurosurgery",
+      "label": "Neurotrauma Neurosurgery",
+      "facilityCount": 8,
+      "variants": [
+        "neurotraumaNeurosurgery"
+      ]
+    },
+    {
+      "id": "specialty:occupationalAndIndustrialHygiene",
+      "code": "occupationalAndIndustrialHygiene",
+      "label": "Occupational & Industrial Hygiene",
+      "facilityCount": 8,
+      "variants": [
+        "occupationalAndIndustrialHygiene"
+      ]
+    },
+    {
+      "id": "specialty:oralSurgery",
+      "code": "oralSurgery",
+      "label": "Oral Surgery",
+      "facilityCount": 8,
+      "variants": [
+        "oralSurgery"
+      ]
+    },
+    {
+      "id": "specialty:palliativeCare",
+      "code": "palliativeCare",
+      "label": "Palliative Care",
+      "facilityCount": 8,
+      "variants": [
+        "palliativeCare"
+      ]
+    },
+    {
+      "id": "specialty:physiology",
+      "code": "physiology",
+      "label": "Physiology",
+      "facilityCount": 8,
+      "variants": [
+        "physiology"
+      ]
+    },
+    {
+      "id": "specialty:prostheticDentistry",
+      "code": "prostheticDentistry",
+      "label": "Prosthetic Dentistry",
+      "facilityCount": 8,
+      "variants": [
+        "prostheticDentistry"
+      ]
+    },
+    {
+      "id": "specialty:reproductiveMedicine",
+      "code": "reproductiveMedicine",
+      "label": "Reproductive Medicine",
+      "facilityCount": 8,
+      "variants": [
+        "reproductiveMedicine"
+      ]
+    },
+    {
+      "id": "specialty:squintEyeTreatment",
+      "code": "squintEyeTreatment",
+      "label": "Squint Eye Treatment",
+      "facilityCount": 8,
+      "variants": [
+        "squintEyeTreatment"
+      ]
+    },
+    {
+      "id": "specialty:ambulatoryAnesthesiology",
+      "code": "ambulatoryAnesthesiology",
+      "label": "Ambulatory Anesthesiology",
+      "facilityCount": 7,
+      "variants": [
+        "ambulatoryAnesthesiology"
+      ]
+    },
+    {
+      "id": "specialty:arthroscopicSurgery",
+      "code": "arthroscopicSurgery",
+      "label": "Arthroscopic Surgery",
+      "facilityCount": 7,
+      "variants": [
+        "arthroscopicSurgery"
+      ]
+    },
+    {
+      "id": "specialty:chestMedicine",
+      "code": "chestMedicine",
+      "label": "Chest Medicine",
+      "facilityCount": 7,
+      "variants": [
+        "chestMedicine"
+      ]
+    },
+    {
+      "id": "specialty:electrophysiology",
+      "code": "electrophysiology",
+      "label": "Electrophysiology",
+      "facilityCount": 7,
+      "variants": [
+        "electrophysiology"
+      ]
+    },
+    {
+      "id": "specialty:endoscopy",
+      "code": "endoscopy",
+      "label": "Endoscopy",
+      "facilityCount": 7,
+      "variants": [
+        "endoscopy"
+      ]
+    },
+    {
+      "id": "specialty:hematoOncology",
+      "code": "hematoOncology",
+      "label": "Hemato Oncology",
+      "facilityCount": 7,
+      "variants": [
+        "hematoOncology"
+      ]
+    },
+    {
+      "id": "specialty:hepatobiliarySurgery",
+      "code": "hepatobiliarySurgery",
+      "label": "Hepatobiliary Surgery",
+      "facilityCount": 7,
+      "variants": [
+        "hepatobiliarySurgery",
+        "hepatoBiliarySurgery"
+      ]
+    },
+    {
+      "id": "specialty:liverTransplantation",
+      "code": "liverTransplantation",
+      "label": "Liver Transplantation",
+      "facilityCount": 7,
+      "variants": [
+        "liverTransplantation"
+      ]
+    },
+    {
+      "id": "specialty:lowVision",
+      "code": "lowVision",
+      "label": "Low Vision",
+      "facilityCount": 7,
+      "variants": [
+        "lowVision"
+      ]
+    },
+    {
+      "id": "specialty:microsurgeryAndTransplantPlasticSurgery",
+      "code": "microsurgeryAndTransplantPlasticSurgery",
+      "label": "Microsurgery & Transplant Plastic Surgery",
+      "facilityCount": 7,
+      "variants": [
+        "microsurgeryAndTransplantPlasticSurgery"
+      ]
+    },
+    {
+      "id": "specialty:minimallyInvasiveSurgery",
+      "code": "minimallyInvasiveSurgery",
+      "label": "Minimally Invasive Surgery",
+      "facilityCount": 7,
+      "variants": [
+        "minimallyInvasiveSurgery"
+      ]
+    },
+    {
+      "id": "specialty:neuroMedicine",
+      "code": "neuroMedicine",
+      "label": "Neuro Medicine",
+      "facilityCount": 7,
+      "variants": [
+        "neuroMedicine"
+      ]
+    },
+    {
+      "id": "specialty:neuroRehabilitation",
+      "code": "neuroRehabilitation",
+      "label": "Neuro Rehabilitation",
+      "facilityCount": 7,
+      "variants": [
+        "neuroRehabilitation"
+      ]
+    },
+    {
+      "id": "specialty:oralAndMaxillofacialPathology",
+      "code": "oralAndMaxillofacialPathology",
+      "label": "Oral & Maxillofacial Pathology",
+      "facilityCount": 7,
+      "variants": [
+        "oralAndMaxillofacialPathology"
+      ]
+    },
+    {
+      "id": "specialty:oralMaxillofacialSurgery",
+      "code": "oralMaxillofacialSurgery",
+      "label": "Oral Maxillofacial Surgery",
+      "facilityCount": 7,
+      "variants": [
+        "oralMaxillofacialSurgery"
+      ]
+    },
+    {
+      "id": "specialty:organTransplant",
+      "code": "organTransplant",
+      "label": "Organ Transplant",
+      "facilityCount": 7,
+      "variants": [
+        "organTransplant"
+      ]
+    },
+    {
+      "id": "specialty:painMedicine",
+      "code": "painMedicine",
+      "label": "Pain Medicine",
+      "facilityCount": 7,
+      "variants": [
+        "painMedicine"
+      ]
+    },
+    {
+      "id": "specialty:pediatricHospitalMedicine",
+      "code": "pediatricHospitalMedicine",
+      "label": "Pediatric Hospital Medicine",
+      "facilityCount": 7,
+      "variants": [
+        "pediatricHospitalMedicine"
+      ]
+    },
+    {
+      "id": "specialty:plasticAndReconstructiveSurgery",
+      "code": "plasticAndReconstructiveSurgery",
+      "label": "Plastic & Reconstructive Surgery",
+      "facilityCount": 7,
+      "variants": [
+        "plasticAndReconstructiveSurgery"
+      ]
+    },
+    {
+      "id": "specialty:preventiveOncology",
+      "code": "preventiveOncology",
+      "label": "Preventive Oncology",
+      "facilityCount": 7,
+      "variants": [
+        "preventiveOncology"
+      ]
+    },
+    {
+      "id": "specialty:psychoOncology",
+      "code": "psychoOncology",
+      "label": "Psycho Oncology",
+      "facilityCount": 7,
+      "variants": [
+        "psychoOncology"
+      ]
+    },
+    {
+      "id": "specialty:refractiveSurgeries",
+      "code": "refractiveSurgeries",
+      "label": "Refractive Surgeries",
+      "facilityCount": 7,
+      "variants": [
+        "refractiveSurgeries"
+      ]
+    },
+    {
+      "id": "specialty:retinopathyOfPrematurity",
+      "code": "retinopathyOfPrematurity",
+      "label": "Retinopathy of Prematurity",
+      "facilityCount": 7,
+      "variants": [
+        "retinopathyOfPrematurity"
+      ]
+    },
+    {
+      "id": "specialty:urologyAndAndrology",
+      "code": "urologyAndAndrology",
+      "label": "Urology & Andrology",
+      "facilityCount": 7,
+      "variants": [
+        "urologyAndAndrology"
+      ]
+    },
+    {
+      "id": "specialty:biochemistryLab",
+      "code": "biochemistryLab",
+      "label": "Biochemistry Lab",
+      "facilityCount": 6,
+      "variants": [
+        "biochemistryLab"
+      ]
+    },
+    {
+      "id": "specialty:cardiacSciences",
+      "code": "cardiacSciences",
+      "label": "Cardiac Sciences",
+      "facilityCount": 6,
+      "variants": [
+        "cardiacSciences"
+      ]
+    },
+    {
+      "id": "specialty:cosmeticGynecology",
+      "code": "cosmeticGynecology",
+      "label": "Cosmetic Gynecology",
+      "facilityCount": 6,
+      "variants": [
+        "cosmeticGynecology",
+        "cosmeticGynocology"
+      ]
+    },
+    {
+      "id": "specialty:dentures",
+      "code": "dentures",
+      "label": "Dentures",
+      "facilityCount": 6,
+      "variants": [
+        "dentures"
+      ]
+    },
+    {
+      "id": "specialty:fullMouthRehabilitation",
+      "code": "fullMouthRehabilitation",
+      "label": "Full Mouth Rehabilitation",
+      "facilityCount": 6,
+      "variants": [
+        "fullMouthRehabilitation"
+      ]
+    },
+    {
+      "id": "specialty:interventionalCardiologyCentre",
+      "code": "interventionalCardiologyCentre",
+      "label": "Interventional Cardiology Centre",
+      "facilityCount": 6,
+      "variants": [
+        "interventionalCardiologyCentre"
+      ]
+    },
+    {
+      "id": "specialty:liverTransplant",
+      "code": "liverTransplant",
+      "label": "Liver Transplant",
+      "facilityCount": 6,
+      "variants": [
+        "liverTransplant"
+      ]
+    },
+    {
+      "id": "specialty:maxillofacialProsthesis",
+      "code": "maxillofacialProsthesis",
+      "label": "Maxillofacial Prosthesis",
+      "facilityCount": 6,
+      "variants": [
+        "maxillofacialProsthesis"
+      ]
+    },
+    {
+      "id": "specialty:microbiologyLaboratory",
+      "code": "microbiologyLaboratory",
+      "label": "Microbiology Laboratory",
+      "facilityCount": 6,
+      "variants": [
+        "microbiologyLaboratory"
+      ]
+    },
+    {
+      "id": "specialty:molecularDiagnostics",
+      "code": "molecularDiagnostics",
+      "label": "Molecular Diagnostics",
+      "facilityCount": 6,
+      "variants": [
+        "molecularDiagnostics"
+      ]
+    },
+    {
+      "id": "specialty:musculoskeletalRadiology",
+      "code": "musculoskeletalRadiology",
+      "label": "Musculoskeletal Radiology",
+      "facilityCount": 6,
+      "variants": [
+        "musculoskeletalRadiology"
+      ]
+    },
+    {
+      "id": "specialty:mycologyLaboratory",
+      "code": "mycologyLaboratory",
+      "label": "Mycology Laboratory",
+      "facilityCount": 6,
+      "variants": [
+        "mycologyLaboratory"
+      ]
+    },
+    {
+      "id": "specialty:nephrosurgery",
+      "code": "nephrosurgery",
+      "label": "Nephrosurgery",
+      "facilityCount": 6,
+      "variants": [
+        "nephroSurgery",
+        "nephrosurgery"
+      ]
+    },
+    {
+      "id": "specialty:orbitAndOculoplasty",
+      "code": "orbitAndOculoplasty",
+      "label": "Orbit & Oculoplasty",
+      "facilityCount": 6,
+      "variants": [
+        "orbitAndOculoplasty"
+      ]
+    },
+    {
+      "id": "specialty:orthopedicsAndJointReplacement",
+      "code": "orthopedicsAndJointReplacement",
+      "label": "Orthopedics & Joint Replacement",
+      "facilityCount": 6,
+      "variants": [
+        "orthopedicsAndJointReplacement"
+      ]
+    },
+    {
+      "id": "specialty:parasitologyLaboratory",
+      "code": "parasitologyLaboratory",
+      "label": "Parasitology Laboratory",
+      "facilityCount": 6,
+      "variants": [
+        "parasitologyLaboratory"
+      ]
+    },
+    {
+      "id": "specialty:periodontalSurgery",
+      "code": "periodontalSurgery",
+      "label": "Periodontal Surgery",
+      "facilityCount": 6,
+      "variants": [
+        "periodontalSurgery"
+      ]
+    },
+    {
+      "id": "specialty:preventiveCardiology",
+      "code": "preventiveCardiology",
+      "label": "Preventive Cardiology",
+      "facilityCount": 6,
+      "variants": [
+        "preventiveCardiology"
+      ]
+    },
+    {
+      "id": "specialty:reconstructiveUrology",
+      "code": "reconstructiveUrology",
+      "label": "Reconstructive Urology",
+      "facilityCount": 6,
+      "variants": [
+        "reconstructiveUrology"
+      ]
+    },
+    {
+      "id": "specialty:retinaDiseases",
+      "code": "retinaDiseases",
+      "label": "Retina Diseases",
+      "facilityCount": 6,
+      "variants": [
+        "retinaDiseases"
+      ]
+    },
+    {
+      "id": "specialty:specialEducation",
+      "code": "specialEducation",
+      "label": "Special Education",
+      "facilityCount": 6,
+      "variants": [
+        "specialEducation"
+      ]
+    },
+    {
+      "id": "specialty:sportsDentistry",
+      "code": "sportsDentistry",
+      "label": "Sports Dentistry",
+      "facilityCount": 6,
+      "variants": [
+        "sportsDentistry"
+      ]
+    },
+    {
+      "id": "specialty:teethWhitening",
+      "code": "teethWhitening",
+      "label": "Teeth Whitening",
+      "facilityCount": 6,
+      "variants": [
+        "teethWhitening"
+      ]
+    },
+    {
+      "id": "specialty:audiologyAndSpeechTherapy",
+      "code": "audiologyAndSpeechTherapy",
+      "label": "Audiology & Speech Therapy",
+      "facilityCount": 5,
+      "variants": [
+        "audiologyAndSpeechTherapy"
+      ]
+    },
+    {
+      "id": "specialty:bariatrics",
+      "code": "bariatrics",
+      "label": "Bariatrics",
+      "facilityCount": 5,
+      "variants": [
+        "bariatrics"
+      ]
+    },
+    {
+      "id": "specialty:cardiacAndPulmonaryRehabilitation",
+      "code": "cardiacAndPulmonaryRehabilitation",
+      "label": "Cardiac & Pulmonary Rehabilitation",
+      "facilityCount": 5,
+      "variants": [
+        "cardiacAndPulmonaryRehabilitation"
+      ]
+    },
+    {
+      "id": "specialty:communityAndPublicPsychiatry",
+      "code": "communityAndPublicPsychiatry",
+      "label": "Community & Public Psychiatry",
+      "facilityCount": 5,
+      "variants": [
+        "communityAndPublicPsychiatry"
+      ]
+    },
+    {
+      "id": "specialty:contouraLasik",
+      "code": "contouraLasik",
+      "label": "Contoura Lasik",
+      "facilityCount": 5,
+      "variants": [
+        "contouraLasik"
+      ]
+    },
+    {
+      "id": "specialty:crownsAndBridges",
+      "code": "crownsAndBridges",
+      "label": "Crowns & Bridges",
+      "facilityCount": 5,
+      "variants": [
+        "crownsAndBridges"
+      ]
+    },
+    {
+      "id": "specialty:emergencyPsychiatry",
+      "code": "emergencyPsychiatry",
+      "label": "Emergency Psychiatry",
+      "facilityCount": 5,
+      "variants": [
+        "emergencyPsychiatry"
+      ]
+    },
+    {
+      "id": "specialty:facialPlasticsAndReconstructiveOtolaryngology",
+      "code": "facialPlasticsAndReconstructiveOtolaryngology",
+      "label": "Facial Plastics & Reconstructive Otolaryngology",
+      "facilityCount": 5,
+      "variants": [
+        "facialPlasticsAndReconstructiveOtolaryngology"
+      ]
+    },
+    {
+      "id": "specialty:familyDentistry",
+      "code": "familyDentistry",
+      "label": "Family Dentistry",
+      "facilityCount": 5,
+      "variants": [
+        "familyDentistry"
+      ]
+    },
+    {
+      "id": "specialty:gastrointestinalOncology",
+      "code": "gastrointestinalOncology",
+      "label": "Gastrointestinal Oncology",
+      "facilityCount": 5,
+      "variants": [
+        "gastrointestinalOncology"
+      ]
+    },
+    {
+      "id": "specialty:gastrosciences",
+      "code": "gastrosciences",
+      "label": "Gastrosciences",
+      "facilityCount": 5,
+      "variants": [
+        "gastrosciences",
+        "gastroSciences"
+      ]
+    },
+    {
+      "id": "specialty:geneticDermatology",
+      "code": "geneticDermatology",
+      "label": "Genetic Dermatology",
+      "facilityCount": 5,
+      "variants": [
+        "geneticDermatology"
+      ]
+    },
+    {
+      "id": "specialty:geriatricInternalMedicine",
+      "code": "geriatricInternalMedicine",
+      "label": "Geriatric Internal Medicine",
+      "facilityCount": 5,
+      "variants": [
+        "geriatricInternalMedicine"
+      ]
+    },
+    {
+      "id": "specialty:globalHealthAndInternationalHealth",
+      "code": "globalHealthAndInternationalHealth",
+      "label": "Global Health & International Health",
+      "facilityCount": 5,
+      "variants": [
+        "globalHealthAndInternationalHealth"
+      ]
+    },
+    {
+      "id": "specialty:handSurgery",
+      "code": "handSurgery",
+      "label": "Hand Surgery",
+      "facilityCount": 5,
+      "variants": [
+        "handSurgery"
+      ]
+    },
+    {
+      "id": "specialty:hematologyLaboratory",
+      "code": "hematologyLaboratory",
+      "label": "Hematology Laboratory",
+      "facilityCount": 5,
+      "variants": [
+        "hematologyLaboratory"
+      ]
+    },
+    {
+      "id": "specialty:herniaSurgery",
+      "code": "herniaSurgery",
+      "label": "Hernia Surgery",
+      "facilityCount": 5,
+      "variants": [
+        "herniaSurgery"
+      ]
+    },
+    {
+      "id": "specialty:hormonalAssaysLab",
+      "code": "hormonalAssaysLab",
+      "label": "Hormonal Assays Lab",
+      "facilityCount": 5,
+      "variants": [
+        "hormonalAssaysLab"
+      ]
+    },
+    {
+      "id": "specialty:iclSurgery",
+      "code": "iclSurgery",
+      "label": "ICL Surgery",
+      "facilityCount": 5,
+      "variants": [
+        "iclSurgery"
+      ]
+    },
+    {
+      "id": "specialty:immunologyLab",
+      "code": "immunologyLab",
+      "label": "Immunology Lab",
+      "facilityCount": 5,
+      "variants": [
+        "immunologyLab"
+      ]
+    },
+    {
+      "id": "specialty:immunotherapy",
+      "code": "immunotherapy",
+      "label": "Immunotherapy",
+      "facilityCount": 5,
+      "variants": [
+        "immunotherapy"
+      ]
+    },
+    {
+      "id": "specialty:metabolicSurgery",
+      "code": "metabolicSurgery",
+      "label": "Metabolic Surgery",
+      "facilityCount": 5,
+      "variants": [
+        "metabolicSurgery",
+        "metabolicsurgery"
+      ]
+    },
+    {
+      "id": "specialty:molecularBiology",
+      "code": "molecularBiology",
+      "label": "Molecular Biology",
+      "facilityCount": 5,
+      "variants": [
+        "molecularBiology"
+      ]
+    },
+    {
+      "id": "specialty:multispeciality",
+      "code": "multispeciality",
+      "label": "Multispeciality",
+      "facilityCount": 5,
+      "variants": [
+        "multispeciality"
+      ]
+    },
+    {
+      "id": "specialty:neonatalPerinatal",
+      "code": "neonatalPerinatal",
+      "label": "Neonatal Perinatal",
+      "facilityCount": 5,
+      "variants": [
+        "neonatalPerinatal"
+      ]
+    },
+    {
+      "id": "specialty:neurointerventionalSurgery",
+      "code": "neurointerventionalSurgery",
+      "label": "Neurointerventional Surgery",
+      "facilityCount": 5,
+      "variants": [
+        "neurointerventionalSurgery"
+      ]
+    },
+    {
+      "id": "specialty:neurovascularSurgery",
+      "code": "neurovascularSurgery",
+      "label": "Neurovascular Surgery",
+      "facilityCount": 5,
+      "variants": [
+        "neurovascularSurgery"
+      ]
+    },
+    {
+      "id": "specialty:obesity",
+      "code": "obesity",
+      "label": "Obesity",
+      "facilityCount": 5,
+      "variants": [
+        "obesity"
+      ]
+    },
+    {
+      "id": "specialty:obstetrics",
+      "code": "obstetrics",
+      "label": "Obstetrics",
+      "facilityCount": 5,
+      "variants": [
+        "obstetrics"
+      ]
+    },
+    {
+      "id": "specialty:organTransplantation",
+      "code": "organTransplantation",
+      "label": "Organ Transplantation",
+      "facilityCount": 5,
+      "variants": [
+        "organTransplantation"
+      ]
+    },
+    {
+      "id": "specialty:painPalliativeMedicine",
+      "code": "painPalliativeMedicine",
+      "label": "Pain Palliative Medicine",
+      "facilityCount": 5,
+      "variants": [
+        "painPalliativeMedicine"
+      ]
+    },
+    {
+      "id": "specialty:palliativeMedicine",
+      "code": "palliativeMedicine",
+      "label": "Palliative Medicine",
+      "facilityCount": 5,
+      "variants": [
+        "palliativeMedicine"
+      ]
+    },
+    {
+      "id": "specialty:pediatricHematoOncology",
+      "code": "pediatricHematoOncology",
+      "label": "Pediatric Hemato Oncology",
+      "facilityCount": 5,
+      "variants": [
+        "pediatricHematoOncology"
+      ]
+    },
+    {
+      "id": "specialty:pediatricsNeonatology",
+      "code": "pediatricsNeonatology",
+      "label": "Pediatrics Neonatology",
+      "facilityCount": 5,
+      "variants": [
+        "pediatricsNeonatology"
+      ]
+    },
+    {
+      "id": "specialty:prkSurgery",
+      "code": "prkSurgery",
+      "label": "PRK Surgery",
+      "facilityCount": 5,
+      "variants": [
+        "prkSurgery"
+      ]
+    },
+    {
+      "id": "specialty:radiotherapy",
+      "code": "radiotherapy",
+      "label": "Radiotherapy",
+      "facilityCount": 5,
+      "variants": [
+        "radiotherapy"
+      ]
+    },
+    {
+      "id": "specialty:refractiveSurgery",
+      "code": "refractiveSurgery",
+      "label": "Refractive Surgery",
+      "facilityCount": 5,
+      "variants": [
+        "refractiveSurgery"
+      ]
+    },
+    {
+      "id": "specialty:rehabilitation",
+      "code": "rehabilitation",
+      "label": "Rehabilitation",
+      "facilityCount": 5,
+      "variants": [
+        "rehabilitation"
+      ]
+    },
+    {
+      "id": "specialty:rheumatologyAndImmunology",
+      "code": "rheumatologyAndImmunology",
+      "label": "Rheumatology & Immunology",
+      "facilityCount": 5,
+      "variants": [
+        "rheumatologyAndImmunology"
+      ]
+    },
+    {
+      "id": "specialty:serologyLab",
+      "code": "serologyLab",
+      "label": "Serology Lab",
+      "facilityCount": 5,
+      "variants": [
+        "serologyLab"
+      ]
+    },
+    {
+      "id": "specialty:sexology",
+      "code": "sexology",
+      "label": "Sexology",
+      "facilityCount": 5,
+      "variants": [
+        "sexology"
+      ]
+    },
+    {
+      "id": "specialty:smileDesign",
+      "code": "smileDesign",
+      "label": "Smile Design",
+      "facilityCount": 5,
+      "variants": [
+        "smileDesign"
+      ]
+    },
+    {
+      "id": "specialty:speechTherapy",
+      "code": "speechTherapy",
+      "label": "Speech Therapy",
+      "facilityCount": 5,
+      "variants": [
+        "speechTherapy"
+      ]
+    },
+    {
+      "id": "specialty:squint",
+      "code": "squint",
+      "label": "Squint",
+      "facilityCount": 5,
+      "variants": [
+        "squint"
+      ]
+    },
+    {
+      "id": "specialty:thoracicOncology",
+      "code": "thoracicOncology",
+      "label": "Thoracic Oncology",
+      "facilityCount": 5,
+      "variants": [
+        "thoracicOncology"
+      ]
+    },
+    {
+      "id": "specialty:virologyLab",
+      "code": "virologyLab",
+      "label": "Virology Lab",
+      "facilityCount": 5,
+      "variants": [
+        "virologyLab"
+      ]
+    }
+  ]
+}
