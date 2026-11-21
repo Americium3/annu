@@ -85,9 +85,6 @@ function App() {
       <Header />
       <main>
         <section className="hero">
-          <div className="hero-grid" aria-hidden="true" />
-          <div className="hero-orbit hero-orbit-one" aria-hidden="true" />
-          <div className="hero-orbit hero-orbit-two" aria-hidden="true" />
           <div className="hero-content">
             <div className="hero-copy">
               <span className="hero-eyebrow">

@@ -31,6 +31,17 @@ pnpm preview
 - 分享用搜索参数保存到 URL。
 - `modelVersion`、`rankingVersion` 和可替换评分拆分结构。
 
+## 主题 / Theme
+
+All colours, type sizes, radii and shadows are tokens in the `:root` block at the top of `src/index.css` ("Calm clinic"). Components read only tokens, so changing the theme means editing that one block.
+
+- **Light and dark.** The page follows the OS setting. The header's moon/sun button overrides it, and the choice is saved in `localStorage` (`carepath-theme`). `index.html` applies the saved choice before first paint so the page doesn't flash.
+- **One action colour.** Deep teal (`--brand`) means "you can press this". Warm colours are used only for caution states and small decorative details, never for buttons.
+- **Status is never colour alone.** Good / caution / critical always come with an icon and a word. Every text token meets WCAG AA (≥ 4.5:1) on every surface in both modes.
+- **Readable sizes.** No text is smaller than 12px (`--fs-2xs`).
+
+The direction comes from Sprout's landing page: calm, high-brightness and low-saturation surfaces, dark text, and one obvious next step.
+
 ## 数据说明
 
 当前设施、证据和来源均为明确的演示数据。默认详细场景是 Bhubaneswar 附近的透析服务；选择其他服务时，前端会生成与服务匹配的模板化演示证据。所有内容都不能作为真实医疗服务可用性的依据。

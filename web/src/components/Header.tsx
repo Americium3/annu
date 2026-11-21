@@ -1,9 +1,12 @@
-import { CircleHelp, Database, Menu, X } from "lucide-react";
+import { CircleHelp, Database, Menu, Moon, Sun, X } from "lucide-react";
 import { useState } from "react";
+import { useTheme } from "../hooks/useTheme";
 import { Brand } from "./Brand";
 
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { theme, toggle } = useTheme();
+  const nextLabel = theme === "dark" ? "Switch to light theme" : "Switch to dark theme";
 
   return (
     <header className="site-header">
@@ -25,6 +28,15 @@ export function Header() {
             <Database size={13} aria-hidden="true" />
             Demo data
           </span>
+          <button
+            className="icon-button theme-button"
+            type="button"
+            aria-label={nextLabel}
+            title={nextLabel}
+            onClick={toggle}
+          >
+            {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+          </button>
           <a
             className="icon-button help-button"
             href="#how-it-works"

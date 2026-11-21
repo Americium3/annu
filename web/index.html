@@ -7,7 +7,15 @@
       name="description"
       content="CarePath helps people find healthcare facilities using transparent, evidence-led recommendations."
     />
-    <meta name="theme-color" content="#143a3a" />
+    <meta name="theme-color" content="#e0f1ec" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0e1a19" media="(prefers-color-scheme: dark)" />
+    <script>
+      // Apply a saved light/dark choice before first paint so the page never flashes.
+      try {
+        var t = localStorage.getItem("carepath-theme");
+        if (t === "light" || t === "dark") document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    </script>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>CarePath — Evidence-led care search</title>
   </head>
