@@ -105,6 +105,21 @@ python3 pipeline/crosswalk_taxonomies.py --nucc-csv /tmp/nucc_taxonomy_261.csv
 
 It needs network access to `id.nlm.nih.gov` and `www.nucc.org`.
 
+## Publishing to Databricks (`publish_to_databricks.py`)
+
+Writes the catalog into the workspace next to the cleaned tables. It uploads the generated
+files to the volume `workspace.cardinal_virtues.tag_files`, then (re)creates:
+
+- `workspace.cardinal_virtues.tag_catalog`: one row per tag (service, condition or
+  specialty), with facility counts, TF-IDF class counts and MeSH / ICD-10 / NUCC references.
+- `workspace.cardinal_virtues.facility_tags`: one row per (facility, tag), with
+  `evidence_class` (strong / mention / suggested / specialty), `tfidf_probability` and
+  `evidence_refs` into `model_evidence_items`.
+
+```bash
+python3 pipeline/publish_to_databricks.py
+```
+
 ## Outputs (`data/tags/`)
 
 | File | Contents |
