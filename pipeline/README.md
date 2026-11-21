@@ -70,6 +70,41 @@ python3 pipeline/build_tags.py      # weak labels → data/tags/facility_tags.cs
 python3 pipeline/tfidf_classify.py  # → tfidf_tag_report.json, facility_tag_scores.csv
 ```
 
+## Taxonomy crosswalk (`crosswalk_taxonomies.py`)
+
+Every tag is cross-referenced with a standard vocabulary, so labels can be traced to an
+authoritative definition and joined with other datasets:
+
+| Tag layer | Reference | Source | Coverage |
+|---|---|---|---|
+| Service/condition | **MeSH** descriptors (ID, preferred label, tree numbers, top-level category) | U.S. National Library of Medicine, live API | 100/100 tags, 213 descriptors |
+| Service/condition | **ICD-10** codes (category, block or chapter) | WHO ICD-10 2019 (`simple-icd-10`) | 65/100 tags (the rest are procedures or facility capabilities, which ICD-10 doesn't classify) |
+| Specialty | **NUCC Health Care Provider Taxonomy** codes | NUCC v26.1 CSV | 98.1% of facility-specialty links (90.7% equivalent, 7.5% broader) |
+
+- The service/condition references are curated in `tag_references.py`. MeSH terms are given by
+  exact preferred label. The script resolves every label to its descriptor ID through the NLM
+  API and validates every ICD-10 code against the WHO 2019 code set. It fails on anything it
+  can't verify. The MeSH tree categories also give an independent check on our `group`
+  assignment: for example, Eyes → C11 Eye Diseases and Dental → E06 Dentistry.
+- Specialties map to NUCC in three ways. Exact name matches are trusted only within physician,
+  dental and eye-care groupings. Naming differences go through the curated `SPECIALTY_TO_NUCC`
+  table. Fuzzy matches with similarity ≥ 0.88 become `candidate` for review. Each mapping
+  records a relation:
+  - `equivalent`: the same concept.
+  - `broader`: NUCC has no code this specific, so the nearest parent is used.
+    "Cataract & anterior segment surgery" → Ophthalmology.
+- The 163 unmapped specialties are niche concepts that NUCC doesn't classify, such as maternal
+  & child health, laser dentistry and neurosciences. Together they cover 1.9% of
+  facility-specialty links.
+- NUCC is US-centric, and India's NMC/MCI specialty list has no machine-readable release.
+  NUCC is used as the closest widely adopted standard.
+
+```bash
+python3 pipeline/crosswalk_taxonomies.py --nucc-csv /tmp/nucc_taxonomy_261.csv
+```
+
+It needs network access to `id.nlm.nih.gov` and `www.nucc.org`.
+
 ## Outputs (`data/tags/`)
 
 | File | Contents |
@@ -81,6 +116,8 @@ python3 pipeline/tfidf_classify.py  # → tfidf_tag_report.json, facility_tag_sc
 | `facility_tags.csv` | *(gitignored, ~15 MB)* one row per (facility, tag) with evidence refs `field:item_idx` into `model_evidence_items` |
 | `tfidf_tag_report.json` | TF-IDF grading summary per tag (see above) |
 | `facility_tag_scores.csv` | *(gitignored)* one row per (facility, service tag): class, best probability, best evidence ref |
+| `taxonomy_crosswalk.json` | Each tag with its MeSH / ICD-10 / NUCC references and source metadata |
+| `taxonomy_crosswalk.csv` | One row per (tag, reference), for review |
 
 ## Running
 
