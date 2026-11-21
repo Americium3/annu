@@ -4,10 +4,14 @@
 
 ## 本地运行
 
+前端默认连接真实后端（`backend/`，FastAPI，端口 8000），Vite 会把 `/api` 代理过去。先按 `backend/README.md` 启动后端，再：
+
 ```bash
 pnpm install
 pnpm dev
 ```
+
+没有后端时，可以用内置的演示数据运行：`VITE_USE_DEMO=true pnpm dev`。
 
 默认访问 `http://127.0.0.1:5173`。
 
@@ -35,7 +39,7 @@ pnpm preview
 
 当前设施、证据和来源均为明确的演示数据。默认详细场景是 Bhubaneswar 附近的透析服务；选择其他服务时，前端会生成与服务匹配的模板化演示证据。所有内容都不能作为真实医疗服务可用性的依据。
 
-推荐数据入口位于 `src/lib/demoApi.ts`。未来接入后端时，可用真实的 `POST /api/recommendations` 客户端替换该函数，同时保持 `src/types.ts` 中的前端契约不变。ML 模型应继续返回总分、特征贡献或评分拆分、证据和不确定性。
+推荐数据入口位于 `src/lib/api.ts`（真实的 `POST /api/recommendations`、`GET /api/services`、`GET /api/locations`）；`src/lib/demoApi.ts` 保留为演示模式。前端契约仍是 `src/types.ts`。ML 模型应继续返回总分、特征贡献或评分拆分、证据和不确定性。
 
 ## 目录
 

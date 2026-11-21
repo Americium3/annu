@@ -135,7 +135,7 @@ export function FacilityDetail({ facility, onClose }: FacilityDetailProps) {
                 <span className="section-number">01</span>
                 <h3>Score breakdown</h3>
               </div>
-              <span className="model-label">Rules v0.1 · ML-ready</span>
+              <span className="model-label">{facility.scoreBreakdown.modelVersion}</span>
             </div>
             <div className="score-breakdown">
               {scoreLabels.map(([key, label, maximum]) => {
@@ -165,8 +165,9 @@ export function FacilityDetail({ facility, onClose }: FacilityDetailProps) {
               )}
             </div>
             <p className="score-disclaimer">
-              Scores rank candidates relative to this search. They do not measure clinical quality,
-              safety, or health outcomes.
+              The score summarises the same signals the ranking uses; the order itself follows
+              evidence-first rules (evidence tier, then distance band, then location quality). Scores do
+              not measure clinical quality, safety, or health outcomes.
             </p>
           </section>
 

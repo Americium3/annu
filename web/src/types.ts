@@ -8,7 +8,8 @@ export interface ServiceOption {
   id: string;
   name: string;
   synonyms: string[];
-  category: "dialysis" | "emergency" | "specialty" | "diagnostic";
+  category: string;
+  facilityCount?: number;
 }
 
 export interface LocationOption {
@@ -18,6 +19,7 @@ export interface LocationOption {
   latitude: number;
   longitude: number;
   confidence: ConfidenceLevel;
+  kind?: "district" | "city" | "pincode";
 }
 
 export interface QueryContext {
@@ -126,5 +128,16 @@ export interface RecommendationResponse {
     isPartialResult: boolean;
     executionTimeMs: number;
     warnings: string[];
+    funnel?: {
+      datasetProviders: number;
+      datasetRecommendable: number;
+      withinRadius: number;
+      reviewBlockedWithinRadius: number;
+      radiusStepsKm: number[];
+      radiusKm: number;
+      locationNote: string;
+      serviceMatch: string;
+      dataSource: string;
+    };
   };
 }

@@ -1,6 +1,7 @@
 import { CircleHelp, Database, Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Brand } from "./Brand";
+import { USE_DEMO } from "../lib/api";
 
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -23,7 +24,7 @@ export function Header() {
         <div className="header-actions">
           <span className="demo-pill">
             <Database size={13} aria-hidden="true" />
-            Demo data
+            {USE_DEMO ? "Demo data" : "Live data"}
           </span>
           <a
             className="icon-button help-button"

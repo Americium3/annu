@@ -6,7 +6,7 @@ import { Header } from "./components/Header";
 import { ResultsView } from "./components/ResultsView";
 import { SearchPanel, type SearchValues } from "./components/SearchPanel";
 import { TrustSection } from "./components/TrustSection";
-import { getDemoRecommendations } from "./lib/demoApi";
+import { ApiError, getRecommendations, USE_DEMO } from "./lib/api";
 import type { RankingMode, RecommendationResponse } from "./types";
 
 const defaultSearch: SearchValues = {
@@ -22,6 +22,7 @@ function App() {
   const [searchValues, setSearchValues] = useState<SearchValues>(defaultSearch);
   const [rankingMode, setRankingMode] = useState<RankingMode>("best_match");
   const [selectedId, setSelectedId] = useState<string>();
+  const [error, setError] = useState<ApiError>();
 
   const urlSearch = useMemo(
     () => ({
@@ -49,18 +50,24 @@ function App() {
         );
       }
 
-      const response = await getDemoRecommendations({
-        serviceText: values.service,
-        locationText: values.location,
-        radiusKm: values.radiusKm,
-        rankingMode: mode,
-        limit: 8,
-        coordinates: values.coordinates,
-      });
-
-      setData(response);
-      setSelectedId(undefined);
-      setIsLoading(false);
+      try {
+        const response = await getRecommendations({
+          serviceText: values.service,
+          locationText: values.location,
+          radiusKm: values.radiusKm,
+          rankingMode: mode,
+          limit: 8,
+          coordinates: values.coordinates,
+        });
+        setData(response);
+        setError(undefined);
+      } catch (caught) {
+        setData(undefined);
+        setError(caught instanceof ApiError ? caught : new ApiError(String(caught)));
+      } finally {
+        setSelectedId(undefined);
+        setIsLoading(false);
+      }
     },
     [setSearchParams],
   );
@@ -168,16 +175,44 @@ function App() {
 
           <div className="hero-bottom">
             <a className="scroll-cue" href="#results-heading">
-              <span>Explore sample results</span>
+              <span>Explore results</span>
               <ArrowDown size={16} />
             </a>
             <p>
-              <span className="hero-demo-label">Prototype</span>
-              Facilities and source links shown below are illustrative demo data.
+              <span className="hero-demo-label">{USE_DEMO ? "Demo data" : "Live data"}</span>
+              {USE_DEMO
+                ? "Facilities and source links shown below are illustrative demo data."
+                : "Virtue Foundation facility records (web-extracted claims). Confirm with the facility before travelling."}
             </p>
           </div>
         </section>
 
+        {error && (
+          <section className="api-error" role="alert">
+            <strong>{error.field === "service" ? "Service not recognised" : error.field === "location" ? "Location not found" : "Search failed"}</strong>
+            <p>{error.message}</p>
+            {error.suggestions.length > 0 && (
+              <div className="api-error-suggestions">
+                <span>Try:</span>
+                {error.suggestions.map((suggestion) => (
+                  <button
+                    key={suggestion}
+                    type="button"
+                    onClick={() =>
+                      handleSearch(
+                        error.field === "service"
+                          ? { ...searchValues, service: suggestion }
+                          : { ...searchValues, location: suggestion, coordinates: undefined },
+                      )
+                    }
+                  >
+                    {suggestion}
+                  </button>
+                ))}
+              </div>
+            )}
+          </section>
+        )}
         <ResultsView
           data={data}
           isLoading={isLoading}

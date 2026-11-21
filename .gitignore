@@ -12,3 +12,6 @@ data/tags/facility_tags.csv
 data/tags/facility_tag_scores.csv
 __pycache__/
 .pytest_cache/
+
+# backend data snapshot (derived from Databricks tables)
+backend/.cache/

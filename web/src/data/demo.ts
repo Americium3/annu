@@ -834,5 +834,6 @@ export function sortFacilities(facilities: FacilityRecommendation[], mode: Ranki
       return evidenceDifference || b.totalScore - a.totalScore;
     });
   }
-  return sorted.sort((a, b) => b.totalScore - a.totalScore);
+  // Best match keeps the backend order (evidence-first rules); the score is a display summary.
+  return sorted.sort((a, b) => a.rank - b.rank || b.totalScore - a.totalScore);
 }
