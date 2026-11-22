@@ -15,3 +15,7 @@ __pycache__/
 
 # backend data snapshot (derived from Databricks tables)
 backend/.cache/
+
+# Local retrieval experiment exports and model caches (never commit source medical records)
+data/experiments/
+experiments/.cache/
