@@ -78,13 +78,13 @@ def _snapshot():
     import data_store
     snap = data_store.get_snapshot()
     if "grade" in snap.index.columns:
-        raise RuntimeError("backend/.cache/snapshot.pkl holds a v2 index; rebuild it with CAREPATH_SERVICE_INDEX=v1 "
-                           "CAREPATH_REFRESH=1 so the baselines use the v1 serving index")
+        raise RuntimeError("backend/.cache/snapshot.pkl holds a v2 index; rebuild it with ANNU_SERVICE_INDEX=v1 "
+                           "ANNU_REFRESH=1 so the baselines use the v1 serving index")
     return snap
 
 
 # ---------------------------------------------------------------- E0: the live backend as merged on main
-BASELINE_REF = os.environ.get("CAREPATH_BASELINE_REF", "4401fe1")   # main before this experiment branch
+BASELINE_REF = os.environ.get("ANNU_BASELINE_REF", "4401fe1")   # main before this experiment branch
 
 
 def run_baseline_backend(golden, ranking_method):

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Build CarePath and deploy it to Databricks Apps: Node serves the site and runs
+# Build Annu and deploy it to Databricks Apps: Node serves the site and runs
 # the Python recommender, which reads the live tables as the app's own service
 # principal. Everyone in the Databricks account can open it (after signing in;
 # Databricks Apps cannot be public).
@@ -8,14 +8,14 @@
 #   DATABRICKS_TOKEN=<personal access token> \
 #   web/databricks-app/deploy.sh
 #
-# Optional: APP_NAME (carepath), WAREHOUSE_ID, SCHEMA (workspace.cardinal_virtues),
+# Optional: APP_NAME (annu), WAREHOUSE_ID, SCHEMA (workspace.cardinal_virtues),
 # LLM_ENDPOINT (databricks-meta-llama-3-3-70b-instruct; must match app.yaml),
 # USE_DEMO=true to ship the demo-data build without the recommender.
 set -euo pipefail
 HERE="$(cd "$(dirname "$0")" && pwd)"
 REPO="$(cd "$HERE/../.." && pwd)"
 : "${DATABRICKS_HOST:?set DATABRICKS_HOST}"
-APP_NAME="${APP_NAME:-carepath}"
+APP_NAME="${APP_NAME:-annu}"
 WAREHOUSE_ID="${WAREHOUSE_ID:-01562a1cdb8d5257}"
 SCHEMA="${SCHEMA:-workspace.cardinal_virtues}"
 USE_DEMO="${USE_DEMO:-false}"
@@ -77,7 +77,7 @@ set_resources() {  # $1 = resources JSON
   if call "$API/apps/$APP_NAME" >/dev/null 2>&1; then
     call -X PATCH "$API/apps/$APP_NAME" -d "{\"name\":\"$APP_NAME\",\"resources\":$1}" >/dev/null
   else
-    call -X POST "$API/apps" -d "{\"name\":\"$APP_NAME\",\"description\":\"CarePath: find a hospital that offers the care you need\",\"resources\":$1}" >/dev/null
+    call -X POST "$API/apps" -d "{\"name\":\"$APP_NAME\",\"description\":\"Annu: find a hospital that offers the care you need\",\"resources\":$1}" >/dev/null
   fi
 }
 echo "3/7 Creating or updating app $APP_NAME"

@@ -1,32 +1,32 @@
-# Databricks Apps: how to start CarePath.
+# Databricks Apps: how to start Annu.
 # Node serves the site and starts the Python recommender (see server.js).
 command: ["node", "server.js"]
 env:
   # The SQL warehouse is attached to the app as a resource named "sql-warehouse".
   - name: DATABRICKS_WAREHOUSE_ID
     valueFrom: sql-warehouse
-  - name: CAREPATH_SCHEMA
+  - name: ANNU_SCHEMA
     value: workspace.cardinal_virtues
   # Writable location for the in-memory recommender's snapshot.
-  - name: CAREPATH_CACHE
-    value: /tmp/carepath/snapshot.pkl
+  - name: ANNU_CACHE
+    value: /tmp/annu/snapshot.pkl
   # Load fresh tables from Databricks on every start.
-  - name: CAREPATH_REFRESH
+  - name: ANNU_REFRESH
     value: "1"
   # Ranking: rules (proof x closeness). On the golden dev set no text model beat it once stage 1 was fixed
   # (experiments/RESULTS.md); set cross_encoder to rerank with the cross-encoder instead.
-  - name: CAREPATH_RANKING_METHOD
+  - name: ANNU_RANKING_METHOD
     value: rules
   # Stage 1: v2 high-recall candidates built from model_evidence_items at start (about 2 minutes); v1 = old table.
-  - name: CAREPATH_SERVICE_INDEX
+  - name: ANNU_SERVICE_INDEX
     value: v2
   - name: HF_HOME
-    value: /tmp/carepath/huggingface
+    value: /tmp/annu/huggingface
   # Free-text understanding (backend/nlu.py): rules first; this Databricks model serving endpoint fills gaps.
   # Only answers that quote the message are kept. If the endpoint is missing, the rules result stands.
-  - name: CAREPATH_LLM_ENDPOINT
+  - name: ANNU_LLM_ENDPOINT
     value: databricks-meta-llama-3-3-70b-instruct
   # Voice input (backend/stt.py): Whisper runs inside the app, so speech stays on Databricks.
   # About 1 GB of memory; set to "off" to disable (the page then uses the browser's own voice typing).
-  - name: CAREPATH_STT_MODEL
+  - name: ANNU_STT_MODEL
     value: openai/whisper-small

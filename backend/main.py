@@ -1,4 +1,4 @@
-"""CarePath API: serves the service-first recommender to the React frontend (web/).
+"""Annu API: serves the service-first recommender to the React frontend (web/).
 
 Run:  uvicorn main:app --port 8000      (from this folder; see README.md)
 """
@@ -23,28 +23,28 @@ STATE: dict = {}
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    snap = get_snapshot(refresh=os.environ.get("CAREPATH_REFRESH") == "1")
+    snap = get_snapshot(refresh=os.environ.get("ANNU_REFRESH") == "1")
     rec = Recommender(snap)
     rec.warmup()  # Fail startup visibly if the default model cannot load; no rule fallback.
     STATE["rec"] = rec
     # One language model (a Databricks serving endpoint) for both LLM steps: reading the request (nlu.py) and
     # judging the top hospitals' own records (judge.py). Without it, both fall back to rules, stated in /api/health.
     llm = None
-    if os.environ.get("CAREPATH_LLM_ENDPOINT"):
+    if os.environ.get("ANNU_LLM_ENDPOINT"):
         try:
-            llm = LlmClient(os.environ["CAREPATH_LLM_ENDPOINT"])
+            llm = LlmClient(os.environ["ANNU_LLM_ENDPOINT"])
         except Exception as exc:
             print(f"LLM unavailable ({type(exc).__name__}); using rules only", file=sys.stderr)
     STATE["nlu"] = Understander(known_place=rec.known_place, llm=llm or False)
     rec.judge = EvidenceJudge(llm) if llm else None
     STATE["stt"] = Transcriber()
     STATE["stt"].warmup_in_background()  # voice input; loading never delays the rest of the app
-    print(f"CarePath API ready – data: {snap.source}", file=sys.stderr)
+    print(f"Annu API ready – data: {snap.source}", file=sys.stderr)
     yield
 
 
-app = FastAPI(title="CarePath API", lifespan=lifespan)
-app.add_middleware(CORSMiddleware, allow_origins=os.environ.get("CAREPATH_CORS", "http://127.0.0.1:5173,http://localhost:5173").split(","),
+app = FastAPI(title="Annu API", lifespan=lifespan)
+app.add_middleware(CORSMiddleware, allow_origins=os.environ.get("ANNU_CORS", "http://127.0.0.1:5173,http://localhost:5173").split(","),
                    allow_methods=["*"], allow_headers=["*"])
 
 

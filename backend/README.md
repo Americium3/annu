@@ -1,4 +1,4 @@
-# CarePath API (backend)
+# Annu API (backend)
 
 FastAPI service that connects the React frontend (`web/`) to the service-first recommender and the Databricks data.
 
@@ -22,13 +22,13 @@ web (Vite :5173) ──/api──▶ backend (FastAPI :8000) ──SQL──▶ 
    also through old / variant spellings from `ref_address_alias` ("Calcutta", "Bombay", "UP"); a facility named as the
    location ("Chole Eye Hospital, Bhandara"); last, the closest place name (marked low confidence).
 3. **Who offers it (stage 1, v2)**: `pipeline/service_index_v2.py` builds facility × service candidates from every
-   evidence field when the snapshot loads (`CAREPATH_SERVICE_INDEX=v2`, about 2 minutes). Each sentence gets a status:
+   evidence field when the snapshot loads (`ANNU_SERVICE_INDEX=v2`, about 2 minutes). Each sentence gets a status:
    explicit, related (specialty only), negated / planned / outsourced / referred, or about another institution. Grade
    3 = explicit and corroborated, 2 = one explicit statement (both recommendable), 1 = related only, 0 = negative only.
    Wrong senses are dropped ("gastric bypass" is not cardiac surgery, "emergency dentistry" is not emergency care,
    jaw fractures are not trauma care). Down-weights: explicit wording only in specialty / name / description (× 0.75),
    a facility name announcing another specialty ("… Eye Hospital" claiming burns care: × 0.6, likely merged records),
-   inpatient-only services at a clinic (× 0.7). `CAREPATH_SERVICE_INDEX=v1` reads the old `serving_service_index`.
+   inpatient-only services at a clinic (× 0.7). `ANNU_SERVICE_INDEX=v1` reads the old `serving_service_index`.
 4. **Usable evidence + location**: rows marked `review_blocked` (identity conflict, evidence about another institution,
    coordinates vs PIN conflict, no location) are counted but never recommended.
 5. **Where**: the candidate pool is at least twice the travel distance for this kind of care (see below), widened
@@ -93,7 +93,7 @@ The flow is fixed in code; a model fills in one step at most (after the pre-cons
    "X mein", or a bare city the location reference knows; "near me" uses the device location. When no care word
    matched, symptom and disease names from `data/tags/alias_table.csv` give the condition ("bawaseer" →
    Hemorrhoids) and, where curated, its care tag; short all-caps abbreviations are ignored.
-3. **Model (optional)**: set `CAREPATH_LLM_ENDPOINT` to a Databricks model serving endpoint (the app's own identity
+3. **Model (optional)**: set `ANNU_LLM_ENDPOINT` to a Databricks model serving endpoint (the app's own identity
    is used). One chat call fills what the rules left open. Answers are kept only if their quote appears verbatim in
    the message and is not denied; care ids must be in the catalogue; model urgency can only raise the rule level.
    If the call fails, the rules result stands and `llm.error` says so.
@@ -119,8 +119,8 @@ suggests calling 108. Nothing here is a diagnosis.
 
 ## Voice input (`stt.py`, `POST /api/transcribe`)
 
-As in Sprout, the browser records and the server transcribes. Sprout uses Groq's Whisper; CarePath runs the same
-open model inside the app (`CAREPATH_STT_MODEL`, default `openai/whisper-small`, CPU) so speech stays on
+As in Sprout, the browser records and the server transcribes. Sprout uses Groq's Whisper; Annu runs the same
+open model inside the app (`ANNU_STT_MODEL`, default `openai/whisper-small`, CPU) so speech stays on
 Databricks. The page records with the Web Audio API and sends 16 kHz mono 16-bit PCM (no audio decoder needed on
 the server). Recording stops on a tap, after ~1.4 s of silence once the person has spoken, or at 20 s. A short hint
 of Indian place names and kinds of care is passed as Whisper's prompt (it turned "near Kodak" into "near Cuttack"
@@ -139,11 +139,11 @@ uvicorn main:app --port 8000
 ```
 
 The first start loads the tables from Databricks (~15 s) and writes `backend/.cache/snapshot.pkl` (git-ignored).
-Later starts read the snapshot (~1 s, no token needed). Set `CAREPATH_REFRESH=1` to reload from Databricks.
+Later starts read the snapshot (~1 s, no token needed). Set `ANNU_REFRESH=1` to reload from Databricks.
 
 In `cross_encoder` mode the app additionally loads and warms the cross-encoder before reporting startup readiness. First startup requires
 access to the Hugging Face checkpoint (and can be slower); subsequent model loads use its normal disk cache.
-For offline deployments, pre-download the checkpoint and set `CAREPATH_CROSS_ENCODER_MODEL` to its local directory.
+For offline deployments, pre-download the checkpoint and set `ANNU_CROSS_ENCODER_MODEL` to its local directory.
 The Databricks Apps bundle includes the scorer and neural dependencies automatically; `app.yaml` sets the default
 method and a writable `HF_HOME`. This code change does not deploy/restart an existing app.
 
@@ -151,17 +151,17 @@ Configuration:
 
 | Environment variable | Default |
 |---|---|
-| `CAREPATH_RANKING_METHOD` | `rules`; `cross_encoder` reranks with the cross-encoder (no gain on the golden dev set) |
-| `CAREPATH_SERVICE_INDEX` | `v2` (build candidates from evidence at load); `v1` reads `serving_service_index` |
-| `CAREPATH_MIN_POOL_SIZE` | `3` facilities before the search stops widening |
-| `CAREPATH_SOLID_GATE` | `evidence`; `proof` restores the earlier proof ≥ 0.5 gate |
-| `CAREPATH_CROSS_ENCODER_QUERY_STYLE` | `natural` ("a hospital that provides X"); `keywords` = label + synonyms |
-| `CAREPATH_EMERGENCY_MISSING_FACTOR` | `1.0` (off); e.g. `0.6` ranks facilities with emergency evidence first for urgent wording |
-| `CAREPATH_CROSS_ENCODER_MODEL` | `cross-encoder/ms-marco-MiniLM-L6-v2` or a local checkpoint directory |
-| `CAREPATH_CROSS_ENCODER_REVISION` | unset; pin a checkpoint revision for reproducible final runs |
-| `CAREPATH_CROSS_ENCODER_DEVICE` | `cpu` |
-| `CAREPATH_CROSS_ENCODER_BATCH_SIZE` | `32` |
-| `CAREPATH_CROSS_ENCODER_MAX_LENGTH` | `512` tokens per pair |
+| `ANNU_RANKING_METHOD` | `rules`; `cross_encoder` reranks with the cross-encoder (no gain on the golden dev set) |
+| `ANNU_SERVICE_INDEX` | `v2` (build candidates from evidence at load); `v1` reads `serving_service_index` |
+| `ANNU_MIN_POOL_SIZE` | `3` facilities before the search stops widening |
+| `ANNU_SOLID_GATE` | `evidence`; `proof` restores the earlier proof ≥ 0.5 gate |
+| `ANNU_CROSS_ENCODER_QUERY_STYLE` | `natural` ("a hospital that provides X"); `keywords` = label + synonyms |
+| `ANNU_EMERGENCY_MISSING_FACTOR` | `1.0` (off); e.g. `0.6` ranks facilities with emergency evidence first for urgent wording |
+| `ANNU_CROSS_ENCODER_MODEL` | `cross-encoder/ms-marco-MiniLM-L6-v2` or a local checkpoint directory |
+| `ANNU_CROSS_ENCODER_REVISION` | unset; pin a checkpoint revision for reproducible final runs |
+| `ANNU_CROSS_ENCODER_DEVICE` | `cpu` |
+| `ANNU_CROSS_ENCODER_BATCH_SIZE` | `32` |
+| `ANNU_CROSS_ENCODER_MAX_LENGTH` | `512` tokens per pair |
 
 Only single-logit relevance checkpoints are supported by this scorer. There is no automatic model fallback:
 dependency/checkpoint failure blocks startup; inference failure or a malformed formal row with no usable passage
@@ -190,7 +190,7 @@ Errors: 422 `{"detail": {"field": "service" | "location", "message": ..., "sugge
 
 ## Statement checks before scoring
 
-`CAREPATH_CLAIM_GUARD=explicit` is the v5 default. Explicit service denials, future/historical
+`ANNU_CLAIM_GUARD=explicit` is the v5 default. Explicit service denials, future/historical
 claims and contradictory statements are excluded before choosing the radius. If a formal
 row contains no remaining usable evidence, it is omitted with a `metadata.claimGuard` audit;
 one bad row no longer fails all other recommendations. `strict` additionally excludes
