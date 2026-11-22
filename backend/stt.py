@@ -1,7 +1,7 @@
 """Speech to text for the ask box, after Sprout's voice input (record in the browser, transcribe on the server).
 
-Sprout sends the recording to Groq's Whisper; CarePath must run on Databricks, so the same open Whisper model runs
-inside the app instead (CPU, `CAREPATH_STT_MODEL`, default openai/whisper-small: it writes Hindi in Devanagari,
+Sprout sends the recording to Groq's Whisper; Annu must run on Databricks, so the same open Whisper model runs
+inside the app instead (CPU, `ANNU_STT_MODEL`, default openai/whisper-small: it writes Hindi in Devanagari,
 which the smaller checkpoints do not). The browser sends 16 kHz mono 16-bit PCM, so no audio decoder (ffmpeg) is
 needed on the server. A short hint of Indian place names and kinds of care is passed as Whisper's prompt: on
 sample audio it turned "near Kodak" into "near Cuttack" and recovered "भुवनेश्वर" and "डायलिसिस". The hint is a

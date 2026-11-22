@@ -168,7 +168,7 @@ const SCENES = [
 export const INTRO_COUNT = SCENES.length;
 
 /**
- * How CarePath works, shown by Raahi doing it: three short scenes between the
+ * How Annu works, shown by Raahi doing it: three short scenes between the
  * language choice and the setup questions. Each can be skipped.
  */
 export function IntroScene({ index, onNext, onSkip }: { index: number; onNext: () => void; onSkip: () => void }) {

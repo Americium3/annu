@@ -11,7 +11,7 @@ import { isValidMobile } from "../lib/profile";
 /**
  * Mobile number + one-time code. Two short screens, numeric keyboards, the
  * code field set up for SMS autofill, and a visible way out ("Continue without
- * signing in") because nothing on CarePath needs an account.
+ * signing in") because nothing on Annu needs an account.
  */
 export function SignIn() {
   const { t } = useI18n();

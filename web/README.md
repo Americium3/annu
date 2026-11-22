@@ -1,4 +1,4 @@
-# CarePath Frontend
+# Annu Frontend
 
 医疗设施推荐网站的 React 前端。默认连接 `backend/` 的真实推荐 API（Databricks 数据）；`VITE_USE_DEMO=true` 时使用内置演示数据。
 
@@ -38,7 +38,7 @@ pnpm preview
 
 All colours, type sizes, radii and shadows are tokens in the `:root` block at the top of `src/index.css` ("Calm clinic"). Components read only tokens, so changing the theme means editing that one block.
 
-- **Light and dark.** The page follows the OS setting. The header's moon/sun button overrides it, and the choice is saved in `localStorage` (`carepath-theme`).
+- **Light and dark.** The page follows the OS setting. The header's moon/sun button overrides it, and the choice is saved in `localStorage` (`annu-theme`).
 - **One action colour.** Deep teal (`--brand`) means "you can press this". Warm colours mean caution only.
 - **Status is never colour alone.** Every label is an icon plus words. Every text token meets WCAG AA in both modes.
 - **Squared, not pill-shaped.** Corners are small and consistent (4–12px). There are no uppercase eyebrow labels, gradient blobs or decorative cards. A label is words.
@@ -69,7 +69,7 @@ Modelled on Sprout's flow, with one overriding rule: **sign-in and setup never s
 
 - **Setup (`/welcome`, `src/pages/Onboarding.tsx`).** It's offered once, through a dismissible line under the search, and never opens on its own. After the language, three short animated scenes show Raahi doing the job (`src/components/IntroScenes.tsx`): a request typed in everyday words with the care and place lighting up; danger words filling the emergency meter past the line and bringing 108 forward; hospital rows reordering as proof bars fill. Then Raahi asks one question per screen: usual place, whether to show government hospitals first, and an emergency contact. Every question has "Skip this question", and the whole flow has "Skip setup". Answers are saved as they're given, so leaving half-way loses nothing. When finished, `/welcome` sends people home; "Change my preferences" in the account menu reopens it with `?again=1`.
 - **What the answers change.** The interface language; the place and distance the search starts from; government hospitals listed first (a stable partition, so Best match / Nearest still holds inside each group); and a "Call [name]" button under Call 108 on the emergency screen.
-- **What is stored** (`src/lib/profile.ts`, `carepath.profile.v1`): only those answers. Nothing medical, and no scheme or income details. Every storage read and write is guarded.
+- **What is stored** (`src/lib/profile.ts`, `annu.profile.v1`): only those answers. Nothing medical, and no scheme or income details. Every storage read and write is guarded.
 - **Sign-in (`/sign-in?return_to=…`, `src/pages/SignIn.tsx`).** Mobile number plus a one-time code: numeric keyboards, `autocomplete="one-time-code"` for SMS autofill, auto-submit at 6 digits, a 30-second resend timer, and "Continue without signing in". `return_to` accepts same-site relative paths only. Signing in merges the device's answers into the account (device answers win), and later changes sync while signed in.
 - **Backend seam** (`src/lib/auth.ts`): `AuthClient` (`requestOtp`, `verifyOtp`, `saveProfile`). Today it uses `demoAuth`, which sends no SMS, accepts `123456`, and keeps the "account" in this browser. The sign-in page says so. Replace it with a client for the API's OTP endpoints before launch.
 - **Hosting:** `/welcome` and `/sign-in` are client routes. The host must serve `index.html` for unknown paths (SPA fallback).
@@ -90,7 +90,7 @@ Modelled on Sprout's flow, with one overriding rule: **sign-in and setup never s
 
 ## 发布到 Databricks / Deploy to Databricks Apps
 
-`web/databricks-app/` runs CarePath on Databricks Apps as one app with Node.js and Python, using live data:
+`web/databricks-app/` runs Annu on Databricks Apps as one app with Node.js and Python, using live data:
 
 - **`server.js`** (Node, no dependencies):
   - serves the built site, gzips text assets, and sends unknown paths such as `/welcome` and `/sign-in` to the app (SPA fallback)
@@ -121,7 +121,7 @@ Ranked results use the same pin shape, without the face, on both the cards and t
 
 ## India
 
-- **Language.** `src/i18n.tsx` holds English and Hindi copy for the whole interface. On first visit, a Hindi browser gets Hindi; after that the header switch wins and is saved (`carepath-lang`). Facility names, addresses and evidence quotes are never translated, because a translated quote is no longer evidence. Hindi copy needs a native speaker's review. Odia and other languages slot in as another dictionary. Devanagari renders in Noto Sans Devanagari.
+- **Language.** `src/i18n.tsx` holds English and Hindi copy for the whole interface. On first visit, a Hindi browser gets Hindi; after that the header switch wins and is saved (`annu-lang`). Facility names, addresses and evidence quotes are never translated, because a translated quote is no longer evidence. Hindi copy needs a native speaker's review. Odia and other languages slot in as another dictionary. Devanagari renders in Noto Sans Devanagari.
 - **Emergency.** "Medical emergency? Call 108" stays visible at the top of every page.
 - **Next steps on every result:** Directions (Google Maps), Call (only when a source lists a number; otherwise the card says so), and WhatsApp share, since families decide together.
 - **Cost.** Ownership is shown on every result as Government / Private / Charitable trust.

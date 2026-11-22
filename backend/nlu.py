@@ -11,7 +11,7 @@ Americium3/ai-medical-demo):
 2b. condition  When no care word matched, symptom and disease names from the pipeline's alias table
             (data/tags/alias_table.csv: MeSH entries, MedlinePlus titles, curated colloquial terms such as
             "bawaseer") give the condition ("sugar" -> Diabetes Mellitus) and, where curated, the care tag.
-3. model    Optional. With CAREPATH_LLM_ENDPOINT set (a Databricks model serving endpoint), one chat call
+3. model    Optional. With ANNU_LLM_ENDPOINT set (a Databricks model serving endpoint), one chat call
             fills what the rules left open (care described in other words, a place, an urgency level).
             Everything it returns is kept only if it quotes the message verbatim and the quote is not
             denied; care ids must be in the catalogue. Model urgency can only raise the rule level.
@@ -242,8 +242,8 @@ class Understander:
         self.hi_non_places = set(self.lex["hiNonPlaces"])
         self.known_place = known_place or (lambda name: False)
         self.aliases = load_aliases() if aliases is None else aliases
-        if llm is None and os.environ.get("CAREPATH_LLM_ENDPOINT"):
-            llm = LlmClient(os.environ["CAREPATH_LLM_ENDPOINT"])
+        if llm is None and os.environ.get("ANNU_LLM_ENDPOINT"):
+            llm = LlmClient(os.environ["ANNU_LLM_ENDPOINT"])
         self.llm = llm
 
     def info(self) -> dict:

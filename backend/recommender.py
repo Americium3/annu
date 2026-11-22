@@ -136,7 +136,7 @@ class Recommender:
         self.snap = snap
         self.ranking_method = ranking_method or config.RANKING_METHOD
         if self.ranking_method not in {"cross_encoder", "rules"}:
-            raise ValueError("CAREPATH_RANKING_METHOD must be cross_encoder or rules")
+            raise ValueError("ANNU_RANKING_METHOD must be cross_encoder or rules")
         self.judge = None  # judge.EvidenceJudge when a language model is configured (main.py)
         self.ranking_version = ("cross-encoder-x-closeness-v5-claim-guard" if self.ranking_method == "cross_encoder"
                                 else "proof-x-closeness-v5-claim-guard")

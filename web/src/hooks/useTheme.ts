@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 
 export type Theme = "light" | "dark";
 
-const STORAGE_KEY = "carepath-theme";
+const STORAGE_KEY = "annu-theme";
 const darkQuery = "(prefers-color-scheme: dark)";
 
 function readSaved(): Theme | null {

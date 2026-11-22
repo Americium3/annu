@@ -1,5 +1,5 @@
 {
- "about": "CarePath natural-language lexicon, read by web/src/lib/understand.ts and backend/nlu.py. Ids match the backend service tags.",
+ "about": "Annu natural-language lexicon, read by web/src/lib/understand.ts and backend/nlu.py. Ids match the backend service tags.",
  "terms": [
   {
    "id": "physiotherapy",

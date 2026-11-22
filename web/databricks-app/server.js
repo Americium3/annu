@@ -1,4 +1,4 @@
-// CarePath on Databricks Apps (Node.js + Python in one app).
+// Annu on Databricks Apps (Node.js + Python in one app).
 //
 // - Serves the built site from ./dist with no dependencies. Unknown paths such
 //   as /welcome and /sign-in get index.html, so the app's own router handles
@@ -16,7 +16,7 @@ const { spawn } = require("node:child_process");
 
 const PORT = Number(process.env.DATABRICKS_APP_PORT || process.env.PORT || 8000);
 const ROOT = path.join(__dirname, "dist");
-const API_PORT = Number(process.env.CAREPATH_API_PORT || 8001);
+const API_PORT = Number(process.env.ANNU_API_PORT || 8001);
 const BACKEND_DIR = path.join(__dirname, "backend");
 let apiReady = false;
 let failedStarts = 0; // consecutive recommender starts that ended before it was ready
@@ -137,6 +137,6 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(PORT, "0.0.0.0", () => {
-  console.log(`CarePath web listening on :${PORT}`);
+  console.log(`Annu web listening on :${PORT}`);
   startBackend();
 });

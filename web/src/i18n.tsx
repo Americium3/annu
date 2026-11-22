@@ -25,7 +25,7 @@ const en = {
   emergencyCall: "Call 108",
   navFind: "Find care",
   navHow: "How ranking works",
-  homeLabel: "CarePath home",
+  homeLabel: "Annu home",
   themeToDark: "Switch to dark theme",
   themeToLight: "Switch to light theme",
   menuOpen: "Open menu",
@@ -129,7 +129,7 @@ const en = {
   urgentFar: (km: string) => `The nearest option is ${km} km away. If it gets worse, call`,
   call108Short: "108",
   outsideIndia:
-    "Your device seems to be outside India. CarePath covers hospitals in India: type a city, district or PIN code.",
+    "Your device seems to be outside India. Annu covers hospitals in India: type a city, district or PIN code.",
   demoPlaceOnly: "The demo data covers the Bhubaneswar area only. Try Bhubaneswar, Cuttack or Puri.",
   placeNotFound: "I couldn't find that place. Try a nearby city, district or PIN code.",
   emWhy: (quote: string) => `You wrote “${quote}”. That needs help now.`,
@@ -249,10 +249,10 @@ const en = {
   unsureHint: "Read this before you travel. Call the hospital first if you can.",
   missing: "Missing details:",
   detailFootnote:
-    "CarePath compares public information. It is not medical advice and does not guarantee treatment is available.",
+    "Annu compares public information. It is not medical advice and does not guarantee treatment is available.",
 
   // how it works
-  howTitle: "How CarePath ranks hospitals",
+  howTitle: "How Annu ranks hospitals",
   howLede:
     "From about 10,000 facility records to a short list, in five steps. Every result links to the statements and sources it rests on.",
   howRaahi: "If we aren't sure, we will say so.",
@@ -356,7 +356,7 @@ const en = {
   siVerify: "Sign in",
   siVerifying: "Checking…",
   siWrongCode: "That code didn't match. Check the SMS and try again.",
-  siNetwork: "Couldn't reach CarePath. Check your connection and try again.",
+  siNetwork: "Couldn't reach Annu. Check your connection and try again.",
   siResendIn: (s: number) => `Send a new code in ${s}s`,
   siResend: "Send a new code",
   siDemo: (code: string) => `Demo: no SMS is sent. Use the code ${code}.`,
@@ -427,7 +427,7 @@ const hi: Dict = {
   emergencyCall: "108 पर कॉल करें",
   navFind: "इलाज खोजें",
   navHow: "रैंकिंग कैसे होती है",
-  homeLabel: "CarePath होम",
+  homeLabel: "Annu होम",
   themeToDark: "डार्क थीम चुनें",
   themeToLight: "लाइट थीम चुनें",
   menuOpen: "मेनू खोलें",
@@ -525,7 +525,7 @@ const hi: Dict = {
   urgEmergency: "इमरजेंसी",
   urgentFar: (km) => `सबसे पास का विकल्प ${km} किमी दूर है। हालत बिगड़े तो कॉल करें`,
   call108Short: "108",
-  outsideIndia: "आपका फ़ोन भारत से बाहर लगता है। CarePath भारत के अस्पताल दिखाता है: शहर, ज़िला या पिन कोड लिखें।",
+  outsideIndia: "आपका फ़ोन भारत से बाहर लगता है। Annu भारत के अस्पताल दिखाता है: शहर, ज़िला या पिन कोड लिखें।",
   demoPlaceOnly: "डेमो डेटा सिर्फ़ भुवनेश्वर इलाके का है। भुवनेश्वर, कटक या पुरी लिखें।",
   placeNotFound: "यह जगह नहीं मिली। पास का शहर, ज़िला या पिन कोड लिखें।",
   emWhy: (quote) => `आपने लिखा “${quote}”। इसमें तुरंत मदद चाहिए।`,
@@ -639,9 +639,9 @@ const hi: Dict = {
   unsureHint: "जाने से पहले इसे पढ़ें। हो सके तो पहले अस्पताल को फ़ोन करें।",
   missing: "जो जानकारी नहीं मिली:",
   detailFootnote:
-    "CarePath सार्वजनिक जानकारी की तुलना करता है। यह डॉक्टरी सलाह नहीं है और इलाज मिलने की गारंटी नहीं देता।",
+    "Annu सार्वजनिक जानकारी की तुलना करता है। यह डॉक्टरी सलाह नहीं है और इलाज मिलने की गारंटी नहीं देता।",
 
-  howTitle: "CarePath अस्पतालों का क्रम कैसे तय करता है",
+  howTitle: "Annu अस्पतालों का क्रम कैसे तय करता है",
   howLede:
     "करीब 10,000 रिकॉर्ड से एक छोटी सूची तक, पाँच चरणों में। हर नतीजा उन बयानों और स्रोतों से जुड़ा है जिन पर वह टिका है।",
   howRaahi: "अगर हमें पक्का नहीं पता, तो हम साफ़ बताएँगे।",
@@ -738,7 +738,7 @@ const hi: Dict = {
   siVerify: "साइन इन",
   siVerifying: "जाँच रहे हैं…",
   siWrongCode: "कोड मेल नहीं खाया। SMS देखकर फिर से कोशिश करें।",
-  siNetwork: "CarePath से जुड़ नहीं सके। इंटरनेट देखकर फिर कोशिश करें।",
+  siNetwork: "Annu से जुड़ नहीं सके। इंटरनेट देखकर फिर कोशिश करें।",
   siResendIn: (s) => `${s} सेकंड में नया कोड भेजें`,
   siResend: "नया कोड भेजें",
   siDemo: (code) => `डेमो: कोई SMS नहीं भेजा जाता। कोड ${code} लिखें।`,
@@ -790,7 +790,7 @@ const hi: Dict = {
 };
 
 const dictionaries: Record<Lang, Dict> = { en, hi };
-const STORAGE_KEY = "carepath-lang";
+const STORAGE_KEY = "annu-lang";
 
 function readSaved(): Lang {
   try {

@@ -1,5 +1,5 @@
 /**
- * The 100 kinds of care CarePath knows (ids match the backend's service tags,
+ * The 100 kinds of care Annu knows (ids match the backend's service tags,
  * data/tags/service_tags.json), with a Hindi name and the everyday words people
  * use for each: English, Hindi and Hinglish (Hindi typed in Latin letters).
  *
