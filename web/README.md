@@ -80,19 +80,28 @@ Modelled on Sprout's flow, with one overriding rule: **sign-in and setup never s
 
 ## 发布到 Databricks / Deploy to Databricks Apps
 
-`web/databricks-app/` runs the built site on Databricks Apps (Node.js runtime):
+`web/databricks-app/` runs CarePath on Databricks Apps as one app with Node.js and Python, using live data:
 
-- `server.js` is a dependency-free Node server. It serves `dist/`, gzips text assets, sends unknown paths such as `/welcome` and `/sign-in` to the app (SPA fallback), and answers `/healthz`. It listens on `DATABRICKS_APP_PORT`.
-- `app.yaml` starts it with `node server.js`.
-- `deploy.sh` builds the web app with demo data, uploads `server.js`, `package.json`, `app.yaml` and `dist/` to `/Workspace/Users/<you>/apps/<name>`, creates the app if needed, waits for its compute and deploys:
+- **`server.js`** (Node, no dependencies):
+  - serves the built site, gzips text assets, and sends unknown paths such as `/welcome` and `/sign-in` to the app (SPA fallback)
+  - starts the Python recommender (`backend/`) on a private port and forwards `/api/*` to it, restarting it if it exits
+  - while the recommender is loading, `/api` answers 503 "Loading live hospital data"; after repeated failed starts it says live data is unavailable
+  - listens on `DATABRICKS_APP_PORT` and answers `/healthz`
+- **Live data:** the recommender reads `workspace.cardinal_virtues` at every start as the app's own service principal. `pipeline/databricks_sql.py` uses `DATABRICKS_CLIENT_ID` / `DATABRICKS_CLIENT_SECRET` when no `DATABRICKS_TOKEN` is set. No personal token is stored in the app.
+- **`app.yaml`** starts `node server.js` and takes `DATABRICKS_WAREHOUSE_ID` from the app's `sql-warehouse` resource.
+- **`deploy.sh`**:
+  - builds the live web app and stages the site, server, recommender and `requirements.txt`
+  - uploads them to `/Workspace/Users/<you>/apps/<name>`
+  - creates the app with the SQL warehouse and the four serving tables as resources, and grants it `USE CATALOG`, `USE SCHEMA` and `SELECT` on the schema
+  - deploys, and gives everyone in the Databricks account `CAN_USE`
 
 ```bash
 DATABRICKS_HOST=https://dbc-662e9a8b-91a5.cloud.databricks.com \
 DATABRICKS_TOKEN=<personal access token> \
-APP_NAME=carepath web/databricks-app/deploy.sh
+web/databricks-app/deploy.sh
 ```
 
-The demo build needs no backend. Set `USE_DEMO=false` once the FastAPI backend is reachable from the app at `/api`.
+Databricks Apps cannot be public: viewers sign in with their Databricks account. `USE_DEMO=true` ships the demo-data build without the recommender.
 
 ## Raahi (mascot)
 
