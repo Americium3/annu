@@ -95,7 +95,7 @@ export function AskRaahi({
     if (!el) return;
     el.style.height = "auto";
     el.style.height = `${Math.min(el.scrollHeight, 180)}px`;
-  }, [text]);
+  }, [text, compact]);
 
   function submit(value = text) {
     const clean = value.trim();
