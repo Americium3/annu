@@ -23,7 +23,7 @@ INDIA_BBOX = {"lat": (6.0, 37.6), "lon": (68.0, 97.5)}   # device locations outs
 K_MAIN, K_SUPPORT = 3, 2                      # lane A / lane B sizes (as in notebook 70)
 RESULT_LIMIT = 8                              # results returned per search (system setting, not a user input)
 RANKING_METHOD = os.environ.get("CAREPATH_RANKING_METHOD", "cross_encoder")
-RANKING_VERSION = "cross-encoder-x-closeness-v4" if RANKING_METHOD == "cross_encoder" else "proof-x-closeness-v4"
+RANKING_VERSION = "cross-encoder-x-closeness-v5-claim-guard" if RANKING_METHOD == "cross_encoder" else "proof-x-closeness-v5-claim-guard"
 CROSS_ENCODER_MODEL = os.environ.get("CAREPATH_CROSS_ENCODER_MODEL", "cross-encoder/ms-marco-MiniLM-L6-v2")
 CROSS_ENCODER_REVISION = os.environ.get("CAREPATH_CROSS_ENCODER_REVISION") or None
 CROSS_ENCODER_DEVICE = os.environ.get("CAREPATH_CROSS_ENCODER_DEVICE", "cpu")
@@ -99,3 +99,6 @@ DIRECTORY_DOMAINS = ("practo.com", "justdial.com", "hexahealth.com", "lybrate.co
                      "sehat.com", "clinicspots.com", "healthfrog.in", "quickerala.com", "sulekha.com", "indiamart.com",
                      "business.site", "bookimed.com", "medifee.com", "vaidam.com", "joonsquare.com", "drlogy.com")
 SOCIAL_DOMAINS = ("facebook.com", "instagram.com", "linkedin.com", "youtube.com", "twitter.com", "x.com", "wa.me")
+
+# Explicit contradictions/plans are excluded before radius selection and model scoring.
+CLAIM_GUARD_POLICY = os.environ.get("CAREPATH_CLAIM_GUARD", "explicit")

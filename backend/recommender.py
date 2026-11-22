@@ -19,6 +19,7 @@ import pandas as pd
 import config
 from data_store import Snapshot, haversine_km
 from cross_encoder import CrossEncoderScorer, CrossEncoderError
+from evidence_support import supported_items
 
 
 class ServiceNotFound(Exception):
@@ -137,8 +138,8 @@ class Recommender:
         if self.ranking_method not in {"cross_encoder", "rules"}:
             raise ValueError("CAREPATH_RANKING_METHOD must be cross_encoder or rules")
         self.judge = None  # judge.EvidenceJudge when a language model is configured (main.py)
-        self.ranking_version = ("cross-encoder-x-closeness-v4" if self.ranking_method == "cross_encoder"
-                                else "proof-x-closeness-v4")
+        self.ranking_version = ("cross-encoder-x-closeness-v5-claim-guard" if self.ranking_method == "cross_encoder"
+                                else "proof-x-closeness-v5-claim-guard")
         self.scorer = scorer if scorer is not None else CrossEncoderScorer(
             config.CROSS_ENCODER_MODEL, config.CROSS_ENCODER_REVISION, config.CROSS_ENCODER_DEVICE,
             config.CROSS_ENCODER_BATCH_SIZE, config.CROSS_ENCODER_MAX_LENGTH,
@@ -363,8 +364,30 @@ class Recommender:
         prov["point_first"] = (~prov["location_tier"].astype(str).str.startswith("point")).astype(int)
         prov["attribution"] = (prov["n_explicit_elsewhere"] > 0).astype(int)
         prov["km_point"] = np.where(prov["point_first"] == 0, prov["distance_km"], np.inf)
-        ok = prov[prov["eligibility"] == "formal"]
+        ok = prov[prov["eligibility"] == "formal"].copy()
+        claim_exclusions = []
+        filtered_statements = []
+        if config.CLAIM_GUARD_POLICY != "off":
+            for idx, candidate in ok.iterrows():
+                kept, excluded = supported_items(candidate["evidence"], tag, config.CLAIM_GUARD_POLICY)
+                if not kept:
+                    claim_exclusions.append({"unique_id": candidate["unique_id"],
+                        "reasons": sorted({e["guard_status"] for e in excluded}) or ["no_usable_evidence"]})
+                    ok = ok.drop(index=idx)
+                else:
+                    ok.at[idx, "evidence"] = kept
+                    if excluded:
+                        # Upstream proof counts/tier must not survive removal of their supporting text.
+                        # Conservative downgrade pending a rebuild of the serving evidence tiers.
+                        fields = [e.get("field") for e in kept]
+                        ok.at[idx, "n_explicit_usable"] = sum(f in {"procedure", "capability", "description"} for f in fields)
+                        ok.at[idx, "only_equipment"] = all(f == "equipment" for f in fields)
+                        ok.at[idx, "evidence_tier"] = max(3, int(candidate["evidence_tier"]))
+                        filtered_statements.append({"unique_id": candidate["unique_id"],
+                            "removed": len(excluded), "reasons": sorted({e["guard_status"] for e in excluded}),
+                            "proof_downgraded": True})
 
+        n_dataset_ok = len(ok)
         # Candidate pool: at least twice the travel distance for this kind of care, widened (25 -> 50 -> 100 -> 200 km)
         # until a provider is found. Inside it, distance is a ranking factor, not a cut-off.
         steps = list(config.RADIUS_STEPS_KM)
@@ -409,6 +432,8 @@ class Recommender:
             warnings.insert(0, f"No facility within {radius:g} km lists {label} with usable evidence."
                             + (f" The nearest one in the dataset is about {near:.0f} km away." if near is not None else "")
                             + " This does not mean the service is unavailable in the area.")
+        if claim_exclusions:
+            warnings.append(f"{len(claim_exclusions)} formal record(s) excluded by statement checks; see claimGuard audit.")
         if loc["ambiguous"]:
             warnings.append("Location is ambiguous: " + "; ".join(loc["ambiguous"]) + f". Using {loc['name']}, {loc['state']}.")
         warnings.append("Service evidence is text extracted from public web pages: confirm availability with the "
@@ -430,6 +455,8 @@ class Recommender:
             "results": results,
             "metadata": {
                 "requestId": rid, "rankingVersion": self.ranking_version, "ranking": self.ranking_info(),
+                "claimGuard": {"policy": config.CLAIM_GUARD_POLICY, "excluded": claim_exclusions,
+                               "filteredStatements": filtered_statements},
                 "generatedAt": pd.Timestamp.now("UTC").isoformat(timespec="seconds"),
                 "totalCandidates": int(len(within)), "returnedCount": len(results), "isPartialResult": len(within) > limit,
                 "executionTimeMs": int((time.time() - t0) * 1000), "warnings": warnings, "judge": judge_info,

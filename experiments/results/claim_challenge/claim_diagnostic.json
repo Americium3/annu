@@ -1,0 +1,26 @@
+{
+  "kind": "synthetic linguistic diagnostic",
+  "query": "Dialysis",
+  "model": {
+    "method": "cross_encoder",
+    "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+    "revision": null,
+    "device": "cpu",
+    "batchSize": 32,
+    "maxLengthTokens": 512,
+    "loaded": true,
+    "cachedPairs": 2,
+    "scoreMeaning": "sigmoid of raw relevance logit; not calibrated availability or quality"
+  },
+  "pairs": [
+    {
+      "text": "Our hospital provides haemodialysis treatment.",
+      "score": 0.00032887572441104185
+    },
+    {
+      "text": "Patients are referred elsewhere for dialysis.",
+      "score": 0.9333070897854628
+    }
+  ],
+  "warning": "Relevance scores are not probabilities of current service availability."
+}

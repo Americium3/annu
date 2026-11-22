@@ -1,0 +1,1085 @@
+{
+  "data_kind": "synthetic",
+  "winner": "v004",
+  "selection": "dev nDCG then P@3; fully judged dev only",
+  "git_independent_data_hash": "b1e81627c49676e6d491a3a95978be12b52694168b054f635443bfd5913bb710",
+  "query_hash": "6aefbdc644470cc0a2ccb0d73486eb6257acac83149814532d690391ab10619b",
+  "qrels_hash": "5a5afa242ed4222fcccfa6813d7f137792208dcfb6fd3a5a17ea3d4009e2dad8",
+  "seed": 42,
+  "warning": "Synthetic challenge results do not establish accuracy on real facilities.",
+  "latency_scope": "warm queries; precompute recorded separately; caches shared within a checkpoint",
+  "configs": {
+    "v000": {
+      "method": "rules",
+      "model": "none",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.0,
+      "distance_decay_km": 15.0
+    },
+    "v001": {
+      "method": "rules",
+      "model": "none",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.0,
+      "distance_decay_km": 60.0
+    },
+    "v002": {
+      "method": "rules",
+      "model": "none",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.0,
+      "distance_decay_km": 15.0
+    },
+    "v003": {
+      "method": "rules",
+      "model": "none",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.0,
+      "distance_decay_km": 60.0
+    },
+    "v004": {
+      "method": "rules",
+      "model": "none",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.0,
+      "distance_decay_km": 15.0
+    },
+    "v005": {
+      "method": "rules",
+      "model": "none",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.0,
+      "distance_decay_km": 60.0
+    },
+    "v006": {
+      "method": "rules",
+      "model": "none",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.0,
+      "distance_decay_km": 15.0
+    },
+    "v007": {
+      "method": "rules",
+      "model": "none",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.0,
+      "distance_decay_km": 60.0
+    },
+    "v008": {
+      "method": "tfidf",
+      "model": "none",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.25,
+      "distance_decay_km": 15.0
+    },
+    "v009": {
+      "method": "tfidf",
+      "model": "none",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.25,
+      "distance_decay_km": 60.0
+    },
+    "v010": {
+      "method": "tfidf",
+      "model": "none",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.5,
+      "distance_decay_km": 15.0
+    },
+    "v011": {
+      "method": "tfidf",
+      "model": "none",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.5,
+      "distance_decay_km": 60.0
+    },
+    "v012": {
+      "method": "tfidf",
+      "model": "none",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.75,
+      "distance_decay_km": 15.0
+    },
+    "v013": {
+      "method": "tfidf",
+      "model": "none",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.75,
+      "distance_decay_km": 60.0
+    },
+    "v014": {
+      "method": "tfidf",
+      "model": "none",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.25,
+      "distance_decay_km": 15.0
+    },
+    "v015": {
+      "method": "tfidf",
+      "model": "none",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.25,
+      "distance_decay_km": 60.0
+    },
+    "v016": {
+      "method": "tfidf",
+      "model": "none",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.5,
+      "distance_decay_km": 15.0
+    },
+    "v017": {
+      "method": "tfidf",
+      "model": "none",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.5,
+      "distance_decay_km": 60.0
+    },
+    "v018": {
+      "method": "tfidf",
+      "model": "none",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.75,
+      "distance_decay_km": 15.0
+    },
+    "v019": {
+      "method": "tfidf",
+      "model": "none",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.75,
+      "distance_decay_km": 60.0
+    },
+    "v020": {
+      "method": "tfidf",
+      "model": "none",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.25,
+      "distance_decay_km": 15.0
+    },
+    "v021": {
+      "method": "tfidf",
+      "model": "none",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.25,
+      "distance_decay_km": 60.0
+    },
+    "v022": {
+      "method": "tfidf",
+      "model": "none",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.5,
+      "distance_decay_km": 15.0
+    },
+    "v023": {
+      "method": "tfidf",
+      "model": "none",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.5,
+      "distance_decay_km": 60.0
+    },
+    "v024": {
+      "method": "tfidf",
+      "model": "none",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.75,
+      "distance_decay_km": 15.0
+    },
+    "v025": {
+      "method": "tfidf",
+      "model": "none",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.75,
+      "distance_decay_km": 60.0
+    },
+    "v026": {
+      "method": "tfidf",
+      "model": "none",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.25,
+      "distance_decay_km": 15.0
+    },
+    "v027": {
+      "method": "tfidf",
+      "model": "none",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.25,
+      "distance_decay_km": 60.0
+    },
+    "v028": {
+      "method": "tfidf",
+      "model": "none",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.5,
+      "distance_decay_km": 15.0
+    },
+    "v029": {
+      "method": "tfidf",
+      "model": "none",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.5,
+      "distance_decay_km": 60.0
+    },
+    "v030": {
+      "method": "tfidf",
+      "model": "none",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.75,
+      "distance_decay_km": 15.0
+    },
+    "v031": {
+      "method": "tfidf",
+      "model": "none",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.75,
+      "distance_decay_km": 60.0
+    },
+    "v032": {
+      "method": "bm25",
+      "model": "none",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.25,
+      "distance_decay_km": 15.0
+    },
+    "v033": {
+      "method": "bm25",
+      "model": "none",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.25,
+      "distance_decay_km": 60.0
+    },
+    "v034": {
+      "method": "bm25",
+      "model": "none",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.5,
+      "distance_decay_km": 15.0
+    },
+    "v035": {
+      "method": "bm25",
+      "model": "none",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.5,
+      "distance_decay_km": 60.0
+    },
+    "v036": {
+      "method": "bm25",
+      "model": "none",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.75,
+      "distance_decay_km": 15.0
+    },
+    "v037": {
+      "method": "bm25",
+      "model": "none",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.75,
+      "distance_decay_km": 60.0
+    },
+    "v038": {
+      "method": "bm25",
+      "model": "none",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.25,
+      "distance_decay_km": 15.0
+    },
+    "v039": {
+      "method": "bm25",
+      "model": "none",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.25,
+      "distance_decay_km": 60.0
+    },
+    "v040": {
+      "method": "bm25",
+      "model": "none",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.5,
+      "distance_decay_km": 15.0
+    },
+    "v041": {
+      "method": "bm25",
+      "model": "none",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.5,
+      "distance_decay_km": 60.0
+    },
+    "v042": {
+      "method": "bm25",
+      "model": "none",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.75,
+      "distance_decay_km": 15.0
+    },
+    "v043": {
+      "method": "bm25",
+      "model": "none",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.75,
+      "distance_decay_km": 60.0
+    },
+    "v044": {
+      "method": "bm25",
+      "model": "none",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.25,
+      "distance_decay_km": 15.0
+    },
+    "v045": {
+      "method": "bm25",
+      "model": "none",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.25,
+      "distance_decay_km": 60.0
+    },
+    "v046": {
+      "method": "bm25",
+      "model": "none",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.5,
+      "distance_decay_km": 15.0
+    },
+    "v047": {
+      "method": "bm25",
+      "model": "none",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.5,
+      "distance_decay_km": 60.0
+    },
+    "v048": {
+      "method": "bm25",
+      "model": "none",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.75,
+      "distance_decay_km": 15.0
+    },
+    "v049": {
+      "method": "bm25",
+      "model": "none",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.75,
+      "distance_decay_km": 60.0
+    },
+    "v050": {
+      "method": "bm25",
+      "model": "none",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.25,
+      "distance_decay_km": 15.0
+    },
+    "v051": {
+      "method": "bm25",
+      "model": "none",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.25,
+      "distance_decay_km": 60.0
+    },
+    "v052": {
+      "method": "bm25",
+      "model": "none",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.5,
+      "distance_decay_km": 15.0
+    },
+    "v053": {
+      "method": "bm25",
+      "model": "none",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.5,
+      "distance_decay_km": 60.0
+    },
+    "v054": {
+      "method": "bm25",
+      "model": "none",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.75,
+      "distance_decay_km": 15.0
+    },
+    "v055": {
+      "method": "bm25",
+      "model": "none",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.75,
+      "distance_decay_km": 60.0
+    },
+    "v056": {
+      "method": "bi_encoder",
+      "model": "none",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.25,
+      "distance_decay_km": 15.0
+    },
+    "v057": {
+      "method": "bi_encoder",
+      "model": "none",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.25,
+      "distance_decay_km": 60.0
+    },
+    "v058": {
+      "method": "bi_encoder",
+      "model": "none",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.5,
+      "distance_decay_km": 15.0
+    },
+    "v059": {
+      "method": "bi_encoder",
+      "model": "none",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.5,
+      "distance_decay_km": 60.0
+    },
+    "v060": {
+      "method": "bi_encoder",
+      "model": "none",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.75,
+      "distance_decay_km": 15.0
+    },
+    "v061": {
+      "method": "bi_encoder",
+      "model": "none",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.75,
+      "distance_decay_km": 60.0
+    },
+    "v062": {
+      "method": "bi_encoder",
+      "model": "none",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.25,
+      "distance_decay_km": 15.0
+    },
+    "v063": {
+      "method": "bi_encoder",
+      "model": "none",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.25,
+      "distance_decay_km": 60.0
+    },
+    "v064": {
+      "method": "bi_encoder",
+      "model": "none",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.5,
+      "distance_decay_km": 15.0
+    },
+    "v065": {
+      "method": "bi_encoder",
+      "model": "none",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.5,
+      "distance_decay_km": 60.0
+    },
+    "v066": {
+      "method": "bi_encoder",
+      "model": "none",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.75,
+      "distance_decay_km": 15.0
+    },
+    "v067": {
+      "method": "bi_encoder",
+      "model": "none",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.75,
+      "distance_decay_km": 60.0
+    },
+    "v068": {
+      "method": "bi_encoder",
+      "model": "none",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.25,
+      "distance_decay_km": 15.0
+    },
+    "v069": {
+      "method": "bi_encoder",
+      "model": "none",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.25,
+      "distance_decay_km": 60.0
+    },
+    "v070": {
+      "method": "bi_encoder",
+      "model": "none",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.5,
+      "distance_decay_km": 15.0
+    },
+    "v071": {
+      "method": "bi_encoder",
+      "model": "none",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.5,
+      "distance_decay_km": 60.0
+    },
+    "v072": {
+      "method": "bi_encoder",
+      "model": "none",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.75,
+      "distance_decay_km": 15.0
+    },
+    "v073": {
+      "method": "bi_encoder",
+      "model": "none",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.75,
+      "distance_decay_km": 60.0
+    },
+    "v074": {
+      "method": "bi_encoder",
+      "model": "none",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.25,
+      "distance_decay_km": 15.0
+    },
+    "v075": {
+      "method": "bi_encoder",
+      "model": "none",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.25,
+      "distance_decay_km": 60.0
+    },
+    "v076": {
+      "method": "bi_encoder",
+      "model": "none",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.5,
+      "distance_decay_km": 15.0
+    },
+    "v077": {
+      "method": "bi_encoder",
+      "model": "none",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.5,
+      "distance_decay_km": 60.0
+    },
+    "v078": {
+      "method": "bi_encoder",
+      "model": "none",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.75,
+      "distance_decay_km": 15.0
+    },
+    "v079": {
+      "method": "bi_encoder",
+      "model": "none",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.75,
+      "distance_decay_km": 60.0
+    },
+    "v080": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.25,
+      "distance_decay_km": 15.0
+    },
+    "v081": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.25,
+      "distance_decay_km": 60.0
+    },
+    "v082": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.5,
+      "distance_decay_km": 15.0
+    },
+    "v083": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.5,
+      "distance_decay_km": 60.0
+    },
+    "v084": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.75,
+      "distance_decay_km": 15.0
+    },
+    "v085": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.75,
+      "distance_decay_km": 60.0
+    },
+    "v086": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.25,
+      "distance_decay_km": 15.0
+    },
+    "v087": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.25,
+      "distance_decay_km": 60.0
+    },
+    "v088": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.5,
+      "distance_decay_km": 15.0
+    },
+    "v089": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.5,
+      "distance_decay_km": 60.0
+    },
+    "v090": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.75,
+      "distance_decay_km": 15.0
+    },
+    "v091": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.75,
+      "distance_decay_km": 60.0
+    },
+    "v092": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.25,
+      "distance_decay_km": 15.0
+    },
+    "v093": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.25,
+      "distance_decay_km": 60.0
+    },
+    "v094": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.5,
+      "distance_decay_km": 15.0
+    },
+    "v095": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.5,
+      "distance_decay_km": 60.0
+    },
+    "v096": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.75,
+      "distance_decay_km": 15.0
+    },
+    "v097": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.75,
+      "distance_decay_km": 60.0
+    },
+    "v098": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.25,
+      "distance_decay_km": 15.0
+    },
+    "v099": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.25,
+      "distance_decay_km": 60.0
+    },
+    "v100": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.5,
+      "distance_decay_km": 15.0
+    },
+    "v101": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.5,
+      "distance_decay_km": 60.0
+    },
+    "v102": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.75,
+      "distance_decay_km": 15.0
+    },
+    "v103": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.75,
+      "distance_decay_km": 60.0
+    },
+    "v104": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-TinyBERT-L2-v2",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.25,
+      "distance_decay_km": 15.0
+    },
+    "v105": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-TinyBERT-L2-v2",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.25,
+      "distance_decay_km": 60.0
+    },
+    "v106": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-TinyBERT-L2-v2",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.5,
+      "distance_decay_km": 15.0
+    },
+    "v107": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-TinyBERT-L2-v2",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.5,
+      "distance_decay_km": 60.0
+    },
+    "v108": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-TinyBERT-L2-v2",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.75,
+      "distance_decay_km": 15.0
+    },
+    "v109": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-TinyBERT-L2-v2",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.75,
+      "distance_decay_km": 60.0
+    },
+    "v110": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-TinyBERT-L2-v2",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.25,
+      "distance_decay_km": 15.0
+    },
+    "v111": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-TinyBERT-L2-v2",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.25,
+      "distance_decay_km": 60.0
+    },
+    "v112": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-TinyBERT-L2-v2",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.5,
+      "distance_decay_km": 15.0
+    },
+    "v113": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-TinyBERT-L2-v2",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.5,
+      "distance_decay_km": 60.0
+    },
+    "v114": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-TinyBERT-L2-v2",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.75,
+      "distance_decay_km": 15.0
+    },
+    "v115": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-TinyBERT-L2-v2",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.75,
+      "distance_decay_km": 60.0
+    },
+    "v116": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-TinyBERT-L2-v2",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.25,
+      "distance_decay_km": 15.0
+    },
+    "v117": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-TinyBERT-L2-v2",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.25,
+      "distance_decay_km": 60.0
+    },
+    "v118": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-TinyBERT-L2-v2",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.5,
+      "distance_decay_km": 15.0
+    },
+    "v119": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-TinyBERT-L2-v2",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.5,
+      "distance_decay_km": 60.0
+    },
+    "v120": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-TinyBERT-L2-v2",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.75,
+      "distance_decay_km": 15.0
+    },
+    "v121": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-TinyBERT-L2-v2",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.75,
+      "distance_decay_km": 60.0
+    },
+    "v122": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-TinyBERT-L2-v2",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.25,
+      "distance_decay_km": 15.0
+    },
+    "v123": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-TinyBERT-L2-v2",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.25,
+      "distance_decay_km": 60.0
+    },
+    "v124": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-TinyBERT-L2-v2",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.5,
+      "distance_decay_km": 15.0
+    },
+    "v125": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-TinyBERT-L2-v2",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.5,
+      "distance_decay_km": 60.0
+    },
+    "v126": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-TinyBERT-L2-v2",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.75,
+      "distance_decay_km": 15.0
+    },
+    "v127": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-TinyBERT-L2-v2",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.75,
+      "distance_decay_km": 60.0
+    }
+  },
+  "baseline": "v000",
+  "promotion": "No automatic production promotion; review held-out errors and labels.",
+  "held_out_comparison": {
+    "paired_queries": 5,
+    "groups": 5,
+    "delta": 0.23463936301137825,
+    "ci95": [
+      0.23463936301137825,
+      0.23463936301137825
+    ]
+  },
+  "best_config": {
+    "method": "rules",
+    "model": "none",
+    "guard": true,
+    "aggregation": "max",
+    "text_weight": 0.0,
+    "distance_decay_km": 15.0
+  },
+  "runtime": {
+    "python": "3.12.14",
+    "packages": {
+      "numpy": "2.3.5",
+      "pandas": "2.2.3",
+      "scikit-learn": "1.8.0",
+      "torch": "2.15.0+cpu",
+      "transformers": "4.57.6",
+      "sentence-transformers": "5.7.0"
+    },
+    "threads": {
+      "OMP_NUM_THREADS": "2",
+      "MKL_NUM_THREADS": "2"
+    }
+  },
+  "source_hash": "fa30d7c939da8637f16cb3858a0431ea4a577fb7bdcb1fd7b8b94c147e30d56b",
+  "source_hashes": {
+    "experiments/benchmark.py": "fa30d7c939da8637f16cb3858a0431ea4a577fb7bdcb1fd7b8b94c147e30d56b",
+    "backend/evidence_support.py": "ccb7650174f759952e64926d52feaf9c8094578a5a63448dbbec6f9f13eef464",
+    "backend/cross_encoder.py": "c9826a7b463a7a2c4b1d30af2ee548bec75be03553db2e93414bdf07be809400",
+    "experiments/engine.py": "6fe0a48a2fa11eba4e4b4ffbfe2a2a5e3d4047c773e3c7abd648059d42e937a8",
+    "experiments/evaluation.py": "57053f27ebc17dcbb900e4735e205ab2dda1f5002398661165966c295a737578",
+    "pipeline/tag_dictionary.py": "a0cd7a5bdb37a70cb3c7cbc0341dd130dadf0bb53fa55371bc4da843a52c2266"
+  },
+  "model_revisions": {
+    "cross-encoder/ms-marco-MiniLM-L6-v2": "233902d25c440f23af6f7d6e94d2946bac0bee0a",
+    "sentence-transformers/multi-qa-MiniLM-L6-cos-v1": "b207367332321f8e44f96e224ef15bc607f4dbf0",
+    "cross-encoder/ms-marco-TinyBERT-L2-v2": "81d1926f67cb8eee2c2be17ca9f793c7c3bd20cc"
+  }
+}

@@ -356,3 +356,82 @@ Plots pool services/density strata descriptively; use the stratified CSV to chec
 composition effects. These comparisons have no confidence intervals and establish no
 causal relationship. Use sufficient independent district/query groups and uncertainty
 estimates before making fairness or improvement claims.
+
+## Accuracy benchmark and claim guards
+
+Run `notebooks/110_accuracy_benchmark.py` in your authenticated Databricks Git folder,
+using exports of independently reviewed qrels and grouped dev/test queries. Or:
+
+```bash
+python -m experiments.benchmark --from-databricks --schema workspace.cardinal_virtues \
+ --queries /path/grouped_queries.csv --qrels /path/human_qrels.csv \
+ --methods rules tfidf bm25 bi_encoder cross_encoder \
+ --cross-models cross-encoder/ms-marco-MiniLM-L6-v2 cross-encoder/ms-marco-TinyBERT-L2-v2 \
+ --out /path/new_run
+```
+
+Queries require `query_id,service,latitude,longitude,split,group_id`. Keep related locations,
+institution clusters and equivalent queries in one group/split. `split` must be dev/test.
+Qrels are `query_id,unique_id,relevance` (0–3); unknown stays unjudged. Do not generate
+qrels with the candidate extraction rules or this scorer. Fully judge the union of
+candidate outputs before selecting a winner. Test is run only for the dev-selected
+variant and baseline after selection; there is no test-set tuning or automatic deployment.
+
+The matrix compares two distance decays, three text/distance weights, max versus top-two
+mean evidence aggregation, and baseline versus clause guards, using the SAME 200km radius.
+Rules use no text weight. This is the experimental engine's baseline, not an assertion
+that its scores reproduce the live v4 serving ranker. A positive result here still requires
+a serving-policy evaluation before deployment. Every configuration and attempt/error is
+checkpointed in `attempts.json`; manifest records data/query/qrels hashes, the winner and
+paired cluster-bootstrap uncertainty. Original test runs preserve evidence/rejections for
+review. Missing labels prevent winner selection. Failures are recorded, never called model
+results. No-result distances must not be interpreted as zero.
+
+`backend/evidence_support.py` adds independently auditable clause guards. Production defaults
+to `CAREPATH_CLAIM_GUARD=explicit`: exclude explicit negatives/plans/conflicts before radius
+selection; malformed formal rows without usable evidence are omitted with an audit instead
+of failing the whole request. `off` reproduces the previous policy; `strict` also excludes
+referral/education/training-only descriptions. Strict is experimental pending real-data
+review: positive service descriptions mentioning education can be ambiguous. Unknown
+services retain upstream classification. These rules are linguistic safeguards, not NLI,
+clinical validation, or evidence that a facility is open today. Full entity/temporal
+resolution and negation scope remain unsolved. Source URL occurrence is not treated as
+independent corroboration.
+
+`experiments/challenge/` contains GENERATED SYNTHETIC cases, not the competition data.
+Its labels are manually specified linguistic expectations. Dev/test reuse templates;
+results are regression diagnostics, not generalization estimates. Never promote a production
+weight configuration on these results, even if its score is perfect. The challenge is
+rebuildable with `python -m experiments.challenge.build`.
+
+### Evaluate the actual web backend
+
+The experimental engine above deliberately uses a common fixed radius. To evaluate the
+website's **actual** service gate, adaptive radius, proof grouping, multiplicative distance
+formula and response explanations, run `notebooks/111_serving_accuracy_benchmark.py` in a
+separate Databricks notebook. Its SELECT-only Spark adapter loads the exact serving tables.
+Alternatively use an authenticated shell:
+
+```bash
+python backend/benchmark_serving.py --queries /path/grouped_queries.csv \
+ --qrels /path/human_qrels.csv --out /path/new_private_serving_run
+```
+
+This runs 36 guard/ranker/weight/travel configurations, including the previous cross-encoder
+policy (`guard=off`, original 4:3 text:proof weights and travel scale) as `baseline`. The
+runner temporarily patches global config and must **not** run in the API process. It restores
+config afterward and never promotes a winner. Travel scaling changes candidate radius as
+well as distance penalty, so interpret it as a policy comparison. Candidate recall is left
+blank because the API returns a candidate count, not the entire candidate pool. Warmup is
+excluded from latency; shared pair-cache hits/cold misses make timings descriptive only.
+
+See [recorded diagnostic results](results/claim_challenge/README.md) for the methods actually
+executed, all parameters/results, and the explicit synthetic-data limitations. This log is
+not an experiment on the 10,088 real facilities. No real-data production winner is claimed.
+
+The existing `data/tags/tfidf_tag_report.json` also contains selected real text excerpts,
+not facility records or independent labels. `python -m experiments.audit_repository_examples
+--neural --out /path/new_excerpt_audit` audits all 62 displayed examples for the six target
+services. This caught the incoming “burns referral center” vs outgoing referral distinction.
+Original strong/mention/suggested buckets are previous model outputs: retention is a
+diagnostic, **not accuracy**, and it cannot select production weights or establish recall.
