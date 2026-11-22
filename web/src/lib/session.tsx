@@ -14,7 +14,7 @@ export interface Exchange {
   id: number;
   said: string;
   kind: "said" | "picked";
-  status: "thinking" | "done" | "failed";
+  status: "thinking" | "waiting" | "done" | "failed";
   answer?: AskResponse;
   error?: string;
 }
@@ -86,6 +86,11 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
     return id;
   }, []);
 
+  /** The server is still loading its data: Raahi says so and keeps the turn open (no transition, no "done"). */
+  const waiting = useCallback((id: number) => {
+    setExchanges((all) => all.map((e) => (e.id === id && e.status === "thinking" ? { ...e, status: "waiting" } : e)));
+  }, []);
+
   const settle = useCallback((id: number, patch: Partial<Exchange>) => {
     withTransition(
       () => setExchanges((all) => all.map((e) => (e.id === id ? { ...e, status: "done", ...patch } : e))),
@@ -123,7 +128,7 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
       };
       judge({ serviceText: "", locationText: "" }); // cancel a pending second pass
       try {
-        const results = await getRecommendations(input);
+        const results = await getRecommendations(input, () => waiting(id));
         setData(results);
         settle(id, { answer: { ...current, next: "results", results } });
         judge(input, results);
@@ -138,7 +143,7 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
         } else settle(id, { status: "failed", error: failure.message });
       }
     },
-    [judge, settle],
+    [judge, settle, waiting],
   );
 
   const askRaahi = useCallback(
@@ -147,7 +152,7 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
       setBusy(true);
       judge({ serviceText: "", locationText: "" });
       try {
-        const response = await ask({ text, locationText: profile.location ?? "" });
+        const response = await ask({ text, locationText: profile.location ?? "" }, () => waiting(id));
         setCoords(undefined);
         if (response.results) {
           setData(response.results);
@@ -171,7 +176,7 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
         setBusy(false);
       }
     },
-    [add, judge, profile.location, settle],
+    [add, judge, profile.location, settle, waiting],
   );
 
   const pickCare = useCallback(

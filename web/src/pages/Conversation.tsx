@@ -149,6 +149,7 @@ export function Conversation() {
                       onPickPlace={(place, label) => void s.pickPlace(place, label)}
                       onGo={goResults}
                       onEmergency={openEmergency}
+                      onRetry={latest && !s.busy ? () => void submit(exchange.said) : undefined}
                     />
                   </div>
                 </li>
@@ -203,7 +204,7 @@ export function Conversation() {
   );
 
   function moodFor(exchange: Exchange) {
-    if (exchange.status === "thinking") return "thinking" as const;
+    if (exchange.status === "thinking" || exchange.status === "waiting") return "thinking" as const;
     if (exchange.status === "failed") return "concerned" as const;
     const next = exchange.answer?.next;
     if (next === "emergency") return "concerned" as const;
@@ -234,6 +235,7 @@ function RaahiTurn({
   onPickPlace,
   onGo,
   onEmergency,
+  onRetry,
 }: {
   exchange: Exchange;
   latest: boolean;
@@ -243,6 +245,8 @@ function RaahiTurn({
   onPickPlace: (place: { text: string; coordinates?: { latitude: number; longitude: number } }, label: string) => void;
   onGo: (answer: AskResponse) => void;
   onEmergency: () => void;
+  /** Ask the same words again (after a failure). */
+  onRetry?: () => void;
 }) {
   const { t, lang } = useI18n();
   if (exchange.status === "thinking") {
@@ -257,7 +261,31 @@ function RaahiTurn({
       </p>
     );
   }
-  if (exchange.status === "failed" || !exchange.answer) return <p className="raahi-line">{t.askFailed}</p>;
+  if (exchange.status === "waiting") {
+    return (
+      <p className="raahi-line is-thinking" role="status">
+        {t.askWaking}
+        <span className="dots" aria-hidden="true">
+          <i />
+          <i />
+          <i />
+        </span>
+      </p>
+    );
+  }
+  if (exchange.status === "failed" || !exchange.answer) {
+    return (
+      <div className="raahi-failed">
+        <p className="raahi-line">{t.askFailed}</p>
+        {exchange.error && <p className="raahi-failed-why">{exchange.error}</p>}
+        {onRetry && (
+          <button type="button" className="secondary-button" onClick={onRetry}>
+            {t.askRetry}
+          </button>
+        )}
+      </div>
+    );
+  }
   const answer = exchange.answer;
   const care = answer.care ? careName(answer.care.id, lang, answer.care.name) : "";
   const place = answer.place?.text ? placeName(answer.place.text, lang) : t.currentLocation;
