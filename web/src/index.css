@@ -3102,6 +3102,20 @@ h4 {
     padding: 0 10px;
   }
 
+  /* Anchor the account menu to the header's right edge, not to the button,
+     so the card never runs off the left of a narrow screen. */
+  .header-inner {
+    position: relative;
+  }
+
+  .account-menu {
+    position: static;
+  }
+
+  .account-card {
+    width: min(280px, 100%);
+  }
+
   .setup-prompt span {
     flex-basis: 100%;
   }
