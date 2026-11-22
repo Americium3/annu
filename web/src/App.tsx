@@ -1,8 +1,10 @@
+import { Ambulance, ChevronRight } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { EmergencyView } from "./components/EmergencyView";
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
-import { RaahiSays } from "./components/Raahi";
+import { Raahi } from "./components/Raahi";
 import { ResultsView } from "./components/ResultsView";
 import { SearchPanel, type SearchValues } from "./components/SearchPanel";
 import { TrustSection } from "./components/TrustSection";
@@ -24,6 +26,20 @@ function App() {
   const [rankingMode, setRankingMode] = useState<RankingMode>("best_match");
   const [selectedId, setSelectedId] = useState<string>();
   const { t } = useI18n();
+  const emergency = searchParams.get("mode") === "emergency";
+
+  function openEmergency() {
+    // A real history entry, so the phone's Back button leaves emergency mode.
+    const next = new URLSearchParams(searchParams);
+    next.set("mode", "emergency");
+    setSearchParams(next);
+  }
+
+  function closeEmergency() {
+    const next = new URLSearchParams(searchParams);
+    next.delete("mode");
+    setSearchParams(next);
+  }
 
   const urlSearch = useMemo(
     () => ({
@@ -82,19 +98,46 @@ function App() {
     setSelectedId(undefined);
   }
 
+  if (emergency) {
+    return (
+      <div className="app-shell">
+        <Header />
+        <main>
+          <EmergencyView
+            origin={
+              data
+                ? { latitude: data.queryContext.location.latitude, longitude: data.queryContext.location.longitude }
+                : { latitude: 20.2961, longitude: 85.8245 }
+            }
+            originName={data?.queryContext.location.resolvedName ?? "Bhubaneswar"}
+            onExit={closeEmergency}
+          />
+        </main>
+      </div>
+    );
+  }
+
   return (
     <div className="app-shell">
       <Header />
       <main>
         <section className="hero" aria-labelledby="hero-title">
           <div className="hero-inner">
-            <div className="hero-copy">
-              <h1 id="hero-title">{t.heroTitle}</h1>
-              <p className="hero-lede">{t.heroLede}</p>
+            {/* Two doors, as on Sprout's landing page: urgent first, then search. */}
+            <button className="emergency-door" type="button" onClick={openEmergency}>
+              <Ambulance size={26} aria-hidden="true" />
+              <span>
+                <strong>{t.emergencyDoorTitle}</strong>
+                <small>{t.emergencyDoorBody}</small>
+              </span>
+              <ChevronRight size={20} aria-hidden="true" />
+            </button>
+            <div className="hero-ask">
+              <Raahi size={56} />
+              <h1 id="hero-title" className="raahi-bubble">
+                {t.raahiAsk}
+              </h1>
             </div>
-            <RaahiSays className="hero-raahi" size={104}>
-              <strong>{t.raahiHello}</strong> {t.raahiIntro}
-            </RaahiSays>
           </div>
 
           <SearchPanel

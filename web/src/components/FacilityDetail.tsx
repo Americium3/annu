@@ -139,6 +139,31 @@ export function FacilityDetail({ facility, service, onClose }: FacilityDetailPro
             <p>{facility.recommendationSummary}</p>
           </div>
 
+          {facility.uncertainty.messages.length > 0 && (
+          <section className="uncertainty-panel" aria-labelledby="unsure-title">
+            <div className="uncertainty-heading">
+              <Raahi size={44} mood="concerned" />
+              <div>
+                <h3 id="unsure-title">{t.unsureTitle}</h3>
+                <p>{t.unsureHint}</p>
+              </div>
+            </div>
+            <ul>
+              {facility.uncertainty.messages.map((message) => (
+                <li key={message}>{message}</li>
+              ))}
+            </ul>
+            {facility.uncertainty.missingFields.length > 0 && (
+              <p className="missing-fields">
+                {t.missing}
+                {facility.uncertainty.missingFields.map((field) => (
+                  <code key={field}>{field}</code>
+                ))}
+              </p>
+            )}
+          </section>
+          )}
+
           <section className="detail-section">
             <div className="detail-section-heading">
               <h3>{t.scoreTitle}</h3>
@@ -247,29 +272,6 @@ export function FacilityDetail({ facility, service, onClose }: FacilityDetailPro
                 </a>
               ))}
             </div>
-          </section>
-
-          <section className="uncertainty-panel" aria-labelledby="unsure-title">
-            <div className="uncertainty-heading">
-              <Raahi size={44} mood="concerned" />
-              <div>
-                <h3 id="unsure-title">{t.unsureTitle}</h3>
-                <p>{t.unsureHint}</p>
-              </div>
-            </div>
-            <ul>
-              {facility.uncertainty.messages.map((message) => (
-                <li key={message}>{message}</li>
-              ))}
-            </ul>
-            {facility.uncertainty.missingFields.length > 0 && (
-              <p className="missing-fields">
-                {t.missing}
-                {facility.uncertainty.missingFields.map((field) => (
-                  <code key={field}>{field}</code>
-                ))}
-              </p>
-            )}
           </section>
 
           <p className="detail-footer-note">{t.detailFootnote}</p>

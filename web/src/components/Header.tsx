@@ -1,5 +1,4 @@
-import { Menu, Moon, Phone, Sun, X } from "lucide-react";
-import { useState } from "react";
+import { Moon, Phone, Sun } from "lucide-react";
 import { useTheme } from "../hooks/useTheme";
 import { useI18n, type Lang } from "../i18n";
 import { Brand } from "./Brand";
@@ -10,7 +9,6 @@ const languages: Array<{ value: Lang; label: string }> = [
 ];
 
 export function Header() {
-  const [menuOpen, setMenuOpen] = useState(false);
   const { theme, toggle } = useTheme();
   const { t, lang, setLang } = useI18n();
   const themeLabel = theme === "dark" ? t.themeToLight : t.themeToDark;
@@ -33,14 +31,6 @@ export function Header() {
       <header className="site-header">
         <div className="header-inner">
           <Brand />
-          <nav className={`primary-nav ${menuOpen ? "is-open" : ""}`} aria-label="Primary">
-            <a className="nav-link" href="#search" aria-current="page" onClick={() => setMenuOpen(false)}>
-              {t.navFind}
-            </a>
-            <a className="nav-link" href="#how-it-works" onClick={() => setMenuOpen(false)}>
-              {t.navHow}
-            </a>
-          </nav>
           <div className="header-actions">
             <div className="lang-switch" role="group" aria-label={t.language}>
               {languages.map((option) => (
@@ -63,15 +53,6 @@ export function Header() {
               onClick={toggle}
             >
               {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
-            </button>
-            <button
-              className="icon-button menu-button"
-              type="button"
-              aria-label={menuOpen ? t.menuClose : t.menuOpen}
-              aria-expanded={menuOpen}
-              onClick={() => setMenuOpen((open) => !open)}
-            >
-              {menuOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
           </div>
         </div>

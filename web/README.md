@@ -41,6 +41,16 @@ All colours, type sizes, radii and shadows are tokens in the `:root` block at th
 - **Squared, not pill-shaped.** Corners are small and consistent (4–12px). There are no uppercase eyebrow labels, gradient blobs or decorative cards. A label is words.
 - **Readable sizes.** No text is smaller than 12px. Body copy is 16px, because most visitors are on a phone.
 
+## 决策优先 / Decision first
+
+The visitor's only question is "which hospital should I go to?" Every screen answers that first.
+
+- **Two doors**, as on Sprout's landing page. "Emergency?" comes first; the search comes second.
+- **Emergency** (`?mode=emergency`, `src/components/EmergencyView.tsx`). A huge "Call 108" button, then the five nearest hospitals with Directions and Call. There is nothing to read, no scores and no filters. It asks for the device location on entry and re-sorts by real distance when allowed. The phone's Back button leaves emergency mode. *Prototype limit:* the data has no emergency-department field, so the list is "nearest hospitals, clinics excluded". Production needs a verified emergency-capability flag.
+- **Result cards** show only name, distance, type/ownership/area, one plain line on whether the service is confirmed (and by what), and the actions. The top choice gets the one filled button. A red warning appears only when the uncertainty is high.
+- **Two controls**: Best match / Nearest, and "Government hospitals only".
+- **The proof is one tap away** in "Why this hospital?": summary, what couldn't be confirmed, score breakdown, quotes and sources. "How we choose hospitals" is folded at the foot of the page.
+
 ## Raahi (mascot)
 
 `src/components/Raahi.tsx`. Raahi (राही, "traveller on the path") is a map pin with a face and a leaf: the pin means "care near you", and the leaf ties it to Sprout. As in Sprout, the mascot is where the product signs its name: the header, footer, favicon, and the search-area marker on the map. It also speaks at the moments a person might be unsure: the first screen, while results load, when nothing matches, and next to what could not be confirmed. There are three moods (`happy`, `thinking`, `concerned`), and its colours come from the `--raahi-*` tokens.
@@ -51,8 +61,8 @@ Ranked results use the same pin shape, without the face, on both the cards and t
 
 - **Language.** `src/i18n.tsx` holds English and Hindi copy for the whole interface. On first visit, a Hindi browser gets Hindi; after that the header switch wins and is saved (`carepath-lang`). Facility names, addresses and evidence quotes are never translated, because a translated quote is no longer evidence. Hindi copy needs a native speaker's review. Odia and other languages slot in as another dictionary. Devanagari renders in Noto Sans Devanagari.
 - **Emergency.** "Medical emergency? Call 108" stays visible at the top of every page.
-- **Next steps on every result:** Call (only when a source lists a number; otherwise the card says so), Directions (Google Maps), and WhatsApp share, since families decide together.
-- **Cost.** Ownership is shown as Government / Private / Charitable trust, and there is a "Government hospitals only" filter.
+- **Next steps on every result:** Directions (Google Maps), Call (only when a source lists a number; otherwise the card says so), and WhatsApp share, since families decide together.
+- **Cost.** Ownership is shown as Government / Private / Charitable trust, and there is a "Government hospitals only" checkbox.
 
 ## 数据说明
 
