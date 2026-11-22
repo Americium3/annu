@@ -214,14 +214,12 @@ export function FacilityDetail({ facility, service, onClose }: FacilityDetailPro
                     <span>
                       {sourceTypeLabels[source.sourceType]} · {source.domain}
                     </span>
-                    <small>
-                      {t.retrieved}{" "}
-                      {new Intl.DateTimeFormat(lang === "hi" ? "hi-IN" : "en-IN", {
-                        day: "numeric",
-                        month: "short",
-                        year: "numeric",
-                      }).format(new Date(source.retrievedAt))}
-                    </small>
+                    {/* Some records have no page date: show none rather than throw on an invalid date. */}
+                    {formatDay(source.retrievedAt, lang) && (
+                      <small>
+                        {t.retrieved} {formatDay(source.retrievedAt, lang)}
+                      </small>
+                    )}
                   </span>
                   <ExternalLink className="source-arrow" size={16} />
                 </a>
@@ -341,4 +339,12 @@ function JudgeSection({ facility }: { facility: FacilityRecommendation }) {
       <p className="score-disclaimer">{t.judgeNote}</p>
     </section>
   );
+}
+
+/** "4 Sept 2025" in the page language, or null when the value is missing or not a date. */
+function formatDay(value: string | null | undefined, lang: string): string | null {
+  if (!value) return null;
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return null;
+  return new Intl.DateTimeFormat(lang === "hi" ? "hi-IN" : "en-IN", { day: "numeric", month: "short", year: "numeric" }).format(date);
 }

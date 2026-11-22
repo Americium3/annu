@@ -11,6 +11,11 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
 
 export type Lang = "en" | "hi";
 
+/** A care name inside an English sentence: lower-case words, but keep acronyms (MRI, NICU, ICU, ECG, IVF). */
+function inSentence(name: string) {
+  return name.replace(/[A-Za-z][A-Za-z'-]*/g, (word) => (/^[A-Z0-9-]{2,}$/.test(word) ? word : word.toLowerCase()));
+}
+
 const en = {
   // header / chrome
   skipToSearch: "Skip to search",
@@ -72,9 +77,9 @@ const en = {
   askPickInstead: "Pick from a list instead",
   emergencyLine: "This sounds like an emergency. Call 108 first.",
   foundLine: (n: number, care: string, place: string) =>
-    `I found ${n} ${n === 1 ? "hospital" : "hospitals"} with proof of ${care.toLowerCase()} near ${place}.`,
+    `I found ${n} ${n === 1 ? "hospital" : "hospitals"} with proof of ${inSentence(care)} near ${place}.`,
   foundNone: (care: string, place: string) =>
-    `I couldn't find a hospital with proof of ${care.toLowerCase()} near ${place}. I'll show you what is nearest.`,
+    `I couldn't find a hospital with proof of ${inSentence(care)} near ${place}. I'll show you what is nearest.`,
   foundGo: "See the hospitals",
   foundGoNone: "See what's nearest",
   startOver: "Start over",
@@ -157,7 +162,7 @@ const en = {
 
   // results
   resultsTitle: (count: number, service: string, place: string) =>
-    `${count} ${count === 1 ? "hospital offers" : "hospitals offer"} ${service.toLowerCase()} near ${place}`,
+    `${count} ${count === 1 ? "hospital offers" : "hospitals offer"} ${inSentence(service)} near ${place}`,
   resultsSearching: "Looking for hospitals",
   resultsContext: (km: number) =>
     `Within ${km} km. Ranked by how clearly the evidence shows they offer this service.`,
@@ -220,6 +225,7 @@ const en = {
   copy: "Copy summary",
   copied: "Copied",
   close: "Close",
+  detailFailed: "Some details of this hospital could not be shown. Its card, directions and phone number still work.",
   summary: "In short",
   scoreTitle: "How the score adds up",
   scoreModel: "Rules model v0.1",
@@ -610,6 +616,7 @@ const hi: Dict = {
   copy: "सारांश कॉपी करें",
   copied: "कॉपी हो गया",
   close: "बंद करें",
+  detailFailed: "इस अस्पताल की कुछ जानकारी नहीं दिखाई जा सकी। इसका कार्ड, रास्ता और फ़ोन नंबर काम करते हैं।",
   summary: "संक्षेप में",
   scoreTitle: "स्कोर कैसे बना",
   scoreModel: "नियम मॉडल v0.1",
