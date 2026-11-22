@@ -66,9 +66,10 @@ class TranscriberTest(unittest.TestCase):
         self.assertGreater(float(np.max(np.abs(t._pipe.raw[-1]))), 0.85)
 
     def test_long_recordings_are_cut(self):
+        import config
         t = transcriber("ok")
-        t.transcribe(pcm(35), "en")
-        self.assertEqual(t._pipe.calls[0][0], 30 * 16000)
+        t.transcribe(pcm(config.STT_MAX_SECONDS + 5), "en")
+        self.assertEqual(t._pipe.calls[0][0], config.STT_MAX_SECONDS * 16000)
 
     def test_loading_or_broken_model_answers_at_once(self):
         t = Transcriber("fake-whisper")

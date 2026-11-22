@@ -55,7 +55,7 @@ TEXT_MATCH_LOGIT_RANGE = (-11.0, -5.0)
 
 # Voice input (stt.py): Whisper inside the app, so speech never leaves Databricks. "off" disables it.
 STT_MODEL = os.environ.get("ANNU_STT_MODEL", "openai/whisper-small")
-STT_MAX_SECONDS = 30
+STT_MAX_SECONDS = 60   # the page records until the person taps stop (60 s safety limit there too)
 
 # LLM judge (judge.py): one verdict per top candidate on whether its own record lines support the care.
 # Proof strength is multiplied by the verdict's factor (never raised); equipment_only / not_supported become weak proof.
