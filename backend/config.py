@@ -15,6 +15,11 @@ CACHE_FILE = Path(os.environ.get("CAREPATH_CACHE", Path(__file__).resolve().pare
 RADIUS_STEPS_KM = [25, 50, 100, 200]          # search widens until a recommendable provider is found
 DISTANCE_BANDS_KM = [0, 10, 30, 60, 100, 200, 500]
 EMERGENCY_TAG = "emergency-24x7"
+# Urgency from the request text (nlu.py): an emergency score of 80+ (levels 1-2) opens the emergency screen;
+# level 3 ("needs care today") shrinks the travel distance, so nearer hospitals count more.
+EMERGENCY_SCORE_MIN = 80
+URGENT_TRAVEL_FACTOR = 0.5
+INDIA_BBOX = {"lat": (6.0, 37.6), "lon": (68.0, 97.5)}   # device locations outside it are refused
 K_MAIN, K_SUPPORT = 3, 2                      # lane A / lane B sizes (as in notebook 70)
 RESULT_LIMIT = 8                              # results returned per search (system setting, not a user input)
 RANKING_METHOD = os.environ.get("CAREPATH_RANKING_METHOD", "cross_encoder")
@@ -30,6 +35,10 @@ CROSS_ENCODER_MAX_EVIDENCE = 5
 # closeness multiplies the whole evidence score, with the travel distance set per kind of care (above).
 #   evidence = 4/7 x text match + 3/7 x proof strength      rank score = evidence x closeness
 RERANK_WEIGHTS = {"text": 4 / 7, "proof": 3 / 7}
+# The checkpoint's sigmoid scores are tiny even for clearly relevant quotes (about 0.001-0.1 for "Dialysis unit",
+# "1.5 Tesla MRI"), so the raw value would barely move the ranking. Text match is therefore relative to the best quote
+# in this search: exp((logit - best logit) / T). The best match gets 1; a quote 2T logits worse gets about 0.14.
+TEXT_MATCH_TEMPERATURE = 2.0
 
 
 # How far people reasonably travel for each kind of care (km). Closeness halves at this distance:

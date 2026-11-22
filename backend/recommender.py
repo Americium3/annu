@@ -79,13 +79,15 @@ def proof_strength(df: pd.DataFrame) -> pd.Series:
     return tier * equipment * other * location
 
 
-def rank_candidates(ok: pd.DataFrame, tag: str, text_match: pd.Series | None = None) -> pd.DataFrame:
+def rank_candidates(ok: pd.DataFrame, tag: str, text_match: pd.Series | None = None,
+                    travel: float | None = None) -> pd.DataFrame:
     """Order eligible facilities: solid proof before weak proof; within each, rank score = evidence x closeness
     (ties: nearer first, then id). Evidence is proof strength alone, or blended with the cross-encoder's
     text match when one is given."""
     out = ok.copy()
     out["proof"] = proof_strength(out)
-    out["closeness"] = closeness(out["distance_km"].to_numpy(), travel_km(tag))
+    out["travel_km"] = travel = travel or travel_km(tag)
+    out["closeness"] = closeness(out["distance_km"].to_numpy(), travel)
     if text_match is None:
         out["evidence_strength"] = out["proof"]
     else:
@@ -165,6 +167,12 @@ class Recommender:
                           .agg(lat=("loc_lat", "median"), lon=("loc_lon", "median"), n=("loc_lat", "size")).reset_index())
         self.states = set(self.districts["state"]) | set(self.cities["state_u"])
 
+    def known_place(self, name: str) -> bool:
+        """Exact city, district or state name in the location reference (no fuzzy matching)."""
+        if not hasattr(self, "_place_names"):
+            self._place_names = (set(self.cities["city"]) | set(self.districts["district"]) | set(self.states))
+        return name.strip().upper() in self._place_names
+
     def warmup(self):
         if self.ranking_method == "cross_encoder":
             self.scorer.warmup()
@@ -175,11 +183,11 @@ class Recommender:
                 **({"scorer": self.scorer.info(), "weights": config.RERANK_WEIGHTS}
                    if self.ranking_method == "cross_encoder" else {})}
 
-    def _cross_encoder_order(self, within, tag, label):
+    def _cross_encoder_order(self, within, tag, label, travel=None):
         """Text match for already-formal candidates, then the shared ranking. No CE threshold certifies capability."""
         within = within.copy()
         if within.empty:
-            return rank_candidates(within, tag)
+            return rank_candidates(within, tag, travel=travel)
         query = " ".join(dict.fromkeys([label, *self.tags.loc[tag, "synonyms"], *config.SERVICE_INPUT_SYNONYMS.get(tag, [])]))
         selected, texts = {}, []
         for idx, row in within.iterrows():
@@ -206,7 +214,12 @@ class Recommender:
             within.at[idx, "ce_evidence_ref"] = f"{best_ev.get('field')}:{best_ev.get('pos', best_ev.get('item_idx', ''))}"
             within.at[idx, "ce_best_quote"] = best_ev["text"]
             within.at[idx, "ce_item_count"] = len(evidence)
-        return rank_candidates(within, tag, text_match=within["ce_text_score"])
+        # Relative text match (see config.TEXT_MATCH_TEMPERATURE): invert the scorer's sigmoid back to logits.
+        p = within["ce_text_score"].astype(float).clip(1e-12, 1 - 1e-12)
+        logit = np.log(p / (1 - p))
+        within["ce_text_logit"] = logit
+        return rank_candidates(within, tag, text_match=np.exp((logit - logit.max()) / config.TEXT_MATCH_TEMPERATURE),
+                               travel=travel)
 
     # ------------------------------------------------------------------ catalog / suggestions
     def services(self) -> list[dict]:
@@ -266,6 +279,12 @@ class Recommender:
     # ------------------------------------------------------------------ location
     def resolve_location(self, text: str, coordinates: dict | None) -> dict:
         if coordinates and coordinates.get("latitude") is not None:
+            lat, lon = float(coordinates["latitude"]), float(coordinates["longitude"])
+            if not (config.INDIA_BBOX["lat"][0] <= lat <= config.INDIA_BBOX["lat"][1]
+                    and config.INDIA_BBOX["lon"][0] <= lon <= config.INDIA_BBOX["lon"][1]):
+                # A device outside India would otherwise "find" the nearest Indian hospital thousands of km away.
+                raise LocationNotFound("Your device location is outside India. Enter a city, district or PIN code "
+                                       "in India.", [])
             return {"type": "coordinates", "lat": float(coordinates["latitude"]), "lon": float(coordinates["longitude"]),
                     "precision": "point", "name": "Current location", "district": "", "state": "",
                     "note": "user-supplied coordinates", "confidence": "high", "ambiguous": []}
@@ -320,7 +339,8 @@ class Recommender:
         raise LocationNotFound(f"Could not find '{raw}'. Try a district, city, 6-digit PIN or 'lat, lon'.", sugg)
 
     # ------------------------------------------------------------------ steps 2–4
-    def recommend(self, service_text: str, location_text: str, coordinates: dict | None = None) -> dict:
+    def recommend(self, service_text: str, location_text: str, coordinates: dict | None = None,
+                  urgency: int | None = None) -> dict:
         """The only inputs are the service and the location (text, or coordinates from "Use my location").
         Radius, result count and ordering are system decisions."""
         limit = config.RESULT_LIMIT
@@ -342,13 +362,14 @@ class Recommender:
         # Candidate pool: at least twice the travel distance for this kind of care, widened (25 -> 50 -> 100 -> 200 km)
         # until a provider is found. Inside it, distance is a ranking factor, not a cut-off.
         steps = list(config.RADIUS_STEPS_KM)
-        travel = travel_km(tag)
+        # Urgent requests (level 3 from the request text) halve the travel distance: nearer hospitals count more.
+        travel = travel_km(tag) * (config.URGENT_TRAVEL_FACTOR if urgency == 3 else 1.0)
         first_step = next((r for r in steps if r >= 2 * travel), steps[-1])
         candidates = [r for r in steps if r >= first_step]
         radius = next((r for r in candidates if (ok["distance_km"] <= r).any()), steps[-1])
         pool = ok[ok["distance_km"] <= radius]
-        within = (self._cross_encoder_order(pool, tag, label) if self.ranking_method == "cross_encoder"
-                  else rank_candidates(pool, tag))
+        within = (self._cross_encoder_order(pool, tag, label, travel) if self.ranking_method == "cross_encoder"
+                  else rank_candidates(pool, tag, travel=travel))
         blocked = prov[(prov["eligibility"] == "review_blocked") & (prov["distance_km"] <= radius)]
 
         picked = within.head(limit).copy()
@@ -381,7 +402,8 @@ class Recommender:
                 "location": {"type": loc["type"], "inputValue": location_text, "resolvedName": loc["name"],
                              "district": loc["district"], "state": loc["state"], "latitude": loc["lat"],
                              "longitude": loc["lon"], "confidence": loc["confidence"]},
-                "searchParameters": {"radiusKm": radius, "limit": limit},
+                "searchParameters": {"radiusKm": radius, "limit": limit, "travelKm": travel,
+                                     "urgencyLevel": urgency or 4},
             },
             "results": results,
             "metadata": {
@@ -454,7 +476,7 @@ class Recommender:
                   "distanceScore": 0, "sourceScore": 0, "locationQualityScore": 0, "capacityScore": 0, "penaltyScore": 0,
                   "totalScore": total, "modelVersion": self.ranking_version}
             reranking = {"method": "cross_encoder", "model": self.scorer.model_name,
-                         "textScore": float(r["text_match"]), "evidenceScore": float(r["proof"]),
+                         "textScore": float(r["text_match"]), "rawModelScore": float(r["ce_text_score"]), "evidenceScore": float(r["proof"]),
                          "distanceScore": c, "totalScore": float(r["rank_score"]),
                          "weights": w, "bestEvidenceRef": r["ce_evidence_ref"], "bestEvidenceText": r["ce_best_quote"],
                          "scoredItemCount": int(r["ce_item_count"]),
@@ -525,7 +547,7 @@ class Recommender:
                 "proof": round(float(r["proof"]), 2), "closeness": round(float(r["closeness"]), 2),
                 "textMatch": round(float(r["text_match"]), 2) if "text_match" in r else None,
                 "evidence": round(float(r["evidence_strength"]), 2),
-                "score": round(float(r["rank_score"]), 2), "travelKm": travel_km(r["tag_id"]) if "tag_id" in r else None,
+                "score": round(float(r["rank_score"]), 2), "travelKm": float(r["travel_km"]),
                 "proofTier": tier, "onlyEquipment": only_eq, "mentionsOther": bool(r["n_explicit_elsewhere"] > 0),
                 "locationTier": ltier, "statements": int(r["n_explicit_usable"]),
                 "solidProof": bool(r["solid_proof"]),
