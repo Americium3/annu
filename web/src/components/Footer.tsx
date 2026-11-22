@@ -14,7 +14,7 @@ export function Footer() {
         <p>
           {USE_DEMO ? t.prototypeNote : t.liveNote} {t.footerNote}
         </p>
-        <nav className="footer-links" aria-label="Footer">
+        <nav className="footer-links" aria-label={t.footerNav}>
           <a href="#how-it-works">{t.footerMethod}</a>
           <span>© 2026 CarePath</span>
         </nav>

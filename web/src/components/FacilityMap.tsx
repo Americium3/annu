@@ -9,6 +9,7 @@ import {
 } from "react-leaflet";
 import { ArrowRight, Crosshair } from "lucide-react";
 import { useI18n } from "../i18n";
+import { placeName } from "../lib/localize";
 import { scoreBand } from "./FacilityCard";
 import { RAAHI_MARK_HTML } from "./Raahi";
 import type { FacilityRecommendation, QueryContext } from "../types";
@@ -87,7 +88,7 @@ export function FacilityMap({
   onOpen,
   onClearSelection,
 }: FacilityMapProps) {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const center = useMemo<[number, number]>(
     () =>
       queryContext
@@ -97,10 +98,10 @@ export function FacilityMap({
   );
 
   return (
-    <section className="map-panel" aria-label="Facilities map">
+    <section className="map-panel" aria-label={t.mapTitle}>
       <div className="map-toolbar">
         <h2>
-          {t.mapTitle} <span>· {queryContext?.location.resolvedName ?? "Bhubaneswar"}</span>
+          {t.mapTitle} <span>· {queryContext ? (queryContext.location.type === "coordinates" ? t.currentLocation : placeName(queryContext.location.resolvedName, lang)) : ""}</span>
         </h2>
         <button
           className="icon-button"

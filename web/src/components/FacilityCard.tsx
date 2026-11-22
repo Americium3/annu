@@ -2,6 +2,7 @@ import { AlertTriangle, ArrowRight, HelpCircle, ShieldAlert } from "lucide-react
 import { operatorLabel, useI18n } from "../i18n";
 import { transitionName } from "../lib/motion";
 import { displayPhone, telUrl } from "../lib/facilityActions";
+import { cardWarning, facilityType } from "../lib/localize";
 import { knownOperator, reasonText, statusLabel } from "../lib/reason";
 import type { FacilityRecommendation } from "../types";
 import { FacilityActions } from "./FacilityActions";
@@ -56,11 +57,11 @@ function Status({ facility, large = false }: { facility: FacilityRecommendation;
 
 /** "Type · Ownership · Area", leaving out ownership the data doesn't know. */
 function Meta({ facility }: { facility: FacilityRecommendation }) {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const operator = knownOperator(facility.operatorType);
   return (
     <p className="facility-meta">
-      {facility.type} ·{" "}
+      {facilityType(facility.type, lang)} ·{" "}
       {operator && (
         <>
           <span className="operator">{operatorLabel(t, operator)}</span> ·{" "}
@@ -72,11 +73,12 @@ function Meta({ facility }: { facility: FacilityRecommendation }) {
 }
 
 function Warning({ facility }: { facility: FacilityRecommendation }) {
+  const { lang } = useI18n();
   if (facility.uncertainty.level !== "high") return null;
   return (
     <p className="card-warning">
       <ShieldAlert size={16} aria-hidden="true" />
-      {facility.uncertainty.messages[0]}
+      {cardWarning(facility.uncertainty, lang)}
     </p>
   );
 }

@@ -1,9 +1,11 @@
 import { ArrowLeft, Check, Copy, ExternalLink, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { operatorLabel, useI18n } from "../i18n";
+import { facilityType, unsureMessages } from "../lib/localize";
 import { knownOperator } from "../lib/reason";
 import type { FacilityRecommendation, SourceType } from "../types";
 import { ConfidenceBadge } from "./ConfidenceBadge";
+import { reasonLine } from "./FacilityCard";
 import { FacilityActions } from "./FacilityActions";
 import { Raahi } from "./Raahi";
 import { ScoreRing } from "./ScoreRing";
@@ -109,7 +111,7 @@ export function FacilityDetail({ facility, service, onClose }: FacilityDetailPro
           <div className="detail-hero">
             <div>
               <p className="detail-kicker">
-                {[t.rank(facility.rank), facility.type, knownOperator(facility.operatorType) && operatorLabel(t, facility.operatorType)]
+                {[t.rank(facility.rank), facilityType(facility.type, lang), knownOperator(facility.operatorType) && operatorLabel(t, facility.operatorType)]
                   .filter(Boolean)
                   .join(" · ")}
               </p>
@@ -129,7 +131,8 @@ export function FacilityDetail({ facility, service, onClose }: FacilityDetailPro
 
           <div className="detail-summary">
             <h3>{t.summary}</h3>
-            <p>{facility.recommendationSummary}</p>
+            {/* The data's summary is English; Hindi pages say the same thing from the card's own copy. */}
+            <p>{lang === "hi" ? reasonLine(t, facility).text : facility.recommendationSummary}</p>
           </div>
 
           {facility.uncertainty.messages.length > 0 && (
@@ -142,7 +145,7 @@ export function FacilityDetail({ facility, service, onClose }: FacilityDetailPro
               </div>
             </div>
             <ul>
-              {facility.uncertainty.messages.map((message) => (
+              {unsureMessages(facility.uncertainty, lang).map((message) => (
                 <li key={message}>{message}</li>
               ))}
             </ul>
@@ -156,6 +159,7 @@ export function FacilityDetail({ facility, service, onClose }: FacilityDetailPro
               <h3>{t.proofTitle}</h3>
               <span className="evidence-count">{t.items(facility.evidence.length)}</span>
             </div>
+            {t.proofOriginal && <p className="proof-original">{t.proofOriginal}</p>}
             <div className="full-evidence-list">
               {facility.evidence.map((evidence) => {
                 const source = facility.sources.find(

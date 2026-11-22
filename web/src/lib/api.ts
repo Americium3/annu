@@ -1,5 +1,8 @@
-import type { LocationOption, RecommendationResponse, ServiceOption } from "../types";
-import { getDemoRecommendations } from "./demoApi";
+import type { AskResponse, LocationOption, RecommendationResponse, ServiceOption } from "../types";
+import { askDemo, getDemoRecommendations } from "./demoApi";
+import { ApiError } from "./errors";
+
+export { ApiError };
 import { locations as demoLocations, services as demoServices } from "../data/demo";
 
 /** Backend base URL. Empty = same origin (Vite dev server proxies /api to the FastAPI backend). */
@@ -7,21 +10,20 @@ const API_BASE = (import.meta.env.VITE_API_BASE as string | undefined) ?? "";
 /** Set VITE_USE_DEMO=true to run the UI on the bundled mock data without a backend. */
 export const USE_DEMO = import.meta.env.VITE_USE_DEMO === "true";
 
-/** The only user inputs: the service and the location ("Use my location" fills the location as coordinates). */
+/** A structured search: the service and the location ("Use my location" fills the location as coordinates),
+ * plus the urgency level /api/ask found in the person's words (3 = nearer hospitals count more). */
 export interface SearchInput {
   serviceText: string;
   locationText: string;
   coordinates?: { latitude: number; longitude: number };
+  urgency?: number;
 }
 
-export class ApiError extends Error {
-  field?: "service" | "location";
-  suggestions: string[];
-  constructor(message: string, field?: "service" | "location", suggestions: string[] = []) {
-    super(message);
-    this.field = field;
-    this.suggestions = suggestions;
-  }
+/** A free-text request. The saved place / device location is used only when the text names no place. */
+export interface AskInput {
+  text: string;
+  locationText?: string;
+  coordinates?: { latitude: number; longitude: number };
 }
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
@@ -51,6 +53,11 @@ export async function getRecommendations(input: SearchInput): Promise<Recommenda
     method: "POST",
     body: JSON.stringify(input),
   });
+}
+
+export async function ask(input: AskInput): Promise<AskResponse> {
+  if (USE_DEMO) return askDemo(input);
+  return request<AskResponse>("/api/ask", { method: "POST", body: JSON.stringify(input) });
 }
 
 export async function fetchServices(): Promise<ServiceOption[]> {
