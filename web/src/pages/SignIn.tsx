@@ -5,6 +5,7 @@ import { Header } from "../components/Header";
 import { RaahiSays } from "../components/Raahi";
 import { useI18n } from "../i18n";
 import { auth, AuthError, completeSignIn, DEMO_CODE, formatPhone, safeReturnTo, useSession } from "../lib/auth";
+import { withTransition } from "../lib/motion";
 import { isValidMobile } from "../lib/profile";
 
 /**
@@ -64,7 +65,7 @@ export function SignIn() {
       const { resendAfterSeconds } = await auth.requestOtp(digits);
       setResendIn(resendAfterSeconds);
       setCode("");
-      setStage("code");
+      withTransition(() => setStage("code"), "step");
     } catch (failure) {
       setError(describe(failure));
     } finally {
@@ -152,7 +153,7 @@ export function SignIn() {
                   type="button"
                   className="back-button"
                   onClick={() => {
-                    setStage("phone");
+                    withTransition(() => setStage("phone"), "step");
                     setError(null);
                   }}
                 >
@@ -164,7 +165,20 @@ export function SignIn() {
                 <label className="field-label" htmlFor="si-code">
                   {t.siCodeLabel}
                 </label>
-                <div className="text-field code-field">
+                {/* Six boxes for the eye; one real input underneath for SMS autofill,
+                    paste and screen readers. */}
+                <div className={`code-boxes ${error ? "has-error" : ""}`}>
+                  {Array.from({ length: 6 }, (_, position) => (
+                    <span
+                      key={position}
+                      aria-hidden="true"
+                      className={`code-box ${code[position] ? "is-filled" : ""} ${
+                        position === Math.min(code.length, 5) ? "is-next" : ""
+                      }`}
+                    >
+                      {code[position] ?? ""}
+                    </span>
+                  ))}
                   <input
                     id="si-code"
                     ref={codeRef}

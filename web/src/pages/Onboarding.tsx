@@ -7,9 +7,10 @@ import { locations } from "../data/demo";
 import { useI18n, type Lang } from "../i18n";
 import { useSession } from "../lib/auth";
 import { formatPhone } from "../lib/auth";
-import { isValidMobile, profileSnapshot, saveProfile, type Profile } from "../lib/profile";
+import { withTransition } from "../lib/motion";
+import { isValidMobile, profileSnapshot, RADIUS_OPTIONS, saveProfile, type Profile } from "../lib/profile";
 
-const STEPS = ["language", "place", "contact", "done"] as const;
+const STEPS = ["language", "place", "distance", "cost", "contact", "done"] as const;
 type Step = (typeof STEPS)[number];
 const QUESTION_COUNT = STEPS.length - 1;
 
@@ -20,8 +21,8 @@ const QUESTION_COUNT = STEPS.length - 1;
  * emergency screen; "Call 108" stays in the header throughout.
  *
  * Only questions whose answers change something are asked: language, where
- * to search from, and who to call in an emergency. Radius and order belong to
- * the recommender, so they are not asked. Answers are saved as they're given, so leaving half-way loses nothing.
+ * to search from, how far they can travel, whether government hospitals come
+ * first, and who to call in an emergency. Answers are saved as they're given, so leaving half-way loses nothing.
  */
 export function Onboarding() {
   const { t, lang, setLang } = useI18n();
@@ -49,7 +50,8 @@ export function Onboarding() {
     saveProfile(patch);
   }
 
-  const next = () => setStep(STEPS[Math.min(index + 1, STEPS.length - 1)]);
+  // Each new question slides in; the progress bar grows to match.
+  const next = () => withTransition(() => setStep(STEPS[Math.min(index + 1, STEPS.length - 1)]), "step");
 
   function finish() {
     saveProfile({ onboardingDone: true });
@@ -69,11 +71,11 @@ export function Onboarding() {
             <div className="flow-top">
               <div className="flow-progress">
                 <span>{t.obStep(index + 1, QUESTION_COUNT)}</span>
-                <ol aria-hidden="true">
-                  {STEPS.slice(0, QUESTION_COUNT).map((id, position) => (
-                    <li key={id} className={position < index ? "is-done" : position === index ? "is-now" : ""} />
-                  ))}
-                </ol>
+                <span
+                  className="flow-bar"
+                  aria-hidden="true"
+                  style={{ "--progress": (index + 1) / QUESTION_COUNT } as React.CSSProperties}
+                />
               </div>
               <button type="button" className="link-button" onClick={skipAll}>
                 {t.obSkipAll}
@@ -120,6 +122,62 @@ export function Onboarding() {
               />
             )}
 
+            {step === "distance" && (
+              <Question ask={t.obDistanceAsk}>
+                <div className="choice-grid choice-grid-distance">
+                  {RADIUS_OPTIONS.map((km) => (
+                    <button
+                      key={km}
+                      type="button"
+                      className={`choice ${km === 0 ? "choice-wide" : ""}`}
+                      aria-pressed={draft.radiusKm === km}
+                      onClick={() => {
+                        update({ radiusKm: km });
+                        next();
+                      }}
+                    >
+                      {km === 0 ? (
+                        t.obDistanceAny
+                      ) : (
+                        <>
+                          <strong className="choice-number">{km}</strong>
+                          <span>{t.kmUnit}</span>
+                        </>
+                      )}
+                    </button>
+                  ))}
+                </div>
+                <SkipQuestion onClick={next} />
+              </Question>
+            )}
+
+            {step === "cost" && (
+              <Question ask={t.obCostAsk}>
+                <div className="choice-grid choice-grid-stack">
+                  {(
+                    [
+                      [true, t.obCostYes],
+                      [false, t.obCostNo],
+                    ] as Array<[boolean, string]>
+                  ).map(([value, label]) => (
+                    <button
+                      key={String(value)}
+                      type="button"
+                      className="choice"
+                      aria-pressed={draft.governmentFirst === value}
+                      onClick={() => {
+                        update({ governmentFirst: value });
+                        next();
+                      }}
+                    >
+                      {label}
+                    </button>
+                  ))}
+                </div>
+                <SkipQuestion onClick={next} />
+              </Question>
+            )}
+
             {step === "contact" && (
               <ContactStep
                 value={draft.emergencyContact}
@@ -144,6 +202,26 @@ export function Onboarding() {
                   <div>
                     <dt>{t.obSumPlace}</dt>
                     <dd>{draft.location ?? t.obNotSet}</dd>
+                  </div>
+                  <div>
+                    <dt>{t.obSumDistance}</dt>
+                    <dd>
+                      {draft.radiusKm === null
+                        ? t.obNotSet
+                        : draft.radiusKm === 0
+                          ? t.obDistanceAny
+                          : t.within(draft.radiusKm)}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>{t.obSumCost}</dt>
+                    <dd>
+                      {draft.governmentFirst === null
+                        ? t.obNotSet
+                        : draft.governmentFirst
+                          ? t.obSumCostFirst
+                          : t.obSumCostNormal}
+                    </dd>
                   </div>
                   <div>
                     <dt>{t.obSumContact}</dt>

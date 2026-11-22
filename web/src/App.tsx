@@ -1,22 +1,23 @@
-import { Ambulance, ChevronRight } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { EmergencyView } from "./components/EmergencyView";
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
-import { Raahi } from "./components/Raahi";
+import { RaahiSays } from "./components/Raahi";
 import { ResultsView } from "./components/ResultsView";
 import { SearchPanel, type SearchValues } from "./components/SearchPanel";
 import { SetupPrompt } from "./components/SetupPrompt";
 import { TrustSection } from "./components/TrustSection";
 import { ApiError, getRecommendations } from "./lib/api";
 import { useI18n } from "./i18n";
-import { profileSnapshot, useProfile } from "./lib/profile";
+import { withTransition } from "./lib/motion";
+import { profileSnapshot, RADIUS_OPTIONS, useProfile } from "./lib/profile";
 import type { RecommendationResponse } from "./types";
 
 const defaultSearch: SearchValues = {
   service: "Kidney dialysis",
   location: "Bhubaneswar, Odisha",
+  radiusKm: 0,
 };
 
 /** Search defaults: the person's saved answers first, then the demo city. */
@@ -25,6 +26,7 @@ function startingSearch(): SearchValues {
   return {
     service: defaultSearch.service,
     location: profile.location ?? defaultSearch.location,
+    radiusKm: profile.radiusKm ?? defaultSearch.radiusKm,
   };
 }
 
@@ -39,17 +41,18 @@ function App() {
   const { t } = useI18n();
   const emergency = searchParams.get("mode") === "emergency";
 
-  function openEmergency() {
-    // A real history entry, so the phone's Back button leaves emergency mode.
-    const next = new URLSearchParams(searchParams);
-    next.set("mode", "emergency");
-    setSearchParams(next);
-  }
-
   function closeEmergency() {
     const next = new URLSearchParams(searchParams);
     next.delete("mode");
-    setSearchParams(next);
+    withTransition(() => setSearchParams(next), "emergency");
+  }
+
+  function changeRadius(km: number) {
+    setSearchValues((current) => ({ ...current, radiusKm: km }));
+    const next = new URLSearchParams(searchParams);
+    if (km) next.set("radius", String(km));
+    else next.delete("radius");
+    setSearchParams(next, { replace: true });
   }
 
   const urlSearch = useMemo(() => {
@@ -57,6 +60,11 @@ function App() {
     return {
       service: searchParams.get("service") || start.service,
       location: searchParams.get("location") || start.location,
+      // Only a radius actually in the URL counts; Number(null) would read as 0 ("any").
+      radiusKm:
+        searchParams.has("radius") && RADIUS_OPTIONS.includes(Number(searchParams.get("radius")))
+          ? Number(searchParams.get("radius"))
+          : start.radiusKm,
     };
   }, [searchParams]);
 
@@ -71,6 +79,7 @@ function App() {
           {
             service: values.service,
             location: values.location,
+            ...(values.radiusKm ? { radius: String(values.radiusKm) } : {}),
           },
           { replace: true },
         );
@@ -131,30 +140,21 @@ function App() {
       <main>
         <section className="hero" aria-labelledby="hero-title">
           <div className="hero-inner">
-            {/* Two doors, as on Sprout's landing page: urgent first, then search. */}
-            <button className="emergency-door" type="button" onClick={openEmergency}>
-              <Ambulance size={26} aria-hidden="true" />
-              <span>
-                <strong>{t.emergencyDoorTitle}</strong>
-                <small>{t.emergencyDoorBody}</small>
-              </span>
-              <ChevronRight size={20} aria-hidden="true" />
-            </button>
-            <div className="hero-ask">
-              <Raahi size={56} />
-              <h1 id="hero-title" className="raahi-bubble">
-                {t.raahiAsk}
-              </h1>
-            </div>
+            <h1 id="hero-title" className="sr-only">
+              {t.heroTitle}
+            </h1>
+            <RaahiSays className="hero-raahi" size={150} tappable>
+              {t.raahiFill}
+            </RaahiSays>
+            <SearchPanel
+              initialService={searchValues.service}
+              initialLocation={searchValues.location}
+              radiusKm={searchValues.radiusKm}
+              isLoading={isLoading}
+              onSearch={handleSearch}
+            />
           </div>
-
-          <SearchPanel
-            initialService={searchValues.service}
-            initialLocation={searchValues.location}
-            isLoading={isLoading}
-            onSearch={handleSearch}
-          />
-          <div className="search-wrap">
+          <div className="hero-foot">
             <SetupPrompt />
           </div>
         </section>
@@ -198,6 +198,9 @@ function App() {
           isLoading={isLoading}
           selectedId={selectedId}
           onSelectedIdChange={setSelectedId}
+          radiusKm={searchValues.radiusKm}
+          onRadiusChange={changeRadius}
+          governmentFirst={profile.governmentFirst === true}
         />
         <TrustSection />
       </main>

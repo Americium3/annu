@@ -14,16 +14,19 @@ export function FacilityActions({
   service,
   primary = false,
   share = true,
+  compact = false,
 }: {
   facility: FacilityRecommendation;
   service?: string;
   primary?: boolean;
   share?: boolean;
+  /** Icon-only buttons for dense board rows (labels stay for screen readers). */
+  compact?: boolean;
 }) {
   const { t } = useI18n();
   const stop = (event: React.MouseEvent) => event.stopPropagation();
   return (
-    <div className="facility-actions">
+    <div className={`facility-actions ${compact ? "is-compact" : ""}`}>
       <a
         className={`action-button ${primary ? "action-primary" : ""}`}
         href={directionsUrl(facility)}
@@ -32,17 +35,17 @@ export function FacilityActions({
         onClick={stop}
       >
         <Navigation size={17} aria-hidden="true" />
-        {t.directions}
+        <span className="action-label">{t.directions}</span>
       </a>
       {facility.phone ? (
         <a className="action-button" href={telUrl(facility.phone)} onClick={stop}>
           <Phone size={17} aria-hidden="true" />
-          {t.call}
+          <span className="action-label">{t.call}</span>
         </a>
       ) : (
-        <span className="action-missing">
+        <span className="action-missing" title={t.noPhone}>
           <Phone size={15} aria-hidden="true" />
-          {t.noPhone}
+          <span className="action-label">{t.noPhone}</span>
         </span>
       )}
       {share && (

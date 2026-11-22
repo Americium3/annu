@@ -51,19 +51,32 @@ The visitor's only question is "which hospital should I go to?" Every screen ans
 - **Two doors**, as on Sprout's landing page. "Emergency?" comes first; the search comes second.
 - **Emergency** (`?mode=emergency`, `src/components/EmergencyView.tsx`). A huge "Call 108" button (plus "Call [contact]" if one was saved in setup), then the five nearest hospitals with Directions and Call. There is nothing to read, no scores and no filters. It asks for the device location on entry. With live data, the list asks the recommender for "emergency" near the person; in demo mode it shows the nearest hospitals with clinics excluded. If the list can't load, the call buttons remain. The phone's Back button leaves emergency mode. A verified emergency-department field in the data would make this list exact.
 - **Result cards** show only name, distance, type/ownership/area, one plain line on whether the service is confirmed (and by what), and the actions. The top choice gets the one filled button. A red warning appears only when the uncertainty is high.
-- **No ranking controls.** The person enters only the care they need and where (see above). Radius and order belong to the recommender, and the list shows its order and its notices as they come.
+- **The person's own choices, on top of the recommender.** The backend accepts only service and location (see above). The distance blank in the search sentence ("at any distance" by default), Best match / Nearest, and "Government hospitals only" are applied in the browser to the results it returns. If they hide everything, the page says what's nearest and offers one tap to widen. Distance is kept in the URL (`radius`).
 - **The proof is one tap away** in "Why this hospital?": summary, what couldn't be confirmed, score breakdown, quotes and sources. "How we choose hospitals" is folded at the foot of the page.
 
 ## 登录与引导 / Sign-in and onboarding
 
 Modelled on Sprout's flow, with one overriding rule: **sign-in and setup never stand between anyone and search or the emergency screen.** Both are optional, and "Call 108" stays in the header on every page.
 
-- **Setup (`/welcome`, `src/pages/Onboarding.tsx`).** It's offered once, through a dismissible line under the search, and never opens on its own. Raahi asks one question per screen: language, usual place, and an emergency contact. Every question has "Skip this question", and the whole flow has "Skip setup". Answers are saved as they're given, so leaving half-way loses nothing. When finished, `/welcome` sends people home; "Change my preferences" in the account menu reopens it with `?again=1`.
-- **What the answers change.** The interface language, the place the search starts from, and a "Call [name]" button under Call 108 on the emergency screen. Radius and order are not asked, because the recommender owns them.
+- **Setup (`/welcome`, `src/pages/Onboarding.tsx`).** It's offered once, through a dismissible line under the search, and never opens on its own. Raahi asks one question per screen: language, usual place, how far they can travel, whether to show government hospitals first, and an emergency contact. Every question has "Skip this question", and the whole flow has "Skip setup". Answers are saved as they're given, so leaving half-way loses nothing. When finished, `/welcome` sends people home; "Change my preferences" in the account menu reopens it with `?again=1`.
+- **What the answers change.** The interface language; the place and distance the search starts from; government hospitals listed first (a stable partition, so Best match / Nearest still holds inside each group); and a "Call [name]" button under Call 108 on the emergency screen.
 - **What is stored** (`src/lib/profile.ts`, `carepath.profile.v1`): only those answers. Nothing medical, and no scheme or income details. Every storage read and write is guarded.
 - **Sign-in (`/sign-in?return_to=…`, `src/pages/SignIn.tsx`).** Mobile number plus a one-time code: numeric keyboards, `autocomplete="one-time-code"` for SMS autofill, auto-submit at 6 digits, a 30-second resend timer, and "Continue without signing in". `return_to` accepts same-site relative paths only. Signing in merges the device's answers into the account (device answers win), and later changes sync while signed in.
 - **Backend seam** (`src/lib/auth.ts`): `AuthClient` (`requestOtp`, `verifyOtp`, `saveProfile`). Today it uses `demoAuth`, which sends no SMS, accepts `123456`, and keeps the "account" in this browser. The sign-in page says so. Replace it with a client for the API's OTP endpoints before launch.
 - **Hosting:** `/welcome` and `/sign-in` are client routes. The host must serve `index.html` for unknown paths (SPA fallback).
+
+## 布局与动效 / Layout and motion
+
+- **Search is one sentence with blanks:** "I need [care] near [place] [within 10 km]." Each language orders the blanks its own way (`searchTemplate` in `src/i18n.tsx`). Every blank is a real labelled input, sized to its text.
+- **Emergency is always one tap away:** a red Emergency button in the sticky header on wide screens, and a bar along the bottom of the screen on phones, where the thumb is.
+- **Results:** the top pick is set large, with the distance as the headline number and one filled action. The other options are rows on a "departure board": rank, distance, who, actions.
+- **Setup and sign-in read as a conversation:** Raahi asks, big answer tiles respond, and the code goes into six boxes laid over one real input (so SMS autofill and paste still work).
+- **Motion** (`src/lib/motion.ts`, View Transitions API):
+  - rows glide to their new places when sorting or filtering
+  - the theme spreads out from the toggle, and the language crossfades
+  - setup steps slide, and the emergency screen rises in
+  - the drawer animates both open and closed, map pins drop in, the segmented control's thumb slides, and Raahi blinks and hops when tapped
+  - everything is skipped under `prefers-reduced-motion`, and browsers without View Transitions simply update in place
 
 ## Raahi (mascot)
 

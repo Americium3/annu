@@ -29,6 +29,16 @@ const scoreMaximums: Array<[NumericScoreKey, number]> = [
 
 export function FacilityDetail({ facility, service, onClose }: FacilityDetailProps) {
   const [copied, setCopied] = useState(false);
+  // Play the closing animation before the drawer unmounts.
+  const [closing, setClosing] = useState(false);
+  const close = () => {
+    if (closing) return;
+    setClosing(true);
+    window.setTimeout(() => {
+      setClosing(false);
+      onClose();
+    }, 220);
+  };
   const { t, lang } = useI18n();
   const scoreLabels: Record<NumericScoreKey, string> = {
     serviceMatchScore: t.scoreService,
@@ -56,7 +66,7 @@ export function FacilityDetail({ facility, service, onClose }: FacilityDetailPro
   useEffect(() => {
     if (!facility) return;
     function closeOnEscape(event: KeyboardEvent) {
-      if (event.key === "Escape") onClose();
+      if (event.key === "Escape") close();
     }
     document.body.classList.add("detail-open");
     window.addEventListener("keydown", closeOnEscape);
@@ -85,7 +95,7 @@ export function FacilityDetail({ facility, service, onClose }: FacilityDetailPro
   }
 
   return (
-    <div className="detail-backdrop" role="presentation" onClick={onClose}>
+    <div className={`detail-backdrop ${closing ? "is-closing" : ""}`} role="presentation" onClick={close}>
       <section
         className="detail-drawer"
         role="dialog"
@@ -94,7 +104,7 @@ export function FacilityDetail({ facility, service, onClose }: FacilityDetailPro
         onClick={(event) => event.stopPropagation()}
       >
         <div className="drawer-topbar">
-          <button className="back-button" type="button" onClick={onClose}>
+          <button className="back-button" type="button" onClick={close}>
             <ArrowLeft size={18} />
             {t.back}
           </button>
@@ -108,7 +118,7 @@ export function FacilityDetail({ facility, service, onClose }: FacilityDetailPro
             >
               {copied ? <Check size={18} /> : <Copy size={18} />}
             </button>
-            <button className="icon-button" type="button" onClick={onClose} aria-label={t.close}>
+            <button className="icon-button" type="button" onClick={close} aria-label={t.close}>
               <X size={20} />
             </button>
           </div>

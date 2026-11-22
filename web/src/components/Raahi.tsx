@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 /**
  * Raahi (राही, "traveller on the path") — CarePath's mascot.
  *
@@ -117,15 +119,25 @@ export function RaahiSays({
   mood = "happy",
   size = 72,
   className = "",
+  tappable = false,
 }: {
   children: React.ReactNode;
   mood?: RaahiMood;
   size?: number;
   className?: string;
+  /** Raahi hops when tapped, as Sprout's mascot reacts to touch. Decorative. */
+  tappable?: boolean;
 }) {
+  const [hops, setHops] = useState(0);
   return (
     <div className={`raahi-says ${className}`}>
-      <Raahi size={size} mood={mood} />
+      <span
+        key={hops}
+        className={`raahi-holder ${hops ? "is-hopping" : ""}`}
+        onClick={tappable ? () => setHops((count) => count + 1) : undefined}
+      >
+        <Raahi size={size} mood={mood} />
+      </span>
       <div className="raahi-bubble">{children}</div>
     </div>
   );

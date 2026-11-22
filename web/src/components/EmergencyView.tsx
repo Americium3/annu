@@ -148,7 +148,7 @@ export function EmergencyView({
 
         <ol className="emergency-list">
           {hospitals.map((facility, index) => (
-            <li key={facility.id}>
+            <li key={facility.id} style={{ "--i": index } as React.CSSProperties}>
               <div className="emergency-hospital">
                 <h3>{facility.name}</h3>
                 <p>{facility.address}</p>

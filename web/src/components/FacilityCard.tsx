@@ -1,16 +1,8 @@
 import { AlertTriangle, ArrowRight, CheckCircle2, HelpCircle, ShieldAlert } from "lucide-react";
 import { operatorLabel, useI18n } from "../i18n";
+import { transitionName } from "../lib/motion";
 import type { FacilityRecommendation, SourceType } from "../types";
 import { FacilityActions } from "./FacilityActions";
-
-interface FacilityCardProps {
-  facility: FacilityRecommendation;
-  service: string;
-  primary: boolean;
-  selected: boolean;
-  onSelect: () => void;
-  onOpen: () => void;
-}
 
 export function scoreBand(score: number) {
   return score >= 85 ? "strong" : score >= 70 ? "mid" : "low";
@@ -35,69 +27,131 @@ export function reasonLine(t: T, facility: FacilityRecommendation) {
   return t.reasonHigh(kinds.join(` ${t.and} `));
 }
 
-/**
- * A result answers one question: should I go here? Name, distance, where it
- * is, whether the service is confirmed, and the buttons to act. The proof
- * behind it lives one tap away in "Why this hospital?".
- */
-export function FacilityCard({ facility, service, primary, selected, onSelect, onOpen }: FacilityCardProps) {
+function Reason({ facility }: { facility: FacilityRecommendation }) {
   const { t } = useI18n();
-  const ReasonIcon =
+  const Icon =
     facility.confidence === "high" ? CheckCircle2 : facility.confidence === "medium" ? HelpCircle : AlertTriangle;
+  return (
+    <p className={`card-reason confidence-${facility.confidence}`}>
+      <Icon size={16} aria-hidden="true" />
+      {reasonLine(t, facility)}
+    </p>
+  );
+}
 
+function Warning({ facility }: { facility: FacilityRecommendation }) {
+  if (facility.uncertainty.level !== "high") return null;
+  return (
+    <p className="card-warning">
+      <ShieldAlert size={16} aria-hidden="true" />
+      {facility.uncertainty.messages[0]}
+    </p>
+  );
+}
+
+function Distance({ km, large = false }: { km: number; large?: boolean }) {
+  const { t } = useI18n();
+  const [whole, fraction] = km.toFixed(1).split(".");
+  return (
+    <p className={`board-distance ${large ? "is-large" : ""}`}>
+      <strong>
+        {whole}
+        <span>.{fraction}</span>
+      </strong>
+      <small>{t.kmUnit}</small>
+    </p>
+  );
+}
+
+interface ResultProps {
+  facility: FacilityRecommendation;
+  service: string;
+  selected: boolean;
+  index: number;
+  onSelect: () => void;
+  onOpen: () => void;
+}
+
+function WhyButton({ onOpen }: { onOpen: () => void }) {
+  const { t } = useI18n();
+  return (
+    <button
+      className="text-button"
+      type="button"
+      onClick={(event) => {
+        event.stopPropagation();
+        onOpen();
+      }}
+    >
+      {t.whyHospital}
+      <ArrowRight size={16} />
+    </button>
+  );
+}
+
+/**
+ * The answer, set large: the one place this person should most likely go,
+ * with the distance as the headline number and one filled action.
+ */
+export function TopPick({ facility, service, selected, onSelect, onOpen, nearest = false }: ResultProps & { nearest?: boolean }) {
+  const { t } = useI18n();
   return (
     <article
-      className={`facility-card ${primary ? "is-primary" : ""} ${selected ? "is-selected" : ""}`}
+      className={`top-pick ${selected ? "is-selected" : ""}`}
       onClick={onSelect}
       aria-labelledby={`facility-${facility.id}-name`}
+      style={{ "--vt-name": transitionName("result", facility.id) } as React.CSSProperties}
     >
-      <div className="card-head">
-        <span
-          className={`rank-pin rank-pin-${scoreBand(facility.totalScore)}`}
-          aria-label={t.rank(facility.rank)}
-        >
-          <span>{facility.rank}</span>
-        </span>
-        <div className="card-title">
+      <p className="top-pick-label">{nearest ? t.topPickNearest : t.topPick}</p>
+      <div className="top-pick-main">
+        <Distance km={facility.distanceKm} large />
+        <div className="top-pick-body">
           <h3 id={`facility-${facility.id}-name`}>{facility.name}</h3>
           <p className="facility-meta">
             {facility.type} · <span className="operator">{operatorLabel(t, facility.operatorType)}</span> ·{" "}
             {facility.address}
           </p>
+          <Reason facility={facility} />
+          <Warning facility={facility} />
         </div>
-        <p className="card-distance">
-          <strong>{facility.distanceKm.toFixed(1)}</strong> km
-        </p>
       </div>
-
-      <div className="card-body">
-        <p className={`card-reason confidence-${facility.confidence}`}>
-          <ReasonIcon size={16} aria-hidden="true" />
-          {reasonLine(t, facility)}
-        </p>
-
-        {facility.uncertainty.level === "high" && (
-          <p className="card-warning">
-            <ShieldAlert size={16} aria-hidden="true" />
-            {facility.uncertainty.messages[0]}
-          </p>
-        )}
-
-        <div className="card-footer">
-          <FacilityActions facility={facility} service={service} primary={primary} />
-          <button
-            className="text-button"
-            type="button"
-            onClick={(event) => {
-              event.stopPropagation();
-              onOpen();
-            }}
-          >
-            {t.whyHospital}
-            <ArrowRight size={16} />
-          </button>
-        </div>
+      <div className="top-pick-actions">
+        <FacilityActions facility={facility} service={service} primary />
+        <WhyButton onOpen={onOpen} />
       </div>
     </article>
+  );
+}
+
+/** Every other option as a board row: distance first, then who, then what to do. */
+export function BoardRow({ facility, service, selected, index, onSelect, onOpen }: ResultProps) {
+  const { t } = useI18n();
+  return (
+    <li
+      className={`board-row ${selected ? "is-selected" : ""}`}
+      onClick={onSelect}
+      aria-labelledby={`facility-${facility.id}-name`}
+      style={
+        { "--vt-name": transitionName("result", facility.id), "--i": index } as React.CSSProperties
+      }
+    >
+      <span className={`board-rank rank-${scoreBand(facility.totalScore)}`} aria-label={t.rank(facility.rank)}>
+        {facility.rank}
+      </span>
+      <Distance km={facility.distanceKm} />
+      <div className="board-body">
+        <h3 id={`facility-${facility.id}-name`}>{facility.name}</h3>
+        <p className="facility-meta">
+          {facility.type} · <span className="operator">{operatorLabel(t, facility.operatorType)}</span> ·{" "}
+          {facility.address}
+        </p>
+        <Reason facility={facility} />
+        <Warning facility={facility} />
+      </div>
+      <div className="board-actions">
+        <FacilityActions facility={facility} service={service} compact />
+        <WhyButton onOpen={onOpen} />
+      </div>
+    </li>
   );
 }
