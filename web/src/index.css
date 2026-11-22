@@ -5783,23 +5783,6 @@ html[data-transition="emergency"]::view-transition-new(root) {
   scroll-margin-bottom: 190px;
 }
 
-/* fills while Raahi waits a beat before moving on */
-.destination-timer {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  height: 3px;
-  width: 100%;
-  background: rgb(255 255 255 / 0.65);
-  transform-origin: left;
-  animation: timer 2600ms 0ms linear both;
-}
-
-@keyframes timer {
-  from {
-    transform: scaleX(0);
-  }
-}
 
 .destination-emergency {
   justify-self: start;

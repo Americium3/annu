@@ -38,6 +38,7 @@ class Transcriber:
         self._pipe = None
         self._processor = None
         self._error: str | None = None
+        self._loading = False
         self._lock = threading.Lock()
 
     @property
@@ -50,7 +51,16 @@ class Transcriber:
 
     def warmup_in_background(self):
         if self.enabled:
-            threading.Thread(target=self._load, name="stt-warmup", daemon=True).start()
+            self._loading = True
+            threading.Thread(target=self._warmup, name="stt-warmup", daemon=True).start()
+
+    def _warmup(self):
+        try:
+            self._load()
+        except TranscriptionError:
+            pass  # recorded in self._error and reported by /api/health and /api/transcribe
+        finally:
+            self._loading = False
 
     def _load(self):
         with self._lock:
@@ -62,8 +72,8 @@ class Transcriber:
                 self._pipe = pipeline("automatic-speech-recognition", model=self.model_name, device=-1)
                 self._error = None
             except Exception as exc:  # reported by /api/health and as 503 on /api/transcribe
-                self._error = type(exc).__name__
-                raise TranscriptionError("The speech model could not load.") from exc
+                self._error = f"{type(exc).__name__}: {str(exc)[:160]}"
+                raise TranscriptionError(f"The speech model could not load ({self._error}).") from exc
 
     def transcribe(self, pcm16: bytes, lang: str) -> dict:
         if not self.enabled:
@@ -74,7 +84,13 @@ class Transcriber:
             return {"transcript": "", "seconds": round(seconds, 2), "model": self.model_name}
         if seconds > config.STT_MAX_SECONDS:
             samples = samples[: int(config.STT_MAX_SECONDS * SAMPLE_RATE)]
-        self._load()
+        if self._pipe is None:
+            # Never keep the person waiting on a model download: the page switches to another way at once.
+            if self._loading:
+                raise TranscriptionError("Voice is still warming up on the server (the speech model is loading).")
+            if self._error:
+                raise TranscriptionError(f"The speech model could not load ({self._error}).")
+            self._load()
         lang = lang if lang in LANGUAGE else "en"
         t0 = time.time()
         kwargs = {"language": LANGUAGE[lang], "task": "transcribe",

@@ -58,6 +58,17 @@ class TranscriberTest(unittest.TestCase):
         t.transcribe(pcm(35), "en")
         self.assertEqual(t._pipe.calls[0][0], 30 * 16000)
 
+    def test_loading_or_broken_model_answers_at_once(self):
+        t = Transcriber("fake-whisper")
+        t._loading = True
+        with self.assertRaises(TranscriptionError) as e:
+            t.transcribe(pcm(1), "en")
+        self.assertIn("warming up", str(e.exception))
+        t._loading, t._error = False, "OSError: no space left on device"
+        with self.assertRaises(TranscriptionError) as e:
+            t.transcribe(pcm(1), "en")
+        self.assertIn("no space left", str(e.exception))
+
     def test_off_means_off(self):
         t = Transcriber("off")
         self.assertFalse(t.enabled)
