@@ -4114,6 +4114,11 @@ html[data-transition="emergency"]::view-transition-new(root) {
   text-underline-offset: 3px;
 }
 
+.board-status.is-large {
+  margin-top: 8px;
+  font-size: var(--fs-sm);
+}
+
 /* phone numbers: readable and dialable */
 .action-number {
   font-variant-numeric: tabular-nums;
