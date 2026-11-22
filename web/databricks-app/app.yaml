@@ -1,0 +1,15 @@
+# Databricks Apps: how to start CarePath.
+# Node serves the site and starts the Python recommender (see server.js).
+command: ["node", "server.js"]
+env:
+  # The SQL warehouse is attached to the app as a resource named "sql-warehouse".
+  - name: DATABRICKS_WAREHOUSE_ID
+    valueFrom: sql-warehouse
+  - name: CAREPATH_SCHEMA
+    value: workspace.cardinal_virtues
+  # Writable location for the in-memory recommender's snapshot.
+  - name: CAREPATH_CACHE
+    value: /tmp/carepath/snapshot.pkl
+  # Load fresh tables from Databricks on every start.
+  - name: CAREPATH_REFRESH
+    value: "1"
