@@ -78,6 +78,22 @@ Modelled on Sprout's flow, with one overriding rule: **sign-in and setup never s
   - the drawer animates both open and closed, map pins drop in, the segmented control's thumb slides, and Raahi blinks and hops when tapped
   - everything is skipped under `prefers-reduced-motion`, and browsers without View Transitions simply update in place
 
+## 发布到 Databricks / Deploy to Databricks Apps
+
+`web/databricks-app/` runs the built site on Databricks Apps (Node.js runtime):
+
+- `server.js` is a dependency-free Node server. It serves `dist/`, gzips text assets, sends unknown paths such as `/welcome` and `/sign-in` to the app (SPA fallback), and answers `/healthz`. It listens on `DATABRICKS_APP_PORT`.
+- `app.yaml` starts it with `node server.js`.
+- `deploy.sh` builds the web app with demo data, uploads `server.js`, `package.json`, `app.yaml` and `dist/` to `/Workspace/Users/<you>/apps/<name>`, creates the app if needed, waits for its compute and deploys:
+
+```bash
+DATABRICKS_HOST=https://dbc-662e9a8b-91a5.cloud.databricks.com \
+DATABRICKS_TOKEN=<personal access token> \
+APP_NAME=carepath web/databricks-app/deploy.sh
+```
+
+The demo build needs no backend. Set `USE_DEMO=false` once the FastAPI backend is reachable from the app at `/api`.
+
 ## Raahi (mascot)
 
 `src/components/Raahi.tsx`. Raahi (राही, "traveller on the path") is a map pin with a face and a leaf: the pin means "care near you", and the leaf ties it to Sprout. As in Sprout, the mascot is where the product signs its name: the header, footer, favicon, and the search-area marker on the map. It also speaks at the moments a person might be unsure: the first screen, while results load, when nothing matches, and next to what could not be confirmed. There are three moods (`happy`, `thinking`, `concerned`), and its colours come from the `--raahi-*` tokens.

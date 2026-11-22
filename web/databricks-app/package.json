@@ -1,0 +1,12 @@
+{
+  "name": "carepath-databricks-app",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Serves the CarePath web build on Databricks Apps (Node.js, no dependencies).",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

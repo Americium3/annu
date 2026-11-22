@@ -1,0 +1,2 @@
+# Databricks Apps: how to start the CarePath web app.
+command: ["node", "server.js"]
