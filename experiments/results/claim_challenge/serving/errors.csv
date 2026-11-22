@@ -1,0 +1,12 @@
+method,query_id,unique_id,rank,relevance,distance_km,quote,text_score
+baseline,test-dialysis,test-dialysis-referral,2,0,0.3,Patients are referred elsewhere for Dialysis.,0.00037647617303572495
+baseline,test-mri,test-mri-referral,1,0,0.3,Patients are referred elsewhere for MRI.,0.0012261652821685474
+baseline,test-mri,test-mri-planned,2,0,0.6,A new MRI unit is planned for next year.,0.0005629180458300443
+baseline,test-mri,test-mri-counselling,3,0,0.9,Patients receive counselling about MRI.,0.000942517645495281
+baseline,test-nicu,test-nicu-referral,1,0,0.3,Patients are referred elsewhere for NICU.,0.3012224141989227
+baseline,test-nicu,test-nicu-planned,2,0,0.6,A new NICU unit is planned for next year.,0.291721780001858
+baseline,test-nicu,test-nicu-negative,3,0,0.7,NICU is not available at this hospital.,0.27959021646148696
+baseline,test-cardiac-surgery,test-cardiac-surgery-referral,1,0,0.3,Patients are referred elsewhere for cardiac surgery.,0.044828972277488104
+baseline,test-cardiac-surgery,test-cardiac-surgery-counselling,2,0,0.9,Patients receive counselling about cardiac surgery.,0.037601853404008345
+baseline,test-cardiac-surgery,test-cardiac-surgery-planned,3,0,0.6,A new cardiac surgery unit is planned for next year.,0.020283789479158657
+baseline,test-burns,test-burns-planned,1,0,0.6,A new burn care unit is planned for next year.,0.9138003832442781

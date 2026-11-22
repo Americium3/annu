@@ -25,7 +25,7 @@ RESULT_LIMIT = 8                              # results returned per search (sys
 # Default "rules" (proof x closeness): on the golden dev set no text model beat it once stage 1 was fixed
 # (experiments/RESULTS.md, section 2). "cross_encoder" stays available: CAREPATH_RANKING_METHOD=cross_encoder.
 RANKING_METHOD = os.environ.get("CAREPATH_RANKING_METHOD", "rules")
-RANKING_VERSION = "cross-encoder-x-closeness-v5" if RANKING_METHOD == "cross_encoder" else "proof-x-closeness-v5"
+RANKING_VERSION = "cross-encoder-x-closeness-v6-claim-guard" if RANKING_METHOD == "cross_encoder" else "proof-x-closeness-v6-claim-guard"
 CROSS_ENCODER_MODEL = os.environ.get("CAREPATH_CROSS_ENCODER_MODEL", "cross-encoder/ms-marco-MiniLM-L6-v2")
 CROSS_ENCODER_REVISION = os.environ.get("CAREPATH_CROSS_ENCODER_REVISION") or None
 CROSS_ENCODER_DEVICE = os.environ.get("CAREPATH_CROSS_ENCODER_DEVICE", "cpu")
@@ -106,3 +106,6 @@ DIRECTORY_DOMAINS = ("practo.com", "justdial.com", "hexahealth.com", "lybrate.co
                      "sehat.com", "clinicspots.com", "healthfrog.in", "quickerala.com", "sulekha.com", "indiamart.com",
                      "business.site", "bookimed.com", "medifee.com", "vaidam.com", "joonsquare.com", "drlogy.com")
 SOCIAL_DOMAINS = ("facebook.com", "instagram.com", "linkedin.com", "youtube.com", "twitter.com", "x.com", "wa.me")
+
+# Explicit contradictions/plans are excluded before radius selection and model scoring.
+CLAIM_GUARD_POLICY = os.environ.get("CAREPATH_CLAIM_GUARD", "explicit")

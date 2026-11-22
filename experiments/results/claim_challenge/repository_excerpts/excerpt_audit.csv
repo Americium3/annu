@@ -1,0 +1,63 @@
+service,source_bucket,text,upstream_model_probability,old_guard_status,new_guard_status,strict_kept_before,strict_kept_after,explicit_kept_after,cross_encoder_relevance
+kidney-dialysis,strong,Dialysis unit of 20 beds under Pradhan Mantri National Dialysis Programme,0.997,support,support,True,True,True,0.0004645514601508111
+kidney-dialysis,strong,Specializes in Nephrology & Dialysis,1.0,support,support,True,True,True,0.0009825460633458064
+kidney-dialysis,strong,Dialysis services,1.0,support,support,True,True,True,0.003461259919937988
+kidney-dialysis,strong,Dialysis,1.0,support,support,True,True,True,0.005229744460473757
+kidney-dialysis,strong,Has on-site dialysis clinic,1.0,support,support,True,True,True,0.00021704883151649153
+kidney-dialysis,mention,"Historically started private-sector dialysis and transplantation services in West Bengal, with Bellevue Clinic as one of the early providers.",0.496,support,support,True,True,True,4.278507316012821e-05
+kidney-dialysis,mention,"Kidney & Dialysis department designated as a centre of excellence offering state-of-the-art medical and surgical care for urological problems including cancers of kidneys, bladder, and urinary tract",0.085,support,support,True,True,True,0.00946077286942272
+kidney-dialysis,mention,"Center of Excellence includes Accident & Emergency, Cardiac Care Center, Kidney Care & Dialysis Center, Neuroscience, Mother And Baby Care Center, Cancer Center",0.312,support,support,True,True,True,3.4661645127549565e-05
+kidney-dialysis,mention,"Center of Excellence including Accident & Emergency, Cardiac Care Center, Kidney Care & Dialysis Center, Neuroscience, Mother And Baby Care Center, and Cancer Center",0.388,support,support,True,True,True,3.759612667772284e-05
+kidney-dialysis,mention,"Center of Excellence includes Accident & Emergency, Cardiac Care Center, Kidney Care & Dialysis Center, Neuroscience, Mother and Baby Care Center, Cancer Center",0.312,support,support,True,True,True,3.4661645127549565e-05
+cardiac-surgery,strong,Cardiothoracic surgery had the highest crossmatch-to-transfusion ratio at 1.92.,0.986,support,support,True,True,True,0.000392935094026756
+cardiac-surgery,strong,Cardiothoracic Surgery department,1.0,support,support,True,True,True,0.0029731972308907734
+cardiac-surgery,strong,Cardiology & Cardiothoracic Surgery,1.0,support,support,True,True,True,0.005275240147847096
+cardiac-surgery,strong,"Has performed 2,500 Open Heart Surgeries",0.984,support,support,True,True,True,0.003821726912520523
+cardiac-surgery,strong,Cardiothoracic Surgery program,0.999,support,support,True,True,True,0.003916162619991788
+cardiac-surgery,mention,"KMCH provides emergency care, ICU, trauma care, cardiology, cardiothoracic surgery, transplant surgery, and cancer care",0.343,support,support,True,True,True,5.088939424311601e-05
+cardiac-surgery,mention,"Interventional Cardiology procedures including Angioplasty, Stenting, CABG",0.363,unreviewed,unreviewed,True,True,True,0.18658301040740657
+cardiac-surgery,mention,CABG performed on-pump and off-pump at RTIICS,0.31,unreviewed,unreviewed,True,True,True,0.024107161939951226
+cardiac-surgery,mention,Open-heart surgery is performed at GHC Hospitals,0.265,support,support,True,True,True,0.007960729577170403
+cardiac-surgery,mention,Advanced operating rooms equipped for robotic-assisted cardiac surgery,0.356,support,support,True,True,True,0.0009504899790615108
+cardiac-surgery,suggested,Valve procedures,0.98,unreviewed,unreviewed,True,True,True,0.006592269366207616
+cardiac-surgery,suggested,MGM Healthcare performs cardiothoracic (cardiac) surgery,0.98,unreviewed,unreviewed,True,True,True,0.006016134908779197
+mri,strong,CT and MRI diagnostic capabilities available for registered patients,0.989,support,support,True,True,True,0.009503435437111213
+mri,strong,MRI diagnostic capability,1.0,support,support,True,True,True,0.00564298666506403
+mri,strong,Regional diagnostic center provides MRI and CT scans,0.99,support,support,True,True,True,0.0027183573031976907
+mri,strong,Advanced diagnostic imaging with CT and MRI scanners,0.997,support,support,True,True,True,0.22313610372267378
+mri,strong,MRI available at 1.5T and 3T; CT scanning with 32-slice and 128-slice capabilities.,0.726,support,support,True,True,True,0.4442717567757715
+mri,mention,Offers 3 Tesla MR Imaging,0.053,unreviewed,unreviewed,True,True,True,4.0362850007259434e-05
+mri,mention,MRI evaluation is performed to create a personalized treatment plan,0.459,support,support,True,True,True,0.0002466245190700502
+mri,mention,Offers Magnetic Resonance Imaging,0.472,support,support,True,True,True,0.5056562441462394
+mri,mention,"Siemens Magnetom Sempra 1.5 Tesla MRI machine with specialized Neuro, Pediatric, Gynecology, and Cardiac suites",0.484,support,support,True,True,True,0.0002599441888263695
+mri,mention,"Categories include Pathologist, Medical laboratory, Blood testing service, MRI Centre, HIV testing center, Diabetes Centre, STD testing service",0.056,support,support,True,True,True,1.8636100223622057e-05
+c-section,strong,Obstetrics and gynaecology including normal delivery and caesarean section,0.997,support,support,True,True,True,0.026939052571096907
+c-section,strong,Delivers normal delivery and caesarean section,0.997,support,support,True,True,True,0.0903441449433929
+c-section,strong,Performs emergency cesarean sections,0.941,support,support,True,True,True,0.001109408990614205
+c-section,strong,Caesarean Section,1.0,support,support,True,True,True,0.6707432461301567
+c-section,strong,Cesarean Delivery,1.0,support,support,True,True,True,0.0008586305515521191
+c-section,mention,"Performs high-risk cesarean sections for obstructed labor, previous multiple cesareans with adhesions, placenta previa, and uterine rupture",0.081,support,support,True,True,True,0.0002116489112547881
+c-section,mention,Provides pregnancy care including C-section and PCOS treatment,0.142,support,support,True,True,True,0.0005514845568078743
+c-section,mention,C Section Delivery,0.17,support,support,True,True,True,0.05419710436950306
+c-section,mention,Caesarean section performed; may be done with spinal block or general anaesthesia; involves incisions in the lower abdomen and uterus to deliver the baby,0.326,support,support,True,True,True,0.20551339829493973
+c-section,mention,High-risk obstetric cases requiring C-section deliveries are referred to Kalpana Chawla Government Medical College (KCGMC),0.018,indirect,indirect,False,False,True,0.008943117856235536
+nicu,strong,10-bed Neonatal Intensive Care Unit (NICU),1.0,support,support,True,True,True,0.9864428000908657
+nicu,strong,Neonatal Intensive Care Unit (NICU),1.0,support,support,True,True,True,0.993916048167399
+nicu,strong,"ICU, CCU, NICU, HDU and burn unit",0.946,support,support,True,True,True,0.01457040736051469
+nicu,strong,Specializes in Pediatrics & Neonatal ICU,0.813,unreviewed,unreviewed,True,True,True,0.009240609941368907
+nicu,strong,ICU and NICU units,1.0,support,support,True,True,True,0.08335715357791837
+nicu,mention,Neonatal Intensive Care Unit is available at Kovai Medical Center And Hospital,0.364,support,support,True,True,True,0.14919866397995632
+nicu,mention,"Operates 24x7 donor milk bank and Comprehensive Lactation Management, Training and Research Center (YHMB & CLMTRC) within the hospital near NICU and OBG wing",0.106,indirect,indirect,False,False,True,0.007862886650132938
+nicu,mention,"Specialized services in Neurosurgery, Neurology and Neuro-Interventional, Spine Surgery, Cardiology, Adult CVTS, Pediatrics NICU/PICU, Pediatric CVTS",0.447,support,support,True,True,True,0.002032395747833771
+nicu,mention,"Pediatrics department with SNCU, PICU, Paediatric ward, NRC, and Paediatric OPD",0.056,unreviewed,unreviewed,True,True,True,0.07414158488683054
+nicu,mention,"Departments include Internal Medicine, Ophthalmology, ENT, Obstetrics and Gynecology, Paediatrics and NICU, Orthopaedics, Urology, Neurology, Oncology, Nephrology, Pathology, and Chest",0.371,support,support,True,True,True,0.0004636810181170989
+burns,strong,Burns and Plastic Surgery Department,0.999,support,support,True,True,True,0.7548672768072568
+burns,strong,"Burns unit is a high-referral center for complex burns (thermal, electric and chemical) in coastal and central Karnataka",0.968,indirect,support,False,True,True,0.9856375705613878
+burns,strong,"ICU, CCU, NICU, HDU and burn unit",0.721,support,support,True,True,True,0.0357756858575173
+burns,strong,Round-the-clock burn care with 24/7 emergency treatment,0.93,support,support,True,True,True,0.525159878427053
+burns,strong,Dedicated burns operation theatre,0.853,support,support,True,True,True,0.7954906485326644
+burns,mention,Burns ICU provides lifesaving care with multidisciplinary approach emphasizing recovery and rehabilitation,0.062,support,support,True,True,True,0.9946493871543476
+burns,mention,Operates 13 modular operation theatres including a dedicated Burns Care Theatre,0.356,support,support,True,True,True,0.581679620141762
+burns,mention,"Departments include Laparoscopic Surgery, Dermatology, Laser Proctology Surgery, Urology, Cosmetic Surgery, Gynaecology Surgery, Anesthetic Surgery, Burn Surgery",0.149,support,support,True,True,True,0.04288946922813095
+burns,mention,"Offers specialized treatments in dermatology, urology, gynaecology, plastic & cosmetic surgery, and burn care",0.466,support,support,True,True,True,0.1363184443518248
+burns,mention,"Super Specialty Hospital within SKMCH campus offers cardiology, nephrology, neurology, neurosurgery, pediatric surgery, and burn & plastic surgery",0.438,support,support,True,True,True,0.006137984575240958

@@ -1,0 +1,57 @@
+{
+  "kind": "repository-derived real text excerpts; NOT facility evaluation",
+  "rows": 62,
+  "source": "data/tags/tfidf_tag_report.json",
+  "source_metadata": {
+    "generatedAt": "2026-11-22T03:15:38+00:00",
+    "source": "workspace.cardinal_virtues.model_evidence_items (procedure, capability, equipment)",
+    "sentences": 433053,
+    "vocabularySize": 96813,
+    "vectorizer": {
+      "ngram_range": [
+        1,
+        2
+      ],
+      "min_df": 3,
+      "max_df": 0.2,
+      "sublinear_tf": true,
+      "stop_words": "english",
+      "token_pattern": "(?u)\\b[a-zA-Z][a-zA-Z0-9\\-]+\\b"
+    },
+    "classifier": "one-vs-rest LogisticRegression(C=8.0, liblinear), 5-fold out-of-fold, grouped by facility",
+    "thresholds": {
+      "strong": 0.5,
+      "suggested": 0.8
+    },
+    "facilityTagPairs": {
+      "strong": 67761,
+      "mention": 2953,
+      "suggested": 50
+    },
+    "overallAgreementWithRegex": {
+      "precision": 0.9977,
+      "recall": 0.9376
+    }
+  },
+  "source_hash": "4f0708380ac3ecccc25553c0641b8640801c4d1a8bccb2b842b39352ce4ce56e",
+  "audit_code_hash": "32f02d9c05a9eb5d8ed9a6a87b0631324d5a9b472777326c98d95a4dbdecd707",
+  "guard_source_hash": "ccb7650174f759952e64926d52feaf9c8094578a5a63448dbbec6f9f13eef464",
+  "neural": true,
+  "scorer": {
+    "method": "cross_encoder",
+    "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+    "revision": null,
+    "device": "cpu",
+    "batchSize": 32,
+    "maxLengthTokens": 512,
+    "loaded": true,
+    "cachedPairs": 62,
+    "scoreMeaning": "sigmoid of raw relevance logit; not calibrated availability or quality"
+  },
+  "limitations": [
+    "Source buckets/probabilities are previous model outputs, not ground truth.",
+    "Only displayed examples; selected sample, not representative.",
+    "Missing facility identity, coordinates, full source and independent service labels.",
+    "Before/after isolates referral-center wording; retention is not accuracy."
+  ]
+}

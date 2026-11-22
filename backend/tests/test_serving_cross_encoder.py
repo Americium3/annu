@@ -139,8 +139,35 @@ class ServingCrossEncoderTest(unittest.TestCase):
 
     def test_formal_row_without_usable_evidence_fails_visibly(self):
         self.rec.by_tag["kidney-dialysis"].at[0, "evidence"] = []
-        with self.assertRaises(CrossEncoderError):
-            self.rec.recommend("dialysis", "26.9,75.8")
+        result = self.rec.recommend("dialysis", "26.9,75.8")
+        self.assertNotIn("near", [row["id"] for row in result["results"]])
+        self.assertIn("no_usable_evidence", result["metadata"]["claimGuard"]["excluded"][0]["reasons"])
+
+    def test_explicit_denial_is_excluded_before_model_scoring(self):
+        self.rec.by_tag["kidney-dialysis"].at[1,"evidence"] = [
+            {"text":"Dialysis is not available here.","field":"procedure","pos":0,"evidence_status":"usable"}]
+        result=self.rec.recommend("dialysis","26.9,75.8")
+        self.assertNotIn("far",[r["id"] for r in result["results"]])
+        self.assertIn("negative",result["metadata"]["claimGuard"]["excluded"][0]["reasons"])
+
+    def test_strict_guard_is_explicit_opt_in(self):
+        self.rec.by_tag["kidney-dialysis"].at[1,"evidence"] = [
+            {"text":"Patients referred elsewhere for dialysis.","field":"procedure","pos":0,"evidence_status":"usable"}]
+        with patch.object(config,"CLAIM_GUARD_POLICY","strict"):
+            result=self.rec.recommend("dialysis","26.9,75.8")
+        self.assertNotIn("far",[r["id"] for r in result["results"]])
+
+    def test_filtering_does_not_retain_stale_proof_counts(self):
+        self.rec.by_tag["kidney-dialysis"].at[0,"evidence"] = [
+            {"text":"Dialysis will open next year.","field":"procedure","pos":0,"evidence_status":"usable"},
+            {"text":"Dialysis machine.","field":"equipment","pos":0,"evidence_status":"usable"}]
+        response = self.rec.recommend("dialysis","26.9,75.8")
+        row = next(r for r in response["results"] if r["id"] == "near")
+        self.assertTrue(row["rankFactors"]["onlyEquipment"])
+        self.assertFalse(row["rankFactors"]["solidProof"])
+        self.assertEqual(row["rankFactors"]["statements"],0)
+        self.assertEqual(row["rankFactors"]["proofTier"],3)
+        self.assertTrue(response["metadata"]["claimGuard"]["filteredStatements"])
 
     def test_ties_have_stable_id_order(self):
         snap = snapshot()

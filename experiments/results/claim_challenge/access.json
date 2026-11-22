@@ -1,0 +1,17 @@
+{
+  "real_facility_data_available": false,
+  "human_qrels_available": false,
+  "databricks_checks": [
+    {
+      "workspace": "dbc-c5274976-e465.cloud.databricks.com",
+      "result": "401 Unauthorized"
+    },
+    {
+      "workspace": "dbc-662e9a8b-91a5.cloud.databricks.com",
+      "result": "401 Unauthorized"
+    }
+  ],
+  "data_policy": "No guessed credentials, no fabricated real-data results. Synthetic challenge only.",
+  "repository_derived_excerpt_count": 62,
+  "excerpt_scope": "Selected text examples in existing tfidf_tag_report.json; no facility IDs, locations, independent qrels, or full records."
+}

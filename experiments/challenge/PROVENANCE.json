@@ -1,0 +1,4 @@
+{
+  "kind": "synthetic",
+  "warning": "Dev/test share linguistic templates; a regression challenge, not generalization evidence. Do not tune production weights using these results."
+}

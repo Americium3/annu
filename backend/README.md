@@ -135,3 +135,21 @@ Vite proxies `/api` to port 8000.
 | POST | `/api/recommendations` | `{serviceText, locationText}` (or `coordinates` from "Use my location" instead of text) → `RecommendationResponse` (`web/src/types.ts`) plus `metadata.funnel`. Any other field is rejected with 422. |
 
 Errors: 422 `{"detail": {"field": "service" | "location", "message": ..., "suggestions": [...]}}`.
+
+## Statement checks before scoring
+
+`CAREPATH_CLAIM_GUARD=explicit` is the v5 default. Explicit service denials, future/historical
+claims and contradictory statements are excluded before choosing the radius. If a formal
+row contains no remaining usable evidence, it is omitted with a `metadata.claimGuard` audit;
+one bad row no longer fails all other recommendations. `strict` additionally excludes
+referral/awareness/counselling/training-only mentions; it is an experimental option pending
+real-data review. `off` restores the previous admission policy. Unknown services retain the
+upstream policy. These are local linguistic rules, not verified operational availability.
+See the synthetic stress results and the independently-labelled real-data benchmark entry
+point in `experiments/README.md` before promoting stronger policies or changing weights.
+
+For an evaluation of this exact backend, use `notebooks/111_serving_accuracy_benchmark.py`
+or `python backend/benchmark_serving.py --help`, in a **separate offline process**. It compares
+36 guard/ranker/weight/travel policies with independent qrels and grouped dev/test selection.
+No automatic production promotion. If a guard removes only part of the evidence, the returned
+proof tier/counts are conservatively downgraded so the explanation cannot reuse deleted support.
