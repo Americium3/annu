@@ -1,12 +1,12 @@
 {
   "meta": {
-    "generatedAt": "2026-11-21T21:20:45+00:00",
+    "generatedAt": "2026-11-22T02:57:48+00:00",
     "source": {
       "facilities": "workspace.cardinal_virtues.model_facilities",
       "evidence": "workspace.cardinal_virtues.model_evidence_items"
     },
     "facilityCount": 9989,
-    "facilitiesWithServiceTag": 9153,
+    "facilitiesWithServiceTag": 9151,
     "evidenceSentencesScanned": 433053
   },
   "tags": [
@@ -1205,12 +1205,12 @@
       "kind": "condition",
       "group": "Brain & nerves",
       "synonyms": [],
-      "facilityCount": 360,
-      "evidenceSentenceCount": 628,
+      "facilityCount": 312,
+      "evidenceSentenceCount": 538,
       "negatedSentenceCount": 2,
       "fieldCounts": {
-        "procedure": 298,
-        "capability": 318,
+        "procedure": 247,
+        "capability": 279,
         "equipment": 12
       },
       "exampleEvidence": [

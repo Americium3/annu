@@ -1,6 +1,7 @@
 tag_id,tag_label,tag_type,facility_count,vocabulary,ref_code,ref_label,ref_category,relation
 kidney-dialysis,Dialysis,service,1038,MeSH,D006435,Renal Dialysis,E02 Therapeutics,curated
 kidney-dialysis,Dialysis,service,1038,ICD-10,Z49,Care involving dialysis,XXI Factors influencing health status and contact with health services,curated
+kidney-failure,Kidney failure / chronic kidney disease,condition,102,MeSH,D051437,Renal Insufficiency,C12 Urogenital Diseases,curated
 kidney-failure,Kidney failure / chronic kidney disease,condition,102,MeSH,D051436,"Renal Insufficiency, Chronic","C12 Urogenital Diseases; C23 Pathological Conditions, Signs and Symptoms",curated
 kidney-failure,Kidney failure / chronic kidney disease,condition,102,MeSH,D007676,"Kidney Failure, Chronic","C12 Urogenital Diseases; C23 Pathological Conditions, Signs and Symptoms",curated
 kidney-failure,Kidney failure / chronic kidney disease,condition,102,ICD-10,N18,Chronic kidney disease,XIV Diseases of the genitourinary system,curated
@@ -133,6 +134,7 @@ arthroscopy,Arthroscopy,service,724,MeSH,D001182,Arthroscopy,"E01 Diagnosis; E04
 spine-surgery,Spine surgery,service,784,MeSH,D013123,Spinal Fusion,"E04 Surgical Procedures, Operative",curated
 spine-surgery,Spine surgery,service,784,MeSH,D017586,Diskectomy,"E02 Therapeutics; E04 Surgical Procedures, Operative",curated
 spine-surgery,Spine surgery,service,784,MeSH,D007796,Laminectomy,"E02 Therapeutics; E04 Surgical Procedures, Operative",curated
+spine-surgery,Spine surgery,service,784,MeSH,D007405,Intervertebral Disc Displacement,"C05 Musculoskeletal Diseases; C23 Pathological Conditions, Signs and Symptoms",curated
 spine-surgery,Spine surgery,service,784,ICD-10,M51,Other intervertebral disc disorders,XIII Diseases of the musculoskeletal system and connective tissue,curated
 fracture-trauma,Fractures & trauma,condition,1260,MeSH,D050723,"Fractures, Bone",C26 Wounds and Injuries,curated
 fracture-trauma,Fractures & trauma,condition,1260,MeSH,D014947,Wounds and Injuries,C26 Wounds and Injuries,curated
@@ -154,12 +156,10 @@ back-pain,Back & neck pain,condition,304,ICD-10,M54,Dorsalgia,XIII Diseases of t
 back-pain,Back & neck pain,condition,304,ICD-10,M47,Spondylosis,XIII Diseases of the musculoskeletal system and connective tissue,curated
 physiotherapy,Physiotherapy & rehabilitation,service,1913,MeSH,D026741,Physical Therapy Modalities,E02 Therapeutics,curated
 physiotherapy,Physiotherapy & rehabilitation,service,1913,MeSH,D012046,Rehabilitation,E02 Therapeutics; H02 Health Occupations; N02 Health Care Facilities Workforce and Services,curated
-stroke,Stroke,condition,360,MeSH,D020521,Stroke,C10 Nervous System Diseases; C14 Cardiovascular Diseases,curated
-stroke,Stroke,condition,360,MeSH,D015912,Thrombolytic Therapy,E02 Therapeutics,curated
-stroke,Stroke,condition,360,MeSH,D010243,Paralysis,"C10 Nervous System Diseases; C23 Pathological Conditions, Signs and Symptoms",curated
-stroke,Stroke,condition,360,ICD-10,I63,Cerebral infarction,IX Diseases of the circulatory system,curated
-stroke,Stroke,condition,360,ICD-10,I64,"Stroke, not specified as haemorrhage or infarction",IX Diseases of the circulatory system,curated
-stroke,Stroke,condition,360,ICD-10,G81,Hemiplegia,VI Diseases of the nervous system,curated
+stroke,Stroke,condition,312,MeSH,D020521,Stroke,C10 Nervous System Diseases; C14 Cardiovascular Diseases,curated
+stroke,Stroke,condition,312,MeSH,D015912,Thrombolytic Therapy,E02 Therapeutics,curated
+stroke,Stroke,condition,312,ICD-10,I63,Cerebral infarction,IX Diseases of the circulatory system,curated
+stroke,Stroke,condition,312,ICD-10,I64,"Stroke, not specified as haemorrhage or infarction",IX Diseases of the circulatory system,curated
 epilepsy,Epilepsy / seizures,condition,153,MeSH,D004827,Epilepsy,C10 Nervous System Diseases,curated
 epilepsy,Epilepsy / seizures,condition,153,MeSH,D012640,Seizures,"C10 Nervous System Diseases; C23 Pathological Conditions, Signs and Symptoms",curated
 epilepsy,Epilepsy / seizures,condition,153,ICD-10,G40,Epilepsy,VI Diseases of the nervous system,curated
@@ -187,7 +187,7 @@ endoscopy,Endoscopy / colonoscopy,service,954,MeSH,D002760,"Cholangiopancreatogr
 gallstones,Gallstones,condition,433,MeSH,D042882,Gallstones,"C06 Digestive System Diseases; C23 Pathological Conditions, Signs and Symptoms",curated
 gallstones,Gallstones,condition,433,MeSH,D002763,Cholecystectomy,"E04 Surgical Procedures, Operative",curated
 gallstones,Gallstones,condition,433,ICD-10,K80,Cholelithiasis,XI Diseases of the digestive system,curated
-hernia,Hernia,condition,601,MeSH,D006547,Hernia,"C23 Pathological Conditions, Signs and Symptoms",curated
+hernia,Hernia,condition,601,MeSH,D046449,"Hernia, Abdominal","C23 Pathological Conditions, Signs and Symptoms",curated
 hernia,Hernia,condition,601,MeSH,D059685,Herniorrhaphy,"E04 Surgical Procedures, Operative",curated
 hernia,Hernia,condition,601,ICD-10,K40-K46,Hernia,XI Diseases of the digestive system,curated
 piles-fistula,"Piles, fissure & fistula",condition,765,MeSH,D006484,Hemorrhoids,C06 Digestive System Diseases; C14 Cardiovascular Diseases,curated

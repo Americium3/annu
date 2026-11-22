@@ -166,7 +166,7 @@ TAGS: list[Tag] = [
 
     # ── Brain & nerves ─────────────────────────────────────────────────
     T("stroke", "Stroke", "condition", "Brain & nerves",
-      [r"\bstrokes?\b(?! ?(volume|count))", r"\bthromboly", r"\bparalysis\b"]),
+      [r"\bstrokes?\b(?! ?(volume|count))", r"\bthromboly", r"\bcerebrovascular accident"]),
     T("epilepsy", "Epilepsy / seizures", "condition", "Brain & nerves", [r"\bepilep", r"\bseizure"]),
     T("neurosurgery", "Brain surgery", "service", "Brain & nerves",
       [r"\bbrain (surgery|tumou?r)", r"\bneurosurg", r"\bcraniotom"]),
