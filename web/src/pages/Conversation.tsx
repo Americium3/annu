@@ -19,7 +19,6 @@ import { resultsUrl, useSearchSession, type Exchange } from "../lib/session";
 import type { AskResponse } from "../types";
 
 const DEFAULT_ORIGIN = { latitude: 20.2961, longitude: 85.8245, name: "Bhubaneswar" };
-const AUTO_MS = 2600;
 
 /**
  * The first page: a conversation with Raahi, and nothing else. It is drawn as
@@ -27,7 +26,8 @@ const AUTO_MS = 2600;
  * a footstep on the right, each reply is a stop where Raahi stands, and what
  * Raahi understood is planted along the trail as signposts. When a match is
  * found the trail runs on to a destination marker and the page moves to the
- * results, the signposts and Raahi gliding into the results page's summary bar.
+ * results when the person taps "See the hospitals" (never on its own: they first need time to check what
+ * Raahi understood), the signposts and Raahi gliding into the results page's summary bar.
  */
 export function Conversation() {
   const s = useSearchSession();
@@ -40,8 +40,6 @@ export function Conversation() {
   const endRef = useRef<HTMLDivElement>(null);
   const emergency = params.get("mode") === "emergency";
   const last = s.exchanges[s.exchanges.length - 1];
-  // Coming Back from the results must not bounce forward again: only exchanges settled on this visit move on.
-  const seenOnMount = useRef(last?.id ?? 0);
 
   // Back from the results: show the end of the conversation, where the person left it.
   useLayoutEffect(() => {
@@ -70,15 +68,6 @@ export function Conversation() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // A match found on this visit: a beat to read Raahi's line, then on to the results.
-  useEffect(() => {
-    const answer = last?.answer;
-    if (!last || last.id <= seenOnMount.current || last.status !== "done" || answer?.next !== "results") return;
-    if (!answer.results?.results.length) return;
-    const timer = window.setTimeout(() => goResults(answer), AUTO_MS);
-    return () => window.clearTimeout(timer);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [last?.id, last?.status]);
 
   useEffect(() => {
     if (s.exchanges.length) endRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
@@ -291,7 +280,9 @@ function RaahiTurn({
 
   return (
     <>
-      {answer.condition && (lang !== "hi" || answer.condition.nameHi) && (
+      {answer.condition &&
+        (lang !== "hi" || answer.condition.nameHi) &&
+        !sameWords(answer.condition.name, answer.care?.name, answer.condition.span?.quote, answer.care?.span?.quote) && (
         <p className="stop-aside">
           {t.rowDescribed}: <strong>{lang === "hi" ? answer.condition.nameHi : answer.condition.name}</strong>
         </p>
@@ -348,7 +339,6 @@ function RaahiTurn({
           <button type="button" className="primary-button destination-go" onClick={() => onGo(answer)}>
             {found ? t.foundGo : t.foundGoNone}
             <ArrowRight size={18} aria-hidden="true" />
-            {found > 0 && <i className="destination-timer" aria-hidden="true" />}
           </button>
         </div>
       )}
@@ -358,5 +348,15 @@ function RaahiTurn({
         </button>
       )}
     </>
+  );
+}
+
+/** "You described: burns" next to "Care: Burns" says nothing new: show it only when it adds something. */
+function sameWords(condition: string, care?: string, conditionQuote?: string, careQuote?: string) {
+  const norm = (v?: string) => (v ?? "").toLowerCase().replace(/[^a-z\u0900-\u097f]+/g, "");
+  return (
+    norm(condition) === norm(care) ||
+    (Boolean(conditionQuote) && norm(conditionQuote) === norm(careQuote)) ||
+    norm(care).startsWith(norm(condition))
   );
 }

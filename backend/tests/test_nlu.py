@@ -96,7 +96,7 @@ class ConditionTest(unittest.TestCase):
         llm = FakeLlm({"condition": {"name": "Blurred vision", "name_hi": "धुंधला दिखना", "quote": "can't see clearly"},
                        "care": [{"id": "cataract", "quote": "can't see clearly"}], "urgency": {"level": 4}})
         u = nlu(llm).understand("grandma can't see clearly, we live in Puri")
-        self.assertEqual((u.condition, u.condition_hi, u.condition_source), ("Blurred vision", "धुंधला दिखना", "llm"))
+        self.assertEqual((u.condition, u.condition_hi, u.condition_source), ("Blurred vision", None, "llm"))
         self.assertEqual(u.care_id, "cataract")
         made_up = FakeLlm({"condition": {"name": "Glaucoma", "quote": "glaucoma"}, "care": [], "urgency": {"level": 4}})
         self.assertIsNone(nlu(made_up).understand("grandma can't see clearly").condition)

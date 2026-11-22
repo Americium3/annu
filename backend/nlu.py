@@ -207,7 +207,7 @@ class LlmClient:
 SYSTEM_PROMPT = """You help people in India find a hospital. Read the person's message (English, Hindi or Hinglish) \
 and reply with JSON only, no prose:
 {"condition": {"name": "<plain English name of the symptom or condition described, e.g. Toothache>", \
-"name_hi": "<the same in Hindi>", "quote": "<exact words>"} or null,
+"quote": "<exact words>"} or null,
  "care": [{"id": "<id from the list>", "quote": "<exact words from the message>"}],
  "place": {"text": "<city, district or PIN in English>", "quote": "<exact words>"} or null,
  "near_me": true or false,
@@ -392,7 +392,9 @@ class Understander:
             where = grounded(cond.get("quote", ""), text)
             if where:
                 u.condition, u.condition_source = str(cond["name"])[:80], "llm"
-                u.condition_hi = str(cond.get("name_hi") or "")[:80] or None
+                # No model-written Hindi name: Llama 3.3's Hindi medical terms were garbled in testing
+                # ("कीडनी की विफर्ति"), so Hindi pages show the care, not a condition name.
+                u.condition_hi = None
                 u.condition_span = Span(text[where[0]:where[1]], *where)
                 kept.append("condition")
             else:

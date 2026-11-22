@@ -80,10 +80,13 @@ export function AskRaahi({
   const [text, setText] = useState(initialText);
   const [voice, setVoice] = useState<VoiceState>("idle");
   const [voiceError, setVoiceError] = useState<VoiceErrorKind>();
+  const [voiceDetail, setVoiceDetail] = useState<string>();
+  const [retrying, setRetrying] = useState(false);
   const [focused, setFocused] = useState(false);
   const recording = useRef<Recording | null>(null);
   const browserStop = useRef<(() => void) | null>(null);
-  // After one "server can't transcribe" answer, go straight to the browser's recognizer.
+  // Which way still works on this device: the browser's recognizer first, the server's Whisper after.
+  const browserVoice = useRef(true);
   const serverVoice = useRef(!USE_DEMO);
   const box = useRef<HTMLFormElement>(null);
   const area = useRef<HTMLTextAreaElement>(null);
@@ -120,11 +123,23 @@ export function AskRaahi({
 
   function failed(error: unknown) {
     setVoice("idle");
+    setRetrying(false);
     setVoiceError(error instanceof VoiceError ? error.kind : "failed");
+    setVoiceDetail(error instanceof VoiceError ? error.detail : String(error));
   }
 
   // Loudness drives the mic ring (a CSS variable, so React doesn't re-render 10 times a second).
   const setLevel = (level: number) => box.current?.style.setProperty("--level", level.toFixed(3));
+
+  /** The server's way: record, then Whisper inside the app. */
+  async function recordForServer() {
+    try {
+      recording.current = await startRecording(setLevel, () => void finishRecording());
+      setVoice("listening");
+    } catch (error) {
+      failed(error);
+    }
+  }
 
   async function finishRecording() {
     const current = recording.current;
@@ -135,40 +150,47 @@ export function AskRaahi({
       const pcm = await current.stop();
       heard(await transcribe(pcm, lang, API_BASE));
     } catch (error) {
-      if (error instanceof VoiceError && error.kind === "unavailable" && browserRecognition()) {
-        serverVoice.current = false; // this server can't transcribe: use the browser's recognizer from now on
-        setVoice("idle");
-        setVoiceError("unavailable");
-        return;
-      }
+      if (error instanceof VoiceError && error.kind === "unavailable") serverVoice.current = false;
       failed(error);
     }
   }
 
+  /** The browser's way, with the words appearing in the box as they are recognised. */
+  function recognizeHere() {
+    const before = text;
+    const run = recognizeInBrowser(lang, (words) => setText(words));
+    browserStop.current = run.stop;
+    setVoice("listening");
+    run.result
+      .then(heard, (error) => {
+        setText(before);
+        // The recognizer's service failed (network, unsupported language...): switch to the server's Whisper now.
+        if (error instanceof VoiceError && error.kind === "unavailable" && serverVoice.current && canRecord()) {
+          browserVoice.current = false;
+          setRetrying(true);
+          void recordForServer();
+          return;
+        }
+        failed(error);
+      })
+      .finally(() => {
+        browserStop.current = null;
+      });
+  }
+
   async function toggleVoice() {
     setVoiceError(undefined);
+    setVoiceDetail(undefined);
     if (voice === "listening") {
       if (recording.current) void finishRecording();
       else browserStop.current?.();
       return;
     }
     if (voice === "transcribing") return;
-    if (serverVoice.current && canRecord()) {
-      try {
-        recording.current = await startRecording(setLevel, () => void finishRecording());
-        setVoice("listening");
-      } catch (error) {
-        failed(error);
-      }
-      return;
-    }
-    // Fallback: the browser's own recognizer (demo build, or a server without voice).
-    const run = recognizeInBrowser(lang);
-    browserStop.current = run.stop;
-    setVoice("listening");
-    run.result.then(heard, failed).finally(() => {
-      browserStop.current = null;
-    });
+    setRetrying(false);
+    if (browserVoice.current && browserRecognition()) return recognizeHere();
+    if (serverVoice.current && canRecord()) return recordForServer();
+    failed(new VoiceError("unavailable", "no way to recognise speech in this browser"));
   }
 
   const voiceMessage = voiceError
@@ -177,7 +199,7 @@ export function AskRaahi({
         denied: t.voiceDenied,
         "no-mic": t.voiceNoMic,
         "no-speech": t.voiceNoSpeech,
-        unavailable: browserRecognition() ? t.voiceTryAgain : t.voiceUnavailable,
+        unavailable: t.voiceUnavailable,
         failed: t.voiceFailed,
       }[voiceError]
     : null;
@@ -242,7 +264,8 @@ export function AskRaahi({
           </button>
         </div>
         <span className={`ask-voice-status ${voiceMessage ? "is-error" : ""}`} aria-live="polite">
-          {listening ? t.askListening : voice === "transcribing" ? t.voiceTranscribing : voiceMessage}
+          {listening ? (retrying ? t.voiceSpeakAgain : t.askListening) : voice === "transcribing" ? t.voiceTranscribing : voiceMessage}
+          {!listening && voice === "idle" && voiceMessage && voiceDetail && <small> ({voiceDetail})</small>}
         </span>
       </form>
       {!compact && (
