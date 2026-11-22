@@ -29,6 +29,10 @@ from carepath_model.condition_service import (  # noqa: E402
     ConditionMapping,
     ConditionServiceMapper,
 )
+from carepath_model.facility_reranker import (  # noqa: E402
+    MODEL_VERSION as RERANKER_VERSION,
+    rerank_condition_candidate,
+)
 from carepath_model.query import Urgency, detect_urgency, distance_weight  # noqa: E402
 from carepath_model.taxonomy import normalize_text  # noqa: E402
 from data_store import get_snapshot, haversine_km  # noqa: E402
@@ -38,7 +42,8 @@ from recommender import LocationNotFound, Recommender  # noqa: E402
 SNAPSHOT_DIR = REPO_ROOT / "model" / "artifacts" / "cloud_snapshot"
 RADIUS_STEPS_KM = (25.0, 50.0, 100.0, 200.0)
 SERVICE_MODEL_VERSION = "service-catalog-local-v1"
-CONDITION_MODEL_VERSION = "condition-service-local-v3"
+CONDITION_MODEL_VERSION = "condition-service-local-v4"
+RERANK_POOL_SIZE = 200
 
 WEAK_FIELD_WEIGHTS = {
     "procedure": 0.55,
@@ -819,7 +824,7 @@ class LocalModel:
                 continue
             relevance = float(candidate["relevance"])
             distance_score = 1.0 - min(distance / radius, 1.0)
-            final_score = 100.0 * (
+            stage1_score = 100.0 * (
                 (1.0 - weight) * relevance + weight * distance_score
             )
             rows.append(
@@ -829,7 +834,7 @@ class LocalModel:
                     "distance_km": distance,
                     "relevance": relevance,
                     "distance_score": distance_score,
-                    "final_score": round(final_score, 1),
+                    "stage1_score": round(stage1_score, 1),
                     "weight": weight,
                     "urgency": mapping.urgency.name.lower(),
                     "candidate": candidate,
@@ -838,12 +843,35 @@ class LocalModel:
             )
         rows.sort(
             key=lambda row: (
-                -row["final_score"],
+                -row["stage1_score"],
                 row["distance_km"],
                 str(row["facility"]["name"]),
             )
         )
-        return rows[:limit]
+        for index, row in enumerate(rows, start=1):
+            row["stage1_rank"] = index
+        pool = rows[:RERANK_POOL_SIZE]
+        for row in pool:
+            rerank = rerank_condition_candidate(
+                row["candidate"],
+                distance_score=row["distance_score"],
+                urgency=Urgency[mapping.urgency.name],
+                facility_source_count=len(
+                    row["facility"].get("source_urls") or []
+                ),
+                candidate_pool_size=len(pool),
+            )
+            row["reranking"] = rerank
+            row["final_score"] = rerank.total_score
+        pool.sort(
+            key=lambda row: (
+                -row["final_score"],
+                -row["reranking"].evidence_score,
+                row["distance_km"],
+                str(row["facility"]["name"]),
+            )
+        )
+        return pool[:limit]
 
     def recommend(
         self,
@@ -1178,6 +1206,7 @@ def recommendations(request: RecommendationRequest) -> dict:
             "Urgency is calculated from the input symptom/disease text before the service map.",
             "Related condition, treatment and clinical-tag terms are inferred retrieval hints, not a treatment plan.",
             "Procedure, equipment and capability text used as indirect evidence is labelled weak.",
+            "Facilities are reranked in a second stage using text match, evidence quality and urgency-weighted distance.",
             "Condition search is limited to records categorised as hospitals; specialist clinics are excluded.",
             "This is not a diagnosis; emergent symptoms need appropriate emergency assessment.",
             "Current service availability and wait times must be confirmed with the facility.",
@@ -1276,6 +1305,14 @@ def recommendations(request: RecommendationRequest) -> dict:
                 "totalCandidates": len(results),
                 "returnedCount": len(payload_results),
                 "isPartialResult": bool(results),
+                "candidatePoolSize": max(
+                    (
+                        row["reranking"].scored_item_count
+                        for row in results
+                    ),
+                    default=0,
+                ),
+                "rerankedCount": len(results),
                 "executionTimeMs": round(
                     (time.perf_counter() - started) * 1000, 1
                 ),
@@ -1402,6 +1439,7 @@ def _condition_facility_payload(
     facility = row["facility"]
     facility_id = row["facility_id"]
     candidate = row["candidate"]
+    rerank = row.get("reranking")
     source_urls = list(facility.get("source_urls") or [])[:4]
     sources = []
     for index, url in enumerate(source_urls, start=1):
@@ -1419,7 +1457,12 @@ def _condition_facility_payload(
         )
     source_id = sources[0]["id"] if sources else "record"
     evidence = []
-    for index, item in enumerate(candidate["evidence"][:4], start=1):
+    evidence_source_items = list(candidate["evidence"])
+    if rerank:
+        evidence_source_items.sort(
+            key=lambda item: item["quote"] != rerank.best_evidence_text
+        )
+    for index, item in enumerate(evidence_source_items[:4], start=1):
         match_type = (
             "weak_bridge"
             if item["evidence_tier"] == "weak"
@@ -1511,6 +1554,62 @@ def _condition_facility_payload(
         if has_direct
         else "weak intermediate evidence"
     )
+    if rerank:
+        score_breakdown = {
+            "conditionMatchScore": round(condition_confidence * 100, 1),
+            "directActionScore": round(direct_relevance * 100, 1),
+            "weakBridgeScore": round(weak_relevance * 100, 1),
+            "serviceMatchScore": round(
+                rerank.text_score * rerank.weights["text"], 1
+            ),
+            "evidenceScore": round(
+                rerank.evidence_score * rerank.weights["evidence"], 1
+            ),
+            "sourceScore": min(100.0, len(sources) * 25.0),
+            "distanceScore": round(
+                rerank.distance_score * rerank.weights["distance"], 1
+            ),
+            "distanceWeight": round(rerank.weights["distance"], 2),
+            "serviceEvidenceWeight": round(
+                1.0 - rerank.weights["distance"], 2
+            ),
+            "searchRadiusKm": radius,
+            "urgency": row["urgency"],
+            "locationQualityScore": 100.0,
+            "capacityScore": 0,
+            "penaltyScore": 0,
+            "totalScore": rerank.total_score,
+            "modelVersion": (
+                f"{CONDITION_MODEL_VERSION}+{RERANKER_VERSION}"
+            ),
+        }
+    else:
+        score_breakdown = {
+            "conditionMatchScore": round(condition_confidence * 100, 1),
+            "directActionScore": round(direct_relevance * 100, 1),
+            "weakBridgeScore": round(weak_relevance * 100, 1),
+            "serviceMatchScore": round(row["relevance"] * 100, 1),
+            "evidenceScore": round(row["relevance"] * 100, 1),
+            "sourceScore": min(100.0, len(sources) * 25.0),
+            "distanceScore": round(row["distance_score"] * 100, 1),
+            "distanceWeight": round(row["weight"], 2),
+            "serviceEvidenceWeight": round(1.0 - row["weight"], 2),
+            "searchRadiusKm": radius,
+            "urgency": row["urgency"],
+            "locationQualityScore": 100.0,
+            "capacityScore": 0,
+            "penaltyScore": 0,
+            "totalScore": row["final_score"],
+            "modelVersion": CONDITION_MODEL_VERSION,
+        }
+    best_evidence = next(
+        (
+            item
+            for item in evidence
+            if rerank and item["quote"] == rerank.best_evidence_text
+        ),
+        evidence[0] if evidence else None,
+    )
     return {
         "id": facility_id,
         "rank": rank,
@@ -1549,24 +1648,31 @@ def _condition_facility_payload(
             f"{summary_service} with {evidence_type}. "
             f"{row['distance_km']:.1f} km away."
         ),
-        "scoreBreakdown": {
-            "conditionMatchScore": round(condition_confidence * 100, 1),
-            "directActionScore": round(direct_relevance * 100, 1),
-            "weakBridgeScore": round(weak_relevance * 100, 1),
-            "serviceMatchScore": round(row["relevance"] * 100, 1),
-            "evidenceScore": round(row["relevance"] * 100, 1),
-            "sourceScore": min(100.0, len(sources) * 25.0),
-            "distanceScore": round(row["distance_score"] * 100, 1),
-            "distanceWeight": round(row["weight"], 2),
-            "serviceEvidenceWeight": round(1.0 - row["weight"], 2),
-            "searchRadiusKm": radius,
-            "urgency": row["urgency"],
-            "locationQualityScore": 100.0,
-            "capacityScore": 0,
-            "penaltyScore": 0,
-            "totalScore": row["final_score"],
-            "modelVersion": CONDITION_MODEL_VERSION,
-        },
+        "scoreBreakdown": score_breakdown,
+        "reranking": (
+            {
+                "method": "structured_evidence",
+                "model": RERANKER_VERSION,
+                "textScore": rerank.text_score,
+                "evidenceScore": rerank.evidence_score,
+                "distanceScore": rerank.distance_score,
+                "totalScore": rerank.total_score,
+                "weights": rerank.weights,
+                "bestEvidenceRef": (
+                    str(best_evidence["id"]) if best_evidence else ""
+                ),
+                "bestEvidenceText": rerank.best_evidence_text,
+                "scoredItemCount": rerank.scored_item_count,
+                "stageOneRank": row.get("stage1_rank"),
+                "stageOneScore": row.get("stage1_score"),
+                "scoreMeaning": (
+                    "Second-stage structured evidence reranking after "
+                    "high-recall candidate generation."
+                ),
+            }
+            if rerank
+            else None
+        ),
         "evidence": evidence,
         "sources": sources,
         "locationQuality": {

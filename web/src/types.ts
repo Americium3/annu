@@ -142,7 +142,7 @@ export interface FacilityRecommendation {
   recommendationSummary: string;
   scoreBreakdown: ScoreBreakdown;
   reranking?: {
-    method: "cross_encoder";
+    method: "cross_encoder" | "structured_evidence";
     model: string;
     textScore: number;
     evidenceScore: number;
@@ -152,6 +152,8 @@ export interface FacilityRecommendation {
     bestEvidenceRef: string;
     bestEvidenceText: string;
     scoredItemCount: number;
+    stageOneRank?: number;
+    stageOneScore?: number;
     scoreMeaning: string;
   };
   evidence: EvidenceItem[];
@@ -175,6 +177,8 @@ export interface RecommendationResponse {
     totalCandidates: number;
     returnedCount: number;
     isPartialResult: boolean;
+    candidatePoolSize?: number;
+    rerankedCount?: number;
     executionTimeMs: number;
     warnings: string[];
     funnel?: {

@@ -4,7 +4,7 @@ This API loads a frozen cloud-model snapshot from
 `model/artifacts/cloud_snapshot` and uses the existing local facility cache for
 location and coordinates.
 
-Current version: `condition-service-local-v3`.
+Current version: `condition-service-local-v4`.
 
 The primary interface accepts a paragraph containing symptoms and/or diseases:
 
@@ -15,7 +15,9 @@ condition text
 → service candidates
 → direct facility action evidence
 → weak procedure/equipment/capability facility evidence
-→ urgency-aware distance ranking
+→ high-recall candidate pool (maximum 200)
+→ structured-evidence reranking
+→ urgency-aware distance contribution
 ```
 
 Urgency is computed once from the user's condition text before the service map.
@@ -37,16 +39,28 @@ VITE_API_BASE=http://127.0.0.1:8002 pnpm dev --host 127.0.0.1 --port 5175
 
 Open `http://127.0.0.1:5175`.
 
-The score is:
+The final condition-result score is:
 
 ```text
 final =
-100 * ((1 - distance_weight) * condition_evidence_relevance
-       + distance_weight * normalized_distance)
+100 * (
+  text_weight * text_match
+  + evidence_weight * evidence_quality
+  + distance_weight * normalized_distance
+)
 ```
 
-`distance_weight` is 0.50 for routine, 0.75 for urgent and 0.90 for emergency
-services.
+Weights:
+
+```text
+routine:   text 0.35, evidence 0.15, distance 0.50
+urgent:    text 0.20, evidence 0.05, distance 0.75
+emergency: text 0.08, evidence 0.02, distance 0.90
+```
+
+The API includes candidate-pool size and the reranker’s component scores in
+`metadata` and `facility.reranking`. Each reranked facility also reports its
+pre-rerank `stageOneRank` and `stageOneScore`.
 
 Evidence has two tiers:
 

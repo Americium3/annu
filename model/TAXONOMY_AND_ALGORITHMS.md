@@ -727,7 +727,7 @@ does not override condition urgency in condition mode.
 
 ## 13. Condition-input local baseline
 
-Version: `condition-service-local-v3`.
+Version: `condition-service-local-v4`.
 
 The local API now supports symptom/disease text as the primary input. Runtime
 order is:
@@ -739,7 +739,9 @@ condition text
 → model_service_action_map
 → model_facility_action_match
 → weak facility text bridge (procedure / capability / equipment)
-→ urgency-aware distance ranking
+→ high-recall candidate pool
+→ structured-evidence reranker
+→ urgency-aware distance contribution
 ```
 
 The condition-to-action mapping is deterministic and based on normalized
@@ -773,3 +775,15 @@ The API keeps `queryContext.service` populated with the matched condition name
 for older UI components and returns the full trace in
 `queryContext.condition` and `queryContext.services`. It also exposes optional
 facility phone and website fields for the current frontend.
+
+The second-stage reranker scores text match, evidence specificity/corroboration
+and distance separately. It preserves the urgency distance weights:
+
+```text
+routine:   text 0.35, evidence 0.15, distance 0.50
+urgent:    text 0.20, evidence 0.05, distance 0.75
+emergency: text 0.08, evidence 0.02, distance 0.90
+```
+
+At most 200 candidates enter reranking per radius. Weak evidence is capped at
+75/100 in the evidence-quality feature.

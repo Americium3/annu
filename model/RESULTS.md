@@ -215,7 +215,7 @@ then measure condition-to-service recall and end-to-end hospital precision.
 
 ## Condition-input local baseline
 
-Local runtime version: `condition-service-local-v3`.
+Local runtime version: `condition-service-local-v4`.
 
 The local API now supports symptom/disease text before service selection:
 
@@ -235,7 +235,7 @@ Observed local snapshot:
 condition concepts:       17,940
 condition/action edges:   22,098
 facility text records:   125,836
-unit tests:                   19
+unit tests:                   21
 ```
 
 Checks completed:
@@ -254,6 +254,10 @@ Checks completed:
 - Common conditions expand to related condition labels, treatment terms and
   clinical tags (for example pneumonia → chest imaging / PFT, chest pain → ECG /
   angiography, falls → fracture-trauma / X-ray / CT).
+- Condition results pass through a high-recall first stage and a structured
+  second-stage reranker using text match, evidence quality and distance.
+- Reranking keeps urgency-dependent distance weights and caps weak evidence at
+  75/100 in the evidence-quality component.
 - Emergency candidates must have a recorded emergency/critical-care signal.
 - Active pneumonia queries do not use vaccination text as treatment evidence.
 - Service-input requests remain backward compatible.

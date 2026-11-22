@@ -6,7 +6,7 @@ frontend**
 Current local runtime version:
 
 ```text
-condition-service-local-v3
+condition-service-local-v4
 ```
 
 The current model accepts symptoms or disease names, determines urgency from
@@ -108,7 +108,8 @@ condition text
 → direct facility action evidence
 → weak procedure/capability/equipment evidence
 → hospital eligibility and safety filters
-→ urgency-weighted score
+→ stage 1 high-recall candidate pool
+→ stage 2 structured evidence reranker
 → ranking and evidence selection
 ```
 
@@ -249,29 +250,72 @@ Emergency-specific examples:
 - falls emergency weak evidence must reference trauma, fracture or emergency
   care.
 
-## Scoring
+## Two-stage ranking
 
-The evidence relevance is normalized to `[0, 1]`. Weak evidence is capped. If a
-facility has both direct and weak evidence, a small corroboration bonus is
-applied with a maximum relevance of 1.
+### Stage 1: high-recall candidate generation
+
+The first stage gathers every supported hospital candidate produced by:
+
+- direct condition/action facility matches;
+- related-condition action matches;
+- condition text and treatment-term evidence;
+- related clinical tags;
+- hospital and emergency eligibility filters.
+
+For each radius, candidates receive a preliminary evidence-and-distance score.
+The best 200 are passed to stage 2. This avoids returning distance-only
+facilities before evidence quality is considered.
+
+### Stage 2: structured evidence reranking
+
+The second stage computes three normalized features:
+
+| Feature | Meaning |
+|---|---|
+| Text match | Combined direct/weak condition relevance |
+| Evidence quality | Directness, route specificity, field, strength, corroboration and source count |
+| Distance | Normalized distance within the selected radius |
+
+Final weights depend on urgency:
+
+| Urgency | Text | Evidence | Distance |
+|---|---:|---:|---:|
+| Routine | 0.35 | 0.15 | 0.50 |
+| Urgent | 0.20 | 0.05 | 0.75 |
+| Emergency | 0.08 | 0.02 | 0.90 |
 
 The final score is:
 
 ```text
-evidence_relevance =
-  min(1, max(direct_relevance, weak_relevance)
-        + optional corroboration bonus)
-
-normalized_distance =
-  1 - min(distance_km / search_radius_km, 1)
-
 final_score =
-  100 × ((1 - distance_weight) × evidence_relevance
-         + distance_weight × normalized_distance)
+  100 × (
+    text_weight × text_match
+    + evidence_weight × evidence_quality
+    + distance_weight × normalized_distance
+  )
 ```
 
-The result order is always by descending final score, then distance, then
-facility name.
+Weak evidence is capped at 75/100 in the evidence-quality feature. Direct action
+evidence receives a higher specificity floor and can reach 100.
+
+The API returns:
+
+```text
+metadata.candidatePoolSize
+metadata.rerankedCount
+facility.reranking.textScore
+facility.reranking.evidenceScore
+facility.reranking.distanceScore
+facility.reranking.totalScore
+facility.reranking.weights
+facility.reranking.bestEvidenceRef
+facility.reranking.bestEvidenceText
+facility.reranking.stageOneRank
+facility.reranking.stageOneScore
+```
+
+The result order is by descending reranked score, then evidence quality,
+distance and facility name.
 
 The score measures evidence-and-distance match only. It does not measure
 clinical quality, safety, health outcomes, wait time or current capacity.
@@ -354,7 +398,7 @@ artifacts/cloud_snapshot/
 ## Current validation
 
 ```text
-unit tests:                    19
+unit tests:                    21
 frontend typecheck/build:      passing
 desktop browser test:          passing
 390px mobile browser test:     passing
@@ -371,6 +415,8 @@ Observed behavior:
 - Chest pain expands to ECG, echo, angiography and angioplasty.
 - Stroke emergency results are limited to hospitals with an emergency signal
   and acute stroke/critical-care evidence.
+- Condition results expose first-stage candidate-pool size and second-stage
+  `textScore`, `evidenceScore`, `distanceScore`, weights and best evidence.
 
 ## Known limitations
 

@@ -1,7 +1,7 @@
 # CarePath Frontend
 
 医疗设施推荐网站的 React 前端。界面来自 GitHub `main`，本地已适配
-`condition-service-local-v3`：用户输入症状或疾病，后端先判断 urgency，
+`condition-service-local-v4`：用户输入症状或疾病，后端先判断 urgency，
 再推断相关服务和设施证据。
 
 ## 本地运行
@@ -41,6 +41,7 @@ pnpm preview
 - 桌面端结果列表与 Leaflet 地图双栏联动。
 - 移动端列表/地图切换，适配 390px 视口。
 - 用户输入症状/疾病与位置（城市、区县、PIN、坐标，或"使用我的位置"）。后端从 condition 推断相关 condition、treatment terms 和 clinical tags，区分直接 action 证据与 procedure/equipment/capability 弱证据，并使用 urgency-aware 距离评分。
+- 排序分为高召回候选生成和结构化 evidence reranking 两阶段；详情页显示 text、evidence、distance 三个 reranking 分量及其权重。
 - 推荐分数、证据引用、来源类型、不确定性提示。
 - 详情抽屉中的评分拆分、原始证据、来源与缺失字段。
 - 分享用搜索参数保存到 URL。

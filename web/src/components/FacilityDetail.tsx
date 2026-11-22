@@ -230,9 +230,19 @@ export function FacilityDetail({ facility, service, onClose }: FacilityDetailPro
             </div>
             {isConditionScore && (
               <p className="score-disclaimer">
-                {lang === "hi"
-                  ? `तात्कालिकता: ${facility.scoreBreakdown.urgency ?? "routine"}; दूरी भार ${(facility.scoreBreakdown.distanceWeight ?? 0.5).toFixed(2)}. अंतिम स्कोर = 100 × (सबूत भार × सबूत + दूरी भार × सामान्य दूरी).`
-                  : `Urgency: ${facility.scoreBreakdown.urgency ?? "routine"}; distance weight ${(facility.scoreBreakdown.distanceWeight ?? 0.5).toFixed(2)}. Final score = 100 × (evidence weight × evidence + distance weight × normalised distance).`}
+                {facility.reranking
+                  ? lang === "hi"
+                    ? `दो-चरणीय रैंकिंग: चरण 1 रैंक ${facility.reranking.stageOneRank ?? "—"} से अंतिम रैंक ${facility.rank}; ${Math.round(facility.reranking.weights.text * 100)}% पाठ + ${Math.round(facility.reranking.weights.evidence * 100)}% सबूत + ${Math.round(facility.reranking.weights.distance * 100)}% दूरी.`
+                    : `Two-stage ranking: stage-1 rank ${facility.reranking.stageOneRank ?? "—"} → final rank ${facility.rank}; ${Math.round(facility.reranking.weights.text * 100)}% text match + ${Math.round(facility.reranking.weights.evidence * 100)}% evidence quality + ${Math.round(facility.reranking.weights.distance * 100)}% distance.`
+                  : lang === "hi"
+                    ? `तात्कालिकता: ${facility.scoreBreakdown.urgency ?? "routine"}; दूरी भार ${(facility.scoreBreakdown.distanceWeight ?? 0.5).toFixed(2)}. अंतिम स्कोर = 100 × (सबूत भार × सबूत + दूरी भार × सामान्य दूरी).`
+                    : `Urgency: ${facility.scoreBreakdown.urgency ?? "routine"}; distance weight ${(facility.scoreBreakdown.distanceWeight ?? 0.5).toFixed(2)}. Final score = 100 × (evidence weight × evidence + distance weight × normalised distance).`}
+              </p>
+            )}
+            {facility.reranking?.bestEvidenceText && (
+              <p className="score-disclaimer">
+                {lang === "hi" ? "सबसे मज़बूत सबूत" : "Best evidence"}: “
+                {facility.reranking.bestEvidenceText}”
               </p>
             )}
             <p className="score-disclaimer">{t.scoreDisclaimer}</p>

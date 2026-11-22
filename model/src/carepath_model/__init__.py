@@ -6,6 +6,7 @@ from .condition_service import (
     ConditionServiceMapper,
     ConditionServiceRoute,
 )
+from .facility_reranker import RerankResult, rerank_condition_candidate
 from .query import MentionExtractor, Urgency, detect_urgency
 from .ranking import FacilityCandidate, RankedFacility, rank_candidates
 from .service_catalog import infer_action_service_type, infer_service_urgency
@@ -19,6 +20,7 @@ __all__ = [
     "MentionExtractor",
     "FacilityCandidate",
     "RankedFacility",
+    "RerankResult",
     "Urgency",
     "detect_urgency",
     "evidence_role",
@@ -26,5 +28,6 @@ __all__ = [
     "infer_service_urgency",
     "normalize_text",
     "rank_candidates",
+    "rerank_condition_candidate",
     "weak_label",
 ]

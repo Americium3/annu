@@ -9,6 +9,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from carepath_model.ontology import parse_obo, term_aliases  # noqa: E402
 from carepath_model.condition_service import ConditionServiceMapper  # noqa: E402
+from carepath_model.facility_reranker import (  # noqa: E402
+    rerank_condition_candidate,
+)
 from carepath_model.query import (  # noqa: E402
     AliasEntry,
     MentionExtractor,
@@ -215,6 +218,82 @@ is_a: MAXO:0000493 ! diagnostic procedure
         self.assertIn(
             "x-ray",
             {tag.tag_id for tag in mapping.related_tags},
+        )
+
+    def test_two_stage_reranker_prefers_specific_direct_evidence(self) -> None:
+        direct = rerank_condition_candidate(
+            {
+                "relevance": 0.80,
+                "direct_relevance": 0.80,
+                "weak_relevance": 0.0,
+                "evidence": [
+                    {
+                        "route_type": "condition_action",
+                        "field": "procedure_arr",
+                        "strength": "strong",
+                        "quote": "Performs the requested procedure",
+                    }
+                ],
+            },
+            distance_score=0.50,
+            urgency=Urgency.ROUTINE,
+            facility_source_count=2,
+            candidate_pool_size=10,
+        )
+        weak = rerank_condition_candidate(
+            {
+                "relevance": 0.50,
+                "direct_relevance": 0.0,
+                "weak_relevance": 0.50,
+                "evidence": [
+                    {
+                        "route_type": "condition_related_tag",
+                        "field": "equipment_arr",
+                        "strength": "weak",
+                        "quote": "Generic equipment",
+                    }
+                ],
+            },
+            distance_score=0.50,
+            urgency=Urgency.ROUTINE,
+            facility_source_count=1,
+            candidate_pool_size=10,
+        )
+        self.assertGreater(direct.evidence_score, weak.evidence_score)
+        self.assertGreater(direct.total_score, weak.total_score)
+        self.assertAlmostEqual(sum(direct.weights.values()), 1.0)
+
+    def test_two_stage_reranker_raises_distance_weight_for_emergency(self) -> None:
+        candidate = {
+            "relevance": 0.70,
+            "direct_relevance": 0.0,
+            "weak_relevance": 0.70,
+            "evidence": [
+                {
+                    "route_type": "condition_text_tag",
+                    "field": "capability_arr",
+                    "strength": "weak",
+                    "quote": "24/7 emergency service",
+                }
+            ],
+        }
+        routine = rerank_condition_candidate(
+            candidate,
+            distance_score=0.80,
+            urgency=Urgency.ROUTINE,
+            facility_source_count=2,
+            candidate_pool_size=20,
+        )
+        emergency = rerank_condition_candidate(
+            candidate,
+            distance_score=0.80,
+            urgency=Urgency.EMERGENCY,
+            facility_source_count=2,
+            candidate_pool_size=20,
+        )
+        self.assertGreater(
+            emergency.weights["distance"],
+            routine.weights["distance"],
         )
 
     def test_emergency_increases_distance_effect(self) -> None:
