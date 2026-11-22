@@ -2,21 +2,22 @@
 
 This experiment package implements the agreed design: **offline high-recall hospital ×
 service membership**, then **online service filtering, evidence-aware reranking and map
-output**. No generative model/API/LLM judge is used. Existing backend and frontend APIs
-are not changed; use the outputs to choose a ranking method before integrating it.
+output**. No generative model/API/LLM judge is used. **Cross-encoder is the default**
+for direct engine calls, the CLI and notebook. The live backend now also defaults to
+cross-encoder; its existing serving-table gates and widening-radius policy are described
+in [backend/README.md](../backend/README.md), and differ from the fixed-radius experiment.
 
 ## Quick start (local)
 
 Run from the repository root, Python 3.10+:
 
 ```bash
-python -m pip install -r experiments/requirements.txt
+python -m pip install -r experiments/requirements-neural.txt
 python -m unittest discover -s experiments/tests -v
 python -m experiments.run \
   --facilities /path/to/model_facilities.tsv \
   --evidence /path/to/model_evidence_items.tsv \
   --queries experiments/queries.example.csv \
-  --methods rules tfidf bm25 \
   --settings experiments/settings.example.json \
   --out data/experiments/dev_001
 ```
@@ -35,12 +36,18 @@ To read the existing Databricks model tables with the repo's SQL client:
 python -m experiments.run --from-databricks \
   --schema workspace.cardinal_virtues \
   --queries experiments/queries.example.csv \
-  --methods rules tfidf bm25 --out data/experiments/dev_002
+  --out data/experiments/dev_002
 ```
 
 The adapter only sends SELECT statements. The SQL API uses 32 evidence buckets to
 avoid a single oversized INLINE result. The facilities query currently reads all model
 columns: use the notebook/Spark adapter if the result exceeds the API size limit.
+
+Omitting `--methods` runs `cross_encoder`. For a full comparison, explicitly pass
+`--methods rules tfidf bm25 bi_encoder cross_encoder`. A lexical-only environment can
+still install `experiments/requirements.txt` and explicitly choose `--methods rules tfidf bm25`.
+The shared pair scorer in `backend/cross_encoder.py` uses sigmoid of raw logits exactly
+once and fails visibly when the model cannot run; it never silently substitutes rules.
 
 ## Databricks Free Edition
 
@@ -51,6 +58,8 @@ Clone this branch/repository into a Databricks Git folder. Open
 evidence corpus must fit driver memory; this is not a distributed neural training job.
 
 Set the notebook's `schema`, `queries`, `qrels`, `methods`, `pins`, and `out` widgets.
+The notebook installs neural requirements and initializes `methods` to `cross_encoder`.
+Databricks may preserve an existing widget value: set it explicitly when reopening an old notebook.
 `out` must point to an existing writable Volume or workspace filesystem folder. The
 default Volume path is an example and is not created automatically. Use a **new output
 directory for each run**. Changing Settings requires editing the notebook's Settings

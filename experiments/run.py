@@ -109,6 +109,7 @@ def run_experiments(engine, queries, methods, out, qrels=None, pins=None):
 
 
 def main():
+    from .engine import DEFAULT_METHOD
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--facilities", help="CSV/TSV/parquet export of model_facilities")
     parser.add_argument("--evidence", help="CSV/TSV/parquet export of model_evidence_items")
@@ -117,7 +118,7 @@ def main():
     parser.add_argument("--queries", required=True)
     parser.add_argument("--pins", help="Optional audited pincode_reference export")
     parser.add_argument("--qrels", help="Independently annotated query/facility grades")
-    parser.add_argument("--methods", nargs="+", choices=METHODS, default=["rules", "tfidf", "bm25"])
+    parser.add_argument("--methods", nargs="+", choices=METHODS, default=[DEFAULT_METHOD])
     parser.add_argument("--out", required=True)
     parser.add_argument("--settings", help="Settings JSON; omit to use documented defaults")
     args = parser.parse_args()

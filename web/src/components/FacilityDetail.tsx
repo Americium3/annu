@@ -174,16 +174,20 @@ export function FacilityDetail({ facility, service, onClose }: FacilityDetailPro
               <h3>{t.scoreTitle}</h3>
             </div>
             <div className="score-breakdown">
-              {scoreMaximums.map(([key, maximum]) => {
+              {(facility.reranking ? [
+                ["serviceMatchScore", 100 * facility.reranking.weights.text],
+                ["evidenceScore", 100 * facility.reranking.weights.evidence],
+                ["distanceScore", 100 * facility.reranking.weights.distance],
+              ] as Array<[NumericScoreKey, number]> : scoreMaximums).map(([key, maximum]) => {
                 const value = facility.scoreBreakdown[key];
                 return (
                   <div className="score-row" key={key}>
-                    <span>{scoreLabels[key]}</span>
+                    <span>{facility.reranking && key === "evidenceScore" ? t.scoreEligibility : scoreLabels[key]}</span>
                     <div className="score-track">
-                      <i style={{ width: `${Math.max(0, (value / maximum) * 100)}%` }} />
+                      <i style={{ width: `${maximum > 0 ? Math.min(100, Math.max(0, (value / maximum) * 100)) : 0}%` }} />
                     </div>
                     <strong>
-                      {value}
+                      {Number(value.toFixed(1))}
                       <small>/{maximum}</small>
                     </strong>
                   </div>

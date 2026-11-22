@@ -2,10 +2,10 @@
 # MAGIC %md
 # MAGIC # Two-stage service retrieval experiments
 # MAGIC Run from a Databricks Git folder containing this repository. No table writes.
-# MAGIC CPU defaults; neural models require model downloads and extra packages.
+# MAGIC Cross-encoder is the default. CPU inference requires the configured model checkpoint.
 
 # COMMAND ----------
-# MAGIC %pip install -r ../experiments/requirements.txt
+# MAGIC %pip install -r ../experiments/requirements-neural.txt
 
 # COMMAND ----------
 from pathlib import Path
@@ -25,7 +25,7 @@ import pandas as pd
 
 # COMMAND ----------
 dbutils.widgets.text("schema", "workspace.cardinal_virtues")
-dbutils.widgets.text("methods", "rules,tfidf,bm25")
+dbutils.widgets.text("methods", "cross_encoder")
 dbutils.widgets.text("queries", str(ROOT / "experiments/queries.example.csv"))
 dbutils.widgets.text("qrels", "")
 dbutils.widgets.text("pins", "")
@@ -51,6 +51,7 @@ display(metrics)
 # MAGIC Download/open `map.html`, GeoJSON, plots and `annotation_pool.csv` from the output path.
 # MAGIC Grade the pool independently (0–3), add suspected misses outside the pool, then run
 # MAGIC again with the qrels path and a NEW output directory. Blank metrics mean unlabelled.
-# MAGIC For neural methods: install `../experiments/requirements-neural.txt` in a separate
-# MAGIC `%pip` cell before imports, then add `bi_encoder,cross_encoder` to methods.
+# MAGIC The default `cross_encoder` uses the neural dependencies installed above. To compare
+# MAGIC all methods, set `methods` to `rules,tfidf,bm25,bi_encoder,cross_encoder`.
+# MAGIC Existing saved widget values may persist: explicitly set `methods` to `cross_encoder`.
 # MAGIC The output Volume must already exist and be writable; change the path if necessary.

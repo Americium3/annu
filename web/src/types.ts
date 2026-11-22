@@ -108,6 +108,19 @@ export interface FacilityRecommendation {
   confidence: ConfidenceLevel;
   recommendationSummary: string;
   scoreBreakdown: ScoreBreakdown;
+  reranking?: {
+    method: "cross_encoder";
+    model: string;
+    textScore: number;
+    evidenceScore: number;
+    distanceScore: number;
+    totalScore: number;
+    weights: { text: number; evidence: number; distance: number };
+    bestEvidenceRef: string;
+    bestEvidenceText: string;
+    scoredItemCount: number;
+    scoreMeaning: string;
+  };
   evidence: EvidenceItem[];
   sources: SourceReference[];
   locationQuality: {

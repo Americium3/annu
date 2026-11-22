@@ -13,6 +13,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from data_store import get_snapshot
 from recommender import LocationNotFound, Recommender, ServiceNotFound
+from cross_encoder import CrossEncoderError
 
 STATE: dict = {}
 
@@ -20,7 +21,9 @@ STATE: dict = {}
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     snap = get_snapshot(refresh=os.environ.get("CAREPATH_REFRESH") == "1")
-    STATE["rec"] = Recommender(snap)
+    rec = Recommender(snap)
+    rec.warmup()  # Fail startup visibly if the default model cannot load; no rule fallback.
+    STATE["rec"] = rec
     print(f"CarePath API ready – data: {snap.source}", file=sys.stderr)
     yield
 
@@ -48,7 +51,8 @@ class RecommendationRequest(BaseModel):
 @app.get("/api/health")
 def health():
     rec: Recommender = STATE["rec"]
-    return {"status": "ok", "data": rec.snap.source, "facilityServiceRows": len(rec.index), "services": len(rec.tags)}
+    return {"status": "ok", "data": rec.snap.source, "facilityServiceRows": len(rec.index), "services": len(rec.tags),
+            "ranking": rec.ranking_info()}
 
 
 @app.get("/api/services")
@@ -70,3 +74,5 @@ def recommendations(req: RecommendationRequest):
         raise HTTPException(422, {"field": "service", "message": str(e), "suggestions": e.suggestions})
     except LocationNotFound as e:
         raise HTTPException(422, {"field": "location", "message": str(e), "suggestions": e.suggestions})
+    except CrossEncoderError as e:
+        raise HTTPException(503, {"message": str(e)})

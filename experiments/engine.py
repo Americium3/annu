@@ -18,8 +18,10 @@ import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 from pipeline.tag_dictionary import TAGS
+from backend.cross_encoder import CrossEncoderScorer
 
 METHODS = ("rules", "tfidf", "bm25", "bi_encoder", "cross_encoder")
+DEFAULT_METHOD = "cross_encoder"
 FIELDS = ("procedure", "capability", "equipment", "specialty", "specialties", "description")
 RELATED = {
     "kidney-dialysis": r"nephrolog|renal medicine",
@@ -76,6 +78,7 @@ class Settings:
     bi_model: str = "sentence-transformers/multi-qa-MiniLM-L6-cos-v1"
     cross_model: str = "cross-encoder/ms-marco-MiniLM-L6-v2"
     model_revision: str | None = None
+    cross_max_length: int = 512
     device: str = "cpu"
     batch_size: int = 32
 
@@ -85,7 +88,7 @@ class Settings:
             raise ValueError("Nonnegative fusion weights must sum to 1")
         if min(self.distance_decay_km, self.max_radius_km, self.bm25_scale) <= 0:
             raise ValueError("Distance and BM25 scales must be positive")
-        if min(self.top_k, self.max_evidence_per_facility, self.batch_size) < 1:
+        if min(self.top_k, self.max_evidence_per_facility, self.batch_size, self.cross_max_length) < 1:
             raise ValueError("Counts must be positive")
         if self.location_policy not in {"review", "respect_resolved"}:
             raise ValueError("Unknown location policy")
@@ -229,12 +232,18 @@ class ExperimentEngine:
 
     def _model(self, method):
         if method not in self._models:
+            if method == "cross_encoder":
+                self._models[method] = CrossEncoderScorer(
+                    self.settings.cross_model, self.settings.model_revision, self.settings.device,
+                    self.settings.batch_size, self.settings.cross_max_length,
+                )
+                return self._models[method]
             try:
-                from sentence_transformers import SentenceTransformer, CrossEncoder
+                from sentence_transformers import SentenceTransformer
             except ImportError as exc:
                 raise RuntimeError("Neural methods require experiments/requirements-neural.txt") from exc
-            cls = SentenceTransformer if method == "bi_encoder" else CrossEncoder
-            model_id = self.settings.bi_model if method == "bi_encoder" else self.settings.cross_model
+            cls = SentenceTransformer
+            model_id = self.settings.bi_model
             kwargs = {"device": self.settings.device}
             if self.settings.model_revision:
                 kwargs["revision"] = self.settings.model_revision
@@ -287,15 +296,13 @@ class ExperimentEngine:
             scores = np.clip(np.asarray(vectors) @ q, 0, 1)
         else:
             model = self._model(method)
-            import torch
-            scores = np.asarray(model.predict([(query, t) for t in texts], batch_size=self.settings.batch_size,
-                                activation_fn=torch.nn.Sigmoid(), show_progress_bar=False)).reshape(-1)
+            scores = np.asarray(model.score(query, texts))
         mapping = dict(zip(texts, map(float, scores)))
         frame["text_score"] = frame.text.map(mapping)
         self._scores[key] = frame
         return frame.copy()
 
-    def recommend(self, service, lat, lon, method="rules"):
+    def recommend(self, service, lat, lon, method=DEFAULT_METHOD):
         started = time.perf_counter()
         if not validate_point(lat, lon):
             raise ValueError("Invalid query coordinates")

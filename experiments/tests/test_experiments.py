@@ -57,28 +57,28 @@ class ExperimentsTest(unittest.TestCase):
 
     def test_emergency_is_not_ordinary_c_section(self):
         self.assertNotEqual(canonical_service("emergency c section"), canonical_service("c-section"))
-        result = self.engine.recommend("emergency c section", 26.9, 75.8)
+        result = self.engine.recommend("emergency c section", 26.9, 75.8, "rules")
         self.assertEqual([x["unique_id"] for x in result["results"]], ["b"])
 
     def test_conflicting_service_statements_block(self):
         ev = pd.concat([self.ev, pd.DataFrame([{"unique_id": "a", "field": "procedure", "item_idx": 2,
                                               "text": "Dialysis has been discontinued."}])], ignore_index=True)
-        r = ExperimentEngine(self.fac, ev).recommend("dialysis", 26.9, 75.8)
+        r = ExperimentEngine(self.fac, ev).recommend("dialysis", 26.9, 75.8, "rules")
         self.assertEqual(r["results"], [])
 
     def test_upstream_attribution_review_not_overridden(self):
         self.ev["evidence_status"] = "usable"
         self.ev.loc[self.ev.unique_id.eq("a"), "evidence_status"] = "elsewhere"
-        r = ExperimentEngine(self.fac, self.ev).recommend("dialysis", 26.9, 75.8)
+        r = ExperimentEngine(self.fac, self.ev).recommend("dialysis", 26.9, 75.8, "rules")
         self.assertEqual(r["results"], [])
 
     def test_respect_resolved_does_not_resolve_conflict_itself(self):
-        r = ExperimentEngine(self.fac, self.ev, Settings(location_policy="respect_resolved")).recommend("dialysis", 26.9, 75.8)
+        r = ExperimentEngine(self.fac, self.ev, Settings(location_policy="respect_resolved")).recommend("dialysis", 26.9, 75.8, "rules")
         self.assertEqual({x["unique_id"] for x in r["results"]}, {"a", "f"})
 
     def test_no_mixed_coordinate_sources(self):
         self.fac.loc[self.fac.unique_id.eq("a"), "loc_lat"] = 10.
-        r = ExperimentEngine(self.fac, self.ev).recommend("dialysis", 26.9, 75.8)
+        r = ExperimentEngine(self.fac, self.ev).recommend("dialysis", 26.9, 75.8, "rules")
         self.assertEqual(r["results"][0]["latitude"], 26.91)
 
     def test_description_and_specialty_augmentation(self):
@@ -102,7 +102,7 @@ class ExperimentsTest(unittest.TestCase):
         self.assertEqual(self.engine.recommend("mri", 26.9, 75.8)["results"], [])
 
     def test_qrels_unknown_not_counted_as_false(self):
-        run = self.engine.recommend("dialysis", 26.9, 75.8)
+        run = self.engine.recommend("dialysis", 26.9, 75.8, "rules")
         run["query_id"] = "q"
         p, _ = evaluate([run], pd.DataFrame(columns=["query_id", "unique_id", "relevance"]))
         self.assertTrue(pd.isna(p.precision_at_k.iloc[0]))
@@ -121,7 +121,7 @@ class ExperimentsTest(unittest.TestCase):
         self.assertEqual(p.candidate_recall_pool.iloc[0], 0)
 
     def test_unjudged_outputs_and_duplicate_qrels(self):
-        run = self.engine.recommend("dialysis", 26.9, 75.8)
+        run = self.engine.recommend("dialysis", 26.9, 75.8, "rules")
         run["query_id"] = "q"
         qrels = pd.DataFrame([{"query_id": "q", "unique_id": "b", "relevance": 1}])
         p, _ = evaluate([run], qrels)
@@ -136,6 +136,16 @@ class ExperimentsTest(unittest.TestCase):
         self.engine._models["bi_encoder"] = Fake()
         run = self.engine.recommend("dialysis", 26.9, 75.8, "bi_encoder")
         self.assertEqual(run["results"][0]["text_score"], 1.)
+
+    def test_default_is_cross_encoder_and_shared_sigmoid_applied_once(self):
+        from backend.cross_encoder import CrossEncoderScorer
+        class Fake:
+            def predict(self, pairs, **kwargs):
+                return np.zeros(len(pairs))  # raw logit 0 -> relevance 0.5
+        self.engine._models["cross_encoder"] = CrossEncoderScorer(model=Fake())
+        run = self.engine.recommend("dialysis", 26.9, 75.8)
+        self.assertEqual(run["method"], "cross_encoder")
+        self.assertEqual(run["results"][0]["text_score"], .5)
 
     def test_resolve_exact_city_pin_and_ambiguous(self):
         loc = resolve_location("Jaipur, Rajasthan", self.fac)
