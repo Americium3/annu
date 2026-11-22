@@ -46,7 +46,8 @@ echo "2/7 Uploading to $DEST"
 call -X POST "$API/workspace/delete" -d "{\"path\":\"$DEST\",\"recursive\":true}" >/dev/null 2>&1 || true
 (cd "$STAGE" && find . -type f -print0) | while IFS= read -r -d '' f; do
   rel="${f#./}"
-  call -X POST "$API/workspace/mkdirs" -d "{\"path\":\"$DEST/$(dirname "$rel")\"}" >/dev/null
+  dir="$DEST/$(dirname "$rel")"; dir="${dir%/.}"   # top-level files: Databricks rejects a folder named "."
+  call -X POST "$API/workspace/mkdirs" -d "{\"path\":\"$dir\"}" >/dev/null
   python3 - "$STAGE/$rel" "$DEST/$rel" > "$STAGE.import.json" <<'PY'
 import base64, json, sys
 print(json.dumps({"path": sys.argv[2], "format": "RAW", "overwrite": True,
