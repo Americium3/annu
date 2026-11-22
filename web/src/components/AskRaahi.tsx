@@ -81,10 +81,10 @@ export function AskRaahi({
   const [voice, setVoice] = useState<VoiceState>("idle");
   const [voiceError, setVoiceError] = useState<VoiceErrorKind>();
   const [voiceDetail, setVoiceDetail] = useState<string>();
-  const [retrying, setRetrying] = useState(false);
   const [focused, setFocused] = useState(false);
   const recording = useRef<Recording | null>(null);
   const browserStop = useRef<(() => void) | null>(null);
+  const stopTapped = useRef(false);
   // Which way still works on this device: the browser's recognizer first, the server's Whisper after.
   const browserVoice = useRef(true);
   const serverVoice = useRef(!USE_DEMO);
@@ -123,7 +123,6 @@ export function AskRaahi({
 
   function failed(error: unknown) {
     setVoice("idle");
-    setRetrying(false);
     setVoiceError(error instanceof VoiceError ? error.kind : "failed");
     setVoiceDetail(error instanceof VoiceError ? error.detail : String(error));
   }
@@ -155,24 +154,51 @@ export function AskRaahi({
     }
   }
 
-  /** The browser's way, with the words appearing in the box as they are recognised. */
+  /**
+   * The browser's way, with the words appearing in the box as they are recognised. The microphone is recorded
+   * at the same time, so when the browser hears nothing (its service is silent, says "no-speech", or ends with
+   * no words) the same recording goes to the server's Whisper: the person never has to say it twice.
+   */
   function recognizeHere() {
     const before = text;
+    let browserActive = true;
+    let backup: Recording | null = null;
+    let backupStarting: Promise<Recording | null> = Promise.resolve(null);
+    let doneSpeaking = false;
+    // Started synchronously, inside the tap (Safari needs that for its recognizer).
     const run = recognizeInBrowser(lang, (words) => setText(words));
     browserStop.current = run.stop;
     setVoice("listening");
+    if (serverVoice.current && canRecord()) {
+      backupStarting = startRecording(setLevel, () => {
+        // The person stopped speaking. If the browser has written nothing by now, stop waiting for it.
+        doneSpeaking = true;
+        if (browserActive) run.stop();
+        else if (recording.current === backup) void finishRecording();
+      }).then(
+        (r) => (backup = r),
+        () => null, // no backup recording: the browser's recognizer still works on its own
+      );
+    }
     run.result
-      .then(heard, (error) => {
-        setText(before);
-        // The recognizer's service failed (network, unsupported language...): switch to the server's Whisper now.
-        if (error instanceof VoiceError && error.kind === "unavailable" && serverVoice.current && canRecord()) {
-          browserVoice.current = false;
-          setRetrying(true);
-          void recordForServer();
-          return;
-        }
-        failed(error);
-      })
+      .then(
+        async (said) => {
+          browserActive = false;
+          (await backupStarting)?.cancel();
+          heard(said);
+        },
+        async (error) => {
+          browserActive = false;
+          setText(before);
+          const recorded = await backupStarting;
+          if (error instanceof VoiceError && error.kind === "unavailable") browserVoice.current = false;
+          if (!recorded) return failed(error);
+          // The browser heard nothing: let Whisper read what was recorded. If the browser gave up while the
+          // person may still be talking, keep listening until they pause (or tap the mic), then send it.
+          recording.current = recorded;
+          if (doneSpeaking || stopTapped.current) void finishRecording();
+        },
+      )
       .finally(() => {
         browserStop.current = null;
       });
@@ -182,12 +208,13 @@ export function AskRaahi({
     setVoiceError(undefined);
     setVoiceDetail(undefined);
     if (voice === "listening") {
+      stopTapped.current = true;
       if (recording.current) void finishRecording();
       else browserStop.current?.();
       return;
     }
     if (voice === "transcribing") return;
-    setRetrying(false);
+    stopTapped.current = false;
     if (browserVoice.current && browserRecognition()) return recognizeHere();
     if (serverVoice.current && canRecord()) return recordForServer();
     failed(new VoiceError("unavailable", "no way to recognise speech in this browser"));
@@ -264,7 +291,7 @@ export function AskRaahi({
           </button>
         </div>
         <span className={`ask-voice-status ${voiceMessage ? "is-error" : ""}`} aria-live="polite">
-          {listening ? (retrying ? t.voiceSpeakAgain : t.askListening) : voice === "transcribing" ? t.voiceTranscribing : voiceMessage}
+          {listening ? t.askListening : voice === "transcribing" ? t.voiceTranscribing : voiceMessage}
           {!listening && voice === "idle" && voiceMessage && voiceDetail && <small> ({voiceDetail})</small>}
         </span>
       </form>

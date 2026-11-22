@@ -12,6 +12,7 @@ The model loads in the background at start-up; a request that arrives first wait
 """
 from __future__ import annotations
 
+import logging
 import threading
 import time
 
@@ -26,6 +27,19 @@ HINTS = {
     "hi": "कटक, भुवनेश्वर, पुरी, जयपुर, दिल्ली, पटना, डायलिसिस, एमआरआई, प्रसव",
 }
 LANGUAGE = {"en": "english", "hi": "hindi"}
+# A quiet microphone (laptop mic across the room, low input gain) is raised to this peak before Whisper reads
+# it; Whisper often writes nothing for speech that peaks far below full scale. Near-silence is left alone.
+TARGET_PEAK = 0.9
+SILENCE_PEAK = 0.003
+MAX_GAIN = 30.0
+log = logging.getLogger("annu.stt")
+
+
+def normalize(samples: np.ndarray) -> np.ndarray:
+    peak = float(np.max(np.abs(samples))) if samples.size else 0.0
+    if peak < SILENCE_PEAK or peak >= TARGET_PEAK:
+        return samples
+    return samples * min(MAX_GAIN, TARGET_PEAK / peak)
 
 
 class TranscriptionError(RuntimeError):
@@ -84,6 +98,8 @@ class Transcriber:
             return {"transcript": "", "seconds": round(seconds, 2), "model": self.model_name}
         if seconds > config.STT_MAX_SECONDS:
             samples = samples[: int(config.STT_MAX_SECONDS * SAMPLE_RATE)]
+        peak = float(np.max(np.abs(samples)))
+        samples = normalize(samples)
         if self._pipe is None:
             # Never keep the person waiting on a model download: the page switches to another way at once.
             if self._loading:
@@ -99,5 +115,8 @@ class Transcriber:
         text = (out.get("text") or "").strip()
         if text and text in HINTS[lang]:  # an echoed hint is not something the person said
             text = ""
+        # One line per request, so the app logs show whether audio arrived and what Whisper made of it.
+        log.warning("transcribe lang=%s seconds=%.1f peak=%.4f chars=%d elapsed_ms=%d", lang, seconds, peak,
+                    len(text), int((time.time() - t0) * 1000))
         return {"transcript": text[:600], "seconds": round(seconds, 2), "model": self.model_name,
                 "elapsedMs": int((time.time() - t0) * 1000)}

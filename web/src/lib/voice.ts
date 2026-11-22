@@ -1,15 +1,16 @@
 /**
- * Voice input, two ways:
+ * Voice input, two ways, used together:
  *
- * 1. The browser's own speech recognition (Chrome, Edge, Safari), tried first:
- *    it shows the words live as the person speaks, so they can see they are
- *    being heard, and handles Hindi (hi-IN) and Indian English (en-IN) well.
- * 2. Sprout's way, where the browser has no recognizer (Firefox) or its service
- *    fails: the microphone is recorded with the Web Audio API, resampled to
- *    16 kHz mono 16-bit PCM, and sent to /api/transcribe (Whisper inside the
- *    app). Recording stops on a tap, after ~1.4 s of quiet once speech was
- *    heard, or at 20 s; whatever was recorded is sent (Whisper decides whether
- *    there were words), so a quiet microphone is never rejected here.
+ * 1. The browser's own speech recognition (Chrome, Edge, Safari): it shows the words live as the person
+ *    speaks, so they can see they are being heard, and handles Hindi (hi-IN) and Indian English (en-IN) well.
+ * 2. Sprout's way: the microphone is recorded with the Web Audio API, resampled to 16 kHz mono 16-bit PCM,
+ *    and sent to /api/transcribe (Whisper inside the app). Recording stops on a tap, after ~1.4 s of quiet
+ *    once speech was heard, or at 20 s; whatever was recorded is sent (Whisper decides whether there were
+ *    words), so a quiet microphone is never rejected here.
+ *
+ * Where the browser has a recognizer, the page runs both at once: if the recognizer writes nothing (its
+ * service is silent, reports "no-speech", or ends empty), the recording of the same words goes to Whisper,
+ * so the person never has to repeat themselves. Without a recognizer (Firefox) only the recording is used.
  *
  * Every failure carries what went wrong (`detail`), so the page can say it.
  */
@@ -160,7 +161,7 @@ export async function transcribe(pcm: ArrayBuffer, lang: "en" | "hi", apiBase = 
   return text;
 }
 
-/* ---- the browser's own speech recognition: the fallback when the server can't transcribe ---- */
+/* ---- the browser's own speech recognition: live words; the recording above backs it up ---- */
 
 interface BrowserRecognition {
   lang: string;
