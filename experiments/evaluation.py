@@ -38,8 +38,12 @@ def evaluate(runs, qrels, k=3):
         dcg = sum((2**g-1)/math.log2(i+2) for i, g in enumerate(grades))
         idcg = sum((2**g-1)/math.log2(i+2) for i, g in enumerate(ideal))
         answered = bool(returned)
+        distances = [r["distance_km"] for r in run["results"][:k] if r.get("distance_km") is not None]
         records.append({"query_id": qid, "method": run["method"], "service_id": run["service_id"],
             "density_group": run.get("density_group", "unspecified"), "answered": int(answered),
+            "no_answer": int(not answered),
+            "top1_distance_km": run["results"][0].get("distance_km") if answered else np.nan,
+            "mean_distance_km": float(np.mean(distances)) if distances else np.nan,
             "returned_count": len(returned), "candidate_count": len(run["candidate_ids"]),
             "judged_query": int(len(judged) > 0), "known_positives": len(relevant),
             "judged_result_fraction": sum(uid in lookup for uid in returned)/len(returned) if returned else np.nan,

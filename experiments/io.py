@@ -41,6 +41,16 @@ def load_tables(schema="workspace.cardinal_virtues", spark=None):
     return facilities, evidence
 
 
+def load_context_table(table, spark=None):
+    """Read one optional NFHS/alias table. No source writes or guessed table schema."""
+    sql = f"SELECT * FROM {table_name(table)}"
+    if spark is not None:
+        return spark.sql(sql).toPandas()
+    from pipeline.databricks_sql import DatabricksSQL
+    cols, rows = DatabricksSQL().query(sql)
+    return pd.DataFrame(rows, columns=cols)
+
+
 def augment_facility_text(facilities, evidence):
     """Add description and specialties missing from the evidence table, with traceable refs."""
     additions = []
@@ -84,7 +94,9 @@ def resolve_location(text, facilities, pins=None):
         lat, lon = float(row.lat), float(row.lon)
         if not validate_point(lat, lon):
             raise ValueError("PIN has no valid reference point")
-        return {"latitude": lat, "longitude": lon, "precision": "pin_area", "resolved": text}
+        return {"latitude": lat, "longitude": lon, "precision": "pin_area", "resolved": text,
+                "context_state": items(row.get("states"))[0], "context_district": items(row.get("districts"))[0],
+                "context_assignment_source": "audited_pin_reference"}
     parts = [s.strip().casefold() for s in text.split(",")]
     name, state = parts[0], parts[1] if len(parts) == 2 else None
     if len(parts) > 2:
@@ -115,9 +127,13 @@ def resolve_location(text, facilities, pins=None):
                 valid = found.apply(lambda r: validate_point(r[a], r[b]), axis=1)
                 points = found[valid]
                 if len(points):
+                    district = name if precision == "district_area" else ""
+                    # A city can span districts. No nearest-facility district guess.
                     return {"latitude": float(pd.to_numeric(points[a]).median()),
                             "longitude": float(pd.to_numeric(points[b]).median()),
                             "precision": precision, "resolved": text,
+                            "context_state": str(points._state.iloc[0]), "context_district": district,
+                            "context_assignment_source": "named_district_reference" if district else "city_district_unresolved",
                             "note": "Approximate reference centre from upstream-verified facility points"}
     raise ValueError("Place could not be resolved unambiguously; use coordinates or an audited PIN")
 
