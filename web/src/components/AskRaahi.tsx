@@ -164,15 +164,14 @@ export function AskRaahi({
     let browserActive = true;
     let backup: Recording | null = null;
     let backupStarting: Promise<Recording | null> = Promise.resolve(null);
-    let doneSpeaking = false;
     // Started synchronously, inside the tap (Safari needs that for its recognizer).
     const run = recognizeInBrowser(lang, (words) => setText(words));
     browserStop.current = run.stop;
     setVoice("listening");
     if (serverVoice.current && canRecord()) {
       backupStarting = startRecording(setLevel, () => {
-        // The person stopped speaking. If the browser has written nothing by now, stop waiting for it.
-        doneSpeaking = true;
+        // Only the safety limit gets here (pauses never stop the recording): finish as if the person tapped.
+        stopTapped.current = true;
         if (browserActive) run.stop();
         else if (recording.current === backup) void finishRecording();
       }).then(
@@ -193,10 +192,10 @@ export function AskRaahi({
           const recorded = await backupStarting;
           if (error instanceof VoiceError && error.kind === "unavailable") browserVoice.current = false;
           if (!recorded) return failed(error);
-          // The browser heard nothing: let Whisper read what was recorded. If the browser gave up while the
-          // person may still be talking, keep listening until they pause (or tap the mic), then send it.
+          // The browser heard nothing: let Whisper read what was recorded. If the person has not tapped stop yet,
+          // keep recording until they do; the program never ends their turn for them.
           recording.current = recorded;
-          if (doneSpeaking || stopTapped.current) void finishRecording();
+          if (stopTapped.current) void finishRecording();
         },
       )
       .finally(() => {
