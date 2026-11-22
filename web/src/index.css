@@ -4119,6 +4119,41 @@ html[data-transition="emergency"]::view-transition-new(root) {
   font-size: var(--fs-sm);
 }
 
+/* ---- why it's ranked here ---- */
+.rank-lede {
+  color: var(--text-2);
+}
+
+.rank-factor {
+  margin-top: 14px;
+}
+
+.rank-reasons {
+  margin: 6px 0 0;
+  padding-left: 18px;
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+}
+
+.rank-formula {
+  margin-top: 16px;
+  padding: 10px 14px;
+  color: var(--brand-ink);
+  background: var(--brand-soft);
+  border-radius: var(--radius-md);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.rank-weak {
+  margin-top: 10px;
+  color: var(--critical-ink);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+
 /* phone numbers: readable and dialable */
 .action-number {
   font-variant-numeric: tabular-nums;

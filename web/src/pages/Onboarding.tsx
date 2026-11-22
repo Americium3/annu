@@ -8,9 +8,9 @@ import { useI18n, type Lang } from "../i18n";
 import { useSession } from "../lib/auth";
 import { formatPhone } from "../lib/auth";
 import { withTransition } from "../lib/motion";
-import { isValidMobile, profileSnapshot, RADIUS_OPTIONS, saveProfile, type Profile } from "../lib/profile";
+import { isValidMobile, profileSnapshot, saveProfile, type Profile } from "../lib/profile";
 
-const STEPS = ["language", "place", "distance", "cost", "contact", "done"] as const;
+const STEPS = ["language", "place", "cost", "contact", "done"] as const;
 type Step = (typeof STEPS)[number];
 const QUESTION_COUNT = STEPS.length - 1;
 
@@ -21,8 +21,9 @@ const QUESTION_COUNT = STEPS.length - 1;
  * emergency screen; "Call 108" stays in the header throughout.
  *
  * Only questions whose answers change something are asked: language, where
- * to search from, how far they can travel, whether government hospitals come
- * first, and who to call in an emergency. Answers are saved as they're given, so leaving half-way loses nothing.
+ * to search from, whether government hospitals come first, and who to call in
+ * an emergency. Distance is not asked: the recommender weighs it for each kind
+ * of care. Answers are saved as they're given, so leaving half-way loses nothing.
  */
 export function Onboarding() {
   const { t, lang, setLang } = useI18n();
@@ -122,35 +123,6 @@ export function Onboarding() {
               />
             )}
 
-            {step === "distance" && (
-              <Question ask={t.obDistanceAsk}>
-                <div className="choice-grid choice-grid-distance">
-                  {RADIUS_OPTIONS.map((km) => (
-                    <button
-                      key={km}
-                      type="button"
-                      className={`choice ${km === 0 ? "choice-wide" : ""}`}
-                      aria-pressed={draft.radiusKm === km}
-                      onClick={() => {
-                        update({ radiusKm: km });
-                        next();
-                      }}
-                    >
-                      {km === 0 ? (
-                        t.obDistanceAny
-                      ) : (
-                        <>
-                          <strong className="choice-number">{km}</strong>
-                          <span>{t.kmUnit}</span>
-                        </>
-                      )}
-                    </button>
-                  ))}
-                </div>
-                <SkipQuestion onClick={next} />
-              </Question>
-            )}
-
             {step === "cost" && (
               <Question ask={t.obCostAsk}>
                 <div className="choice-grid choice-grid-stack">
@@ -202,16 +174,6 @@ export function Onboarding() {
                   <div>
                     <dt>{t.obSumPlace}</dt>
                     <dd>{draft.location ?? t.obNotSet}</dd>
-                  </div>
-                  <div>
-                    <dt>{t.obSumDistance}</dt>
-                    <dd>
-                      {draft.radiusKm === null
-                        ? t.obNotSet
-                        : draft.radiusKm === 0
-                          ? t.obDistanceAny
-                          : t.within(draft.radiusKm)}
-                    </dd>
                   </div>
                   <div>
                     <dt>{t.obSumCost}</dt>

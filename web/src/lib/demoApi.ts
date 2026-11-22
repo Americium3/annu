@@ -9,6 +9,9 @@ import type {
 const WAIT_TIME_MS = 520;
 const DEMO_RADIUS_KM = 10;
 const DEMO_LIMIT = 8;
+const DEMO_TRAVEL_KM: Record<string, number> = {
+  "kidney-dialysis": 15, "emergency-c-section": 10, nicu: 10, "burn-care": 10, mri: 30, "cardiac-surgery": 60,
+};
 
 interface DemoServiceProfile {
   fieldNames: [string, string, string];
@@ -220,9 +223,28 @@ export async function getDemoRecommendations(
 
   const service = resolveService(input.serviceText);
   const location = resolveLocation(input.locationText);
+  // Same rule as the live recommender: rank score = proof strength x closeness,
+  // weak proof always after solid proof.
+  const travel = DEMO_TRAVEL_KM[service.id] ?? 25;
   const sorted = orderFacilities(demoFacilities)
     .slice(0, DEMO_LIMIT)
-    .map((facility) => adaptFacilityToService(facility, service));
+    .map((facility) => adaptFacilityToService(facility, service))
+    .map((facility) => {
+      const tier = facility.confidence === "high" ? 1 : facility.confidence === "medium" ? 2 : 3;
+      const proof = { 1: 1, 2: 0.8, 3: 0.55 }[tier]!;
+      const closeness = 1 / (1 + (facility.distanceKm / travel) ** 2);
+      const score = proof * closeness;
+      return {
+        ...facility,
+        totalScore: Math.round(score * 100),
+        rankFactors: {
+          proof, closeness: Math.round(closeness * 100) / 100, score: Math.round(score * 100) / 100, travelKm: travel,
+          proofTier: tier, onlyEquipment: false, mentionsOther: false, locationTier: "point_verified",
+          statements: facility.evidence.length, solidProof: proof >= 0.5,
+        },
+      };
+    })
+    .sort((a, b) => Number(b.rankFactors.solidProof) - Number(a.rankFactors.solidProof) || b.rankFactors.score - a.rankFactors.score);
   const requestId = `demo-${Date.now().toString(36)}`;
 
   return {
@@ -255,7 +277,7 @@ export async function getDemoRecommendations(
     })),
     metadata: {
       requestId,
-      rankingVersion: "rules-demo-0.1",
+      rankingVersion: "proof-x-closeness-v3 (demo)",
       generatedAt: new Date().toISOString(),
       totalCandidates: demoFacilities.length,
       returnedCount: sorted.length,
@@ -266,7 +288,6 @@ export async function getDemoRecommendations(
         service.id === "kidney-dialysis"
           ? "Dialysis evidence comes from the detailed hand-authored demo dataset."
           : `The ${service.name} scenario uses frontend-generated demo evidence and is not suitable for real care decisions.`,
-        "ML ranking contract is reserved; this prototype uses explainable mock rules.",
       ],
     },
   };

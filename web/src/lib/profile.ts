@@ -16,8 +16,6 @@ export interface EmergencyContact {
 export interface Profile {
   /** Default search place, e.g. "Bhubaneswar, Odisha". */
   location: string | null;
-  /** Distance cap in km; 0 means "any distance" (the recommender decides). */
-  radiusKm: number | null;
   /** List government hospitals before private ones. */
   governmentFirst: boolean | null;
   emergencyContact: EmergencyContact | null;
@@ -29,14 +27,11 @@ export interface Profile {
 
 export const emptyProfile: Profile = {
   location: null,
-  radiusKm: null,
   governmentFirst: null,
   emergencyContact: null,
   onboardingDone: false,
   promptDismissed: false,
 };
-
-export const RADIUS_OPTIONS = [0, 5, 10, 25, 50];
 
 export function isValidMobile(digits: string) {
   return /^[6-9]\d{9}$/.test(digits);
@@ -48,8 +43,6 @@ function parse(raw: unknown): Profile {
   const contact = value.emergencyContact as Record<string, unknown> | null | undefined;
   return {
     location: typeof value.location === "string" ? value.location.slice(0, 80) : null,
-    radiusKm:
-      typeof value.radiusKm === "number" && RADIUS_OPTIONS.includes(value.radiusKm) ? value.radiusKm : null,
     governmentFirst: typeof value.governmentFirst === "boolean" ? value.governmentFirst : null,
     emergencyContact:
       contact &&

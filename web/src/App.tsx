@@ -10,13 +10,12 @@ import { TrustSection } from "./components/TrustSection";
 import { ApiError, getRecommendations } from "./lib/api";
 import { useI18n } from "./i18n";
 import { withTransition } from "./lib/motion";
-import { profileSnapshot, RADIUS_OPTIONS, useProfile } from "./lib/profile";
+import { profileSnapshot, useProfile } from "./lib/profile";
 import type { RecommendationResponse } from "./types";
 
 const defaultSearch: SearchValues = {
   service: "Kidney dialysis",
   location: "Bhubaneswar, Odisha",
-  radiusKm: 0,
 };
 
 /** Search defaults: the person's saved answers first, then the demo city. */
@@ -25,7 +24,6 @@ function startingSearch(): SearchValues {
   return {
     service: defaultSearch.service,
     location: profile.location ?? defaultSearch.location,
-    radiusKm: profile.radiusKm ?? defaultSearch.radiusKm,
   };
 }
 
@@ -46,24 +44,12 @@ function App() {
     withTransition(() => setSearchParams(next), "emergency");
   }
 
-  function changeRadius(km: number) {
-    setSearchValues((current) => ({ ...current, radiusKm: km }));
-    const next = new URLSearchParams(searchParams);
-    if (km) next.set("radius", String(km));
-    else next.delete("radius");
-    setSearchParams(next, { replace: true });
-  }
 
   const urlSearch = useMemo(() => {
     const start = startingSearch();
     return {
       service: searchParams.get("service") || start.service,
       location: searchParams.get("location") || start.location,
-      // Only a radius actually in the URL counts; Number(null) would read as 0 ("any").
-      radiusKm:
-        searchParams.has("radius") && RADIUS_OPTIONS.includes(Number(searchParams.get("radius")))
-          ? Number(searchParams.get("radius"))
-          : start.radiusKm,
     };
   }, [searchParams]);
 
@@ -78,7 +64,6 @@ function App() {
           {
             service: values.service,
             location: values.location,
-            ...(values.radiusKm ? { radius: String(values.radiusKm) } : {}),
           },
           { replace: true },
         );
@@ -156,7 +141,6 @@ function App() {
             <SearchPanel
               initialService={searchValues.service}
               initialLocation={searchValues.location}
-              radiusKm={searchValues.radiusKm}
               isLoading={isLoading}
               onSearch={handleSearch}
             />
@@ -202,8 +186,6 @@ function App() {
           isLoading={isLoading}
           selectedId={selectedId}
           onSelectedIdChange={setSelectedId}
-          radiusKm={searchValues.radiusKm}
-          onRadiusChange={changeRadius}
           governmentFirst={profile.governmentFirst === true}
         />
         <TrustSection />

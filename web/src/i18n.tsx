@@ -133,7 +133,7 @@ const en = {
   scoreCapacity: "Capacity details",
   scorePenalty: "Deducted for weak proof",
   scoreDisclaimer:
-    "The score sums up the signals the ranking uses. The order itself follows evidence-first rules: evidence, then distance, then how well the location is confirmed. Scores do not rate medical quality, safety or outcomes.",
+    "The rank score compares hospitals for this search only. It does not rate medical quality, safety or outcomes.",
   proofTitle: "The proof",
   items: (n: number) => `${n} ${n === 1 ? "item" : "items"}`,
   polarityPositive: "Supports",
@@ -155,17 +155,22 @@ const en = {
   // how it works
   howTitle: "How CarePath ranks hospitals",
   howLede:
-    "A list is only useful if you can see why each place is on it. Every result shows its proof, and what we could not check.",
+    "From about 10,000 facility records to a short list, in five steps. Every result links to the statements and sources it rests on.",
   howRaahi: "If we aren't sure, we will say so.",
-  how1Title: "We match the care you asked for",
-  how1Body: "Including other names for it, so “kidney machine” still finds dialysis.",
-  how2Title: "We check where the hospital is",
-  how2Body: "The address, PIN code and map location must agree before we show distance.",
-  how3Title: "We read the proof",
+  how1Title: "Match the care you asked for",
+  how1Body: "Your words are matched to one of 100 kinds of care, including other names for it.",
+  how2Title: "Set aside records we can't trust",
+  how2Body:
+    "Records that merge two facilities, contradict their own location, or describe another institution are not recommended.",
+  how3Title: "Score the proof",
   how3Body:
-    "Hospital websites and government listings count for more than directories or social media.",
-  how4Title: "We show what's missing",
-  how4Body: "Old records, conflicting details and missing information stay visible on every card.",
+    "Clear statements that a facility offers the care score highest; a single mention or equipment alone scores lower, and so does a location known only by PIN code.",
+  how4Title: "Weigh the distance for this kind of care",
+  how4Body:
+    "Closeness halves at about 10 km for emergencies and births, 15 km for dialysis and routine care, 30 km for scans and 60 km for planned surgery.",
+  how5Title: "Rank by proof × closeness",
+  how5Body:
+    "The two are multiplied into one rank score. Weak proof is always listed after solid proof, however close it is, and anything we couldn't confirm is flagged.",
 
   // emergency
   emergencyDoorTitle: "Emergency?",
@@ -260,7 +265,7 @@ const en = {
   siDone: "You're signed in.",
 
   // sentence search & board
-  searchTemplate: ["I need", "{service}", "near", "{place}", "{distance}", "."],
+  searchTemplate: ["I need", "{service}", "near", "{place}", "."],
   raahiFill: "Namaste! Just fill in the blanks.",
   raahiSetupPre: "Namaste! Fill in the blanks, or",
   raahiSetupLink: "let me set things up",
@@ -284,8 +289,25 @@ const en = {
   obDistanceAny: "Any distance is fine",
   kmUnit: "km",
 
+  rankTitle: "Why it's ranked here",
+  rankLede: (rank: number) => `Rank ${rank}. Every hospital gets a rank score: proof strength × closeness.`,
+  proofLabel: "Proof strength",
+  closenessLabel: "Closeness",
+  proofTier1: "Its records clearly state that it offers this service.",
+  proofTier2: "Its records state it, with less supporting detail.",
+  proofTier3: "Only one statement mentions this service.",
+  proofEquipment: "Only equipment is mentioned, not the service itself.",
+  proofOther: "Some statements also name another institution.",
+  proofLocVerified: "Its location agrees with its PIN code.",
+  proofLocUnverified: "Its location could not be cross-checked with its PIN code.",
+  proofLocPin: "Its location is known only to PIN-code area.",
+  closenessNote: (km: string, travel: number) =>
+    `${km} km away. For this kind of care, up to about ${travel} km still counts as near.`,
+  rankFormula: (proof: number, closeness: number, score: number) =>
+    `Proof ${proof} × closeness ${closeness} = rank score ${score}`,
+  rankWeak: "Weak proof: listed after every hospital with solid proof, however close it is.",
   // footer
-  footerNote: "A research prototype. Not medical advice. In an emergency, call 108.",
+  footerNote: "Not medical advice. In an emergency, call 108.",
   footerMethod: "How ranking works",
 };
 
@@ -405,7 +427,7 @@ const hi: Dict = {
   scoreCapacity: "क्षमता की जानकारी",
   scorePenalty: "कमज़ोर सबूत के लिए कटौती",
   scoreDisclaimer:
-    "स्कोर उन्हीं संकेतों का सार है जिनसे क्रम तय होता है। क्रम सबूत-पहले नियमों से बनता है: पहले सबूत, फिर दूरी, फिर लोकेशन कितनी पक्की है। स्कोर इलाज की गुणवत्ता, सुरक्षा या नतीजों को नहीं आँकता।",
+    "स्कोर सिर्फ़ इस खोज के अस्पतालों की तुलना करता है। यह इलाज की गुणवत्ता, सुरक्षा या नतीजों को नहीं आँकता।",
   proofTitle: "सबूत",
   items: (n) => `${n} चीज़ें`,
   polarityPositive: "समर्थन करता है",
@@ -426,16 +448,18 @@ const hi: Dict = {
 
   howTitle: "CarePath अस्पतालों का क्रम कैसे तय करता है",
   howLede:
-    "सूची तभी काम की है जब आप देख सकें कि हर अस्पताल उसमें क्यों है। हर नतीजा अपना सबूत दिखाता है, और वह भी जो हम जाँच नहीं सके।",
+    "करीब 10,000 रिकॉर्ड से एक छोटी सूची तक, पाँच चरणों में। हर नतीजा उन बयानों और स्रोतों से जुड़ा है जिन पर वह टिका है।",
   howRaahi: "अगर हमें पक्का नहीं पता, तो हम साफ़ बताएँगे।",
   how1Title: "आपने जो इलाज माँगा, उससे मिलान",
-  how1Body: "उसके दूसरे नामों से भी, ताकि “किडनी मशीन” लिखने पर भी डायलिसिस मिले।",
-  how2Title: "अस्पताल कहाँ है, इसकी जाँच",
-  how2Body: "दूरी दिखाने से पहले पता, पिन कोड और नक्शे की लोकेशन मेल खानी चाहिए।",
-  how3Title: "सबूत पढ़ना",
-  how3Body: "अस्पताल की वेबसाइट और सरकारी सूचियों को डायरेक्टरी या सोशल मीडिया से ज़्यादा महत्व मिलता है।",
-  how4Title: "जो नहीं मिला, वह भी दिखाना",
-  how4Body: "पुराने रिकॉर्ड, उलटी जानकारी और छूटी हुई बातें हर कार्ड पर दिखती हैं।",
+  how1Body: "आपके शब्द 100 तरह के इलाज में से एक से मिलाए जाते हैं, उनके दूसरे नामों समेत।",
+  how2Title: "भरोसे लायक न होने वाले रिकॉर्ड अलग",
+  how2Body: "जो रिकॉर्ड दो संस्थाओं को मिला देते हैं, अपनी ही लोकेशन से टकराते हैं, या किसी और संस्था का ब्योरा देते हैं, उनकी सिफ़ारिश नहीं होती।",
+  how3Title: "सबूत को अंक",
+  how3Body: "साफ़ बयान कि यह इलाज मिलता है, सबसे ज़्यादा अंक पाता है; सिर्फ़ एक ज़िक्र या सिर्फ़ उपकरण कम पाते हैं, और सिर्फ़ पिन कोड वाली लोकेशन भी।",
+  how4Title: "इलाज के हिसाब से दूरी का वज़न",
+  how4Body: "इमरजेंसी और प्रसव के लिए करीब 10 किमी, डायलिसिस और रोज़मर्रा के इलाज के लिए 15 किमी, जाँच के लिए 30 किमी और तय सर्जरी के लिए 60 किमी पर नज़दीकी आधी हो जाती है।",
+  how5Title: "सबूत × नज़दीकी से क्रम",
+  how5Body: "दोनों को गुणा करके एक स्कोर बनता है। कमज़ोर सबूत हमेशा पक्के सबूत के बाद आता है, चाहे कितना भी पास हो, और जो पक्का नहीं हो सका वह दिखाया जाता है।",
 
   emergencyDoorTitle: "इमरजेंसी?",
   emergencyDoorBody: "108 पर कॉल करें और सबसे पास के अस्पताल देखें",
@@ -526,7 +550,7 @@ const hi: Dict = {
   siSkip: "बिना साइन इन के आगे बढ़ें",
   siDone: "आप साइन इन हो गए।",
 
-  searchTemplate: ["मुझे", "{place}", "के पास", "{distance}", "{service}", "चाहिए।"],
+  searchTemplate: ["मुझे", "{place}", "के पास", "{service}", "चाहिए।"],
   raahiFill: "नमस्ते! बस खाली जगह भरिए।",
   raahiSetupPre: "नमस्ते! खाली जगह भरिए, या",
   raahiSetupLink: "मुझसे सेट करवाइए",
@@ -549,7 +573,22 @@ const hi: Dict = {
   obDistanceAny: "कोई भी दूरी चलेगी",
   kmUnit: "किमी",
 
-  footerNote: "एक रिसर्च प्रोटोटाइप। डॉक्टरी सलाह नहीं। इमरजेंसी में 108 पर कॉल करें।",
+  rankTitle: "यह इस क्रम पर क्यों है",
+  rankLede: (rank) => `क्रम ${rank}। हर अस्पताल को एक स्कोर मिलता है: सबूत की मज़बूती × नज़दीकी।`,
+  proofLabel: "सबूत की मज़बूती",
+  closenessLabel: "नज़दीकी",
+  proofTier1: "इसके रिकॉर्ड साफ़ बताते हैं कि यह सेवा मिलती है।",
+  proofTier2: "इसके रिकॉर्ड यह बताते हैं, पर कम विवरण के साथ।",
+  proofTier3: "सिर्फ़ एक बयान में इस सेवा का ज़िक्र है।",
+  proofEquipment: "सिर्फ़ उपकरण का ज़िक्र है, सेवा का नहीं।",
+  proofOther: "कुछ बयानों में किसी दूसरी संस्था का नाम भी है।",
+  proofLocVerified: "इसकी लोकेशन इसके पिन कोड से मेल खाती है।",
+  proofLocUnverified: "इसकी लोकेशन पिन कोड से मिलाई नहीं जा सकी।",
+  proofLocPin: "इसकी लोकेशन सिर्फ़ पिन कोड इलाके तक पता है।",
+  closenessNote: (km, travel) => `${km} किमी दूर। इस तरह के इलाज के लिए करीब ${travel} किमी तक पास माना जाता है।`,
+  rankFormula: (proof, closeness, score) => `सबूत ${proof} × नज़दीकी ${closeness} = स्कोर ${score}`,
+  rankWeak: "कमज़ोर सबूत: पक्के सबूत वाले हर अस्पताल के बाद दिखाया गया है, चाहे यह कितना भी पास हो।",
+  footerNote: "डॉक्टरी सलाह नहीं। इमरजेंसी में 108 पर कॉल करें।",
   footerMethod: "रैंकिंग कैसे होती है",
 };
 

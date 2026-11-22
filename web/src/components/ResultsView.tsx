@@ -4,7 +4,6 @@ import { orderFacilities } from "../data/demo";
 import { useMediaQuery } from "../hooks/useMediaQuery";
 import { isGovernment, useI18n } from "../i18n";
 import { withTransition } from "../lib/motion";
-import { RADIUS_OPTIONS } from "../lib/profile";
 import type { RecommendationResponse } from "../types";
 import { BoardRow, TopPick } from "./FacilityCard";
 import { FacilityDetail } from "./FacilityDetail";
@@ -19,9 +18,6 @@ interface ResultsViewProps {
   isLoading: boolean;
   selectedId?: string;
   onSelectedIdChange: (id?: string) => void;
-  /** Distance cap from the search sentence; 0 = any distance. */
-  radiusKm: number;
-  onRadiusChange: (km: number) => void;
   /** From setup: list government hospitals before private ones. */
   governmentFirst: boolean;
 }
@@ -42,18 +38,16 @@ function LoadingResults() {
 }
 
 /**
- * Results answer "which hospital should I go to?". The recommender's list is
- * the starting point; the person's own choices (distance, nearest first,
- * government only, government first) are applied on top of it, in the
- * browser, and every change animates rows to their new places.
+ * Results answer "which hospital should I go to?". The recommender's order
+ * (proof strength x closeness) is the starting point; the person's own view
+ * choices (nearest first, government only, government first) are applied on
+ * top of it, and every change animates rows to their new places.
  */
 export function ResultsView({
   data,
   isLoading,
   selectedId,
   onSelectedIdChange,
-  radiusKm,
-  onRadiusChange,
   governmentFirst,
 }: ResultsViewProps) {
   const [mobileView, setMobileView] = useState<"list" | "map">("list");
@@ -72,8 +66,7 @@ export function ResultsView({
   const facilities = useMemo(() => {
     const filtered = ordered.filter(
       (facility) =>
-        (radiusKm === 0 || facility.distanceKm <= radiusKm) &&
-        (!governmentOnly || isGovernment(facility.operatorType)),
+        !governmentOnly || isGovernment(facility.operatorType),
     );
     // Stable partition: the chosen order still holds inside each group.
     const arranged = governmentFirst
@@ -83,7 +76,7 @@ export function ResultsView({
         ]
       : filtered;
     return arranged.map((facility, index) => ({ ...facility, rank: index + 1 }));
-  }, [governmentFirst, governmentOnly, ordered, radiusKm]);
+  }, [governmentFirst, governmentOnly, ordered]);
 
   const detailFacility = data?.results.find((facility) => facility.id === detailId);
 
@@ -106,14 +99,6 @@ export function ResultsView({
   const service = data?.queryContext.service.displayName ?? "";
   const [top, ...rest] = facilities;
 
-  // Why the list is empty, and the one tap that fixes it.
-  const nearestHidden = ordered
-    .filter((facility) => !governmentOnly || isGovernment(facility.operatorType))
-    .reduce<number | null>(
-      (min, facility) => (min === null ? facility.distanceKm : Math.min(min, facility.distanceKm)),
-      null,
-    );
-  const widenTo = nearestHidden !== null ? (RADIUS_OPTIONS.find((km) => km > 0 && km >= nearestHidden) ?? 0) : 0;
   const noGovernmentAtAll =
     governmentOnly && ordered.length > 0 && !ordered.some((facility) => isGovernment(facility.operatorType));
 
@@ -238,19 +223,6 @@ export function ResultsView({
                       onClick={() => withTransition(() => setGovernmentOnly(false), "reorder")}
                     >
                       {t.showAllHospitals}
-                    </button>
-                  </>
-                ) : radiusKm > 0 && nearestHidden !== null ? (
-                  <>
-                    <RaahiSays mood="concerned" size={56}>
-                      <strong>{t.noneWithin(radiusKm, nearestHidden.toFixed(1))}</strong>
-                    </RaahiSays>
-                    <button
-                      className="secondary-button"
-                      type="button"
-                      onClick={() => withTransition(() => onRadiusChange(widenTo), "reorder")}
-                    >
-                      {widenTo > 0 ? t.showUpTo(widenTo) : t.showAnyDistance}
                     </button>
                   </>
                 ) : (
