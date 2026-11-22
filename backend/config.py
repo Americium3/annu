@@ -1,4 +1,4 @@
-"""Backend settings. Recommender rules mirror facilities_qc/00_config.py + 03_recommender_lib.py (section F)."""
+"""Serving policy and the default cross-encoder reranker configuration."""
 from __future__ import annotations
 
 import os
@@ -17,7 +17,16 @@ DISTANCE_BANDS_KM = [0, 10, 30, 60, 100, 200, 500]
 EMERGENCY_TAG = "emergency-24x7"
 K_MAIN, K_SUPPORT = 3, 2                      # lane A / lane B sizes (as in notebook 70)
 RESULT_LIMIT = 8                              # results returned per search (system setting, not a user input)
-RANKING_VERSION = "service-first-rules-v2"
+RANKING_METHOD = os.environ.get("CAREPATH_RANKING_METHOD", "cross_encoder")
+RANKING_VERSION = "service-first-cross-encoder-v1" if RANKING_METHOD == "cross_encoder" else "service-first-rules-v2"
+CROSS_ENCODER_MODEL = os.environ.get("CAREPATH_CROSS_ENCODER_MODEL", "cross-encoder/ms-marco-MiniLM-L6-v2")
+CROSS_ENCODER_REVISION = os.environ.get("CAREPATH_CROSS_ENCODER_REVISION") or None
+CROSS_ENCODER_DEVICE = os.environ.get("CAREPATH_CROSS_ENCODER_DEVICE", "cpu")
+CROSS_ENCODER_BATCH_SIZE = int(os.environ.get("CAREPATH_CROSS_ENCODER_BATCH_SIZE", "32"))
+CROSS_ENCODER_MAX_LENGTH = int(os.environ.get("CAREPATH_CROSS_ENCODER_MAX_LENGTH", "512"))
+CROSS_ENCODER_MAX_EVIDENCE = 5
+RERANK_WEIGHTS = {"text": .4, "evidence": .3, "distance": .3}
+DISTANCE_DECAY_KM = 30.0
 
 # Extra user wordings → tag id (kept in sync with SERVICE_INPUT_SYNONYMS in facilities_qc/00_config.py)
 SERVICE_INPUT_SYNONYMS = {
