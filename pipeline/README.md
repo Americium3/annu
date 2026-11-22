@@ -33,7 +33,9 @@ procedure, capability and equipment sentences, counted by distinct facility, sur
 common services and conditions. Each tag's patterns were then spot-checked against random
 matched sentences.
 
-## TF-IDF classification (`tfidf_classify.py`)
+## Prudence: TF-IDF classification (`tfidf_classify.py`)
+
+**Prudence** is the name of the service-tag classifier: the curated regex tags graded by TF-IDF.
 
 Regex tags are binary. "Dialysis unit of 20 beds" and a 40-item specialty list that
 happens to include "dialysis" each count as one hit. `tfidf_classify.py` grades them:
@@ -105,6 +107,84 @@ python3 pipeline/crosswalk_taxonomies.py --nucc-csv /tmp/nucc_taxonomy_261.csv
 
 It needs network access to `id.nlm.nih.gov` and `www.nucc.org`.
 
+## Medical vocabulary and search aliases (`medical_vocabulary.py`)
+
+Searching the app with a synonym ("piles", "sugar", "slip disc") used to find nothing: the
+demo knew six services and silently fell back to the first one. This step builds the vocabulary
+for real search from a medical encyclopedia:
+
+- **NLM MeSH 2026** Diseases (C) and Mental Disorders (F03) trees: 5,194 diseases and
+  syndromes with 59,532 official synonyms.
+- **MedlinePlus** health topics: plain-language names ("Piles" → Hemorrhoids, "HBP" →
+  Hypertension). These are used only when MeSH lacks the term.
+- **A small curated list of colloquial English and Hindi terms** common in Indian searches
+  ("high bp", "slip disc", "white patches", "bawaseer", "motiyabind", "madhumeh", "pcod").
+  Each one maps to a MeSH descriptor by name, and the script fails if a name is wrong.
+
+Every name is searched in all 433k evidence sentences. Matching is longest-match-first on word
+boundaries, negated or planned mentions are skipped, and generic words or non-medical senses are
+blocked. For example, "joint" and "grass" are MeSH synonyms of *Marijuana Abuse*.
+
+- **1,347 MeSH conditions appear in the data. 770 found at ≥3 facilities become condition tags**
+  (`mesh:<UI>`). On a random sample of 80 facility–condition pairs, precision was **98.8%**
+  (95% CI 93.3–99.8%).
+- Each condition links to the curated tags whose MeSH descriptor is the same or an ancestor in the
+  MeSH tree. For example, *Hernia, Inguinal* → `hernia`, and *Acute Kidney Injury* →
+  `kidney-failure`.
+- Each condition also has fallback specialties, taken from the curated tag's body-system group or
+  from the MeSH organ branch. Generic "signs and symptoms" branches are used only when nothing
+  more specific exists.
+- `alias_table.csv` holds 32,683 search names, each resolved to one MeSH descriptor, plus the
+  curated tag names.
+
+**Medical corrections from checking the tags against MeSH:**
+
+| Change | Why |
+|---|---|
+| Stroke no longer matches "paralysis" (−48 facilities), and ICD-10 G81 (hemiplegia) was removed | Paralysis can result from stroke but isn't stroke: Bell's palsy, cerebral palsy, spinal injury |
+| Hernia references *Hernia, Abdominal*; slipped disc maps to Spine surgery | MeSH files disc herniation under Hernia, but the Hernia tag means abdominal hernia repair |
+| Cancer excludes benign branches: cysts, fibroids/leiomyoma, lipoma, nevus, adenoma and others | MeSH *Neoplasms* includes benign growths |
+| Skin conditions excludes breast diseases; Mental health excludes psychological sexual dysfunction | MeSH also files these under several parents; clinically they belong to oncology/surgery and urology |
+| Kidney failure includes the general *Renal Insufficiency* | "kidney failure" resolved to it but missed the tag |
+| Women's conditions fall back to gynaecology via MeSH 2026 branches C12.050 and C12.100.250 | MeSH 2026 has no C13 |
+
+## Search resolver and fallback (`search_resolver.py`, `sql/facility_comprehensiveness.sql`)
+
+The resolver first turns the user's text into a vocabulary entry. It tries, in order:
+
+1. An exact alias.
+2. The alias with filler words removed ("piles treatment near me").
+3. The longest alias contained in the text.
+4. A close spelling ("diabetis", "asthama").
+
+It then answers in this order:
+
+1. **Does any facility in the dataset have evidence?** It checks curated service tags graded
+   strong or mention by Prudence, then MeSH condition mentions. (`exists_anywhere`.) The
+   "suggested" grade never counts.
+2. **If yes:** it returns the nearest facilities with that evidence, widening the radius from 50
+   to 200 km. If the only evidence is further away, the nearest facility is still returned
+   (`far: true`), together with the most comprehensive hospital nearby.
+3. **If no:** it returns facilities with a relevant specialty, labelled `match_level: specialty`,
+   not as a match.
+4. **If nothing matches, or the text isn't understood:** it falls back to the most comprehensive
+   hospitals nearby, clearly marked as a fallback.
+
+**Comprehensiveness** is a percentile score among hospitals. It combines specialties (35%),
+documented procedures, capabilities and equipment (25%), beds (20%) and doctors (20%). Missing or
+implausible bed and doctor counts are left out and the weights re-normalised, and tertiary
+centres (medical colleges, AIIMS) get +0.15.
+
+The region is distance from the user, not the district field. The district field is unreliable:
+Malkangiri District HQ Hospital is filed under Kendujhar. Around Bhubaneswar the top five are
+AIIMS Bhubaneswar, SCB Medical College (Cuttack), Hi-Tech Medical College, Utkal Hospital and SUM
+Ultimate Medicare.
+
+```bash
+python3 pipeline/search_resolver.py "bawaseer"          # resolution + exists_anywhere
+python3 -m unittest discover -s pipeline/tests          # 7 tests, synthetic data
+```
+
 ## Publishing to Databricks (`publish_to_databricks.py`)
 
 Writes the catalog into the workspace next to the cleaned tables. It uploads the generated
@@ -133,6 +213,9 @@ python3 pipeline/publish_to_databricks.py
 | `facility_tag_scores.csv` | *(gitignored)* one row per (facility, service tag): class, best probability, best evidence ref |
 | `taxonomy_crosswalk.json` | Each tag with its MeSH / ICD-10 / NUCC references and source metadata |
 | `taxonomy_crosswalk.csv` | One row per (tag, reference), for review |
+| `condition_tags.json` | MeSH conditions found at ≥3 facilities: counts, matched terms, linked curated tags, fallback specialties |
+| `alias_table.csv` | Search name → MeSH descriptor → curated tags, condition tag, fallback specialties |
+| `facility_condition_tags.csv` | *(gitignored)* facility × MeSH condition with evidence refs |
 
 ## Running
 

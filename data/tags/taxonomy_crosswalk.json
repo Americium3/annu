@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generatedAt": "2026-11-21T21:45:21+00:00",
+    "generatedAt": "2026-11-22T03:02:08+00:00",
     "sources": {
       "mesh": {
         "name": "Medical Subject Headings (MeSH), U.S. National Library of Medicine",
@@ -19,7 +19,7 @@
       "count": 100,
       "withMesh": 100,
       "withIcd10": 65,
-      "meshDescriptors": 213
+      "meshDescriptors": 214
     },
     "specialtyTags": {
       "count": 384,
@@ -74,6 +74,19 @@
       "group": "Kidney & urinary",
       "facilityCount": 102,
       "mesh": [
+        {
+          "id": "D051437",
+          "label": "Renal Insufficiency",
+          "treeNumbers": [
+            "C12.050.351.968.419.780",
+            "C12.200.777.419.780",
+            "C12.950.419.780"
+          ],
+          "url": "https://meshb.nlm.nih.gov/record/ui?ui=D051437",
+          "categories": [
+            "C12 Urogenital Diseases"
+          ]
+        },
         {
           "id": "D051436",
           "label": "Renal Insufficiency, Chronic",
@@ -2063,6 +2076,19 @@
             "E02 Therapeutics",
             "E04 Surgical Procedures, Operative"
           ]
+        },
+        {
+          "id": "D007405",
+          "label": "Intervertebral Disc Displacement",
+          "treeNumbers": [
+            "C05.116.900.307",
+            "C23.300.707.952"
+          ],
+          "url": "https://meshb.nlm.nih.gov/record/ui?ui=D007405",
+          "categories": [
+            "C05 Musculoskeletal Diseases",
+            "C23 Pathological Conditions, Signs and Symptoms"
+          ]
         }
       ],
       "icd10": [
@@ -2355,7 +2381,7 @@
       "label": "Stroke",
       "kind": "condition",
       "group": "Brain & nerves",
-      "facilityCount": 360,
+      "facilityCount": 312,
       "mesh": [
         {
           "id": "D020521",
@@ -2380,19 +2406,6 @@
           "categories": [
             "E02 Therapeutics"
           ]
-        },
-        {
-          "id": "D010243",
-          "label": "Paralysis",
-          "treeNumbers": [
-            "C10.597.622",
-            "C23.888.592.636"
-          ],
-          "url": "https://meshb.nlm.nih.gov/record/ui?ui=D010243",
-          "categories": [
-            "C10 Nervous System Diseases",
-            "C23 Pathological Conditions, Signs and Symptoms"
-          ]
         }
       ],
       "icd10": [
@@ -2411,14 +2424,6 @@
           "chapter": "IX",
           "chapterDescription": "Diseases of the circulatory system",
           "url": "https://icd.who.int/browse10/2019/en#/I64"
-        },
-        {
-          "code": "G81",
-          "description": "Hemiplegia",
-          "level": "category",
-          "chapter": "VI",
-          "chapterDescription": "Diseases of the nervous system",
-          "url": "https://icd.who.int/browse10/2019/en#/G81"
         }
       ]
     },
@@ -2814,12 +2819,12 @@
       "facilityCount": 601,
       "mesh": [
         {
-          "id": "D006547",
-          "label": "Hernia",
+          "id": "D046449",
+          "label": "Hernia, Abdominal",
           "treeNumbers": [
-            "C23.300.707"
+            "C23.300.707.374"
           ],
-          "url": "https://meshb.nlm.nih.gov/record/ui?ui=D006547",
+          "url": "https://meshb.nlm.nih.gov/record/ui?ui=D046449",
           "categories": [
             "C23 Pathological Conditions, Signs and Symptoms"
           ]
