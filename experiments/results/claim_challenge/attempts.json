@@ -1,0 +1,1666 @@
+[
+  {
+    "id": "v000",
+    "config": {
+      "method": "rules",
+      "model": "none",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.0,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.2147730139986379
+  },
+  {
+    "id": "v001",
+    "config": {
+      "method": "rules",
+      "model": "none",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.0,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.17611268399923574
+  },
+  {
+    "id": "v002",
+    "config": {
+      "method": "rules",
+      "model": "none",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.0,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.25864055100100813
+  },
+  {
+    "id": "v003",
+    "config": {
+      "method": "rules",
+      "model": "none",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.0,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.2283669730022666
+  },
+  {
+    "id": "v004",
+    "config": {
+      "method": "rules",
+      "model": "none",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.0,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.2644329350005137
+  },
+  {
+    "id": "v005",
+    "config": {
+      "method": "rules",
+      "model": "none",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.0,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.19054239999968559
+  },
+  {
+    "id": "v006",
+    "config": {
+      "method": "rules",
+      "model": "none",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.0,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.34351984500244725
+  },
+  {
+    "id": "v007",
+    "config": {
+      "method": "rules",
+      "model": "none",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.0,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.22158245500031626
+  },
+  {
+    "id": "v008",
+    "config": {
+      "method": "tfidf",
+      "model": "none",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.25,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.18392664099883405
+  },
+  {
+    "id": "v009",
+    "config": {
+      "method": "tfidf",
+      "model": "none",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.25,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.16479125000114436
+  },
+  {
+    "id": "v010",
+    "config": {
+      "method": "tfidf",
+      "model": "none",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.5,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.20883153199974913
+  },
+  {
+    "id": "v011",
+    "config": {
+      "method": "tfidf",
+      "model": "none",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.5,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.16393254099966725
+  },
+  {
+    "id": "v012",
+    "config": {
+      "method": "tfidf",
+      "model": "none",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.75,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.1779899450011726
+  },
+  {
+    "id": "v013",
+    "config": {
+      "method": "tfidf",
+      "model": "none",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.75,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.17029880699919886
+  },
+  {
+    "id": "v014",
+    "config": {
+      "method": "tfidf",
+      "model": "none",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.25,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.2400538929978211
+  },
+  {
+    "id": "v015",
+    "config": {
+      "method": "tfidf",
+      "model": "none",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.25,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.22402992299976177
+  },
+  {
+    "id": "v016",
+    "config": {
+      "method": "tfidf",
+      "model": "none",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.5,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.2296575699983805
+  },
+  {
+    "id": "v017",
+    "config": {
+      "method": "tfidf",
+      "model": "none",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.5,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.23681880999720306
+  },
+  {
+    "id": "v018",
+    "config": {
+      "method": "tfidf",
+      "model": "none",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.75,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.23045077999995556
+  },
+  {
+    "id": "v019",
+    "config": {
+      "method": "tfidf",
+      "model": "none",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.75,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.22650569899997208
+  },
+  {
+    "id": "v020",
+    "config": {
+      "method": "tfidf",
+      "model": "none",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.25,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.2379489539998758
+  },
+  {
+    "id": "v021",
+    "config": {
+      "method": "tfidf",
+      "model": "none",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.25,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.20850236899786978
+  },
+  {
+    "id": "v022",
+    "config": {
+      "method": "tfidf",
+      "model": "none",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.5,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.19811747999847285
+  },
+  {
+    "id": "v023",
+    "config": {
+      "method": "tfidf",
+      "model": "none",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.5,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.24611396999898716
+  },
+  {
+    "id": "v024",
+    "config": {
+      "method": "tfidf",
+      "model": "none",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.75,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.1973711499995261
+  },
+  {
+    "id": "v025",
+    "config": {
+      "method": "tfidf",
+      "model": "none",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.75,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.19978580500173848
+  },
+  {
+    "id": "v026",
+    "config": {
+      "method": "tfidf",
+      "model": "none",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.25,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.26125682900237734
+  },
+  {
+    "id": "v027",
+    "config": {
+      "method": "tfidf",
+      "model": "none",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.25,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.22770732099888846
+  },
+  {
+    "id": "v028",
+    "config": {
+      "method": "tfidf",
+      "model": "none",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.5,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.31722604999959003
+  },
+  {
+    "id": "v029",
+    "config": {
+      "method": "tfidf",
+      "model": "none",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.5,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.25290347499685595
+  },
+  {
+    "id": "v030",
+    "config": {
+      "method": "tfidf",
+      "model": "none",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.75,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.2645756359997904
+  },
+  {
+    "id": "v031",
+    "config": {
+      "method": "tfidf",
+      "model": "none",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.75,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.24030586200024118
+  },
+  {
+    "id": "v032",
+    "config": {
+      "method": "bm25",
+      "model": "none",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.25,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.19064924600024824
+  },
+  {
+    "id": "v033",
+    "config": {
+      "method": "bm25",
+      "model": "none",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.25,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.2012745799984259
+  },
+  {
+    "id": "v034",
+    "config": {
+      "method": "bm25",
+      "model": "none",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.5,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.18320497300010175
+  },
+  {
+    "id": "v035",
+    "config": {
+      "method": "bm25",
+      "model": "none",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.5,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.1852079700001923
+  },
+  {
+    "id": "v036",
+    "config": {
+      "method": "bm25",
+      "model": "none",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.75,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.17698869200103218
+  },
+  {
+    "id": "v037",
+    "config": {
+      "method": "bm25",
+      "model": "none",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.75,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.23388843900102074
+  },
+  {
+    "id": "v038",
+    "config": {
+      "method": "bm25",
+      "model": "none",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.25,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.2413889770032256
+  },
+  {
+    "id": "v039",
+    "config": {
+      "method": "bm25",
+      "model": "none",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.25,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.2285918590023357
+  },
+  {
+    "id": "v040",
+    "config": {
+      "method": "bm25",
+      "model": "none",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.5,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.2275916779981344
+  },
+  {
+    "id": "v041",
+    "config": {
+      "method": "bm25",
+      "model": "none",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.5,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.2547829110008024
+  },
+  {
+    "id": "v042",
+    "config": {
+      "method": "bm25",
+      "model": "none",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.75,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.2519220130016038
+  },
+  {
+    "id": "v043",
+    "config": {
+      "method": "bm25",
+      "model": "none",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.75,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.37727289099711925
+  },
+  {
+    "id": "v044",
+    "config": {
+      "method": "bm25",
+      "model": "none",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.25,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.2899496070021996
+  },
+  {
+    "id": "v045",
+    "config": {
+      "method": "bm25",
+      "model": "none",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.25,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.22646159100258956
+  },
+  {
+    "id": "v046",
+    "config": {
+      "method": "bm25",
+      "model": "none",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.5,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.23666479700113996
+  },
+  {
+    "id": "v047",
+    "config": {
+      "method": "bm25",
+      "model": "none",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.5,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.2341905230023258
+  },
+  {
+    "id": "v048",
+    "config": {
+      "method": "bm25",
+      "model": "none",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.75,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.2333237620005093
+  },
+  {
+    "id": "v049",
+    "config": {
+      "method": "bm25",
+      "model": "none",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.75,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.264556973001163
+  },
+  {
+    "id": "v050",
+    "config": {
+      "method": "bm25",
+      "model": "none",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.25,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.4914197170000989
+  },
+  {
+    "id": "v051",
+    "config": {
+      "method": "bm25",
+      "model": "none",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.25,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.29052415499972994
+  },
+  {
+    "id": "v052",
+    "config": {
+      "method": "bm25",
+      "model": "none",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.5,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.22450557500269497
+  },
+  {
+    "id": "v053",
+    "config": {
+      "method": "bm25",
+      "model": "none",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.5,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.21815540399984457
+  },
+  {
+    "id": "v054",
+    "config": {
+      "method": "bm25",
+      "model": "none",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.75,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.22811335000005784
+  },
+  {
+    "id": "v055",
+    "config": {
+      "method": "bm25",
+      "model": "none",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.75,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.21401495899772272
+  },
+  {
+    "id": "v056",
+    "config": {
+      "method": "bi_encoder",
+      "model": "none",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.25,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 10.076396878997912
+  },
+  {
+    "id": "v057",
+    "config": {
+      "method": "bi_encoder",
+      "model": "none",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.25,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.18892917400080478
+  },
+  {
+    "id": "v058",
+    "config": {
+      "method": "bi_encoder",
+      "model": "none",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.5,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.1887524179983302
+  },
+  {
+    "id": "v059",
+    "config": {
+      "method": "bi_encoder",
+      "model": "none",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.5,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.18815563099997235
+  },
+  {
+    "id": "v060",
+    "config": {
+      "method": "bi_encoder",
+      "model": "none",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.75,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.20525849200203083
+  },
+  {
+    "id": "v061",
+    "config": {
+      "method": "bi_encoder",
+      "model": "none",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.75,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.19594809200134478
+  },
+  {
+    "id": "v062",
+    "config": {
+      "method": "bi_encoder",
+      "model": "none",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.25,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.5232320950017311
+  },
+  {
+    "id": "v063",
+    "config": {
+      "method": "bi_encoder",
+      "model": "none",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.25,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.2484111949997896
+  },
+  {
+    "id": "v064",
+    "config": {
+      "method": "bi_encoder",
+      "model": "none",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.5,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.24871429899940267
+  },
+  {
+    "id": "v065",
+    "config": {
+      "method": "bi_encoder",
+      "model": "none",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.5,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.24029465099738445
+  },
+  {
+    "id": "v066",
+    "config": {
+      "method": "bi_encoder",
+      "model": "none",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.75,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.25513649500135216
+  },
+  {
+    "id": "v067",
+    "config": {
+      "method": "bi_encoder",
+      "model": "none",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.75,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.2674510030010424
+  },
+  {
+    "id": "v068",
+    "config": {
+      "method": "bi_encoder",
+      "model": "none",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.25,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.5103629530021863
+  },
+  {
+    "id": "v069",
+    "config": {
+      "method": "bi_encoder",
+      "model": "none",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.25,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.21173766300125862
+  },
+  {
+    "id": "v070",
+    "config": {
+      "method": "bi_encoder",
+      "model": "none",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.5,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.22112160799952107
+  },
+  {
+    "id": "v071",
+    "config": {
+      "method": "bi_encoder",
+      "model": "none",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.5,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.21565001099952497
+  },
+  {
+    "id": "v072",
+    "config": {
+      "method": "bi_encoder",
+      "model": "none",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.75,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.21823748400129261
+  },
+  {
+    "id": "v073",
+    "config": {
+      "method": "bi_encoder",
+      "model": "none",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.75,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.2090110149983957
+  },
+  {
+    "id": "v074",
+    "config": {
+      "method": "bi_encoder",
+      "model": "none",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.25,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.5551180820002628
+  },
+  {
+    "id": "v075",
+    "config": {
+      "method": "bi_encoder",
+      "model": "none",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.25,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.2633673179989273
+  },
+  {
+    "id": "v076",
+    "config": {
+      "method": "bi_encoder",
+      "model": "none",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.5,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.24866456399831804
+  },
+  {
+    "id": "v077",
+    "config": {
+      "method": "bi_encoder",
+      "model": "none",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.5,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.2625199279973458
+  },
+  {
+    "id": "v078",
+    "config": {
+      "method": "bi_encoder",
+      "model": "none",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.75,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.2526803920009115
+  },
+  {
+    "id": "v079",
+    "config": {
+      "method": "bi_encoder",
+      "model": "none",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.75,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.24089617500067106
+  },
+  {
+    "id": "v080",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.25,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 1.2434767939994344
+  },
+  {
+    "id": "v081",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.25,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.1921025270021346
+  },
+  {
+    "id": "v082",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.5,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.18509840299884672
+  },
+  {
+    "id": "v083",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.5,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.1909358049997536
+  },
+  {
+    "id": "v084",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.75,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.1900085939996643
+  },
+  {
+    "id": "v085",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.75,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.23453633999815793
+  },
+  {
+    "id": "v086",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.25,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.2903364859994326
+  },
+  {
+    "id": "v087",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.25,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.2562128070021572
+  },
+  {
+    "id": "v088",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.5,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.27803098100048373
+  },
+  {
+    "id": "v089",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.5,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.24906529799773125
+  },
+  {
+    "id": "v090",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.75,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.2484121280031104
+  },
+  {
+    "id": "v091",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.75,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.23226444499960053
+  },
+  {
+    "id": "v092",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.25,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.2475617609998153
+  },
+  {
+    "id": "v093",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.25,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.20024778399965726
+  },
+  {
+    "id": "v094",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.5,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.2067320660025871
+  },
+  {
+    "id": "v095",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.5,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.2511849450020236
+  },
+  {
+    "id": "v096",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.75,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.2327634239991312
+  },
+  {
+    "id": "v097",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.75,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.23070629100038786
+  },
+  {
+    "id": "v098",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.25,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.5654828109982191
+  },
+  {
+    "id": "v099",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.25,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.2664168379997136
+  },
+  {
+    "id": "v100",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.5,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.2750710270011041
+  },
+  {
+    "id": "v101",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.5,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.24623709300067276
+  },
+  {
+    "id": "v102",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.75,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.24378564300059224
+  },
+  {
+    "id": "v103",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.75,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.24060180500237038
+  },
+  {
+    "id": "v104",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-TinyBERT-L2-v2",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.25,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 1.339575579000666
+  },
+  {
+    "id": "v105",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-TinyBERT-L2-v2",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.25,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.20915232799961814
+  },
+  {
+    "id": "v106",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-TinyBERT-L2-v2",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.5,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.19552248800027883
+  },
+  {
+    "id": "v107",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-TinyBERT-L2-v2",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.5,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.20614132700211485
+  },
+  {
+    "id": "v108",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-TinyBERT-L2-v2",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.75,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.1917333929995948
+  },
+  {
+    "id": "v109",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-TinyBERT-L2-v2",
+      "guard": false,
+      "aggregation": "max",
+      "text_weight": 0.75,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.18346404500334756
+  },
+  {
+    "id": "v110",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-TinyBERT-L2-v2",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.25,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.25766048000150477
+  },
+  {
+    "id": "v111",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-TinyBERT-L2-v2",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.25,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.23507387299832772
+  },
+  {
+    "id": "v112",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-TinyBERT-L2-v2",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.5,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.24652922899986152
+  },
+  {
+    "id": "v113",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-TinyBERT-L2-v2",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.5,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.24481620599908638
+  },
+  {
+    "id": "v114",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-TinyBERT-L2-v2",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.75,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.22484892600186868
+  },
+  {
+    "id": "v115",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-TinyBERT-L2-v2",
+      "guard": false,
+      "aggregation": "top2_mean",
+      "text_weight": 0.75,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.2310314769965771
+  },
+  {
+    "id": "v116",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-TinyBERT-L2-v2",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.25,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.24066120999850682
+  },
+  {
+    "id": "v117",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-TinyBERT-L2-v2",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.25,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.2095948509995651
+  },
+  {
+    "id": "v118",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-TinyBERT-L2-v2",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.5,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.21259430300051463
+  },
+  {
+    "id": "v119",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-TinyBERT-L2-v2",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.5,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.21829963600248448
+  },
+  {
+    "id": "v120",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-TinyBERT-L2-v2",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.75,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.2002973970011226
+  },
+  {
+    "id": "v121",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-TinyBERT-L2-v2",
+      "guard": true,
+      "aggregation": "max",
+      "text_weight": 0.75,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.20589936400210718
+  },
+  {
+    "id": "v122",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-TinyBERT-L2-v2",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.25,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.3056844569982786
+  },
+  {
+    "id": "v123",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-TinyBERT-L2-v2",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.25,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.24130737900122767
+  },
+  {
+    "id": "v124",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-TinyBERT-L2-v2",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.5,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.2432983079997939
+  },
+  {
+    "id": "v125",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-TinyBERT-L2-v2",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.5,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.23190547899866942
+  },
+  {
+    "id": "v126",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-TinyBERT-L2-v2",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.75,
+      "distance_decay_km": 15.0
+    },
+    "status": "success",
+    "seconds": 0.23874709099982283
+  },
+  {
+    "id": "v127",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-TinyBERT-L2-v2",
+      "guard": true,
+      "aggregation": "top2_mean",
+      "text_weight": 0.75,
+      "distance_decay_km": 60.0
+    },
+    "status": "success",
+    "seconds": 0.23054392600170104
+  }
+]

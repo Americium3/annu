@@ -1,0 +1,11 @@
+query_id,service,latitude,longitude,split,group_id
+dev-dialysis,dialysis,20.0,80.0,dev,dev-dialysis
+dev-mri,mri,20.0,80.0,dev,dev-mri
+dev-nicu,nicu,20.0,80.0,dev,dev-nicu
+dev-cardiac-surgery,cardiac-surgery,20.0,80.0,dev,dev-cardiac-surgery
+dev-burns,burns,20.0,80.0,dev,dev-burns
+test-dialysis,dialysis,25.0,80.0,test,test-dialysis
+test-mri,mri,25.0,80.0,test,test-mri
+test-nicu,nicu,25.0,80.0,test,test-nicu
+test-cardiac-surgery,cardiac-surgery,25.0,80.0,test,test-cardiac-surgery
+test-burns,burns,25.0,80.0,test,test-burns

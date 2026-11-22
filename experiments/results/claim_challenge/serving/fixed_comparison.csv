@@ -1,0 +1,7 @@
+variant,method,guard,precision_at_3,ndcg_at_3
+baseline,cross_encoder,off,0.2666666666666666,0.2469278726022756
+s002,rules,off,0.6666666666666666,0.7653606369886218
+s013,rules,explicit,0.6666666666666666,0.7653606369886218
+s019,cross_encoder,explicit,0.4666666666666666,0.4469278726022757
+s025,rules,strict,1.0,1.0
+s031,cross_encoder,strict,1.0,1.0

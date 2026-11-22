@@ -1,0 +1,14 @@
+service,source_bucket,examples,strict_kept_before,strict_kept_after,explicit_kept_after
+burns,mention,5,5,5,5
+burns,strong,5,4,5,5
+c-section,mention,5,4,4,5
+c-section,strong,5,5,5,5
+cardiac-surgery,mention,5,5,5,5
+cardiac-surgery,strong,5,5,5,5
+cardiac-surgery,suggested,2,2,2,2
+kidney-dialysis,mention,5,5,5,5
+kidney-dialysis,strong,5,5,5,5
+mri,mention,5,5,5,5
+mri,strong,5,5,5,5
+nicu,mention,5,4,4,5
+nicu,strong,5,5,5,5
