@@ -1,0 +1,2 @@
+method,answered,precision_at_k,precision_returned,ndcg_at_k_pool,candidate_recall_pool,hit_at_k,false_abstention,judged_result_fraction,query_count,answered_n,precision_at_k_n,precision_returned_n,ndcg_at_k_pool_n,candidate_recall_pool_n,hit_at_k_n,false_abstention_n,judged_result_fraction_n,latency_p50_ms,latency_p95_ms,fully_judged_dev
+baseline,1.0,0.26666666666666666,0.26666666666666666,0.24692787260227567,,0.4,0.0,1.0,5,5,5,5,5,0,5,5,5,7.0,7.0,True

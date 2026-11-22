@@ -1,0 +1,434 @@
+[
+  {
+    "id": "baseline",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "off",
+      "text_weight": 0.5714285714285714,
+      "travel_multiplier": 1.0
+    },
+    "status": "success",
+    "seconds": 8.536567336002918
+  },
+  {
+    "id": "s001",
+    "config": {
+      "method": "rules",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "off",
+      "text_weight": 0.0,
+      "travel_multiplier": 0.5
+    },
+    "status": "success",
+    "seconds": 0.04666789299881202
+  },
+  {
+    "id": "s002",
+    "config": {
+      "method": "rules",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "off",
+      "text_weight": 0.0,
+      "travel_multiplier": 1.0
+    },
+    "status": "success",
+    "seconds": 0.03422345999933896
+  },
+  {
+    "id": "s003",
+    "config": {
+      "method": "rules",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "off",
+      "text_weight": 0.0,
+      "travel_multiplier": 2.0
+    },
+    "status": "success",
+    "seconds": 0.037042012001620606
+  },
+  {
+    "id": "s004",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "off",
+      "text_weight": 0.25,
+      "travel_multiplier": 0.5
+    },
+    "status": "success",
+    "seconds": 0.045213379999040626
+  },
+  {
+    "id": "s005",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "off",
+      "text_weight": 0.25,
+      "travel_multiplier": 1.0
+    },
+    "status": "success",
+    "seconds": 0.046717897999769775
+  },
+  {
+    "id": "s006",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "off",
+      "text_weight": 0.25,
+      "travel_multiplier": 2.0
+    },
+    "status": "success",
+    "seconds": 0.06454920800024411
+  },
+  {
+    "id": "s007",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "off",
+      "text_weight": 0.5714285714285714,
+      "travel_multiplier": 0.5
+    },
+    "status": "success",
+    "seconds": 0.06639796400122577
+  },
+  {
+    "id": "s008",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "off",
+      "text_weight": 0.5714285714285714,
+      "travel_multiplier": 2.0
+    },
+    "status": "success",
+    "seconds": 0.062195884998800466
+  },
+  {
+    "id": "s009",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "off",
+      "text_weight": 0.75,
+      "travel_multiplier": 0.5
+    },
+    "status": "success",
+    "seconds": 0.057612553999206284
+  },
+  {
+    "id": "s010",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "off",
+      "text_weight": 0.75,
+      "travel_multiplier": 1.0
+    },
+    "status": "success",
+    "seconds": 0.061092788997484604
+  },
+  {
+    "id": "s011",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "off",
+      "text_weight": 0.75,
+      "travel_multiplier": 2.0
+    },
+    "status": "success",
+    "seconds": 0.06514401100139366
+  },
+  {
+    "id": "s012",
+    "config": {
+      "method": "rules",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "explicit",
+      "text_weight": 0.0,
+      "travel_multiplier": 0.5
+    },
+    "status": "success",
+    "seconds": 0.05125091400259407
+  },
+  {
+    "id": "s013",
+    "config": {
+      "method": "rules",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "explicit",
+      "text_weight": 0.0,
+      "travel_multiplier": 1.0
+    },
+    "status": "success",
+    "seconds": 0.04610378700090223
+  },
+  {
+    "id": "s014",
+    "config": {
+      "method": "rules",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "explicit",
+      "text_weight": 0.0,
+      "travel_multiplier": 2.0
+    },
+    "status": "success",
+    "seconds": 0.0460205209965352
+  },
+  {
+    "id": "s015",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "explicit",
+      "text_weight": 0.25,
+      "travel_multiplier": 0.5
+    },
+    "status": "success",
+    "seconds": 0.05729786200026865
+  },
+  {
+    "id": "s016",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "explicit",
+      "text_weight": 0.25,
+      "travel_multiplier": 1.0
+    },
+    "status": "success",
+    "seconds": 0.057820807000098284
+  },
+  {
+    "id": "s017",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "explicit",
+      "text_weight": 0.25,
+      "travel_multiplier": 2.0
+    },
+    "status": "success",
+    "seconds": 0.05935296700045001
+  },
+  {
+    "id": "s018",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "explicit",
+      "text_weight": 0.5714285714285714,
+      "travel_multiplier": 0.5
+    },
+    "status": "success",
+    "seconds": 0.057334596996952314
+  },
+  {
+    "id": "s019",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "explicit",
+      "text_weight": 0.5714285714285714,
+      "travel_multiplier": 1.0
+    },
+    "status": "success",
+    "seconds": 0.05875792399820057
+  },
+  {
+    "id": "s020",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "explicit",
+      "text_weight": 0.5714285714285714,
+      "travel_multiplier": 2.0
+    },
+    "status": "success",
+    "seconds": 0.05560674300068058
+  },
+  {
+    "id": "s021",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "explicit",
+      "text_weight": 0.75,
+      "travel_multiplier": 0.5
+    },
+    "status": "success",
+    "seconds": 0.05639757999961148
+  },
+  {
+    "id": "s022",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "explicit",
+      "text_weight": 0.75,
+      "travel_multiplier": 1.0
+    },
+    "status": "success",
+    "seconds": 0.06307582599765738
+  },
+  {
+    "id": "s023",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "explicit",
+      "text_weight": 0.75,
+      "travel_multiplier": 2.0
+    },
+    "status": "success",
+    "seconds": 0.058798865000426304
+  },
+  {
+    "id": "s024",
+    "config": {
+      "method": "rules",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "strict",
+      "text_weight": 0.0,
+      "travel_multiplier": 0.5
+    },
+    "status": "success",
+    "seconds": 0.049341827998432564
+  },
+  {
+    "id": "s025",
+    "config": {
+      "method": "rules",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "strict",
+      "text_weight": 0.0,
+      "travel_multiplier": 1.0
+    },
+    "status": "success",
+    "seconds": 0.051291584997670725
+  },
+  {
+    "id": "s026",
+    "config": {
+      "method": "rules",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "strict",
+      "text_weight": 0.0,
+      "travel_multiplier": 2.0
+    },
+    "status": "success",
+    "seconds": 0.05235446100050467
+  },
+  {
+    "id": "s027",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "strict",
+      "text_weight": 0.25,
+      "travel_multiplier": 0.5
+    },
+    "status": "success",
+    "seconds": 0.06095077599820797
+  },
+  {
+    "id": "s028",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "strict",
+      "text_weight": 0.25,
+      "travel_multiplier": 1.0
+    },
+    "status": "success",
+    "seconds": 0.06367639800009783
+  },
+  {
+    "id": "s029",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "strict",
+      "text_weight": 0.25,
+      "travel_multiplier": 2.0
+    },
+    "status": "success",
+    "seconds": 0.05598398900110624
+  },
+  {
+    "id": "s030",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "strict",
+      "text_weight": 0.5714285714285714,
+      "travel_multiplier": 0.5
+    },
+    "status": "success",
+    "seconds": 0.05418189400006668
+  },
+  {
+    "id": "s031",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "strict",
+      "text_weight": 0.5714285714285714,
+      "travel_multiplier": 1.0
+    },
+    "status": "success",
+    "seconds": 0.057947638000769075
+  },
+  {
+    "id": "s032",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "strict",
+      "text_weight": 0.5714285714285714,
+      "travel_multiplier": 2.0
+    },
+    "status": "success",
+    "seconds": 0.05763000100341742
+  },
+  {
+    "id": "s033",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "strict",
+      "text_weight": 0.75,
+      "travel_multiplier": 0.5
+    },
+    "status": "success",
+    "seconds": 0.05645459499646677
+  },
+  {
+    "id": "s034",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "strict",
+      "text_weight": 0.75,
+      "travel_multiplier": 1.0
+    },
+    "status": "success",
+    "seconds": 0.057579485001042485
+  },
+  {
+    "id": "s035",
+    "config": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "strict",
+      "text_weight": 0.75,
+      "travel_multiplier": 2.0
+    },
+    "status": "success",
+    "seconds": 0.05519304200061015
+  }
+]

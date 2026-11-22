@@ -1,0 +1,2 @@
+method,answered,precision_at_k,precision_returned,ndcg_at_k_pool,candidate_recall_pool,hit_at_k,false_abstention,judged_result_fraction,query_count,answered_n,precision_at_k_n,precision_returned_n,ndcg_at_k_pool_n,candidate_recall_pool_n,hit_at_k_n,false_abstention_n,judged_result_fraction_n,latency_p50_ms,latency_p95_ms,precompute_seconds
+v000,1.0,0.6666666666666666,0.6666666666666666,0.7653606369886218,1.0,1.0,0.0,1.0,5,5,5,5,5,5,5,5,5,31.400533000123687,32.84341059988947,0.0018983539994223975

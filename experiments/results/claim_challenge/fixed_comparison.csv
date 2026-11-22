@@ -1,0 +1,13 @@
+variant,method,model,guard,precision_at_3,ndcg_at_3
+v000,rules,none,False,0.6666666666666666,0.7653606369886218
+v004,rules,none,True,1.0,1.0
+v010,tfidf,none,False,0.6666666666666666,0.7653606369886218
+v022,tfidf,none,True,1.0,1.0
+v034,bm25,none,False,0.4,0.5284951082159296
+v046,bm25,none,True,1.0,1.0
+v058,bi_encoder,none,False,0.4666666666666666,0.4938557452045513
+v070,bi_encoder,none,True,1.0,1.0
+v082,cross_encoder,cross-encoder/ms-marco-MiniLM-L6-v2,False,0.5333333333333333,0.5530721273977244
+v094,cross_encoder,cross-encoder/ms-marco-MiniLM-L6-v2,True,1.0,1.0
+v106,cross_encoder,cross-encoder/ms-marco-TinyBERT-L2-v2,False,0.6,0.6245770191817949
+v118,cross_encoder,cross-encoder/ms-marco-TinyBERT-L2-v2,True,1.0,1.0
