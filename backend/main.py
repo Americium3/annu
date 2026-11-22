@@ -14,7 +14,8 @@ from pydantic import BaseModel, ConfigDict, Field
 from data_store import get_snapshot
 from recommender import LocationNotFound, Recommender, ServiceNotFound
 from cross_encoder import CrossEncoderError
-from nlu import Understander
+from judge import EvidenceJudge
+from nlu import LlmClient, Understander
 
 STATE: dict = {}
 
@@ -25,11 +26,16 @@ async def lifespan(app: FastAPI):
     rec = Recommender(snap)
     rec.warmup()  # Fail startup visibly if the default model cannot load; no rule fallback.
     STATE["rec"] = rec
-    try:
-        STATE["nlu"] = Understander(known_place=rec.known_place)
-    except Exception as exc:  # no model endpoint reachable/configured: rules-only understanding, stated in /api/health
-        print(f"LLM understanding unavailable ({type(exc).__name__}); using rules only", file=sys.stderr)
-        STATE["nlu"] = Understander(known_place=rec.known_place, llm=False)
+    # One language model (a Databricks serving endpoint) for both LLM steps: reading the request (nlu.py) and
+    # judging the top hospitals' own records (judge.py). Without it, both fall back to rules, stated in /api/health.
+    llm = None
+    if os.environ.get("CAREPATH_LLM_ENDPOINT"):
+        try:
+            llm = LlmClient(os.environ["CAREPATH_LLM_ENDPOINT"])
+        except Exception as exc:
+            print(f"LLM unavailable ({type(exc).__name__}); using rules only", file=sys.stderr)
+    STATE["nlu"] = Understander(known_place=rec.known_place, llm=llm or False)
+    rec.judge = EvidenceJudge(llm) if llm else None
     print(f"CarePath API ready – data: {snap.source}", file=sys.stderr)
     yield
 
@@ -54,6 +60,9 @@ class RecommendationRequest(BaseModel):
     locationText: str = Field(default="", max_length=200)
     coordinates: Coordinates | None = None
     urgency: int | None = Field(default=None, ge=1, le=4)
+    # Let the language model read the top hospitals' records and judge them (slower; the page asks after showing
+    # the rules ranking, then animates the change).
+    judge: bool = False
 
 
 class AskRequest(BaseModel):
@@ -69,7 +78,8 @@ class AskRequest(BaseModel):
 def health():
     rec: Recommender = STATE["rec"]
     return {"status": "ok", "data": rec.snap.source, "facilityServiceRows": len(rec.index), "services": len(rec.tags),
-            "ranking": rec.ranking_info(), "understanding": STATE["nlu"].info() if "nlu" in STATE else None}
+            "ranking": rec.ranking_info(), "understanding": STATE["nlu"].info() if "nlu" in STATE else None,
+            "judge": rec.judge.info() if rec.judge else None}
 
 
 @app.get("/api/services")
@@ -86,7 +96,8 @@ def locations(q: str = Query(default="", max_length=100)):
 def recommendations(req: RecommendationRequest):
     try:
         return STATE["rec"].recommend(req.serviceText, req.locationText,
-                                      req.coordinates.model_dump() if req.coordinates else None, req.urgency)
+                                      req.coordinates.model_dump() if req.coordinates else None, req.urgency,
+                                      req.judge)
     except ServiceNotFound as e:
         raise HTTPException(422, {"field": "service", "message": str(e), "suggestions": e.suggestions})
     except LocationNotFound as e:

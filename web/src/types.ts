@@ -111,6 +111,22 @@ export interface RankFactors {
   textMatch?: number | null;
   /** 0-1 evidence strength: proof alone, or blended with text match. */
   evidence?: number;
+  /** The language model's verdict on this hospital's own record lines, when it judged them. */
+  llmVerdict?: JudgeVerdict | null;
+}
+
+export type JudgeVerdict = "offers" | "likely" | "mentions_only" | "equipment_only" | "not_supported";
+
+/** A language model read this hospital's record lines for the care asked (backend/judge.py). */
+export interface Judgement {
+  verdict: JudgeVerdict;
+  /** Record field the deciding line came from: procedure, capability, equipment, specialty, description. */
+  field: string;
+  /** The model's quote, found verbatim in `line`. */
+  quote: string;
+  line: string;
+  reason: string;
+  model: string | null;
 }
 
 export interface FacilityRecommendation {
@@ -136,6 +152,7 @@ export interface FacilityRecommendation {
   confidence: ConfidenceLevel;
   recommendationSummary: string;
   scoreBreakdown: ScoreBreakdown;
+  judgement?: Judgement;
   reranking?: {
     method: "cross_encoder";
     model: string;
@@ -173,6 +190,8 @@ export interface RecommendationResponse {
     isPartialResult: boolean;
     executionTimeMs: number;
     warnings: string[];
+    /** Whether the language model judged the top hospitals' records for this response. */
+    judge?: { used: boolean; available: boolean; model?: string; asked?: number; judged?: number; error?: string };
     funnel?: {
       datasetProviders: number;
       datasetRecommendable: number;
@@ -218,6 +237,8 @@ export interface AskResponse {
     span?: AskSpan;
   };
   care: (CareRef & { source: string; span?: AskSpan }) | null;
+  /** What the person described (a symptom, or a disease they named), never a guessed cause. */
+  condition?: { name: string; nameHi?: string | null; source: string; span?: AskSpan } | null;
   /** A broad word ("kidney") fits several kinds of care: the person picks one. */
   careOptions: CareRef[];
   careOptionsSpan?: AskSpan;

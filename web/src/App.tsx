@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { AskRaahi } from "./components/AskRaahi";
 import { EmergencyView, type EmergencyReason } from "./components/EmergencyView";
@@ -10,7 +10,7 @@ import { SearchPanel, type SearchValues } from "./components/SearchPanel";
 import { TrustSection } from "./components/TrustSection";
 import { Understood, type Coordinates } from "./components/Understood";
 import { careTerm } from "./data/careTerms";
-import { ApiError, ask, getRecommendations, USE_DEMO } from "./lib/api";
+import { ApiError, ask, getRecommendations, USE_DEMO, type SearchInput } from "./lib/api";
 import { findDemoLocation } from "./lib/demoApi";
 import { useI18n } from "./i18n";
 import { withTransition } from "./lib/motion";
@@ -40,6 +40,8 @@ function App() {
   const [error, setError] = useState<ApiError>();
   const [selectedId, setSelectedId] = useState<string>();
   const [reason, setReason] = useState<EmergencyReason>();
+  const [judging, setJudging] = useState(false);
+  const judgeSeq = useRef(0);
   const [mode, setMode] = useState<"ask" | "pick">(searchParams.get("service") ? "pick" : "ask");
   const emergency = searchParams.get("mode") === "emergency";
   const query = searchParams.get("q") ?? "";
@@ -60,24 +62,51 @@ function App() {
     withTransition(() => setSearchParams(next), "emergency");
   }
 
+  /**
+   * Second pass: the rules ranking is already on screen; ask the backend to let the language model read the top
+   * hospitals' own records (backend/judge.py), then glide the rows into the judged order. A newer search cancels it.
+   */
+  const judge = useCallback((input: SearchInput, response?: RecommendationResponse) => {
+    const seq = ++judgeSeq.current;
+    setJudging(false);
+    const meta = response?.metadata.judge;
+    if (USE_DEMO || !response?.results.length || !meta?.available || meta.used) return;
+    setJudging(true);
+    getRecommendations({ ...input, judge: true })
+      .then((judged) => {
+        if (seq !== judgeSeq.current) return;
+        withTransition(() => {
+          setData(judged);
+          setAnswer((current) => (current?.next === "results" ? { ...current, results: judged } : current));
+        }, "reorder");
+      })
+      .catch(() => undefined) // the rules ranking stays; nothing to tell the person
+      .finally(() => {
+        if (seq === judgeSeq.current) setJudging(false);
+      });
+  }, []);
+
   /** Structured search once care and place are known (from the text, a follow-up, or a change). */
   const search = useCallback(async (current: AskResponse, coords?: Coordinates) => {
     if (!current.care) return withTransition(() => setAnswer({ ...current, next: "ask_care" }), "ask");
     if (!current.place?.text && !coords) return withTransition(() => setAnswer({ ...current, next: "ask_place" }), "ask");
     setIsLoading(true);
+    judge({ serviceText: "", locationText: "" }); // cancel any pending second pass
+    const input: SearchInput = {
+      serviceText: current.care.id,
+      locationText: current.place?.text ?? "",
+      coordinates: coords,
+      urgency: current.urgency.level,
+    };
     try {
-      const results = await getRecommendations({
-        serviceText: current.care.id,
-        locationText: current.place?.text ?? "",
-        coordinates: coords,
-        urgency: current.urgency.level,
-      });
+      const results = await getRecommendations(input);
       withTransition(() => {
         setAnswer({ ...current, next: "results", results });
         setData(results);
         setSelectedId(undefined);
       }, "ask");
       setError(undefined);
+      judge(input, results);
     } catch (caught) {
       const failure = caught instanceof ApiError ? caught : new ApiError(String(caught));
       if (failure.field === "location") {
@@ -89,12 +118,13 @@ function App() {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [judge]);
 
   const runAsk = useCallback(
     async (text: string) => {
       setIsLoading(true);
       setError(undefined);
+      judge({ serviceText: "", locationText: "" }); // cancel any pending second pass
       setSearchParams({ q: text }, { replace: true });
       try {
         const response = await ask({ text, locationText: profile.location ?? "" });
@@ -116,6 +146,16 @@ function App() {
           setData(response.results);
           setSelectedId(undefined);
         }, "ask");
+        if (response.care && response.results) {
+          judge(
+            {
+              serviceText: response.care.id,
+              locationText: response.place?.text ?? profile.location ?? "",
+              urgency: response.urgency.level,
+            },
+            response.results,
+          );
+        }
       } catch (caught) {
         setError(caught instanceof ApiError ? caught : new ApiError(String(caught)));
         setAnswer(undefined);
@@ -124,7 +164,7 @@ function App() {
         setIsLoading(false);
       }
     },
-    [openEmergency, profile.location, setSearchParams],
+    [judge, openEmergency, profile.location, setSearchParams],
   );
 
   // A shared link (?q=...) asks again on load; an old two-blank link (?service=&location=) searches directly.
@@ -139,15 +179,17 @@ function App() {
   async function runStructured(values: SearchValues) {
     setIsLoading(true);
     setSearchParams({ service: values.service, location: values.location }, { replace: true });
+    const input: SearchInput = {
+      serviceText: values.service,
+      locationText: values.location,
+      coordinates: values.coordinates,
+    };
     try {
-      const results = await getRecommendations({
-        serviceText: values.service,
-        locationText: values.location,
-        coordinates: values.coordinates,
-      });
+      const results = await getRecommendations(input);
       setAnswer(undefined);
       setData(results);
       setError(undefined);
+      judge(input, results);
     } catch (caught) {
       setData(undefined);
       setError(caught instanceof ApiError ? caught : new ApiError(String(caught)));
@@ -287,6 +329,7 @@ function App() {
           </section>
         )}
         <ResultsView
+          judging={judging}
           data={data}
           isLoading={isLoading && (mode === "pick" || answer?.next === "results")}
           selectedId={selectedId}

@@ -14,6 +14,7 @@ export function SaidText({ answer }: { answer: AskResponse }) {
   const marks = [
     answer.urgency.span && answer.urgency.level < 4 ? { span: answer.urgency.span, kind: "urgent" } : null,
     answer.care?.span ? { span: answer.care.span, kind: "care" } : null,
+    answer.condition?.span ? { span: answer.condition.span, kind: "care" } : null,
     answer.careOptionsSpan ? { span: answer.careOptionsSpan, kind: "care" } : null,
     answer.place?.span ? { span: answer.place.span, kind: "place" } : null,
   ]
@@ -229,6 +230,15 @@ export function Understood({
       </RaahiSays>
 
       <dl className="understood-rows">
+        {answer.condition && (lang !== "hi" || answer.condition.nameHi) && (
+          <div className="understood-row is-found" style={{ "--i": 0 } as React.CSSProperties}>
+            <dt>{t.rowDescribed}</dt>
+            <dd>
+              <strong>{lang === "hi" ? answer.condition.nameHi : answer.condition.name}</strong>
+              {answer.condition.span && <small>{t.fromWords(answer.condition.span.quote)}</small>}
+            </dd>
+          </div>
+        )}
         <div className={`understood-row ${care ? "is-found" : "is-missing"}`} style={{ "--i": 0 } as React.CSSProperties}>
           <dt>{t.rowCare}</dt>
           <dd>

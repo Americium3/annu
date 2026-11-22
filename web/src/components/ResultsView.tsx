@@ -9,7 +9,7 @@ import type { RecommendationResponse } from "../types";
 import { BoardRow, TopPick } from "./FacilityCard";
 import { FacilityDetail } from "./FacilityDetail";
 import { FacilityMap } from "./FacilityMap";
-import { RaahiSays } from "./Raahi";
+import { Raahi, RaahiSays } from "./Raahi";
 import { Segmented } from "./Segmented";
 
 type SortMode = "best" | "nearest";
@@ -21,6 +21,8 @@ interface ResultsViewProps {
   onSelectedIdChange: (id?: string) => void;
   /** From setup: list government hospitals before private ones. */
   governmentFirst: boolean;
+  /** The language model is reading the top hospitals' records (second pass). */
+  judging?: boolean;
 }
 
 function LoadingResults() {
@@ -50,6 +52,7 @@ export function ResultsView({
   selectedId,
   onSelectedIdChange,
   governmentFirst,
+  judging = false,
 }: ResultsViewProps) {
   const [mobileView, setMobileView] = useState<"list" | "map">("list");
   const [sort, setSort] = useState<SortMode>("best");
@@ -128,6 +131,12 @@ export function ResultsView({
               </details>
             )}
           </div>
+          {data && !isLoading && (judging || data.metadata.judge?.used) && (
+            <p className={`judge-status ${judging ? "is-reading" : "is-done"}`} aria-live="polite">
+              <Raahi size={22} mood={judging ? "thinking" : "happy"} />
+              {judging ? t.judging : t.judgedNote(data.metadata.judge?.judged ?? 0)}
+            </p>
+          )}
           <div className="results-controls">
             <Segmented<SortMode>
               label={t.sortBy}

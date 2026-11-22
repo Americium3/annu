@@ -35,6 +35,7 @@ if [ "$USE_DEMO" != "true" ]; then
   mkdir -p "$STAGE/backend" "$STAGE/pipeline"
   cp "$REPO"/backend/*.py "$STAGE/backend/"
   cp "$REPO/web/src/data/lexicon.json" "$STAGE/backend/lexicon.json"   # shared with the web app (backend/nlu.py)
+  cp "$REPO/data/tags/alias_table.csv" "$STAGE/backend/alias_table.csv"   # symptom / disease names (backend/nlu.py)
   cp "$REPO/backend/requirements.txt" "$STAGE/requirements.txt"
   cp "$REPO/pipeline/databricks_sql.py" "$STAGE/pipeline/"
 fi

@@ -5219,3 +5219,91 @@ html[data-transition="emergency"]::view-transition-new(root) {
   color: var(--text-3);
   font-size: var(--fs-sm);
 }
+
+/* ---- the language model's second pass ---- */
+
+.judge-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 6px 0 0;
+  color: var(--text-3);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  animation: rise-in 360ms var(--ease-out) backwards;
+}
+
+.judge-status.is-reading {
+  background: linear-gradient(90deg, var(--text-3) 0%, var(--brand) 50%, var(--text-3) 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: reading 1.6s linear infinite;
+}
+
+.judge-status.is-reading .raahi {
+  animation: hop 1.2s var(--ease-out) infinite;
+}
+
+@keyframes reading {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+.judge-verdict {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 8px;
+  font-size: var(--fs-md);
+}
+
+.judge--warn .judge-verdict strong {
+  color: var(--warn-ink);
+}
+
+.judge-line {
+  margin: 0;
+  padding: 12px 14px;
+  background: var(--surface-2);
+  border-left: 3px solid var(--brand);
+  border-radius: var(--radius-md);
+  font-family: var(--font-serif);
+  font-size: var(--fs-md);
+  line-height: 1.55;
+}
+
+.judge--warn .judge-line {
+  border-left-color: var(--warn);
+}
+
+.judge-line mark {
+  padding: 0 2px;
+  color: inherit;
+  background: var(--mark-care);
+  border-radius: 3px;
+}
+
+.judge-line small {
+  display: block;
+  margin-top: 6px;
+  color: var(--text-3);
+  font-family: var(--font-body);
+  font-size: var(--fs-xs);
+}
+
+.judge-reason {
+  margin: 8px 0 0;
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .judge-status,
+  .judge-status.is-reading,
+  .judge-status.is-reading .raahi {
+    animation: none !important;
+  }
+}

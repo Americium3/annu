@@ -2,6 +2,7 @@ import { ArrowLeft, Check, Copy, ExternalLink, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { operatorLabel, useI18n } from "../i18n";
 import { facilityType, unsureMessages } from "../lib/localize";
+import { verdictLabel, verdictWarns } from "../lib/verdict";
 import { knownOperator } from "../lib/reason";
 import type { FacilityRecommendation, SourceType } from "../types";
 import { ConfidenceBadge } from "./ConfidenceBadge";
@@ -152,6 +153,8 @@ export function FacilityDetail({ facility, service, onClose }: FacilityDetailPro
           </section>
           )}
 
+          {facility.judgement && <JudgeSection facility={facility} />}
+
           {facility.rankFactors && <RankExplanation facility={facility} />}
 
           <section className="detail-section" id="evidence">
@@ -245,6 +248,7 @@ function RankExplanation({ facility }: { facility: FacilityRecommendation }) {
     f.proofTier === 1 ? t.proofTier1 : f.proofTier === 2 ? t.proofTier2 : t.proofTier3,
     f.onlyEquipment && t.proofEquipment,
     f.mentionsOther && t.proofOther,
+    f.llmVerdict && t.proofJudged(verdictLabel(t, f.llmVerdict)),
     f.locationTier === "point_verified"
       ? t.proofLocVerified
       : f.locationTier === "pin_area"
@@ -302,6 +306,39 @@ function RankExplanation({ facility }: { facility: FacilityRecommendation }) {
       </p>
       {!f.solidProof && <p className="rank-weak">{t.rankWeak}</p>}
       <p className="score-disclaimer">{t.scoreDisclaimer}</p>
+    </section>
+  );
+}
+
+/** The language model's reading of this hospital's record for the care asked, with the line it rests on. */
+function JudgeSection({ facility }: { facility: FacilityRecommendation }) {
+  const { t } = useI18n();
+  const j = facility.judgement!;
+  const at = j.line.toLowerCase().indexOf(j.quote.toLowerCase());
+  return (
+    <section className={`detail-section judge ${verdictWarns(j.verdict) ? "judge--warn" : ""}`} aria-labelledby="judge-title">
+      <div className="detail-section-heading">
+        <h3 id="judge-title">{t.judgeTitle}</h3>
+      </div>
+      <p className="judge-verdict">
+        <Raahi size={30} mood={verdictWarns(j.verdict) ? "concerned" : "happy"} />
+        <strong>{verdictLabel(t, j.verdict)}</strong>
+      </p>
+      <blockquote className="judge-line">
+        “
+        {at >= 0 ? (
+          <>
+            {j.line.slice(0, at)}
+            <mark>{j.line.slice(at, at + j.quote.length)}</mark>
+            {j.line.slice(at + j.quote.length)}
+          </>
+        ) : (
+          j.line
+        )}
+        ”<small>{t.judgeField(j.field)}</small>
+      </blockquote>
+      {j.reason && <p className="judge-reason">{j.reason}</p>}
+      <p className="score-disclaimer">{t.judgeNote}</p>
     </section>
   );
 }

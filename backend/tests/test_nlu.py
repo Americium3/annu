@@ -75,6 +75,33 @@ class RulesTest(unittest.TestCase):
         self.assertIn("root-canal", u.care_options)
 
 
+class ConditionTest(unittest.TestCase):
+    """Symptom / disease names from data/tags/alias_table.csv (the pipeline's MeSH alias table)."""
+
+    def test_condition_names_lead_to_care(self):
+        u = Understander(llm=False, known_place=lambda n: n.lower() in PLACES)
+        for text, condition, care in [("bawaseer treatment near Jaipur", "Hemorrhoids", "piles-fistula"),
+                                      ("loose motion since yesterday", "Diarrhea", None)]:
+            got = u.understand(text)
+            self.assertEqual((got.condition, got.care_id), (condition, care), text)
+        tooth = u.understand("toothache in Cuttack")
+        self.assertEqual(tooth.condition, "Toothache")
+        self.assertIn("root-canal", tooth.care_options)
+
+    def test_abbreviations_do_not_turn_words_into_diseases(self):
+        u = Understander(llm=False)
+        self.assertIsNone(u.understand("all the hospitals near Puri for art therapy").condition)
+
+    def test_model_condition_needs_the_persons_words(self):
+        llm = FakeLlm({"condition": {"name": "Blurred vision", "name_hi": "धुंधला दिखना", "quote": "can't see clearly"},
+                       "care": [{"id": "cataract", "quote": "can't see clearly"}], "urgency": {"level": 4}})
+        u = nlu(llm).understand("grandma can't see clearly, we live in Puri")
+        self.assertEqual((u.condition, u.condition_hi, u.condition_source), ("Blurred vision", "धुंधला दिखना", "llm"))
+        self.assertEqual(u.care_id, "cataract")
+        made_up = FakeLlm({"condition": {"name": "Glaucoma", "quote": "glaucoma"}, "care": [], "urgency": {"level": 4}})
+        self.assertIsNone(nlu(made_up).understand("grandma can't see clearly").condition)
+
+
 class ModelTest(unittest.TestCase):
     def test_grounded_model_answers_fill_gaps(self):
         llm = FakeLlm({"care": [{"id": "kidney-dialysis", "quote": "his kidneys stopped working"}],
@@ -137,6 +164,7 @@ class LlmClientTest(unittest.TestCase):
                 u = nlu(LlmClient("test-llm")).understand("my father's kidneys have failed, we are in Jaipur")
         finally:
             server.shutdown()
+            server.server_close()
         self.assertEqual(seen["path"], "/serving-endpoints/test-llm/invocations")
         self.assertEqual(seen["auth"], "Bearer test-token")
         self.assertEqual(seen["body"]["messages"][1]["content"], "my father's kidneys have failed, we are in Jaipur")

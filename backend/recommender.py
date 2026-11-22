@@ -80,12 +80,16 @@ def proof_strength(df: pd.DataFrame) -> pd.Series:
 
 
 def rank_candidates(ok: pd.DataFrame, tag: str, text_match: pd.Series | None = None,
-                    travel: float | None = None) -> pd.DataFrame:
+                    travel: float | None = None, judged: dict[str, str] | None = None) -> pd.DataFrame:
     """Order eligible facilities: solid proof before weak proof; within each, rank score = evidence x closeness
     (ties: nearer first, then id). Evidence is proof strength alone, or blended with the cross-encoder's
     text match when one is given."""
     out = ok.copy()
     out["proof"] = proof_strength(out)
+    verdict = out["unique_id"].map(judged or {})
+    out["judge_verdict"] = verdict
+    # The LLM judge's verdict on the record lines can only lower proof (judge.py).
+    out["proof"] = out["proof"] * verdict.map(config.JUDGE_MULTIPLIER).fillna(1.0)
     out["travel_km"] = travel = travel or travel_km(tag)
     out["closeness"] = closeness(out["distance_km"].to_numpy(), travel)
     if text_match is None:
@@ -95,7 +99,8 @@ def rank_candidates(ok: pd.DataFrame, tag: str, text_match: pd.Series | None = N
         out["text_match"] = text_match.reindex(out.index).astype(float)
         out["evidence_strength"] = w["text"] * out["text_match"] + w["proof"] * out["proof"]
     out["rank_score"] = out["evidence_strength"] * out["closeness"]
-    out["solid_proof"] = (out["proof"] >= config.PROOF_SOLID_MIN) & ~out["only_equipment"].astype(bool)
+    out["solid_proof"] = ((out["proof"] >= config.PROOF_SOLID_MIN) & ~out["only_equipment"].astype(bool)
+                          & ~verdict.isin(config.JUDGE_WEAK))
     return out.sort_values(["solid_proof", "rank_score", "distance_km", "n_explicit_usable", "unique_id"],
                            ascending=[False, False, True, False, True])
 
@@ -131,6 +136,7 @@ class Recommender:
         self.ranking_method = ranking_method or config.RANKING_METHOD
         if self.ranking_method not in {"cross_encoder", "rules"}:
             raise ValueError("CAREPATH_RANKING_METHOD must be cross_encoder or rules")
+        self.judge = None  # judge.EvidenceJudge when a language model is configured (main.py)
         self.ranking_version = ("cross-encoder-x-closeness-v4" if self.ranking_method == "cross_encoder"
                                 else "proof-x-closeness-v4")
         self.scorer = scorer if scorer is not None else CrossEncoderScorer(
@@ -340,7 +346,7 @@ class Recommender:
 
     # ------------------------------------------------------------------ steps 2–4
     def recommend(self, service_text: str, location_text: str, coordinates: dict | None = None,
-                  urgency: int | None = None) -> dict:
+                  urgency: int | None = None, judge: bool = False) -> dict:
         """The only inputs are the service and the location (text, or coordinates from "Use my location").
         Radius, result count and ordering are system decisions."""
         limit = config.RESULT_LIMIT
@@ -372,10 +378,26 @@ class Recommender:
                   else rank_candidates(pool, tag, travel=travel))
         blocked = prov[(prov["eligibility"] == "review_blocked") & (prov["distance_km"] <= radius)]
 
+        # Optional: the language model reads the top candidates' own record lines and judges them (judge.py).
+        judged, judge_info = {}, {"used": False, "available": self.judge is not None}
+        if judge and self.judge is not None and len(within):
+            top = within.head(config.JUDGE_TOP_K)
+            try:
+                judged = self.judge.judge(tag, label, list(self.tags.loc[tag, "synonyms"]),
+                                          [(r["unique_id"], _s(r["name"]), r["evidence"]) for _, r in top.iterrows()])
+                judge_info = {"used": True, "available": True, "model": self.judge.model,
+                              "asked": len(top), "judged": len(judged)}
+            except Exception as exc:  # the rules ranking stands
+                judge_info = {"used": False, "available": True, "model": self.judge.model, "error": type(exc).__name__}
+            if judged:
+                within = rank_candidates(within, tag, text_match=within["text_match"] if "text_match" in within else None,
+                                         travel=travel, judged={u: v["verdict"] for u, v in judged.items()})
+
         picked = within.head(limit).copy()
         picked["lane"] = ["A" if i < config.K_MAIN else "C" for i in range(len(picked))]
 
-        results = [self._facility(r, i + 1, label, loc, radius) for i, (_, r) in enumerate(picked.iterrows())]
+        results = [self._facility(r, i + 1, label, loc, radius, judged.get(r["unique_id"]))
+                   for i, (_, r) in enumerate(picked.iterrows())]
 
         warnings = [f"{n_dataset} facilities in the dataset list {label} ({n_dataset_ok} with usable evidence and "
                     f"location); {len(within)} within {radius:g} km; {len(blocked)} more within {radius:g} km are "
@@ -410,7 +432,7 @@ class Recommender:
                 "requestId": rid, "rankingVersion": self.ranking_version, "ranking": self.ranking_info(),
                 "generatedAt": pd.Timestamp.now("UTC").isoformat(timespec="seconds"),
                 "totalCandidates": int(len(within)), "returnedCount": len(results), "isPartialResult": len(within) > limit,
-                "executionTimeMs": int((time.time() - t0) * 1000), "warnings": warnings,
+                "executionTimeMs": int((time.time() - t0) * 1000), "warnings": warnings, "judge": judge_info,
                 "funnel": {"datasetProviders": n_dataset, "datasetRecommendable": n_dataset_ok,
                            "withinRadius": int(len(within)), "reviewBlockedWithinRadius": int(len(blocked)),
                            "radiusStepsKm": steps, "radiusKm": radius, "locationNote": loc["note"],
@@ -419,7 +441,8 @@ class Recommender:
         })
 
     # ------------------------------------------------------------------ mapping one facility to the UI contract
-    def _facility(self, r: pd.Series, rank: int, label: str, loc: dict, radius: float) -> dict:
+    def _facility(self, r: pd.Series, rank: int, label: str, loc: dict, radius: float,
+                  judgement: dict | None = None) -> dict:
         uid = r["unique_id"]
         tier = int(r["evidence_tier"])
         ltier = str(r["location_tier"])
@@ -551,7 +574,10 @@ class Recommender:
                 "proofTier": tier, "onlyEquipment": only_eq, "mentionsOther": bool(r["n_explicit_elsewhere"] > 0),
                 "locationTier": ltier, "statements": int(r["n_explicit_usable"]),
                 "solidProof": bool(r["solid_proof"]),
+                "llmVerdict": judgement["verdict"] if judgement else None,
             },
+            # The language model's reading of this hospital's own record for this care (judge.py), with the line.
+            **({"judgement": judgement} if judgement else {}),
             # How to check before travelling: the UI shows Call / Website buttons only when these exist.
             "phone": contact_phone(r["contact_phone"]),
             "website": contact_website(r["contact_website"]),

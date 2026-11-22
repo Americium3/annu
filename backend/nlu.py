@@ -8,6 +8,9 @@ Americium3/ai-medical-demo):
 2. extract  Care and place from the shared lexicon (web/src/data/lexicon.json): whole-word phrases,
             longest first, in English, Hindi and Hinglish. A broad word ("kidney", "दाँत") becomes a
             question with options, never a guess.
+2b. condition  When no care word matched, symptom and disease names from the pipeline's alias table
+            (data/tags/alias_table.csv: MeSH entries, MedlinePlus titles, curated colloquial terms such as
+            "bawaseer") give the condition ("sugar" -> Diabetes Mellitus) and, where curated, the care tag.
 3. model    Optional. With CAREPATH_LLM_ENDPOINT set (a Databricks model serving endpoint), one chat call
             fills what the rules left open (care described in other words, a place, an urgency level).
             Everything it returns is kept only if it quotes the message verbatim and the quote is not
@@ -31,6 +34,30 @@ import config
 
 _HERE = Path(__file__).resolve().parent
 _LEXICON_PATHS = [_HERE / "lexicon.json", _HERE.parent / "web" / "src" / "data" / "lexicon.json"]
+_ALIAS_PATHS = [_HERE / "alias_table.csv", _HERE.parent / "data" / "tags" / "alias_table.csv"]
+_ALIAS_TRUSTED = {"colloquial_curated", "tag_label", "tag_synonym", "tag_id", "medlineplus_title", "medlineplus_also_called"}
+
+
+def load_aliases() -> dict[str, tuple[str, list[str]]]:
+    """alias -> (condition name, curated care tags). Short single words are kept only from trusted sources, so
+    abbreviations such as "all" or "art" do not turn ordinary words into conditions."""
+    import csv
+    path = next((p for p in _ALIAS_PATHS if p.exists()), None)
+    if path is None:
+        return {}
+    out: dict[str, tuple[str, list[str]]] = {}
+    with open(path, encoding="utf-8") as f:
+        for row in csv.DictReader(f):
+            alias = (row.get("alias_normalized") or "").strip().lower()
+            raw, curated = (row.get("alias") or "").strip(), row.get("source", "").startswith(("tag_", "colloquial"))
+            if not alias or len(alias) < 3 or (len(alias) < 5 and row.get("source") not in _ALIAS_TRUSTED):
+                continue
+            if not curated and raw.isupper() and len(raw) <= 6:  # abbreviations ("ALL", "ART") read as ordinary words
+                continue
+            tags = [t for t in (row.get("curated_tags") or "").split(";") if t]
+            if alias not in out or (tags and not out[alias][1]):
+                out[alias] = (row.get("mesh_label") or alias, tags)
+    return out
 
 URGENCY_SCORE = {1: 100, 2: 85, 3: 60, 4: 15}
 URGENCY_LABEL = {1: "life-threatening", 2: "emergency", 3: "urgent", 4: "not urgent"}
@@ -116,6 +143,10 @@ class Understanding:
     care_span: Span | None = None
     care_source: str | None = None
     care_options: list[str] = field(default_factory=list)
+    condition: str | None = None
+    condition_hi: str | None = None
+    condition_span: Span | None = None
+    condition_source: str | None = None
     options_span: Span | None = None
     place_text: str | None = None
     place_here: bool = False
@@ -143,6 +174,9 @@ class Understanding:
             "care": ({**care(self.care_id), "source": self.care_source,
                       **({"span": self.care_span.dict()} if self.care_span else {})} if self.care_id else None),
             "careOptions": [care(i) for i in self.care_options],
+            "condition": ({"name": self.condition, "nameHi": self.condition_hi, "source": self.condition_source,
+                           **({"span": self.condition_span.dict()} if self.condition_span else {})}
+                          if self.condition else None),
             **({"careOptionsSpan": self.options_span.dict()} if self.options_span else {}),
             "place": ({"text": self.place_text, "here": self.place_here, "source": self.place_source,
                        **({"span": self.place_span.dict()} if self.place_span else {})}
@@ -172,13 +206,17 @@ class LlmClient:
 
 SYSTEM_PROMPT = """You help people in India find a hospital. Read the person's message (English, Hindi or Hinglish) \
 and reply with JSON only, no prose:
-{"care": [{"id": "<id from the list>", "quote": "<exact words from the message>"}],
+{"condition": {"name": "<plain English name of the symptom or condition described, e.g. Toothache>", \
+"name_hi": "<the same in Hindi>", "quote": "<exact words>"} or null,
+ "care": [{"id": "<id from the list>", "quote": "<exact words from the message>"}],
  "place": {"text": "<city, district or PIN in English>", "quote": "<exact words>"} or null,
  "near_me": true or false,
  "urgency": {"level": 1, 2, 3 or 4, "quote": "<exact words, or empty>"}}
 Rules:
-- Do not diagnose. Choose care only if the message names it or plainly describes needing it; otherwise "care": [].
-  At most 2 care items, best first.
+- Do not diagnose. "condition" only names what the person themselves described (a symptom, or a disease they \
+named); never guess a hidden cause.
+- Choose the care a hospital would give for what they described (e.g. "toothache" -> root-canal, "his kidneys \
+failed" -> kidney-dialysis), or the care they name. If nothing fits, "care": []. At most 2 care items, best first.
 - Every quote must be copied exactly from the message. Never quote words the person denied ("no fever").
 - Urgency: 1 = life-threatening now (unconscious, not breathing); 2 = emergency (chest pain, severe breathing \
 trouble, stroke signs, heavy bleeding, poisoning, snakebite, seizure now, wants to die); 3 = needs care today \
@@ -189,7 +227,7 @@ Care ids:
 
 
 class Understander:
-    def __init__(self, lexicon: dict | None = None, llm=None, known_place=None):
+    def __init__(self, lexicon: dict | None = None, llm=None, known_place=None, aliases=None):
         self.lex = lexicon or load_lexicon()
         self.names = {t["id"]: {"en": t["en"], "hi": t["hi"]} for t in self.lex["terms"]}
         self.flags = [(f["id"], f["level"], bool(f.get("crisis")), [re.compile(p, re.I) for p in f["patterns"]])
@@ -203,6 +241,7 @@ class Understander:
         self.stop = set(self.lex["placeStopwords"]) | {t for _, ph, _ in self.terms for t in ph.split() if ph.isascii()}
         self.hi_non_places = set(self.lex["hiNonPlaces"])
         self.known_place = known_place or (lambda name: False)
+        self.aliases = load_aliases() if aliases is None else aliases
         if llm is None and os.environ.get("CAREPATH_LLM_ENDPOINT"):
             llm = LlmClient(os.environ["CAREPATH_LLM_ENDPOINT"])
         self.llm = llm
@@ -243,9 +282,38 @@ class Understander:
             hits.sort(key=lambda h: -(h[1].end - h[1].start))
             u.care_id, u.care_span, u.care_source = hits[0][0], hits[0][1], "rules"
             return
+        self.extract_condition(text, u)
+        if u.care_id:
+            return
         broad = self._matches(text, self.broad)
-        if broad:
+        if broad and not u.care_options:
             u.care_options, u.options_span = list(broad[0][0]), broad[0][1]
+
+    def extract_condition(self, text: str, u: Understanding):
+        """Symptom or disease name -> condition, and its curated care tag when there is one (longest alias first)."""
+        if not self.aliases:
+            return
+        words = list(re.finditer(r"[a-z0-9][a-z0-9'-]*", text.lower()))
+        best = None
+        for n in range(min(6, len(words)), 0, -1):
+            for i in range(len(words) - n + 1):
+                s, e = words[i].start(), words[i + n - 1].end()
+                alias = " ".join(w.group(0) for w in words[i:i + n])
+                if alias in self.aliases and not is_denied(text, s, e):
+                    best = (alias, s, e)
+                    break
+            if best:
+                break
+        if not best:
+            return
+        alias, s, e = best
+        name, tags = self.aliases[alias]
+        u.condition, u.condition_span, u.condition_source = name, Span(text[s:e], s, e), "rules"
+        tags = [t for t in tags if t in self.names]
+        if len(tags) == 1:
+            u.care_id, u.care_span, u.care_source = tags[0], Span(text[s:e], s, e), "condition"
+        elif tags:
+            u.care_options, u.options_span = tags[:4], Span(text[s:e], s, e)
 
     _PREP = re.compile(r"(?<![a-z])(?:near|in|at|around|close to|from|next to|nearest to)\s+"
                        r"([a-z][a-z .'-]{1,40}?)(?=\s*(?:[,.;!?।]|$|\b(?:for|with|who|which|that|because|please|asap|"
@@ -319,6 +387,16 @@ class Understander:
             u.llm = {"used": False, "endpoint": getattr(self.llm, "endpoint", None), "error": type(exc).__name__}
             return
         kept, dropped = [], []
+        cond = data.get("condition") or None
+        if isinstance(cond, dict) and cond.get("name") and u.condition_source != "rules":
+            where = grounded(cond.get("quote", ""), text)
+            if where:
+                u.condition, u.condition_source = str(cond["name"])[:80], "llm"
+                u.condition_hi = str(cond.get("name_hi") or "")[:80] or None
+                u.condition_span = Span(text[where[0]:where[1]], *where)
+                kept.append("condition")
+            else:
+                dropped.append("condition")
         if not u.care_id:
             for item in (data.get("care") or [])[:2]:
                 cid, where = item.get("id"), grounded(item.get("quote", ""), text)

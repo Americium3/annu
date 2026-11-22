@@ -43,6 +43,13 @@ RERANK_WEIGHTS = {"text": 0.3, "proof": 0.7}
 TEXT_MATCH_LOGIT_RANGE = (-11.0, -5.0)
 
 
+# LLM judge (judge.py): one verdict per top candidate on whether its own record lines support the care.
+# Proof strength is multiplied by the verdict's factor (never raised); equipment_only / not_supported become weak proof.
+JUDGE_TOP_K = 8
+JUDGE_MAX_LINES = 6
+JUDGE_MULTIPLIER = {"offers": 1.0, "likely": 0.85, "mentions_only": 0.65, "equipment_only": 0.5, "not_supported": 0.25}
+JUDGE_WEAK = {"equipment_only", "not_supported"}
+
 # How far people reasonably travel for each kind of care (km). Closeness halves at this distance:
 #   closeness = 1 / (1 + (km / travel_km)^2)      rank score = evidence strength x closeness
 # Urgent care has to be near; planned specialist care is worth a longer trip.

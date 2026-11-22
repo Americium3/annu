@@ -17,6 +17,8 @@ export interface SearchInput {
   locationText: string;
   coordinates?: { latitude: number; longitude: number };
   urgency?: number;
+  /** Ask the language model to judge the top hospitals' records (slower; live data only). */
+  judge?: boolean;
 }
 
 /** A free-text request. The saved place / device location is used only when the text names no place. */

@@ -73,11 +73,28 @@ The flow is fixed in code; a model fills in one step at most (after the pre-cons
 2. **Extract**: care and place from `web/src/data/lexicon.json` (shared with the web app's demo mode): 100 kinds of
    care with everyday English/Hindi/Hinglish words, matched as whole phrases, longest first. A broad word ("kidney",
    "दाँत") becomes a question with options, never a guess. Places: PIN codes, Hindi city names, "near X" / "X के पास" /
-   "X mein", or a bare city the location reference knows; "near me" uses the device location.
+   "X mein", or a bare city the location reference knows; "near me" uses the device location. When no care word
+   matched, symptom and disease names from `data/tags/alias_table.csv` give the condition ("bawaseer" →
+   Hemorrhoids) and, where curated, its care tag; short all-caps abbreviations are ignored.
 3. **Model (optional)**: set `CAREPATH_LLM_ENDPOINT` to a Databricks model serving endpoint (the app's own identity
    is used). One chat call fills what the rules left open. Answers are kept only if their quote appears verbatim in
    the message and is not denied; care ids must be in the catalogue; model urgency can only raise the rule level.
    If the call fails, the rules result stands and `llm.error` says so.
+
+## LLM judge of hospital records (`judge.py`)
+
+The pipeline decided offline which records *mention* a kind of care (regex + TF-IDF evidence tiers). Mentioning is
+not offering: "dialysis machine", "refer to X for dialysis" and "Department of Nephrology" all mention dialysis. With
+`judge: true` on `/api/recommendations` (the page asks right after showing the rules ranking), the language model
+reads the top `JUDGE_TOP_K` hospitals' record lines (procedure, capability, equipment, specialty, description) and
+gives each a verdict: `offers`, `likely`, `mentions_only`, `equipment_only` or `not_supported`, quoting the line
+that decided it.
+
+- A verdict is kept only if its quote is in that hospital's own lines; otherwise the rules ranking stands for it.
+- Proof strength × `JUDGE_MULTIPLIER[verdict]` (1.0 / 0.85 / 0.65 / 0.5 / 0.25): it can lower proof, never raise
+  it; `equipment_only` and `not_supported` also become weak proof (listed after every solid one).
+- One batched call per search; verdicts are cached per (care, hospital). A failed call leaves the rules ranking and
+  `metadata.judge.error`. Each judged result carries `judgement` (verdict, field, quote, full line, reason, model).
 
 Urgency also changes the ranking: level 3 halves the travel distance (`URGENT_TRAVEL_FACTOR`), so nearer hospitals
 count more. When the best option for an urgent request is still far (more than twice that distance), the page
