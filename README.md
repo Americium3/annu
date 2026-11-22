@@ -2,6 +2,14 @@
 
 **Find nearby hospitals with evidence for the care you need.**
 
+## ▶ Watch the Demo
+
+[![Watch the Annu demo on YouTube](https://img.youtube.com/vi/j7H9Bkurgv8/hqdefault.jpg)](https://www.youtube.com/watch?v=j7H9Bkurgv8)
+
+**[▶ Watch Annu on YouTube](https://www.youtube.com/watch?v=j7H9Bkurgv8)**
+
+---
+
 Annu is a healthcare facility discovery application for India. Ask in everyday English, Hindi, or Hinglish, confirm the care and location Annu understood, and compare nearby facilities with the original evidence behind each recommendation.
 
 The project combines a conversational React interface, a FastAPI recommendation service, Databricks-backed facility data, and reproducible retrieval and ranking experiments. The data workspace and some package names retain the earlier **Cardinal Virtues** name.
