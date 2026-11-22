@@ -2880,10 +2880,6 @@ h4 {
   min-width: 0;
 }
 
-.blank-select .blank-input {
-  field-sizing: content;
-}
-
 .blank-input {
   max-width: 100%;
   min-width: 3ch;
@@ -2913,12 +2909,6 @@ h4 {
 
 .blank-input::placeholder {
   color: var(--text-faint);
-}
-
-.blank-select .blank-input {
-  padding-right: 0.9em;
-  cursor: pointer;
-  appearance: none;
 }
 
 .blank-chevron {
@@ -4113,6 +4103,56 @@ html[data-transition="emergency"]::view-transition-new(root) {
     right: 0;
     left: auto;
   }
+}
+
+/* links inside Raahi's speech (the setup offer) must look like links */
+.raahi-bubble a {
+  color: var(--brand-ink);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+/* ---- distance blank: a styled listbox, not the browser's <select> ---- */
+
+.blank-picker-button {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.18em;
+  padding-right: 0.08em;
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.blank-picker .blank-chevron {
+  position: static;
+  flex: 0 0 auto;
+  width: 0.42em;
+  height: 0.42em;
+  align-self: center;
+  transition: transform 260ms var(--ease-spring);
+}
+
+.blank-picker .blank-chevron.is-open {
+  transform: rotate(180deg);
+}
+
+.picker-list {
+  width: min(260px, 80vw);
+}
+
+.picker-option {
+  cursor: pointer;
+}
+
+.picker-option.is-active {
+  background: var(--surface-2);
+}
+
+.picker-option[aria-selected="true"] strong {
+  color: var(--brand-ink);
 }
 
 /* Map tiles are raster images with no dark variant; dim and invert them so the
