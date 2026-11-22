@@ -5513,6 +5513,18 @@ html[data-transition="emergency"]::view-transition-new(root) {
   color: var(--text-3);
 }
 
+.raahi-failed {
+  display: grid;
+  justify-items: start;
+  gap: 10px;
+}
+
+.raahi-failed-why {
+  margin: 0;
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+
 .dots {
   display: inline-flex;
   gap: 4px;
