@@ -13,7 +13,7 @@ export const services: ServiceOption[] = [
     category: "dialysis",
   },
   {
-    id: "emergency-c-section",
+    id: "c-section",
     name: "Emergency C-section",
     synonyms: ["emergency cesarean", "emergency caesarean", "LSCS"],
     category: "emergency",
@@ -37,7 +37,7 @@ export const services: ServiceOption[] = [
     category: "diagnostic",
   },
   {
-    id: "burn-care",
+    id: "burns",
     name: "Burn care",
     synonyms: ["burns unit", "burn treatment", "thermal injury"],
     category: "specialty",

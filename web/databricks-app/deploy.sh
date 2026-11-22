@@ -9,6 +9,7 @@
 #   web/databricks-app/deploy.sh
 #
 # Optional: APP_NAME (carepath), WAREHOUSE_ID, SCHEMA (workspace.cardinal_virtues),
+# LLM_ENDPOINT (databricks-meta-llama-3-3-70b-instruct; must match app.yaml),
 # USE_DEMO=true to ship the demo-data build without the recommender.
 set -euo pipefail
 HERE="$(cd "$(dirname "$0")" && pwd)"
@@ -18,6 +19,7 @@ APP_NAME="${APP_NAME:-carepath}"
 WAREHOUSE_ID="${WAREHOUSE_ID:-01562a1cdb8d5257}"
 SCHEMA="${SCHEMA:-workspace.cardinal_virtues}"
 USE_DEMO="${USE_DEMO:-false}"
+LLM_ENDPOINT="${LLM_ENDPOINT:-databricks-meta-llama-3-3-70b-instruct}"
 API="${DATABRICKS_HOST%/}/api/2.0"
 AUTH=(-H "Authorization: Bearer ${DATABRICKS_TOKEN:-proxy-injected}" -H "Content-Type: application/json")
 call() { curl -fsS "${AUTH[@]}" "$@"; }
@@ -32,6 +34,8 @@ cp "$HERE/server.js" "$HERE/package.json" "$HERE/app.yaml" "$STAGE/"
 if [ "$USE_DEMO" != "true" ]; then
   mkdir -p "$STAGE/backend" "$STAGE/pipeline"
   cp "$REPO"/backend/*.py "$STAGE/backend/"
+  cp "$REPO/web/src/data/lexicon.json" "$STAGE/backend/lexicon.json"   # shared with the web app (backend/nlu.py)
+  cp "$REPO/data/tags/alias_table.csv" "$STAGE/backend/alias_table.csv"   # symptom / disease names (backend/nlu.py)
   cp "$REPO/backend/requirements.txt" "$STAGE/requirements.txt"
   cp "$REPO/pipeline/databricks_sql.py" "$STAGE/pipeline/"
 fi
@@ -51,23 +55,34 @@ PY
   call -X POST "$API/workspace/import" --data-binary @"$STAGE.import.json" >/dev/null
 done
 
-RESOURCES=$(python3 - "$WAREHOUSE_ID" "$SCHEMA" "$USE_DEMO" <<'PY'
+resources() {  # $1 = LLM endpoint name, or empty for none
+python3 - "$WAREHOUSE_ID" "$SCHEMA" "$USE_DEMO" "$1" <<'PY'
 import json, sys
-wh, schema, demo = sys.argv[1:]
+wh, schema, demo, llm = sys.argv[1:]
 res = [{"name": "sql-warehouse", "sql_warehouse": {"id": wh, "permission": "CAN_USE"}}]
 if demo != "true":
     for t in ["serving_service_index", "serving_facilities", "ref_service_tags", "pincode_reference"]:
         res.append({"name": t.replace("_", "-"),
                     "uc_securable": {"securable_full_name": f"{schema}.{t}", "securable_type": "TABLE", "permission": "SELECT"}})
+    if llm:  # lets the app's identity query the language model used for free-text understanding
+        res.append({"name": "llm-endpoint", "serving_endpoint": {"name": llm, "permission": "CAN_QUERY"}})
 print(json.dumps(res))
 PY
-)
-if call "$API/apps/$APP_NAME" >/dev/null 2>&1; then
-  echo "3/7 Updating app resources"
-  call -X PATCH "$API/apps/$APP_NAME" -d "{\"name\":\"$APP_NAME\",\"resources\":$RESOURCES}" >/dev/null
-else
-  echo "3/7 Creating app $APP_NAME"
-  call -X POST "$API/apps" -d "{\"name\":\"$APP_NAME\",\"description\":\"CarePath: find a hospital that offers the care you need\",\"resources\":$RESOURCES}" >/dev/null
+}
+RESOURCES=$(resources "$LLM_ENDPOINT")
+NO_LLM_RESOURCES=$(resources "")
+set_resources() {  # $1 = resources JSON
+  if call "$API/apps/$APP_NAME" >/dev/null 2>&1; then
+    call -X PATCH "$API/apps/$APP_NAME" -d "{\"name\":\"$APP_NAME\",\"resources\":$1}" >/dev/null
+  else
+    call -X POST "$API/apps" -d "{\"name\":\"$APP_NAME\",\"description\":\"CarePath: find a hospital that offers the care you need\",\"resources\":$1}" >/dev/null
+  fi
+}
+echo "3/7 Creating or updating app $APP_NAME"
+if ! set_resources "$RESOURCES"; then
+  # The workspace may not offer this model endpoint: the app still works, understanding requests by rules only.
+  echo "   could not attach model endpoint $LLM_ENDPOINT; continuing with rules-only understanding"
+  set_resources "$NO_LLM_RESOURCES"
 fi
 
 echo "4/7 Waiting for app compute"

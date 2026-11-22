@@ -1,0 +1,1911 @@
+{
+ "about": "CarePath natural-language lexicon, read by web/src/lib/understand.ts and backend/nlu.py. Ids match the backend service tags.",
+ "terms": [
+  {
+   "id": "physiotherapy",
+   "en": "Physiotherapy & rehabilitation",
+   "hi": "फ़िज़ियोथेरेपी और पुनर्वास",
+   "say": [
+    "physiotherapy",
+    "physio",
+    "physiotherapist",
+    "rehabilitation",
+    "rehab",
+    "फ़िज़ियोथेरेपी",
+    "फिजियोथेरेपी",
+    "फिजियो"
+   ]
+  },
+  {
+   "id": "joint-replacement",
+   "en": "Knee / hip replacement",
+   "hi": "घुटना / कूल्हा बदलना",
+   "say": [
+    "knee replacement",
+    "hip replacement",
+    "joint replacement",
+    "knee surgery",
+    "घुटना बदलना",
+    "घुटने का ऑपरेशन",
+    "घुटना प्रत्यारोपण",
+    "ghutna badalna",
+    "ghutne ka operation"
+   ]
+  },
+  {
+   "id": "fracture-trauma",
+   "en": "Fractures & trauma",
+   "hi": "हड्डी टूटना और चोट",
+   "say": [
+    "fracture",
+    "broken bone",
+    "broken leg",
+    "broken arm",
+    "broken hand",
+    "bone broke",
+    "trauma",
+    "accident",
+    "road accident",
+    "हड्डी टूट",
+    "फ्रैक्चर",
+    "दुर्घटना",
+    "एक्सीडेंट",
+    "haddi toot",
+    "haddi tut",
+    "accident hua",
+    "broke his leg",
+    "broke his arm",
+    "broke his hand",
+    "broke his wrist",
+    "broke his ankle",
+    "broke his hip",
+    "broke her leg",
+    "broke her arm",
+    "broke her hand",
+    "broke her wrist",
+    "broke her ankle",
+    "broke her hip",
+    "broke my leg",
+    "broke my arm",
+    "broke my hand",
+    "broke my wrist",
+    "broke my ankle",
+    "broke my hip",
+    "broke their leg",
+    "broke their arm",
+    "broke their hand",
+    "broke their wrist",
+    "broke their ankle",
+    "broke their hip",
+    "broken"
+   ]
+  },
+  {
+   "id": "spine-surgery",
+   "en": "Spine surgery",
+   "hi": "रीढ़ की सर्जरी",
+   "say": [
+    "spine surgery",
+    "spinal surgery",
+    "slip disc",
+    "slipped disc",
+    "रीढ़ की सर्जरी",
+    "स्लिप डिस्क"
+   ]
+  },
+  {
+   "id": "arthroscopy",
+   "en": "Arthroscopy",
+   "hi": "आर्थ्रोस्कोपी",
+   "say": [
+    "arthroscopy",
+    "keyhole knee",
+    "ligament surgery",
+    "acl",
+    "आर्थ्रोस्कोपी"
+   ]
+  },
+  {
+   "id": "arthritis",
+   "en": "Arthritis",
+   "hi": "गठिया",
+   "say": [
+    "arthritis",
+    "joint pain",
+    "gout",
+    "गठिया",
+    "जोड़ों का दर्द",
+    "gathiya",
+    "jodon ka dard"
+   ]
+  },
+  {
+   "id": "back-pain",
+   "en": "Back & neck pain",
+   "hi": "कमर और गर्दन का दर्द",
+   "say": [
+    "back pain",
+    "neck pain",
+    "backache",
+    "sciatica",
+    "कमर दर्द",
+    "कमर का दर्द",
+    "गर्दन दर्द",
+    "kamar dard",
+    "kamar me dard"
+   ]
+  },
+  {
+   "id": "neurosurgery",
+   "en": "Brain surgery",
+   "hi": "दिमाग़ की सर्जरी",
+   "say": [
+    "brain surgery",
+    "neurosurgery",
+    "neurosurgeon",
+    "brain tumour",
+    "brain tumor",
+    "दिमाग का ऑपरेशन",
+    "ब्रेन सर्जरी",
+    "ब्रेन ट्यूमर"
+   ]
+  },
+  {
+   "id": "stroke",
+   "en": "Stroke",
+   "hi": "लकवा / स्ट्रोक",
+   "say": [
+    "stroke care",
+    "stroke treatment",
+    "paralysis",
+    "लकवा",
+    "lakwa",
+    "lakva"
+   ]
+  },
+  {
+   "id": "eeg-emg",
+   "en": "EEG / EMG / nerve conduction",
+   "hi": "ईईजी / ईएमजी / नस की जाँच",
+   "say": [
+    "eeg",
+    "emg",
+    "nerve conduction",
+    "ncv",
+    "ईईजी"
+   ]
+  },
+  {
+   "id": "headache-migraine",
+   "en": "Headache & migraine",
+   "hi": "सिरदर्द और माइग्रेन",
+   "say": [
+    "migraine",
+    "headache",
+    "headaches",
+    "माइग्रेन",
+    "सिरदर्द",
+    "सिर दर्द",
+    "sir dard"
+   ]
+  },
+  {
+   "id": "epilepsy",
+   "en": "Epilepsy / seizures",
+   "hi": "मिर्गी / दौरे",
+   "say": [
+    "epilepsy",
+    "seizure",
+    "seizures",
+    "fits",
+    "मिर्गी",
+    "दौरे",
+    "mirgi"
+   ]
+  },
+  {
+   "id": "parkinsons-dementia",
+   "en": "Parkinson's & dementia",
+   "hi": "पार्किंसन और भूलने की बीमारी",
+   "say": [
+    "parkinson",
+    "parkinsons",
+    "parkinson's",
+    "dementia",
+    "alzheimer",
+    "alzheimers",
+    "memory loss",
+    "पार्किंसन",
+    "भूलने की बीमारी"
+   ]
+  },
+  {
+   "id": "cancer",
+   "en": "Cancer",
+   "hi": "कैंसर",
+   "say": [
+    "cancer",
+    "oncology",
+    "oncologist",
+    "tumour",
+    "tumor",
+    "कैंसर",
+    "kainsar"
+   ]
+  },
+  {
+   "id": "radiotherapy",
+   "en": "Radiation therapy",
+   "hi": "रेडिएशन थेरेपी",
+   "say": [
+    "radiotherapy",
+    "radiation therapy",
+    "radiation",
+    "रेडिएशन",
+    "सिकाई"
+   ]
+  },
+  {
+   "id": "chemotherapy",
+   "en": "Chemotherapy",
+   "hi": "कीमोथेरेपी",
+   "say": [
+    "chemotherapy",
+    "chemo",
+    "कीमोथेरेपी",
+    "कीमो"
+   ]
+  },
+  {
+   "id": "bone-marrow-transplant",
+   "en": "Bone marrow transplant",
+   "hi": "बोन मैरो ट्रांसप्लांट",
+   "say": [
+    "bone marrow transplant",
+    "bone marrow",
+    "stem cell transplant",
+    "bmt",
+    "बोन मैरो"
+   ]
+  },
+  {
+   "id": "nicu",
+   "en": "Newborn intensive care (NICU)",
+   "hi": "नवजात गहन चिकित्सा (NICU)",
+   "say": [
+    "nicu",
+    "newborn icu",
+    "neonatal icu",
+    "neonatal intensive care",
+    "premature baby",
+    "preterm baby",
+    "baby born early",
+    "newborn care",
+    "नवजात",
+    "समय से पहले पैदा",
+    "एनआईसीयू",
+    "navjat"
+   ]
+  },
+  {
+   "id": "vaccination",
+   "en": "Vaccination",
+   "hi": "टीकाकरण",
+   "say": [
+    "vaccination",
+    "vaccine",
+    "vaccines",
+    "immunisation",
+    "immunization",
+    "टीका",
+    "टीकाकरण",
+    "वैक्सीन",
+    "tika",
+    "teeka"
+   ]
+  },
+  {
+   "id": "picu",
+   "en": "Pediatric intensive care (PICU)",
+   "hi": "बच्चों का आईसीयू (PICU)",
+   "say": [
+    "picu",
+    "pediatric icu",
+    "paediatric icu",
+    "child icu",
+    "बच्चों का आईसीयू"
+   ]
+  },
+  {
+   "id": "child-development",
+   "en": "Autism & child development",
+   "hi": "ऑटिज़्म और बच्चे का विकास",
+   "say": [
+    "autism",
+    "child development",
+    "speech delay",
+    "adhd",
+    "ऑटिज़्म",
+    "ऑटिज्म"
+   ]
+  },
+  {
+   "id": "root-canal",
+   "en": "Root canal treatment",
+   "hi": "रूट कैनाल",
+   "say": [
+    "root canal",
+    "rct",
+    "रूट कैनाल"
+   ]
+  },
+  {
+   "id": "dental-implants",
+   "en": "Dental implants",
+   "hi": "दाँत लगवाना (इम्प्लांट)",
+   "say": [
+    "dental implant",
+    "dental implants",
+    "tooth implant",
+    "दाँत का इम्प्लांट"
+   ]
+  },
+  {
+   "id": "orthodontics",
+   "en": "Braces & aligners",
+   "hi": "ब्रेसेस",
+   "say": [
+    "braces",
+    "aligners",
+    "orthodontist",
+    "orthodontics",
+    "ब्रेसेस"
+   ]
+  },
+  {
+   "id": "tooth-extraction",
+   "en": "Tooth extraction",
+   "hi": "दाँत निकलवाना",
+   "say": [
+    "tooth extraction",
+    "pull a tooth",
+    "tooth removal",
+    "wisdom tooth",
+    "दाँत निकलवाना",
+    "दांत निकलवाना",
+    "daant nikalwana"
+   ]
+  },
+  {
+   "id": "dentures",
+   "en": "Dentures",
+   "hi": "नकली दाँत",
+   "say": [
+    "dentures",
+    "false teeth",
+    "नकली दाँत",
+    "नकली दांत",
+    "बत्तीसी"
+   ]
+  },
+  {
+   "id": "gum-disease",
+   "en": "Gum disease",
+   "hi": "मसूड़ों की बीमारी",
+   "say": [
+    "gum disease",
+    "bleeding gums",
+    "gums",
+    "मसूड़े",
+    "मसूड़ों"
+   ]
+  },
+  {
+   "id": "endoscopy",
+   "en": "Endoscopy / colonoscopy",
+   "hi": "एंडोस्कोपी / कोलोनोस्कोपी",
+   "say": [
+    "endoscopy",
+    "colonoscopy",
+    "gastroscopy",
+    "एंडोस्कोपी",
+    "दूरबीन से जाँच"
+   ]
+  },
+  {
+   "id": "piles-fistula",
+   "en": "Piles, fissure & fistula",
+   "hi": "बवासीर, फ़िशर और भगंदर",
+   "say": [
+    "piles",
+    "haemorrhoids",
+    "hemorrhoids",
+    "fissure",
+    "fistula",
+    "बवासीर",
+    "भगंदर",
+    "bawasir",
+    "bavasir"
+   ]
+  },
+  {
+   "id": "hernia",
+   "en": "Hernia",
+   "hi": "हर्निया",
+   "say": [
+    "hernia",
+    "हर्निया"
+   ]
+  },
+  {
+   "id": "gallstones",
+   "en": "Gallstones",
+   "hi": "पित्त की पथरी",
+   "say": [
+    "gallstone",
+    "gallstones",
+    "gall bladder",
+    "gallbladder",
+    "पित्त की पथरी",
+    "पित्ताशय"
+   ]
+  },
+  {
+   "id": "bariatric-surgery",
+   "en": "Weight-loss (bariatric) surgery",
+   "hi": "वज़न घटाने की सर्जरी",
+   "say": [
+    "bariatric",
+    "weight loss surgery",
+    "weight-loss surgery",
+    "gastric bypass",
+    "वज़न घटाने की सर्जरी"
+   ]
+  },
+  {
+   "id": "liver-disease",
+   "en": "Liver disease",
+   "hi": "लिवर की बीमारी",
+   "say": [
+    "liver disease",
+    "fatty liver",
+    "jaundice",
+    "hepatitis",
+    "cirrhosis",
+    "पीलिया",
+    "लिवर",
+    "जिगर",
+    "piliya"
+   ]
+  },
+  {
+   "id": "appendicitis",
+   "en": "Appendicitis",
+   "hi": "अपेंडिक्स",
+   "say": [
+    "appendicitis",
+    "appendix",
+    "अपेंडिक्स"
+   ]
+  },
+  {
+   "id": "liver-transplant",
+   "en": "Liver transplant",
+   "hi": "लिवर ट्रांसप्लांट",
+   "say": [
+    "liver transplant",
+    "लिवर ट्रांसप्लांट",
+    "लिवर प्रत्यारोपण"
+   ]
+  },
+  {
+   "id": "ent",
+   "en": "Ear, nose & throat (ENT)",
+   "hi": "कान, नाक और गला (ENT)",
+   "say": [
+    "ent",
+    "ear nose throat",
+    "ear infection",
+    "ear pain",
+    "throat infection",
+    "नाक कान गला",
+    "कान का दर्द",
+    "गले में खराश"
+   ]
+  },
+  {
+   "id": "hearing",
+   "en": "Hearing loss / hearing aids",
+   "hi": "कम सुनना / सुनने की मशीन",
+   "say": [
+    "hearing loss",
+    "hearing aid",
+    "hearing aids",
+    "deaf",
+    "कम सुनाई",
+    "सुनने की मशीन"
+   ]
+  },
+  {
+   "id": "sinus",
+   "en": "Sinus problems",
+   "hi": "साइनस",
+   "say": [
+    "sinus",
+    "sinusitis",
+    "साइनस"
+   ]
+  },
+  {
+   "id": "tonsils",
+   "en": "Tonsils & adenoids",
+   "hi": "टॉन्सिल",
+   "say": [
+    "tonsils",
+    "tonsil",
+    "adenoids",
+    "टॉन्सिल"
+   ]
+  },
+  {
+   "id": "emergency-24x7",
+   "en": "24/7 emergency",
+   "hi": "24 घंटे इमरजेंसी",
+   "say": [
+    "emergency",
+    "casualty",
+    "24 hour hospital",
+    "24/7 hospital",
+    "इमरजेंसी",
+    "आपातकाल",
+    "आपातकालीन",
+    "emergency ward"
+   ]
+  },
+  {
+   "id": "icu",
+   "en": "Intensive care (ICU)",
+   "hi": "गहन चिकित्सा (ICU)",
+   "say": [
+    "icu",
+    "intensive care",
+    "critical care",
+    "ventilator",
+    "आईसीयू",
+    "वेंटिलेटर"
+   ]
+  },
+  {
+   "id": "ambulance",
+   "en": "Ambulance",
+   "hi": "एम्बुलेंस",
+   "say": [
+    "ambulance",
+    "एम्बुलेंस",
+    "एंबुलेंस"
+   ]
+  },
+  {
+   "id": "blood-bank",
+   "en": "Blood bank",
+   "hi": "ब्लड बैंक",
+   "say": [
+    "blood bank",
+    "blood donation",
+    "need blood",
+    "blood transfusion",
+    "ब्लड बैंक",
+    "खून चाहिए",
+    "खून की ज़रूरत",
+    "khoon chahiye"
+   ]
+  },
+  {
+   "id": "palliative-care",
+   "en": "Palliative care",
+   "hi": "पैलिएटिव केयर",
+   "say": [
+    "palliative",
+    "palliative care",
+    "hospice",
+    "end of life care",
+    "पैलिएटिव"
+   ]
+  },
+  {
+   "id": "cataract",
+   "en": "Cataract",
+   "hi": "मोतियाबिंद",
+   "say": [
+    "cataract",
+    "मोतियाबिंद",
+    "motiyabind"
+   ]
+  },
+  {
+   "id": "retina",
+   "en": "Retina problems / diabetic retinopathy",
+   "hi": "रेटिना की समस्या",
+   "say": [
+    "retina",
+    "retinopathy",
+    "रेटिना"
+   ]
+  },
+  {
+   "id": "glaucoma",
+   "en": "Glaucoma",
+   "hi": "काला मोतिया (ग्लूकोमा)",
+   "say": [
+    "glaucoma",
+    "ग्लूकोमा",
+    "काला मोतिया"
+   ]
+  },
+  {
+   "id": "refractive-surgery",
+   "en": "LASIK / vision correction",
+   "hi": "लेसिक / चश्मा हटाना",
+   "say": [
+    "lasik",
+    "laser eye",
+    "remove glasses",
+    "spectacle removal",
+    "लेसिक",
+    "चश्मा हटाना"
+   ]
+  },
+  {
+   "id": "cornea",
+   "en": "Cornea problems / transplant",
+   "hi": "कॉर्निया",
+   "say": [
+    "cornea",
+    "corneal transplant",
+    "कॉर्निया"
+   ]
+  },
+  {
+   "id": "squint",
+   "en": "Squint / strabismus",
+   "hi": "भेंगापन",
+   "say": [
+    "squint",
+    "strabismus",
+    "cross eyed",
+    "भेंगापन"
+   ]
+  },
+  {
+   "id": "ecg",
+   "en": "ECG",
+   "hi": "ईसीजी",
+   "say": [
+    "ecg",
+    "ekg",
+    "electrocardiogram",
+    "ईसीजी"
+   ]
+  },
+  {
+   "id": "echocardiography",
+   "en": "Echocardiography",
+   "hi": "इकोकार्डियोग्राफ़ी",
+   "say": [
+    "echo",
+    "2d echo",
+    "echocardiography",
+    "echocardiogram",
+    "इको"
+   ]
+  },
+  {
+   "id": "angiography",
+   "en": "Coronary angiography",
+   "hi": "एंजियोग्राफ़ी",
+   "say": [
+    "angiography",
+    "angiogram",
+    "एंजियोग्राफी",
+    "एंजियोग्राफ़ी"
+   ]
+  },
+  {
+   "id": "cardiac-surgery",
+   "en": "Heart surgery (bypass / valve)",
+   "hi": "दिल की सर्जरी (बाईपास / वाल्व)",
+   "say": [
+    "heart surgery",
+    "cardiac surgery",
+    "bypass",
+    "bypass surgery",
+    "cabg",
+    "valve replacement",
+    "open heart surgery",
+    "दिल का ऑपरेशन",
+    "दिल की सर्जरी",
+    "बाईपास",
+    "dil ka operation"
+   ]
+  },
+  {
+   "id": "stress-test",
+   "en": "Treadmill / stress test (TMT)",
+   "hi": "ट्रेडमिल टेस्ट (TMT)",
+   "say": [
+    "tmt",
+    "treadmill test",
+    "stress test",
+    "ट्रेडमिल टेस्ट"
+   ]
+  },
+  {
+   "id": "angioplasty",
+   "en": "Angioplasty / stenting",
+   "hi": "एंजियोप्लास्टी / स्टेंट",
+   "say": [
+    "angioplasty",
+    "stent",
+    "stenting",
+    "एंजियोप्लास्टी",
+    "स्टेंट"
+   ]
+  },
+  {
+   "id": "heart-disease",
+   "en": "Heart disease",
+   "hi": "दिल की बीमारी",
+   "say": [
+    "heart disease",
+    "heart problem",
+    "heart patient",
+    "cardiologist",
+    "cardiology",
+    "दिल की बीमारी",
+    "दिल का मरीज़",
+    "हृदय रोग",
+    "dil ki bimari"
+   ]
+  },
+  {
+   "id": "pacemaker",
+   "en": "Pacemaker implantation",
+   "hi": "पेसमेकर",
+   "say": [
+    "pacemaker",
+    "पेसमेकर"
+   ]
+  },
+  {
+   "id": "hypertension",
+   "en": "High blood pressure",
+   "hi": "हाई ब्लड प्रेशर",
+   "say": [
+    "high blood pressure",
+    "blood pressure",
+    "hypertension",
+    "high bp",
+    "bp",
+    "हाई बीपी",
+    "ब्लड प्रेशर",
+    "बीपी"
+   ]
+  },
+  {
+   "id": "varicose-veins",
+   "en": "Varicose veins",
+   "hi": "वैरिकोज़ नसें",
+   "say": [
+    "varicose",
+    "varicose veins",
+    "वैरिकोज़"
+   ]
+  },
+  {
+   "id": "diabetes",
+   "en": "Diabetes",
+   "hi": "शुगर (डायबिटीज़)",
+   "say": [
+    "diabetes",
+    "diabetic",
+    "sugar",
+    "blood sugar",
+    "शुगर",
+    "डायबिटीज",
+    "डायबिटीज़",
+    "मधुमेह",
+    "sugar ki bimari"
+   ]
+  },
+  {
+   "id": "thyroid",
+   "en": "Thyroid disorders",
+   "hi": "थायरॉइड",
+   "say": [
+    "thyroid",
+    "थायराइड",
+    "थायरॉइड"
+   ]
+  },
+  {
+   "id": "obesity",
+   "en": "Obesity & weight management",
+   "hi": "मोटापा",
+   "say": [
+    "obesity",
+    "weight management",
+    "lose weight",
+    "मोटापा",
+    "motapa"
+   ]
+  },
+  {
+   "id": "x-ray",
+   "en": "X-ray",
+   "hi": "एक्स-रे",
+   "say": [
+    "x-ray",
+    "xray",
+    "x ray",
+    "एक्स-रे",
+    "एक्सरे",
+    "एक्स रे"
+   ]
+  },
+  {
+   "id": "pathology-lab",
+   "en": "Pathology / blood tests",
+   "hi": "खून की जाँच / लैब",
+   "say": [
+    "blood test",
+    "blood tests",
+    "lab test",
+    "pathology",
+    "pathology lab",
+    "urine test",
+    "खून की जाँच",
+    "खून की जांच",
+    "ब्लड टेस्ट",
+    "khoon ki jaanch"
+   ]
+  },
+  {
+   "id": "ultrasound",
+   "en": "Ultrasound / sonography",
+   "hi": "अल्ट्रासाउंड / सोनोग्राफ़ी",
+   "say": [
+    "ultrasound",
+    "sonography",
+    "usg",
+    "अल्ट्रासाउंड",
+    "सोनोग्राफी",
+    "सोनोग्राफ़ी"
+   ]
+  },
+  {
+   "id": "ct-scan",
+   "en": "CT scan",
+   "hi": "सीटी स्कैन",
+   "say": [
+    "ct scan",
+    "ct",
+    "cat scan",
+    "सीटी स्कैन",
+    "सिटी स्कैन"
+   ]
+  },
+  {
+   "id": "health-checkup",
+   "en": "Health check-up",
+   "hi": "हेल्थ चेकअप",
+   "say": [
+    "health checkup",
+    "health check-up",
+    "full body checkup",
+    "full body check-up",
+    "check up",
+    "checkup",
+    "हेल्थ चेकअप",
+    "चेकअप"
+   ]
+  },
+  {
+   "id": "mri",
+   "en": "MRI scan",
+   "hi": "एमआरआई स्कैन",
+   "say": [
+    "mri",
+    "mri scan",
+    "magnetic resonance",
+    "एमआरआई"
+   ]
+  },
+  {
+   "id": "mammography",
+   "en": "Mammography",
+   "hi": "मैमोग्राफ़ी",
+   "say": [
+    "mammography",
+    "mammogram",
+    "breast scan",
+    "मैमोग्राफी"
+   ]
+  },
+  {
+   "id": "pet-ct",
+   "en": "PET-CT scan",
+   "hi": "पेट-सीटी स्कैन",
+   "say": [
+    "pet ct",
+    "pet-ct",
+    "pet scan",
+    "पेट सीटी"
+   ]
+  },
+  {
+   "id": "bone-density",
+   "en": "Bone density (DEXA)",
+   "hi": "हड्डियों की मज़बूती की जाँच (DEXA)",
+   "say": [
+    "bone density",
+    "dexa",
+    "osteoporosis",
+    "बोन डेंसिटी"
+   ]
+  },
+  {
+   "id": "fever-infections",
+   "en": "Fever, dengue, malaria & typhoid",
+   "hi": "बुखार, डेंगू, मलेरिया, टाइफ़ाइड",
+   "say": [
+    "fever",
+    "dengue",
+    "malaria",
+    "typhoid",
+    "chikungunya",
+    "बुखार",
+    "डेंगू",
+    "मलेरिया",
+    "टाइफाइड",
+    "bukhar",
+    "bukhaar"
+   ]
+  },
+  {
+   "id": "hiv",
+   "en": "HIV / AIDS",
+   "hi": "एचआईवी / एड्स",
+   "say": [
+    "hiv",
+    "aids",
+    "art centre",
+    "एचआईवी",
+    "एड्स"
+   ]
+  },
+  {
+   "id": "snakebite-rabies",
+   "en": "Snakebite & rabies",
+   "hi": "साँप का काटना और रेबीज़",
+   "say": [
+    "snake bite",
+    "snakebite",
+    "dog bite",
+    "rabies",
+    "anti venom",
+    "antivenom",
+    "साँप ने काटा",
+    "सांप ने काटा",
+    "साँप का काटना",
+    "कुत्ते ने काटा",
+    "रेबीज",
+    "saanp ne kata",
+    "kutte ne kata"
+   ]
+  },
+  {
+   "id": "kidney-dialysis",
+   "en": "Dialysis",
+   "hi": "डायलिसिस",
+   "say": [
+    "dialysis",
+    "haemodialysis",
+    "hemodialysis",
+    "kidney dialysis",
+    "kidney machine",
+    "डायलिसिस",
+    "dialisis"
+   ]
+  },
+  {
+   "id": "kidney-stones",
+   "en": "Kidney stones",
+   "hi": "गुर्दे की पथरी",
+   "say": [
+    "kidney stone",
+    "kidney stones",
+    "stone in kidney",
+    "पथरी",
+    "गुर्दे की पथरी",
+    "pathri"
+   ]
+  },
+  {
+   "id": "kidney-transplant",
+   "en": "Kidney transplant",
+   "hi": "किडनी ट्रांसप्लांट",
+   "say": [
+    "kidney transplant",
+    "renal transplant",
+    "किडनी ट्रांसप्लांट",
+    "गुर्दा प्रत्यारोपण"
+   ]
+  },
+  {
+   "id": "prostate",
+   "en": "Prostate problems",
+   "hi": "प्रोस्टेट",
+   "say": [
+    "prostate",
+    "प्रोस्टेट"
+   ]
+  },
+  {
+   "id": "kidney-failure",
+   "en": "Kidney failure / chronic kidney disease",
+   "hi": "किडनी फ़ेल / गुर्दे की बीमारी",
+   "say": [
+    "kidney failure",
+    "kidney disease",
+    "ckd",
+    "nephrologist",
+    "nephrology",
+    "kidney problem",
+    "किडनी फेल",
+    "गुर्दे की बीमारी",
+    "किडनी की बीमारी",
+    "kidney fail"
+   ]
+  },
+  {
+   "id": "pulmonary-function",
+   "en": "Lung function test (PFT)",
+   "hi": "फेफड़ों की जाँच (PFT)",
+   "say": [
+    "pft",
+    "lung function test",
+    "spirometry",
+    "फेफड़ों की जाँच"
+   ]
+  },
+  {
+   "id": "asthma-copd",
+   "en": "Asthma / COPD",
+   "hi": "दमा / सीओपीडी",
+   "say": [
+    "asthma",
+    "copd",
+    "दमा",
+    "अस्थमा",
+    "dama"
+   ]
+  },
+  {
+   "id": "sleep-apnea",
+   "en": "Sleep apnea / sleep study",
+   "hi": "नींद में साँस रुकना",
+   "say": [
+    "sleep apnea",
+    "sleep apnoea",
+    "sleep study",
+    "snoring",
+    "खर्राटे"
+   ]
+  },
+  {
+   "id": "tuberculosis",
+   "en": "Tuberculosis (TB)",
+   "hi": "टीबी",
+   "say": [
+    "tuberculosis",
+    "tb",
+    "टीबी",
+    "क्षय रोग"
+   ]
+  },
+  {
+   "id": "mental-health",
+   "en": "Mental health (depression, anxiety)",
+   "hi": "मानसिक स्वास्थ्य",
+   "say": [
+    "mental health",
+    "depression",
+    "anxiety",
+    "psychiatrist",
+    "psychologist",
+    "counselling",
+    "डिप्रेशन",
+    "तनाव",
+    "मानसिक"
+   ]
+  },
+  {
+   "id": "addiction",
+   "en": "De-addiction",
+   "hi": "नशा मुक्ति",
+   "say": [
+    "de-addiction",
+    "deaddiction",
+    "rehab centre",
+    "alcohol addiction",
+    "drug addiction",
+    "नशा मुक्ति",
+    "नशा छुड़ाना",
+    "nasha mukti"
+   ]
+  },
+  {
+   "id": "cosmetic-surgery",
+   "en": "Cosmetic / plastic surgery",
+   "hi": "कॉस्मेटिक / प्लास्टिक सर्जरी",
+   "say": [
+    "cosmetic surgery",
+    "plastic surgery",
+    "rhinoplasty",
+    "प्लास्टिक सर्जरी"
+   ]
+  },
+  {
+   "id": "hair-loss",
+   "en": "Hair loss / hair transplant",
+   "hi": "बाल झड़ना / हेयर ट्रांसप्लांट",
+   "say": [
+    "hair loss",
+    "hair transplant",
+    "hair fall",
+    "बाल झड़ना",
+    "हेयर ट्रांसप्लांट"
+   ]
+  },
+  {
+   "id": "skin-disease",
+   "en": "Skin conditions",
+   "hi": "त्वचा रोग",
+   "say": [
+    "skin problem",
+    "skin disease",
+    "dermatologist",
+    "rash",
+    "eczema",
+    "psoriasis",
+    "acne",
+    "त्वचा",
+    "चर्म रोग",
+    "खुजली"
+   ]
+  },
+  {
+   "id": "burns",
+   "en": "Burns",
+   "hi": "जलना",
+   "say": [
+    "burn",
+    "burns",
+    "burnt",
+    "burned",
+    "burn unit",
+    "burn care",
+    "जल गया",
+    "जल गई",
+    "जलना",
+    "झुलस",
+    "jal gaya",
+    "jal gayi"
+   ]
+  },
+  {
+   "id": "pregnancy-delivery",
+   "en": "Pregnancy & childbirth",
+   "hi": "गर्भावस्था और प्रसव",
+   "say": [
+    "pregnancy",
+    "pregnant",
+    "delivery",
+    "childbirth",
+    "labour",
+    "labor",
+    "give birth",
+    "antenatal",
+    "maternity",
+    "गर्भवती",
+    "प्रसव",
+    "डिलीवरी",
+    "प्रेगनेंट",
+    "गर्भ",
+    "delivery hona"
+   ]
+  },
+  {
+   "id": "infertility",
+   "en": "Infertility",
+   "hi": "बाँझपन",
+   "say": [
+    "infertility",
+    "fertility",
+    "cannot conceive",
+    "बाँझपन",
+    "बांझपन"
+   ]
+  },
+  {
+   "id": "ivf",
+   "en": "IVF",
+   "hi": "आईवीएफ़",
+   "say": [
+    "ivf",
+    "test tube baby",
+    "आईवीएफ",
+    "टेस्ट ट्यूब बेबी"
+   ]
+  },
+  {
+   "id": "family-planning",
+   "en": "Family planning / contraception",
+   "hi": "परिवार नियोजन",
+   "say": [
+    "family planning",
+    "contraception",
+    "vasectomy",
+    "tubectomy",
+    "copper t",
+    "परिवार नियोजन",
+    "नसबंदी"
+   ]
+  },
+  {
+   "id": "iui",
+   "en": "IUI",
+   "hi": "आईयूआई",
+   "say": [
+    "iui",
+    "आईयूआई"
+   ]
+  },
+  {
+   "id": "c-section",
+   "en": "Caesarean section",
+   "hi": "सिज़ेरियन (ऑपरेशन से डिलीवरी)",
+   "say": [
+    "c-section",
+    "c section",
+    "caesarean",
+    "cesarean",
+    "lscs",
+    "सिजेरियन",
+    "सिज़ेरियन",
+    "ऑपरेशन से डिलीवरी"
+   ]
+  },
+  {
+   "id": "hysterectomy",
+   "en": "Hysterectomy",
+   "hi": "बच्चेदानी का ऑपरेशन",
+   "say": [
+    "hysterectomy",
+    "uterus removal",
+    "बच्चेदानी"
+   ]
+  },
+  {
+   "id": "high-risk-pregnancy",
+   "en": "High-risk pregnancy",
+   "hi": "हाई-रिस्क गर्भावस्था",
+   "say": [
+    "high risk pregnancy",
+    "high-risk pregnancy",
+    "complicated pregnancy",
+    "हाई रिस्क प्रेगनेंसी"
+   ]
+  },
+  {
+   "id": "pcos",
+   "en": "PCOS / PCOD",
+   "hi": "पीसीओएस / पीसीओडी",
+   "say": [
+    "pcos",
+    "pcod",
+    "पीसीओएस",
+    "पीसीओडी"
+   ]
+  },
+  {
+   "id": "pregnancy-termination",
+   "en": "Medical termination of pregnancy",
+   "hi": "गर्भपात (MTP)",
+   "say": [
+    "abortion",
+    "termination of pregnancy",
+    "mtp",
+    "गर्भपात"
+   ]
+  }
+ ],
+ "broad": [
+  {
+   "say": [
+    "kidney",
+    "kidneys",
+    "किडनी",
+    "गुर्दा",
+    "गुर्दे"
+   ],
+   "options": [
+    "kidney-dialysis",
+    "kidney-failure",
+    "kidney-stones",
+    "kidney-transplant"
+   ]
+  },
+  {
+   "say": [
+    "heart",
+    "दिल",
+    "हृदय"
+   ],
+   "options": [
+    "heart-disease",
+    "ecg",
+    "angioplasty",
+    "cardiac-surgery"
+   ]
+  },
+  {
+   "say": [
+    "tooth",
+    "teeth",
+    "toothache",
+    "tooth pain",
+    "dentist",
+    "dental",
+    "दाँत",
+    "दांत",
+    "daant",
+    "dant"
+   ],
+   "options": [
+    "root-canal",
+    "tooth-extraction",
+    "dental-implants",
+    "gum-disease"
+   ]
+  },
+  {
+   "say": [
+    "eye",
+    "eyes",
+    "eye doctor",
+    "vision",
+    "आँख",
+    "आंख",
+    "आँखों",
+    "aankh"
+   ],
+   "options": [
+    "cataract",
+    "glaucoma",
+    "retina",
+    "refractive-surgery"
+   ]
+  },
+  {
+   "say": [
+    "scan",
+    "स्कैन"
+   ],
+   "options": [
+    "mri",
+    "ct-scan",
+    "ultrasound",
+    "x-ray"
+   ]
+  },
+  {
+   "say": [
+    "baby",
+    "child",
+    "kid",
+    "बच्चा",
+    "बच्चे",
+    "बच्ची",
+    "bachcha",
+    "baccha"
+   ],
+   "options": [
+    "nicu",
+    "vaccination",
+    "picu",
+    "pregnancy-delivery"
+   ]
+  },
+  {
+   "say": [
+    "bone",
+    "bones",
+    "हड्डी",
+    "haddi"
+   ],
+   "options": [
+    "fracture-trauma",
+    "joint-replacement",
+    "bone-density",
+    "arthritis"
+   ]
+  },
+  {
+   "say": [
+    "stomach",
+    "pet dard",
+    "पेट",
+    "stomach pain",
+    "पेट दर्द"
+   ],
+   "options": [
+    "endoscopy",
+    "gallstones",
+    "appendicitis",
+    "liver-disease"
+   ]
+  },
+  {
+   "say": [
+    "lungs",
+    "breathing problem",
+    "फेफड़े"
+   ],
+   "options": [
+    "asthma-copd",
+    "tuberculosis",
+    "pulmonary-function"
+   ]
+  },
+  {
+   "say": [
+    "surgery",
+    "operation",
+    "ऑपरेशन",
+    "सर्जरी"
+   ],
+   "options": [
+    "cardiac-surgery",
+    "joint-replacement",
+    "hernia",
+    "c-section"
+   ]
+  }
+ ],
+ "redFlags": [
+  {
+   "id": "unresponsive",
+   "level": 1,
+   "patterns": [
+    "\\bunconscious\\b",
+    "\\bunresponsive\\b",
+    "\\bnot waking up\\b",
+    "\\bwon'?t wake up\\b",
+    "\\bnot breathing\\b",
+    "\\bstopped breathing\\b",
+    "\\bno pulse\\b",
+    "\\bcollapsed\\b",
+    "\\bfainted and\\b",
+    "बेहोश",
+    "होश नहीं",
+    "साँस नहीं ले रह",
+    "सांस नहीं ले रह",
+    "साँस रुक",
+    "सांस रुक",
+    "\\bbehosh\\b",
+    "\\bhosh nahi",
+    "\\bsaans nahi le",
+    "\\bsaans ruk"
+   ]
+  },
+  {
+   "id": "chest-pain",
+   "level": 2,
+   "patterns": [
+    "\\bchest pains?\\b",
+    "\\bpain in (?:my|his|her|the) chest\\b",
+    "\\bheart attack\\b",
+    "\\bchest (?:tightness|pressure)\\b",
+    "सीने में दर्द",
+    "छाती में दर्द",
+    "दिल का दौरा",
+    "हार्ट अटैक",
+    "\\bseene? (?:me|mein|main) dard",
+    "\\bchhati (?:me|mein) dard",
+    "\\bdil ka daura"
+   ]
+  },
+  {
+   "id": "breathing",
+   "level": 2,
+   "patterns": [
+    "\\bcan'?t breathe\\b",
+    "\\bcannot breathe\\b",
+    "\\bdifficulty (?:in )?breathing\\b",
+    "\\btrouble breathing\\b",
+    "\\bhard to breathe\\b",
+    "\\bshort(?:ness)? of breath\\b",
+    "\\bbreathless\\b",
+    "\\bgasping\\b",
+    "साँस लेने में (?:तकलीफ|तकलीफ़|दिक्कत|परेशानी)",
+    "सांस लेने में (?:तकलीफ|तकलीफ़|दिक्कत|परेशानी)",
+    "साँस फूल",
+    "सांस फूल",
+    "दम घुट",
+    "\\bsaans lene (?:me|mein) (?:taklif|takleef|dikkat)",
+    "\\bsaans phool"
+   ]
+  },
+  {
+   "id": "stroke-signs",
+   "level": 2,
+   "patterns": [
+    "\\bface (?:is )?droop",
+    "\\bdrooping face\\b",
+    "\\bslurred speech\\b",
+    "\\bspeech (?:is )?slurred\\b",
+    "\\bsudden(?:ly)? (?:weak|numb|can'?t speak)",
+    "\\bone side (?:of (?:the|his|her|my) body )?(?:is )?(?:weak|numb)",
+    "\\b(?:had|having) a stroke\\b",
+    "मुँह टेढ़ा",
+    "मुंह टेढ़ा",
+    "एक तरफ (?:कमज़ोरी|कमजोरी|सुन्न)",
+    "लकवा मार",
+    "स्ट्रोक",
+    "\\bmunh tedha",
+    "\\blakwa maar"
+   ]
+  },
+  {
+   "id": "seizure-now",
+   "level": 2,
+   "patterns": [
+    "\\bhaving (?:a )?(?:seizure|fit)s?\\b",
+    "\\bseizing\\b",
+    "\\bconvuls",
+    "\\bfitting now\\b",
+    "दौरा पड़ रहा",
+    "दौरा पड़ गया",
+    "झटके आ रहे",
+    "\\bdaura pad",
+    "\\bjhatke aa"
+   ]
+  },
+  {
+   "id": "bleeding",
+   "level": 2,
+   "patterns": [
+    "\\b(?:heavy|severe|lots of|a lot of) bleeding\\b",
+    "\\bbleeding (?:heavily|a lot|badly|nonstop|non-stop)\\b",
+    "\\b(?:won'?t|doesn'?t|does not|will not) stop bleeding\\b",
+    "\\bbleeding (?:that )?(?:won'?t|doesn'?t|does not|will not) stop\\b",
+    "\\bvomiting blood\\b",
+    "\\bcoughing (?:up )?blood\\b",
+    "\\bthrowing up blood\\b",
+    "बहुत खून",
+    "खून बह रहा",
+    "खून रुक नहीं",
+    "खून की उल्टी",
+    "\\bbahut khoon",
+    "\\bkhoon beh",
+    "\\bkhoon ruk nahi"
+   ]
+  },
+  {
+   "id": "poison",
+   "level": 2,
+   "patterns": [
+    "\\bpoison(?:ed|ing)?\\b",
+    "\\boverdose\\b",
+    "\\bdrank (?:pesticide|acid|bleach|kerosene|phenyl)\\b",
+    "\\bswallowed (?:pesticide|acid|bleach|poison|pills)\\b",
+    "ज़हर",
+    "जहर",
+    "कीटनाशक",
+    "\\bzeher\\b",
+    "\\bzahar\\b"
+   ]
+  },
+  {
+   "id": "snakebite",
+   "level": 2,
+   "patterns": [
+    "\\bsnake ?bites?\\b",
+    "\\bbitten by a snake\\b",
+    "\\bsnake bit\\b",
+    "साँप ने काट",
+    "सांप ने काट",
+    "\\bsaa?n?p ne kaat"
+   ]
+  },
+  {
+   "id": "severe-burn",
+   "level": 2,
+   "patterns": [
+    "\\b(?:badly|severely) burn(?:ed|t)\\b",
+    "\\bburns? all over\\b",
+    "\\bburn(?:ed|t)? (?:on|all over) (?:the|his|her|my) face\\b",
+    "बुरी तरह जल",
+    "पूरा जल गया"
+   ]
+  },
+  {
+   "id": "crisis",
+   "level": 2,
+   "crisis": true,
+   "patterns": [
+    "\\bsuicid",
+    "\\bkill (?:my|him|her)self\\b",
+    "\\bwant to die\\b",
+    "\\bend (?:my|his|her) life\\b",
+    "आत्महत्या",
+    "मरना चाहत",
+    "जान देना",
+    "\\bkhudkushi\\b",
+    "\\bmarna chaht"
+   ]
+  },
+  {
+   "id": "labour",
+   "level": 3,
+   "patterns": [
+    "\\blabou?r pains?\\b",
+    "\\bin labou?r\\b",
+    "\\bcontractions\\b",
+    "\\bwaters? (?:has |have )?broke(?:n)?\\b",
+    "प्रसव पीड़ा",
+    "दर्द शुरू",
+    "पानी की थैली फट",
+    "\\bdard shuru"
+   ]
+  },
+  {
+   "id": "fracture",
+   "level": 3,
+   "patterns": [
+    "\\bbroken (?:bone|leg|arm|hand|hip|wrist|ankle)\\b",
+    "\\bfractured?\\b",
+    "हड्डी टूट",
+    "\\bhaddi (?:toot|tut)",
+    "\\bbroke (?:his|her|my|their) (?:leg|arm|hand|hip|wrist|ankle|bone)"
+   ]
+  },
+  {
+   "id": "accident",
+   "level": 3,
+   "patterns": [
+    "\\baccident\\b",
+    "\\bhit by a\\b",
+    "दुर्घटना",
+    "एक्सीडेंट"
+   ]
+  },
+  {
+   "id": "high-fever",
+   "level": 3,
+   "patterns": [
+    "\\bvery high fever\\b",
+    "\\bfever (?:of )?(?:10[3-6]|39|40|41)\\b",
+    "तेज़ बुखार",
+    "तेज बुखार",
+    "\\btez bukha+r"
+   ]
+  },
+  {
+   "id": "dog-bite",
+   "level": 3,
+   "patterns": [
+    "\\bdog bit",
+    "\\bbitten by a dog\\b",
+    "कुत्ते ने काट",
+    "\\bkutte ne kaat"
+   ]
+  },
+  {
+   "id": "severe-pain",
+   "level": 3,
+   "patterns": [
+    "\\b(?:severe|unbearable|terrible|very bad) pain\\b",
+    "असहनीय दर्द",
+    "बहुत तेज़ दर्द",
+    "बहुत तेज दर्द"
+   ]
+  },
+  {
+   "id": "missed-dialysis",
+   "level": 3,
+   "patterns": [
+    "\\bmissed (?:(?:his|her|my|a) )?dialysis\\b",
+    "डायलिसिस छूट"
+   ]
+  }
+ ],
+ "placeCuesHere": [
+  "\\bnear me\\b",
+  "\\bnearby\\b",
+  "\\bclose to me\\b",
+  "\\baround me\\b",
+  "\\bmy location\\b",
+  "\\bwhere i am\\b",
+  "\\bnear (?:my|our) (?:home|house|place)\\b",
+  "मेरे पास",
+  "मेरे आस-?पास",
+  "मेरे नज़दीक",
+  "मेरे नजदीक",
+  "आस-?पास",
+  "पास में",
+  "\\bmere paas\\b",
+  "\\bmere pass\\b",
+  "\\baas ?paas\\b"
+ ],
+ "placesHi": {
+  "दिल्ली": "Delhi",
+  "नई दिल्ली": "New Delhi",
+  "मुंबई": "Mumbai",
+  "भुवनेश्वर": "Bhubaneswar",
+  "जयपुर": "Jaipur",
+  "पटना": "Patna",
+  "लखनऊ": "Lucknow",
+  "कटक": "Cuttack",
+  "पुरी": "Puri",
+  "कोलकाता": "Kolkata",
+  "चेन्नई": "Chennai",
+  "बेंगलुरु": "Bengaluru",
+  "बैंगलोर": "Bengaluru",
+  "हैदराबाद": "Hyderabad",
+  "पुणे": "Pune",
+  "अहमदाबाद": "Ahmedabad",
+  "भोपाल": "Bhopal",
+  "इंदौर": "Indore",
+  "वाराणसी": "Varanasi",
+  "बनारस": "Varanasi",
+  "कानपुर": "Kanpur",
+  "नागपुर": "Nagpur",
+  "रांची": "Ranchi",
+  "राँची": "Ranchi",
+  "गुवाहाटी": "Guwahati",
+  "चंडीगढ़": "Chandigarh",
+  "देहरादून": "Dehradun",
+  "रायपुर": "Raipur",
+  "शिमला": "Shimla",
+  "आगरा": "Agra",
+  "सूरत": "Surat",
+  "नोएडा": "Noida",
+  "गुरुग्राम": "Gurugram",
+  "गुड़गांव": "Gurugram",
+  "अमृतसर": "Amritsar",
+  "लुधियाना": "Ludhiana",
+  "जोधपुर": "Jodhpur",
+  "उदयपुर": "Udaipur",
+  "कोटा": "Kota",
+  "बीकानेर": "Bikaner",
+  "अजमेर": "Ajmer",
+  "मेरठ": "Meerut",
+  "प्रयागराज": "Prayagraj",
+  "इलाहाबाद": "Prayagraj",
+  "गोरखपुर": "Gorakhpur",
+  "मुज़फ़्फ़रपुर": "Muzaffarpur",
+  "मुजफ्फरपुर": "Muzaffarpur",
+  "भागलपुर": "Bhagalpur",
+  "धनबाद": "Dhanbad",
+  "जमशेदपुर": "Jamshedpur",
+  "संबलपुर": "Sambalpur",
+  "राउरकेला": "Rourkela",
+  "बालासोर": "Balasore",
+  "ब्रह्मपुर": "Berhampur",
+  "विशाखापत्तनम": "Visakhapatnam",
+  "कोच्चि": "Kochi",
+  "तिरुवनंतपुरम": "Thiruvananthapuram",
+  "मदुरै": "Madurai",
+  "कोयंबटूर": "Coimbatore",
+  "मैसूर": "Mysuru",
+  "श्रीनगर": "Srinagar",
+  "जम्मू": "Jammu",
+  "ग्वालियर": "Gwalior",
+  "जबलपुर": "Jabalpur",
+  "नासिक": "Nashik",
+  "औरंगाबाद": "Aurangabad",
+  "ठाणे": "Thane",
+  "गोवा": "Goa",
+  "उज्जैन": "Ujjain",
+  "अलीगढ़": "Aligarh",
+  "बरेली": "Bareilly",
+  "मथुरा": "Mathura",
+  "हरिद्वार": "Haridwar",
+  "ऋषिकेश": "Rishikesh",
+  "सिलीगुड़ी": "Siliguri",
+  "दरभंगा": "Darbhanga",
+  "बोकारो": "Bokaro",
+  "कोरबा": "Korba",
+  "बिलासपुर": "Bilaspur",
+  "झाँसी": "Jhansi",
+  "झांसी": "Jhansi"
+ },
+ "placeStopwords": [
+  "me",
+  "my",
+  "the",
+  "a",
+  "an",
+  "his",
+  "her",
+  "our",
+  "their",
+  "pain",
+  "labour",
+  "labor",
+  "need",
+  "bed",
+  "icu",
+  "hospital",
+  "hospitals",
+  "emergency",
+  "trouble",
+  "severe",
+  "front",
+  "time",
+  "case",
+  "bad",
+  "good",
+  "urgent",
+  "general",
+  "which",
+  "this",
+  "that",
+  "it",
+  "there",
+  "here",
+  "dialysis"
+ ],
+ "hiNonPlaces": [
+  "सीने",
+  "छाती",
+  "पेट",
+  "सिर",
+  "कमर",
+  "आँख",
+  "आंख",
+  "दाँत",
+  "दांत",
+  "अस्पताल",
+  "घर",
+  "शहर",
+  "गाँव",
+  "गांव",
+  "इलाके",
+  "इलाज",
+  "रात",
+  "दिन",
+  "सुबह",
+  "शाम",
+  "समय",
+  "हालत",
+  "दर्द",
+  "बच्चे",
+  "पैर",
+  "हाथ",
+  "गले",
+  "कान",
+  "नाक",
+  "मुँह",
+  "मुंह",
+  "शरीर",
+  "किडनी",
+  "गुर्दे",
+  "दिल",
+  "खून",
+  "बुखार",
+  "डायलिसिस"
+ ]
+}

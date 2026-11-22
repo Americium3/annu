@@ -1,4 +1,4 @@
-import { ArrowLeft, LoaderCircle, LocateFixed, Phone, UserRound } from "lucide-react";
+import { ArrowLeft, ArrowRight, HeartHandshake, LoaderCircle, LocateFixed, Phone, UserRound } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { demoFacilities } from "../data/demo";
 import { useI18n } from "../i18n";
@@ -7,6 +7,17 @@ import { telUrl } from "../lib/facilityActions";
 import type { EmergencyContact } from "../lib/profile";
 import type { FacilityRecommendation } from "../types";
 import { FacilityActions } from "./FacilityActions";
+import { RaahiSays } from "./Raahi";
+import { UrgencyMeter } from "./Understood";
+
+/** Why the emergency screen opened: the words that set it off and the emergency score (80+). */
+export interface EmergencyReason {
+  quote?: string;
+  score?: number;
+  crisis?: boolean;
+  placeText?: string;
+  text?: string;
+}
 
 interface Point {
   latitude: number;
@@ -37,12 +48,16 @@ export function EmergencyView({
   origin,
   originName,
   contact,
+  reason,
   onExit,
+  onNotEmergency,
 }: {
   origin: Point;
   originName: string;
   contact: EmergencyContact | null;
+  reason?: EmergencyReason;
   onExit: () => void;
+  onNotEmergency?: () => void;
 }) {
   const { t } = useI18n();
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -77,7 +92,7 @@ export function EmergencyView({
     if (USE_DEMO) return;
     let cancelled = false;
     setLiveFailed(false);
-    getRecommendations({ serviceText: "emergency", locationText: originName, coordinates: position })
+    getRecommendations({ serviceText: "emergency-24x7", locationText: originName, coordinates: position, urgency: 2 })
       .then((response) => {
         if (!cancelled) setLive(response.results);
       })
@@ -91,11 +106,15 @@ export function EmergencyView({
 
   const hospitals = useMemo<FacilityRecommendation[]>(() => {
     const pool = USE_DEMO ? demoFacilities.filter((facility) => !/clinic/i.test(facility.type)) : (live ?? []);
+    // Live results already carry distances from the place searched; re-measure only from a device location.
     return pool
-      .map((facility) => ({ ...facility, distanceKm: distanceKm(from, facility) }))
+      .map((facility) => ({
+        ...facility,
+        distanceKm: USE_DEMO || position ? distanceKm(from, facility) : facility.distanceKm,
+      }))
       .sort((a, b) => a.distanceKm - b.distanceKm)
       .slice(0, 5);
-  }, [from, live]);
+  }, [from, live, position]);
 
   return (
     <section className="emergency" aria-labelledby="emergency-title">
@@ -109,12 +128,33 @@ export function EmergencyView({
           {t.emergencyDoorTitle}
         </h1>
 
+        {reason?.quote && (
+          <div className="emergency-why">
+            <RaahiSays mood="concerned" size={52}>
+              <strong>{t.emWhy(reason.quote)}</strong>
+            </RaahiSays>
+            {reason.score !== undefined && <UrgencyMeter score={reason.score} level={reason.score >= 100 ? 1 : 2} compact />}
+          </div>
+        )}
+
         <a className="call-108" href="tel:108">
           <Phone size={28} aria-hidden="true" />
           <span>
             <strong>{t.emCall}</strong>
           </span>
         </a>
+
+        {reason?.crisis && (
+          <a className="call-contact call-crisis" href="tel:14416">
+            <HeartHandshake size={22} aria-hidden="true" />
+            <span>
+              <strong>
+                {t.emCrisis} {t.emCrisisNumber}
+              </strong>
+              <small>{t.emCrisisNote}</small>
+            </span>
+          </a>
+        )}
 
         {contact && (
           <a className="call-contact" href={telUrl(`+91${contact.phone}`)}>
@@ -151,6 +191,13 @@ export function EmergencyView({
             </li>
           ))}
         </ol>
+
+        {onNotEmergency && (
+          <button type="button" className="link-button emergency-not" onClick={onNotEmergency}>
+            {t.emNotEmergency}
+            <ArrowRight size={16} aria-hidden="true" />
+          </button>
+        )}
       </div>
     </section>
   );

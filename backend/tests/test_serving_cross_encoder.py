@@ -21,14 +21,16 @@ class FakeModel:
 
     def predict(self, pairs, **kwargs):
         self.calls.append(list(pairs))
-        return np.array([4. if "specialized" in text else -4. for _, text in pairs])
+        # +4: plainly about the service; -11: about as relevant as unrelated text for this checkpoint.
+        return np.array([4. if "specialized" in text else -11. for _, text in pairs])
 
 
 def snapshot():
     facilities, index = [], []
     for uid, lat, status, tier, text in (
         ("near", 26.91, "formal", 1, "We provide dialysis."),
-        ("far", 26.96, "formal", 3, "Our specialized dialysis treatment unit offers haemodialysis."),
+        # Tier 2: close enough in proof to "near" that a far better text match can reorder them.
+        ("far", 26.96, "formal", 2, "Our specialized dialysis treatment unit offers haemodialysis."),
         ("blocked", 26.90, "review_blocked", 1, "Our specialized dialysis treatment is provided."),
         ("outside", 27.5, "formal", 1, "Our specialized dialysis unit is open."),
     ):
@@ -82,7 +84,7 @@ class ServingCrossEncoderTest(unittest.TestCase):
         self.assertIn(detail["bestEvidenceText"], [e["quote"] for e in r["evidence"]])
         self.assertAlmostEqual(sum(sb[k] for k in sb if k.endswith("Score") and k != "totalScore"), 100 * detail["totalScore"])
         self.assertEqual(r["totalScore"], round(100 * detail["totalScore"]))
-        self.assertEqual(detail["evidenceScore"], .55)  # proof strength of a tier-3 statement at a verified point
+        self.assertEqual(detail["evidenceScore"], .8)  # proof strength of a tier-2 statement at a verified point
 
     def test_repeat_location_query_reuses_service_text_pair_scores(self):
         self.rec.recommend("dialysis", "26.9,75.8")

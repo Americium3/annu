@@ -80,13 +80,19 @@ def proof_strength(df: pd.DataFrame) -> pd.Series:
     return tier * equipment * other * location
 
 
-def rank_candidates(ok: pd.DataFrame, tag: str, text_match: pd.Series | None = None) -> pd.DataFrame:
+def rank_candidates(ok: pd.DataFrame, tag: str, text_match: pd.Series | None = None,
+                    travel: float | None = None, judged: dict[str, str] | None = None) -> pd.DataFrame:
     """Order eligible facilities: solid proof before weak proof; within each, rank score = evidence x closeness
     (ties: nearer first, then id). Evidence is proof strength alone, or blended with the cross-encoder's
     text match when one is given."""
     out = ok.copy()
     out["proof"] = proof_strength(out)
-    out["closeness"] = closeness(out["distance_km"].to_numpy(), travel_km(tag))
+    verdict = out["unique_id"].map(judged or {})
+    out["judge_verdict"] = verdict
+    # The LLM judge's verdict on the record lines can only lower proof (judge.py).
+    out["proof"] = out["proof"] * verdict.map(config.JUDGE_MULTIPLIER).fillna(1.0)
+    out["travel_km"] = travel = travel or travel_km(tag)
+    out["closeness"] = closeness(out["distance_km"].to_numpy(), travel)
     if text_match is None:
         out["evidence_strength"] = out["proof"]
     else:
@@ -94,7 +100,8 @@ def rank_candidates(ok: pd.DataFrame, tag: str, text_match: pd.Series | None = N
         out["text_match"] = text_match.reindex(out.index).astype(float)
         out["evidence_strength"] = w["text"] * out["text_match"] + w["proof"] * out["proof"]
     out["rank_score"] = out["evidence_strength"] * out["closeness"]
-    out["solid_proof"] = (out["proof"] >= config.PROOF_SOLID_MIN) & ~out["only_equipment"].astype(bool)
+    out["solid_proof"] = ((out["proof"] >= config.PROOF_SOLID_MIN) & ~out["only_equipment"].astype(bool)
+                          & ~verdict.isin(config.JUDGE_WEAK))
     return out.sort_values(["solid_proof", "rank_score", "distance_km", "n_explicit_usable", "unique_id"],
                            ascending=[False, False, True, False, True])
 
@@ -130,6 +137,7 @@ class Recommender:
         self.ranking_method = ranking_method or config.RANKING_METHOD
         if self.ranking_method not in {"cross_encoder", "rules"}:
             raise ValueError("CAREPATH_RANKING_METHOD must be cross_encoder or rules")
+        self.judge = None  # judge.EvidenceJudge when a language model is configured (main.py)
         self.ranking_version = ("cross-encoder-x-closeness-v5-claim-guard" if self.ranking_method == "cross_encoder"
                                 else "proof-x-closeness-v5-claim-guard")
         self.scorer = scorer if scorer is not None else CrossEncoderScorer(
@@ -166,6 +174,12 @@ class Recommender:
                           .agg(lat=("loc_lat", "median"), lon=("loc_lon", "median"), n=("loc_lat", "size")).reset_index())
         self.states = set(self.districts["state"]) | set(self.cities["state_u"])
 
+    def known_place(self, name: str) -> bool:
+        """Exact city, district or state name in the location reference (no fuzzy matching)."""
+        if not hasattr(self, "_place_names"):
+            self._place_names = (set(self.cities["city"]) | set(self.districts["district"]) | set(self.states))
+        return name.strip().upper() in self._place_names
+
     def warmup(self):
         if self.ranking_method == "cross_encoder":
             self.scorer.warmup()
@@ -176,11 +190,11 @@ class Recommender:
                 **({"scorer": self.scorer.info(), "weights": config.RERANK_WEIGHTS}
                    if self.ranking_method == "cross_encoder" else {})}
 
-    def _cross_encoder_order(self, within, tag, label):
+    def _cross_encoder_order(self, within, tag, label, travel=None):
         """Text match for already-formal candidates, then the shared ranking. No CE threshold certifies capability."""
         within = within.copy()
         if within.empty:
-            return rank_candidates(within, tag)
+            return rank_candidates(within, tag, travel=travel)
         query = " ".join(dict.fromkeys([label, *self.tags.loc[tag, "synonyms"], *config.SERVICE_INPUT_SYNONYMS.get(tag, [])]))
         selected, texts = {}, []
         for idx, row in within.iterrows():
@@ -207,7 +221,12 @@ class Recommender:
             within.at[idx, "ce_evidence_ref"] = f"{best_ev.get('field')}:{best_ev.get('pos', best_ev.get('item_idx', ''))}"
             within.at[idx, "ce_best_quote"] = best_ev["text"]
             within.at[idx, "ce_item_count"] = len(evidence)
-        return rank_candidates(within, tag, text_match=within["ce_text_score"])
+        # Text match on a fixed scale (config.TEXT_MATCH_LOGIT_RANGE): invert the scorer's sigmoid back to logits.
+        p = within["ce_text_score"].astype(float).clip(1e-12, 1 - 1e-12)
+        logit = np.log(p / (1 - p))
+        lo, hi = config.TEXT_MATCH_LOGIT_RANGE
+        within["ce_text_logit"] = logit
+        return rank_candidates(within, tag, text_match=((logit - lo) / (hi - lo)).clip(0, 1), travel=travel)
 
     # ------------------------------------------------------------------ catalog / suggestions
     def services(self) -> list[dict]:
@@ -267,6 +286,12 @@ class Recommender:
     # ------------------------------------------------------------------ location
     def resolve_location(self, text: str, coordinates: dict | None) -> dict:
         if coordinates and coordinates.get("latitude") is not None:
+            lat, lon = float(coordinates["latitude"]), float(coordinates["longitude"])
+            if not (config.INDIA_BBOX["lat"][0] <= lat <= config.INDIA_BBOX["lat"][1]
+                    and config.INDIA_BBOX["lon"][0] <= lon <= config.INDIA_BBOX["lon"][1]):
+                # A device outside India would otherwise "find" the nearest Indian hospital thousands of km away.
+                raise LocationNotFound("Your device location is outside India. Enter a city, district or PIN code "
+                                       "in India.", [])
             return {"type": "coordinates", "lat": float(coordinates["latitude"]), "lon": float(coordinates["longitude"]),
                     "precision": "point", "name": "Current location", "district": "", "state": "",
                     "note": "user-supplied coordinates", "confidence": "high", "ambiguous": []}
@@ -321,7 +346,8 @@ class Recommender:
         raise LocationNotFound(f"Could not find '{raw}'. Try a district, city, 6-digit PIN or 'lat, lon'.", sugg)
 
     # ------------------------------------------------------------------ steps 2–4
-    def recommend(self, service_text: str, location_text: str, coordinates: dict | None = None) -> dict:
+    def recommend(self, service_text: str, location_text: str, coordinates: dict | None = None,
+                  urgency: int | None = None, judge: bool = False) -> dict:
         """The only inputs are the service and the location (text, or coordinates from "Use my location").
         Radius, result count and ordering are system decisions."""
         limit = config.RESULT_LIMIT
@@ -365,19 +391,36 @@ class Recommender:
         # Candidate pool: at least twice the travel distance for this kind of care, widened (25 -> 50 -> 100 -> 200 km)
         # until a provider is found. Inside it, distance is a ranking factor, not a cut-off.
         steps = list(config.RADIUS_STEPS_KM)
-        travel = travel_km(tag)
+        # Urgent requests (level 3 from the request text) halve the travel distance: nearer hospitals count more.
+        travel = travel_km(tag) * (config.URGENT_TRAVEL_FACTOR if urgency == 3 else 1.0)
         first_step = next((r for r in steps if r >= 2 * travel), steps[-1])
         candidates = [r for r in steps if r >= first_step]
         radius = next((r for r in candidates if (ok["distance_km"] <= r).any()), steps[-1])
         pool = ok[ok["distance_km"] <= radius]
-        within = (self._cross_encoder_order(pool, tag, label) if self.ranking_method == "cross_encoder"
-                  else rank_candidates(pool, tag))
+        within = (self._cross_encoder_order(pool, tag, label, travel) if self.ranking_method == "cross_encoder"
+                  else rank_candidates(pool, tag, travel=travel))
         blocked = prov[(prov["eligibility"] == "review_blocked") & (prov["distance_km"] <= radius)]
+
+        # Optional: the language model reads the top candidates' own record lines and judges them (judge.py).
+        judged, judge_info = {}, {"used": False, "available": self.judge is not None}
+        if judge and self.judge is not None and len(within):
+            top = within.head(config.JUDGE_TOP_K)
+            try:
+                judged = self.judge.judge(tag, label, list(self.tags.loc[tag, "synonyms"]),
+                                          [(r["unique_id"], _s(r["name"]), r["evidence"]) for _, r in top.iterrows()])
+                judge_info = {"used": True, "available": True, "model": self.judge.model,
+                              "asked": len(top), "judged": len(judged)}
+            except Exception as exc:  # the rules ranking stands
+                judge_info = {"used": False, "available": True, "model": self.judge.model, "error": type(exc).__name__}
+            if judged:
+                within = rank_candidates(within, tag, text_match=within["text_match"] if "text_match" in within else None,
+                                         travel=travel, judged={u: v["verdict"] for u, v in judged.items()})
 
         picked = within.head(limit).copy()
         picked["lane"] = ["A" if i < config.K_MAIN else "C" for i in range(len(picked))]
 
-        results = [self._facility(r, i + 1, label, loc, radius) for i, (_, r) in enumerate(picked.iterrows())]
+        results = [self._facility(r, i + 1, label, loc, radius, judged.get(r["unique_id"]))
+                   for i, (_, r) in enumerate(picked.iterrows())]
 
         warnings = [f"{n_dataset} facilities in the dataset list {label} ({n_dataset_ok} with usable evidence and "
                     f"location); {len(within)} within {radius:g} km; {len(blocked)} more within {radius:g} km are "
@@ -406,7 +449,8 @@ class Recommender:
                 "location": {"type": loc["type"], "inputValue": location_text, "resolvedName": loc["name"],
                              "district": loc["district"], "state": loc["state"], "latitude": loc["lat"],
                              "longitude": loc["lon"], "confidence": loc["confidence"]},
-                "searchParameters": {"radiusKm": radius, "limit": limit},
+                "searchParameters": {"radiusKm": radius, "limit": limit, "travelKm": travel,
+                                     "urgencyLevel": urgency or 4},
             },
             "results": results,
             "metadata": {
@@ -415,7 +459,7 @@ class Recommender:
                                "filteredStatements": filtered_statements},
                 "generatedAt": pd.Timestamp.now("UTC").isoformat(timespec="seconds"),
                 "totalCandidates": int(len(within)), "returnedCount": len(results), "isPartialResult": len(within) > limit,
-                "executionTimeMs": int((time.time() - t0) * 1000), "warnings": warnings,
+                "executionTimeMs": int((time.time() - t0) * 1000), "warnings": warnings, "judge": judge_info,
                 "funnel": {"datasetProviders": n_dataset, "datasetRecommendable": n_dataset_ok,
                            "withinRadius": int(len(within)), "reviewBlockedWithinRadius": int(len(blocked)),
                            "radiusStepsKm": steps, "radiusKm": radius, "locationNote": loc["note"],
@@ -424,7 +468,8 @@ class Recommender:
         })
 
     # ------------------------------------------------------------------ mapping one facility to the UI contract
-    def _facility(self, r: pd.Series, rank: int, label: str, loc: dict, radius: float) -> dict:
+    def _facility(self, r: pd.Series, rank: int, label: str, loc: dict, radius: float,
+                  judgement: dict | None = None) -> dict:
         uid = r["unique_id"]
         tier = int(r["evidence_tier"])
         ltier = str(r["location_tier"])
@@ -481,7 +526,7 @@ class Recommender:
                   "distanceScore": 0, "sourceScore": 0, "locationQualityScore": 0, "capacityScore": 0, "penaltyScore": 0,
                   "totalScore": total, "modelVersion": self.ranking_version}
             reranking = {"method": "cross_encoder", "model": self.scorer.model_name,
-                         "textScore": float(r["text_match"]), "evidenceScore": float(r["proof"]),
+                         "textScore": float(r["text_match"]), "rawModelScore": float(r["ce_text_score"]), "evidenceScore": float(r["proof"]),
                          "distanceScore": c, "totalScore": float(r["rank_score"]),
                          "weights": w, "bestEvidenceRef": r["ce_evidence_ref"], "bestEvidenceText": r["ce_best_quote"],
                          "scoredItemCount": int(r["ce_item_count"]),
@@ -527,7 +572,7 @@ class Recommender:
                    + ("" if point else f" ({'PIN area' if ltier == 'pin_area' else 'from ' + loc['note']})") + ".")
         if reranking is not None:
             summary += (f" Best matching service text: {r['ce_best_quote']} "
-                        "Order balances service-text relevance, eligibility and distance.")
+                        "Rank score = evidence strength (text match and proof) x closeness for this kind of care.")
         return {
             "id": uid, "rank": rank, "name": _s(r["name"]) or "(unnamed facility)",
             "type": (r["facility_category"] or "facility").title() if isinstance(r["facility_category"], str) else "Facility",
@@ -552,11 +597,14 @@ class Recommender:
                 "proof": round(float(r["proof"]), 2), "closeness": round(float(r["closeness"]), 2),
                 "textMatch": round(float(r["text_match"]), 2) if "text_match" in r else None,
                 "evidence": round(float(r["evidence_strength"]), 2),
-                "score": round(float(r["rank_score"]), 2), "travelKm": travel_km(r["tag_id"]) if "tag_id" in r else None,
+                "score": round(float(r["rank_score"]), 2), "travelKm": float(r["travel_km"]),
                 "proofTier": tier, "onlyEquipment": only_eq, "mentionsOther": bool(r["n_explicit_elsewhere"] > 0),
                 "locationTier": ltier, "statements": int(r["n_explicit_usable"]),
                 "solidProof": bool(r["solid_proof"]),
+                "llmVerdict": judgement["verdict"] if judgement else None,
             },
+            # The language model's reading of this hospital's own record for this care (judge.py), with the line.
+            **({"judgement": judgement} if judgement else {}),
             # How to check before travelling: the UI shows Call / Website buttons only when these exist.
             "phone": contact_phone(r["contact_phone"]),
             "website": contact_website(r["contact_website"]),
