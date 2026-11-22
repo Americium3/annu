@@ -60,7 +60,9 @@ For each text model all combinations of text weight (0.25, 0.4, 0.57, 0.8), trav
 | E8 | ce_bge | 0.776 | 0.833 | 0.893 | 0.794 | E8|ce_bge|w=0.25|m=4.0|u=0.6|q=natural |
 | E8 | none | 0.766 | 0.857 | 0.893 | 0.787 | E8|none|w=0.00|m=2.0|u=1.0|q=- |
 | E8 | bm25 | 0.755 | 0.833 | 0.905 | 0.786 | E8|bm25|w=0.25|m=2.0|u=1.0|q=natural |
+| E8 | llm_qwen05 | 0.745 | 0.845 | 0.917 | 0.757 | E8|llm_qwen05|w=0.40|m=1.0|u=1.0|q=natural |
 | E8 | nli | 0.740 | 0.810 | 0.893 | 0.809 | E8|nli|w=0.40|m=4.0|u=1.0|q=keywords |
+| E8 | ce_bge_l | 0.739 | 0.810 | 0.881 | 0.764 | E8|ce_bge_l|w=0.25|m=1.0|u=1.0|q=natural |
 | E8 | ce_msmarco | 0.736 | 0.798 | 0.905 | 0.773 | E8|ce_msmarco|w=0.25|m=1.0|u=1.0|q=natural |
 | E8 | bi | 0.721 | 0.810 | 0.881 | 0.777 | E8|bi|w=0.25|m=4.0|u=1.0|q=natural |
 
