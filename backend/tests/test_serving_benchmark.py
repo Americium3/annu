@@ -41,6 +41,6 @@ class ServingBenchmarkTest(unittest.TestCase):
   p=plans()
   self.assertEqual(p[0][0],'baseline')
   self.assertEqual(p[0][1]['guard'],'off')
-  self.assertEqual(p[0][1]['text_weight'],config.RERANK_WEIGHTS['text'])
+  self.assertEqual(p[0][1]['text_weight'],4/7)
   self.assertEqual({c['guard'] for _,c in p},{'off','explicit','strict'})
   self.assertEqual(len(p),len({tuple(c.values()) for _,c in p}))

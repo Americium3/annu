@@ -1,0 +1,32 @@
+none          8 configs in     6s | best in-sample nDCG@3 0.787 (E8|none|w=0.00|m=2.0|u=1.0|q=-)
+bm25         64 configs in    54s | best in-sample nDCG@3 0.786 (E8|bm25|w=0.25|m=2.0|u=1.0|q=natural)
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 13955.07it/s]
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+bi           64 configs in   170s | best in-sample nDCG@3 0.777 (E8|bi|w=0.25|m=4.0|u=1.0|q=natural)
+Loading weights:   0%|          | 0/105 [00:00<?, ?it/s]Loading weights: 100%|██████████| 105/105 [00:00<00:00, 3180.95it/s]
+ce_msmarco   64 configs in    69s | best in-sample nDCG@3 0.773 (E8|ce_msmarco|w=0.25|m=1.0|u=1.0|q=natural)
+Loading weights:   0%|          | 0/201 [00:00<?, ?it/s]Loading weights: 100%|██████████| 201/201 [00:00<00:00, 2553.06it/s]
+ce_bge       64 configs in   144s | best in-sample nDCG@3 0.794 (E8|ce_bge|w=0.25|m=4.0|u=0.6|q=natural)
+Loading weights:   0%|          | 0/106 [00:00<?, ?it/s]Loading weights: 100%|██████████| 106/106 [00:00<00:00, 2589.95it/s]
+nli          64 configs in   113s | best in-sample nDCG@3 0.809 (E8|nli|w=0.40|m=4.0|u=1.0|q=keywords)
+ensemble     64 configs in    58s | best in-sample nDCG@3 0.800 (E8|ensemble|w=0.25|m=1.0|u=1.0|q=natural)
+base text_model  LOO-CV nDCG@3  LOO-CV P@3  LOO-CV P@3_j  in-sample best nDCG@3                  best config (all queries)                          most picked in CV  configs
+  E8   ensemble          0.800       0.869         0.893                  0.800   E8|ensemble|w=0.25|m=1.0|u=1.0|q=natural   E8|ensemble|w=0.25|m=1.0|u=1.0|q=natural       64
+  E8     ce_bge          0.776       0.833         0.893                  0.794     E8|ce_bge|w=0.25|m=4.0|u=0.6|q=natural     E8|ce_bge|w=0.25|m=4.0|u=0.6|q=natural       64
+  E8       none          0.766       0.857         0.893                  0.787             E8|none|w=0.00|m=2.0|u=1.0|q=-             E8|none|w=0.00|m=2.0|u=1.0|q=-        8
+  E6        nli          0.757       0.833         0.869                  0.781        E6|nli|w=0.80|m=4.0|u=1.0|q=natural        E6|nli|w=0.80|m=4.0|u=1.0|q=natural       64
+  E8       bm25          0.755       0.833         0.905                  0.786       E8|bm25|w=0.25|m=2.0|u=1.0|q=natural       E8|bm25|w=0.25|m=2.0|u=1.0|q=natural       64
+  E6     ce_bge          0.749       0.810         0.881                  0.757     E6|ce_bge|w=0.40|m=2.0|u=1.0|q=natural     E6|ce_bge|w=0.40|m=2.0|u=1.0|q=natural       64
+ E5b ce_msmarco          0.744       0.810         0.881                  0.744    ce_msmarco|w=0.25|m=1.0|u=1.0|q=natural    ce_msmarco|w=0.25|m=1.0|u=1.0|q=natural       64
+  E6 ce_msmarco          0.744       0.810         0.881                  0.744 E6|ce_msmarco|w=0.25|m=1.0|u=1.0|q=natural E6|ce_msmarco|w=0.25|m=1.0|u=1.0|q=natural       64
+  E8        nli          0.740       0.810         0.893                  0.809       E8|nli|w=0.40|m=4.0|u=1.0|q=keywords       E8|nli|w=0.40|m=4.0|u=1.0|q=keywords       64
+  E8 ce_msmarco          0.736       0.798         0.905                  0.773 E8|ce_msmarco|w=0.25|m=1.0|u=1.0|q=natural E8|ce_msmarco|w=0.25|m=1.0|u=1.0|q=natural       64
+ E5b     ce_bge          0.729       0.798         0.869                  0.755        ce_bge|w=0.40|m=2.0|u=1.0|q=natural        ce_bge|w=0.40|m=2.0|u=1.0|q=natural       64
+  E6       none          0.724       0.821         0.893                  0.734             E6|none|w=0.00|m=2.0|u=1.0|q=-             E6|none|w=0.00|m=2.0|u=1.0|q=-        8
+ E5b       bm25          0.722       0.798         0.881                  0.744          bm25|w=0.25|m=2.0|u=1.0|q=natural          bm25|w=0.25|m=2.0|u=1.0|q=natural       64
+  E8         bi          0.721       0.810         0.881                  0.777         E8|bi|w=0.25|m=4.0|u=1.0|q=natural         E8|bi|w=0.25|m=4.0|u=1.0|q=natural       64
+ E5b         bi          0.719       0.786         0.857                  0.749            bi|w=0.57|m=2.0|u=1.0|q=natural            bi|w=0.57|m=2.0|u=1.0|q=natural       64
+ E5b       none          0.718       0.798         0.869                  0.729                none|w=0.00|m=2.0|u=1.0|q=-                none|w=0.00|m=2.0|u=1.0|q=-        8
+ E5b        nli          0.710       0.774         0.857                  0.769          nli|w=0.25|m=4.0|u=1.0|q=keywords          nli|w=0.25|m=4.0|u=1.0|q=keywords       64
+  E6         bi          0.709       0.774         0.857                  0.749         E6|bi|w=0.57|m=2.0|u=1.0|q=natural         E6|bi|w=0.57|m=2.0|u=1.0|q=natural       64
+  E6       bm25          0.687       0.798         0.893                  0.746       E6|bm25|w=0.25|m=2.0|u=1.0|q=natural       E6|bm25|w=0.25|m=2.0|u=1.0|q=natural       64

@@ -38,6 +38,8 @@ if [ "$USE_DEMO" != "true" ]; then
   cp "$REPO/data/tags/alias_table.csv" "$STAGE/backend/alias_table.csv"   # symptom / disease names (backend/nlu.py)
   cp "$REPO/backend/requirements.txt" "$STAGE/requirements.txt"
   cp "$REPO/pipeline/databricks_sql.py" "$STAGE/pipeline/"
+  # stage 1 v2 (built when the backend loads its snapshot): the builder and the tag dictionary it uses
+  cp "$REPO/pipeline/service_index_v2.py" "$REPO/pipeline/tag_dictionary.py" "$REPO/pipeline/tag_matcher.py" "$STAGE/pipeline/"
 fi
 
 ME=$(call "$API/preview/scim/v2/Me" | json 'd["userName"]')

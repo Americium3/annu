@@ -34,6 +34,15 @@ def rec(verdicts):
 
 
 class JudgeTest(unittest.TestCase):
+    # These tests are about the judge, not the search radius: keep the pool to the first step with a provider,
+    # so the far-away "outside" record is not pulled in by MIN_POOL_SIZE (tested in test_serving_cross_encoder).
+    def setUp(self):
+        self._pool = config.MIN_POOL_SIZE
+        config.MIN_POOL_SIZE = 1
+
+    def tearDown(self):
+        config.MIN_POOL_SIZE = self._pool
+
     def test_grounded_verdict_lowers_proof_and_reorders(self):
         r = rec({"Near": {"verdict": "equipment_only", "quote": "We provide dialysis.", "reason": "only a machine"},
                  "Far": {"verdict": "offers", "quote": "specialized dialysis treatment unit", "reason": "a dialysis unit"}})

@@ -27,14 +27,19 @@ from experiments.evaluation import evaluate
 from experiments.io import read_frame, dump_json
 
 
+# Text weight of the previous cross-encoder serving policy (4:3 text:proof). The live default
+# (config.RERANK_WEIGHTS) has since moved to 0.25, so the baseline pins the old value explicitly.
+PREVIOUS_TEXT_WEIGHT = 4 / 7
+
+
 def plans():
-    """Baseline is exactly the previous serving policy, not experimental-engine rules."""
+    """Baseline is the previous serving policy (cross-encoder, no guard, 4:3 weights), not experimental-engine rules."""
     baseline = dict(method='cross_encoder', model=config.CROSS_ENCODER_MODEL, guard='off',
-                    text_weight=config.RERANK_WEIGHTS['text'], travel_multiplier=1.)
+                    text_weight=PREVIOUS_TEXT_WEIGHT, travel_multiplier=1.)
     variants = [('baseline', baseline)]
     for guard in ['off', 'explicit', 'strict']:
         for method in ['rules', 'cross_encoder']:
-            weights = [0.] if method == 'rules' else [.25, config.RERANK_WEIGHTS['text'], .75]
+            weights = [0.] if method == 'rules' else [.25, PREVIOUS_TEXT_WEIGHT, .75]
             for w in weights:
                 for scale in [.5, 1., 2.]:
                     cfg = dict(method=method, model=config.CROSS_ENCODER_MODEL, guard=guard,
