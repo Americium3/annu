@@ -1,0 +1,121 @@
+unique_id,field,item_idx,text
+dev-dialysis-direct,procedure,0,We provide Dialysis treatment at this hospital.
+dev-dialysis-unit,procedure,0,A dedicated Dialysis unit is available at our hospital.
+dev-dialysis-referral,procedure,0,Patients are referred elsewhere for Dialysis.
+dev-dialysis-awareness,procedure,0,A Dialysis awareness camp was held at our hospital.
+dev-dialysis-planned,procedure,0,A new Dialysis unit is planned for next year.
+dev-dialysis-negative,procedure,0,Dialysis is not available at this hospital.
+dev-dialysis-historical,procedure,0,This hospital formerly offered Dialysis.
+dev-dialysis-counselling,procedure,0,Patients receive counselling about Dialysis.
+dev-dialysis-unrelated_negation,procedure,0,No parking is available. Our hospital provides Dialysis.
+dev-dialysis-training,procedure,0,Our director trained in Dialysis at another institution.
+dev-dialysis-equipment,equipment,0,Equipment relevant to Dialysis is listed.
+dev-dialysis-split,procedure,0,Our hospital provides Dialysis; Dialysis has been suspended.
+dev-mri-direct,procedure,0,We provide MRI treatment at this hospital.
+dev-mri-unit,procedure,0,A dedicated MRI unit is available at our hospital.
+dev-mri-referral,procedure,0,Patients are referred elsewhere for MRI.
+dev-mri-awareness,procedure,0,A MRI awareness camp was held at our hospital.
+dev-mri-planned,procedure,0,A new MRI unit is planned for next year.
+dev-mri-negative,procedure,0,MRI is not available at this hospital.
+dev-mri-historical,procedure,0,This hospital formerly offered MRI.
+dev-mri-counselling,procedure,0,Patients receive counselling about MRI.
+dev-mri-unrelated_negation,procedure,0,No parking is available. Our hospital provides MRI.
+dev-mri-training,procedure,0,Our director trained in MRI at another institution.
+dev-mri-equipment,equipment,0,Equipment relevant to MRI is listed.
+dev-mri-split,procedure,0,Our hospital provides MRI; MRI has been suspended.
+dev-nicu-direct,procedure,0,We provide NICU treatment at this hospital.
+dev-nicu-unit,procedure,0,A dedicated NICU unit is available at our hospital.
+dev-nicu-referral,procedure,0,Patients are referred elsewhere for NICU.
+dev-nicu-awareness,procedure,0,A NICU awareness camp was held at our hospital.
+dev-nicu-planned,procedure,0,A new NICU unit is planned for next year.
+dev-nicu-negative,procedure,0,NICU is not available at this hospital.
+dev-nicu-historical,procedure,0,This hospital formerly offered NICU.
+dev-nicu-counselling,procedure,0,Patients receive counselling about NICU.
+dev-nicu-unrelated_negation,procedure,0,No parking is available. Our hospital provides NICU.
+dev-nicu-training,procedure,0,Our director trained in NICU at another institution.
+dev-nicu-equipment,equipment,0,Equipment relevant to NICU is listed.
+dev-nicu-split,procedure,0,Our hospital provides NICU; NICU has been suspended.
+dev-cardiac-surgery-direct,procedure,0,We provide cardiac surgery treatment at this hospital.
+dev-cardiac-surgery-unit,procedure,0,A dedicated cardiac surgery unit is available at our hospital.
+dev-cardiac-surgery-referral,procedure,0,Patients are referred elsewhere for cardiac surgery.
+dev-cardiac-surgery-awareness,procedure,0,A cardiac surgery awareness camp was held at our hospital.
+dev-cardiac-surgery-planned,procedure,0,A new cardiac surgery unit is planned for next year.
+dev-cardiac-surgery-negative,procedure,0,cardiac surgery is not available at this hospital.
+dev-cardiac-surgery-historical,procedure,0,This hospital formerly offered cardiac surgery.
+dev-cardiac-surgery-counselling,procedure,0,Patients receive counselling about cardiac surgery.
+dev-cardiac-surgery-unrelated_negation,procedure,0,No parking is available. Our hospital provides cardiac surgery.
+dev-cardiac-surgery-training,procedure,0,Our director trained in cardiac surgery at another institution.
+dev-cardiac-surgery-equipment,equipment,0,Equipment relevant to cardiac surgery is listed.
+dev-cardiac-surgery-split,procedure,0,Our hospital provides cardiac surgery; cardiac surgery has been suspended.
+dev-burns-direct,procedure,0,We provide burn care treatment at this hospital.
+dev-burns-unit,procedure,0,A dedicated burn care unit is available at our hospital.
+dev-burns-referral,procedure,0,Patients are referred elsewhere for burn care.
+dev-burns-awareness,procedure,0,A burn care awareness camp was held at our hospital.
+dev-burns-planned,procedure,0,A new burn care unit is planned for next year.
+dev-burns-negative,procedure,0,burn care is not available at this hospital.
+dev-burns-historical,procedure,0,This hospital formerly offered burn care.
+dev-burns-counselling,procedure,0,Patients receive counselling about burn care.
+dev-burns-unrelated_negation,procedure,0,No parking is available. Our hospital provides burn care.
+dev-burns-training,procedure,0,Our director trained in burn care at another institution.
+dev-burns-equipment,equipment,0,Equipment relevant to burn care is listed.
+dev-burns-split,procedure,0,Our hospital provides burn care; burn care has been suspended.
+test-dialysis-direct,procedure,0,We provide Dialysis treatment at this hospital.
+test-dialysis-unit,procedure,0,A dedicated Dialysis unit is available at our hospital.
+test-dialysis-referral,procedure,0,Patients are referred elsewhere for Dialysis.
+test-dialysis-awareness,procedure,0,A Dialysis awareness camp was held at our hospital.
+test-dialysis-planned,procedure,0,A new Dialysis unit is planned for next year.
+test-dialysis-negative,procedure,0,Dialysis is not available at this hospital.
+test-dialysis-historical,procedure,0,This hospital formerly offered Dialysis.
+test-dialysis-counselling,procedure,0,Patients receive counselling about Dialysis.
+test-dialysis-unrelated_negation,procedure,0,No parking is available. Our hospital provides Dialysis.
+test-dialysis-training,procedure,0,Our director trained in Dialysis at another institution.
+test-dialysis-equipment,equipment,0,Equipment relevant to Dialysis is listed.
+test-dialysis-split,procedure,0,Our hospital provides Dialysis; Dialysis has been suspended.
+test-mri-direct,procedure,0,We provide MRI treatment at this hospital.
+test-mri-unit,procedure,0,A dedicated MRI unit is available at our hospital.
+test-mri-referral,procedure,0,Patients are referred elsewhere for MRI.
+test-mri-awareness,procedure,0,A MRI awareness camp was held at our hospital.
+test-mri-planned,procedure,0,A new MRI unit is planned for next year.
+test-mri-negative,procedure,0,MRI is not available at this hospital.
+test-mri-historical,procedure,0,This hospital formerly offered MRI.
+test-mri-counselling,procedure,0,Patients receive counselling about MRI.
+test-mri-unrelated_negation,procedure,0,No parking is available. Our hospital provides MRI.
+test-mri-training,procedure,0,Our director trained in MRI at another institution.
+test-mri-equipment,equipment,0,Equipment relevant to MRI is listed.
+test-mri-split,procedure,0,Our hospital provides MRI; MRI has been suspended.
+test-nicu-direct,procedure,0,We provide NICU treatment at this hospital.
+test-nicu-unit,procedure,0,A dedicated NICU unit is available at our hospital.
+test-nicu-referral,procedure,0,Patients are referred elsewhere for NICU.
+test-nicu-awareness,procedure,0,A NICU awareness camp was held at our hospital.
+test-nicu-planned,procedure,0,A new NICU unit is planned for next year.
+test-nicu-negative,procedure,0,NICU is not available at this hospital.
+test-nicu-historical,procedure,0,This hospital formerly offered NICU.
+test-nicu-counselling,procedure,0,Patients receive counselling about NICU.
+test-nicu-unrelated_negation,procedure,0,No parking is available. Our hospital provides NICU.
+test-nicu-training,procedure,0,Our director trained in NICU at another institution.
+test-nicu-equipment,equipment,0,Equipment relevant to NICU is listed.
+test-nicu-split,procedure,0,Our hospital provides NICU; NICU has been suspended.
+test-cardiac-surgery-direct,procedure,0,We provide cardiac surgery treatment at this hospital.
+test-cardiac-surgery-unit,procedure,0,A dedicated cardiac surgery unit is available at our hospital.
+test-cardiac-surgery-referral,procedure,0,Patients are referred elsewhere for cardiac surgery.
+test-cardiac-surgery-awareness,procedure,0,A cardiac surgery awareness camp was held at our hospital.
+test-cardiac-surgery-planned,procedure,0,A new cardiac surgery unit is planned for next year.
+test-cardiac-surgery-negative,procedure,0,cardiac surgery is not available at this hospital.
+test-cardiac-surgery-historical,procedure,0,This hospital formerly offered cardiac surgery.
+test-cardiac-surgery-counselling,procedure,0,Patients receive counselling about cardiac surgery.
+test-cardiac-surgery-unrelated_negation,procedure,0,No parking is available. Our hospital provides cardiac surgery.
+test-cardiac-surgery-training,procedure,0,Our director trained in cardiac surgery at another institution.
+test-cardiac-surgery-equipment,equipment,0,Equipment relevant to cardiac surgery is listed.
+test-cardiac-surgery-split,procedure,0,Our hospital provides cardiac surgery; cardiac surgery has been suspended.
+test-burns-direct,procedure,0,We provide burn care treatment at this hospital.
+test-burns-unit,procedure,0,A dedicated burn care unit is available at our hospital.
+test-burns-referral,procedure,0,Patients are referred elsewhere for burn care.
+test-burns-awareness,procedure,0,A burn care awareness camp was held at our hospital.
+test-burns-planned,procedure,0,A new burn care unit is planned for next year.
+test-burns-negative,procedure,0,burn care is not available at this hospital.
+test-burns-historical,procedure,0,This hospital formerly offered burn care.
+test-burns-counselling,procedure,0,Patients receive counselling about burn care.
+test-burns-unrelated_negation,procedure,0,No parking is available. Our hospital provides burn care.
+test-burns-training,procedure,0,Our director trained in burn care at another institution.
+test-burns-equipment,equipment,0,Equipment relevant to burn care is listed.
+test-burns-split,procedure,0,Our hospital provides burn care; burn care has been suspended.

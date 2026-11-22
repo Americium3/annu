@@ -38,16 +38,17 @@ def _frame(cols, rows, numeric=(), boolean=(), json_cols=()):
     return df
 
 
-def load_from_databricks() -> Snapshot:
-    from databricks_sql import DatabricksSQL  # pipeline/databricks_sql.py (stdlib client)
-
-    db = DatabricksSQL()
+def load_from_databricks(query=None) -> Snapshot:
+    """Load SELECT-only serving data; accept a Spark query adapter in notebooks."""
+    if query is None:
+        from databricks_sql import DatabricksSQL  # pipeline/databricks_sql.py (stdlib client)
+        query = DatabricksSQL().query
     t0 = time.time()
-    tags = _frame(*db.query(f"SELECT tag_id, label, kind, group_name, to_json(synonyms) AS synonyms, facility_count "
+    tags = _frame(*query(f"SELECT tag_id, label, kind, group_name, to_json(synonyms) AS synonyms, facility_count "
                             f"FROM {config.TABLE_TAGS}"), numeric=["facility_count"], json_cols=["synonyms"])
     parts = []
     for b in range(8):   # keep each INLINE result well under 25 MiB
-        cols, rows = db.query(
+        cols, rows = query(
             "SELECT unique_id, tag_id, eligibility, to_json(reason_codes) AS reason_codes, evidence_tier, "
             "n_explicit_usable, n_explicit_elsewhere, n_time_bound, n_equipment_usable, n_explicit_fields, n_cited, "
             f"only_equipment, lists_emergency_24x7, evidence_json FROM {config.TABLE_INDEX} "
@@ -58,7 +59,7 @@ def load_from_databricks() -> Snapshot:
                             boolean=["only_equipment", "lists_emergency_24x7"],
                             json_cols=["reason_codes", "evidence_json"]))
     index = pd.concat(parts, ignore_index=True).rename(columns={"evidence_json": "evidence"})
-    facilities = _frame(*db.query(
+    facilities = _frame(*query(
         "SELECT unique_id, name, facility_category, operator_category, city_raw, district, state, pincode, address_city, "
         "location_tier, loc_lat, loc_lon, latitude, longitude, location_source, location_confidence, location_check, "
         "coord_to_pin_km, core_identity_conflict, contact_phone, contact_website, to_json(source_urls_clean) AS source_urls, "
@@ -68,7 +69,7 @@ def load_from_databricks() -> Snapshot:
                  "n_doctors", "year_est", "n_source_urls"],
         boolean=["core_identity_conflict", "capability_maybe_truncated", "procedure_maybe_truncated", "flag_shared_point"],
         json_cols=["source_urls"])
-    pins = _frame(*db.query(f"SELECT pincode, to_json(states) AS states, to_json(districts) AS districts, lat, lon, "
+    pins = _frame(*query(f"SELECT pincode, to_json(states) AS states, to_json(districts) AS districts, lat, lon, "
                             f"is_precise FROM {config.TABLE_PINS}"),
                   numeric=["lat", "lon"], boolean=["is_precise"], json_cols=["states", "districts"])
     aliases = _frame(*db.query(f"SELECT kind, variant, standard FROM {config.TABLE_ADDRESS_ALIAS}"))

@@ -1,0 +1,297 @@
+{
+  "data_kind": "synthetic",
+  "engine": "actual backend.recommender.Recommender",
+  "baseline": "baseline",
+  "winner": "s024",
+  "configs": {
+    "baseline": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "off",
+      "text_weight": 0.5714285714285714,
+      "travel_multiplier": 1.0
+    },
+    "s001": {
+      "method": "rules",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "off",
+      "text_weight": 0.0,
+      "travel_multiplier": 0.5
+    },
+    "s002": {
+      "method": "rules",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "off",
+      "text_weight": 0.0,
+      "travel_multiplier": 1.0
+    },
+    "s003": {
+      "method": "rules",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "off",
+      "text_weight": 0.0,
+      "travel_multiplier": 2.0
+    },
+    "s004": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "off",
+      "text_weight": 0.25,
+      "travel_multiplier": 0.5
+    },
+    "s005": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "off",
+      "text_weight": 0.25,
+      "travel_multiplier": 1.0
+    },
+    "s006": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "off",
+      "text_weight": 0.25,
+      "travel_multiplier": 2.0
+    },
+    "s007": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "off",
+      "text_weight": 0.5714285714285714,
+      "travel_multiplier": 0.5
+    },
+    "s008": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "off",
+      "text_weight": 0.5714285714285714,
+      "travel_multiplier": 2.0
+    },
+    "s009": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "off",
+      "text_weight": 0.75,
+      "travel_multiplier": 0.5
+    },
+    "s010": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "off",
+      "text_weight": 0.75,
+      "travel_multiplier": 1.0
+    },
+    "s011": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "off",
+      "text_weight": 0.75,
+      "travel_multiplier": 2.0
+    },
+    "s012": {
+      "method": "rules",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "explicit",
+      "text_weight": 0.0,
+      "travel_multiplier": 0.5
+    },
+    "s013": {
+      "method": "rules",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "explicit",
+      "text_weight": 0.0,
+      "travel_multiplier": 1.0
+    },
+    "s014": {
+      "method": "rules",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "explicit",
+      "text_weight": 0.0,
+      "travel_multiplier": 2.0
+    },
+    "s015": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "explicit",
+      "text_weight": 0.25,
+      "travel_multiplier": 0.5
+    },
+    "s016": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "explicit",
+      "text_weight": 0.25,
+      "travel_multiplier": 1.0
+    },
+    "s017": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "explicit",
+      "text_weight": 0.25,
+      "travel_multiplier": 2.0
+    },
+    "s018": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "explicit",
+      "text_weight": 0.5714285714285714,
+      "travel_multiplier": 0.5
+    },
+    "s019": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "explicit",
+      "text_weight": 0.5714285714285714,
+      "travel_multiplier": 1.0
+    },
+    "s020": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "explicit",
+      "text_weight": 0.5714285714285714,
+      "travel_multiplier": 2.0
+    },
+    "s021": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "explicit",
+      "text_weight": 0.75,
+      "travel_multiplier": 0.5
+    },
+    "s022": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "explicit",
+      "text_weight": 0.75,
+      "travel_multiplier": 1.0
+    },
+    "s023": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "explicit",
+      "text_weight": 0.75,
+      "travel_multiplier": 2.0
+    },
+    "s024": {
+      "method": "rules",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "strict",
+      "text_weight": 0.0,
+      "travel_multiplier": 0.5
+    },
+    "s025": {
+      "method": "rules",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "strict",
+      "text_weight": 0.0,
+      "travel_multiplier": 1.0
+    },
+    "s026": {
+      "method": "rules",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "strict",
+      "text_weight": 0.0,
+      "travel_multiplier": 2.0
+    },
+    "s027": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "strict",
+      "text_weight": 0.25,
+      "travel_multiplier": 0.5
+    },
+    "s028": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "strict",
+      "text_weight": 0.25,
+      "travel_multiplier": 1.0
+    },
+    "s029": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "strict",
+      "text_weight": 0.25,
+      "travel_multiplier": 2.0
+    },
+    "s030": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "strict",
+      "text_weight": 0.5714285714285714,
+      "travel_multiplier": 0.5
+    },
+    "s031": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "strict",
+      "text_weight": 0.5714285714285714,
+      "travel_multiplier": 1.0
+    },
+    "s032": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "strict",
+      "text_weight": 0.5714285714285714,
+      "travel_multiplier": 2.0
+    },
+    "s033": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "strict",
+      "text_weight": 0.75,
+      "travel_multiplier": 0.5
+    },
+    "s034": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "strict",
+      "text_weight": 0.75,
+      "travel_multiplier": 1.0
+    },
+    "s035": {
+      "method": "cross_encoder",
+      "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "guard": "strict",
+      "text_weight": 0.75,
+      "travel_multiplier": 2.0
+    }
+  },
+  "selection": "Fully judged dev only: nDCG@3, then P@3, then stable ID. Test only after selection.",
+  "limitations": [
+    "No automatic production promotion.",
+    "No candidate recall: API exposes only total count.",
+    "Travel scale changes both distance decay AND adaptive candidate radius.",
+    "Warmup excluded; pair cache shared, cold misses included. Latency is descriptive only.",
+    "Synthetic cases are regression diagnostics, not real-data accuracy."
+  ],
+  "data_hash": "a8b3abe910898abd297be45e35a5272602b4539f582c93f5bd5dde3fcdc0cd52",
+  "query_hash": "6aefbdc644470cc0a2ccb0d73486eb6257acac83149814532d690391ab10619b",
+  "qrels_hash": "5a5afa242ed4222fcccfa6813d7f137792208dcfb6fd3a5a17ea3d4009e2dad8",
+  "source_hash": "6034c79f9b456fa7b369a4c3b764ff3ce804e5c5281f2a1b595310996b8799db",
+  "source_hashes": {
+    "benchmark_serving.py": "6034c79f9b456fa7b369a4c3b764ff3ce804e5c5281f2a1b595310996b8799db",
+    "recommender.py": "3dc2c806245afec90725ef76eca88c96f5b3371704f0f291a8ac5a7eabc7cb47",
+    "config.py": "c65e809acb599903f10cea3cc28cfb3e52020603a8d735f69197c6fe5cd74506",
+    "evidence_support.py": "ccb7650174f759952e64926d52feaf9c8094578a5a63448dbbec6f9f13eef464"
+  },
+  "runtime": {
+    "python": "3.12.14",
+    "packages": {
+      "numpy": "2.3.5",
+      "pandas": "2.2.3",
+      "torch": "2.15.0+cpu",
+      "transformers": "4.57.6",
+      "sentence-transformers": "5.7.0"
+    }
+  },
+  "held_out_comparison": {
+    "paired_queries": 5,
+    "groups": 5,
+    "delta": 0.7530721273977244,
+    "ci95": [
+      0.4715048917840704,
+      1.0
+    ]
+  }
+}
