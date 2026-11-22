@@ -7,9 +7,11 @@ import { Header } from "./components/Header";
 import { Raahi } from "./components/Raahi";
 import { ResultsView } from "./components/ResultsView";
 import { SearchPanel, type SearchValues } from "./components/SearchPanel";
+import { SetupPrompt } from "./components/SetupPrompt";
 import { TrustSection } from "./components/TrustSection";
 import { getDemoRecommendations } from "./lib/demoApi";
 import { useI18n } from "./i18n";
+import { profileSnapshot, useProfile } from "./lib/profile";
 import type { RankingMode, RecommendationResponse } from "./types";
 
 const defaultSearch: SearchValues = {
@@ -18,11 +20,22 @@ const defaultSearch: SearchValues = {
   radiusKm: 10,
 };
 
+/** Search defaults: the person's saved answers first, then the demo city. */
+function startingSearch(): SearchValues {
+  const profile = profileSnapshot();
+  return {
+    service: defaultSearch.service,
+    location: profile.location ?? defaultSearch.location,
+    radiusKm: profile.radiusKm ?? defaultSearch.radiusKm,
+  };
+}
+
 function App() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const profile = useProfile();
   const [data, setData] = useState<RecommendationResponse>();
   const [isLoading, setIsLoading] = useState(true);
-  const [searchValues, setSearchValues] = useState<SearchValues>(defaultSearch);
+  const [searchValues, setSearchValues] = useState<SearchValues>(startingSearch);
   const [rankingMode, setRankingMode] = useState<RankingMode>("best_match");
   const [selectedId, setSelectedId] = useState<string>();
   const { t } = useI18n();
@@ -41,14 +54,14 @@ function App() {
     setSearchParams(next);
   }
 
-  const urlSearch = useMemo(
-    () => ({
-      service: searchParams.get("service") || defaultSearch.service,
-      location: searchParams.get("location") || defaultSearch.location,
-      radiusKm: Number(searchParams.get("radius")) || defaultSearch.radiusKm,
-    }),
-    [searchParams],
-  );
+  const urlSearch = useMemo(() => {
+    const start = startingSearch();
+    return {
+      service: searchParams.get("service") || start.service,
+      location: searchParams.get("location") || start.location,
+      radiusKm: Number(searchParams.get("radius")) || start.radiusKm,
+    };
+  }, [searchParams]);
 
   const runSearch = useCallback(
     async (values: SearchValues, mode: RankingMode, replaceUrl = true) => {
@@ -110,6 +123,7 @@ function App() {
                 : { latitude: 20.2961, longitude: 85.8245 }
             }
             originName={data?.queryContext.location.resolvedName ?? "Bhubaneswar"}
+            contact={profile.emergencyContact}
             onExit={closeEmergency}
           />
         </main>
@@ -147,6 +161,9 @@ function App() {
             isLoading={isLoading}
             onSearch={handleSearch}
           />
+          <div className="search-wrap">
+            <SetupPrompt />
+          </div>
         </section>
 
         <ResultsView
@@ -156,6 +173,7 @@ function App() {
           onRankingModeChange={handleRankingChange}
           selectedId={selectedId}
           onSelectedIdChange={setSelectedId}
+          governmentFirst={profile.governmentFirst === true}
         />
         <TrustSection />
       </main>

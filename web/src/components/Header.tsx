@@ -1,6 +1,7 @@
 import { Moon, Phone, Sun } from "lucide-react";
 import { useTheme } from "../hooks/useTheme";
 import { useI18n, type Lang } from "../i18n";
+import { AccountMenu } from "./AccountMenu";
 import { Brand } from "./Brand";
 
 const languages: Array<{ value: Lang; label: string }> = [
@@ -32,6 +33,7 @@ export function Header() {
         <div className="header-inner">
           <Brand />
           <div className="header-actions">
+            <AccountMenu />
             <div className="lang-switch" role="group" aria-label={t.language}>
               {languages.map((option) => (
                 <button

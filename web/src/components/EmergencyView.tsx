@@ -1,7 +1,9 @@
-import { ArrowLeft, LoaderCircle, LocateFixed, Phone } from "lucide-react";
+import { ArrowLeft, LoaderCircle, LocateFixed, Phone, UserRound } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { demoFacilities } from "../data/demo";
 import { useI18n } from "../i18n";
+import { telUrl } from "../lib/facilityActions";
+import type { EmergencyContact } from "../lib/profile";
 import type { FacilityRecommendation } from "../types";
 import { FacilityActions } from "./FacilityActions";
 
@@ -32,10 +34,12 @@ function distanceKm(a: Point, b: Point) {
 export function EmergencyView({
   origin,
   originName,
+  contact,
   onExit,
 }: {
   origin: Point;
   originName: string;
+  contact: EmergencyContact | null;
   onExit: () => void;
 }) {
   const { t } = useI18n();
@@ -93,6 +97,13 @@ export function EmergencyView({
             <small>{t.emCallHint}</small>
           </span>
         </a>
+
+        {contact && (
+          <a className="call-contact" href={telUrl(`+91${contact.phone}`)}>
+            <UserRound size={22} aria-hidden="true" />
+            <strong>{t.callContact(contact.name)}</strong>
+          </a>
+        )}
 
         <div className="emergency-list-head">
           <h2>{t.emNearest}</h2>

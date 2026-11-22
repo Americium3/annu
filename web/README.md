@@ -51,6 +51,17 @@ The visitor's only question is "which hospital should I go to?" Every screen ans
 - **Two controls**: Best match / Nearest, and "Government hospitals only".
 - **The proof is one tap away** in "Why this hospital?": summary, what couldn't be confirmed, score breakdown, quotes and sources. "How we choose hospitals" is folded at the foot of the page.
 
+## 登录与引导 / Sign-in and onboarding
+
+Modelled on Sprout's flow, with one overriding rule: **sign-in and setup never stand between anyone and search or the emergency screen.** Both are optional, and "Call 108" stays in the header on every page.
+
+- **Setup (`/welcome`, `src/pages/Onboarding.tsx`).** It's offered once, through a dismissible line under the search, and never opens on its own. Raahi asks one question per screen: language, usual place, how far they can travel, whether to show government hospitals first, and an emergency contact. Every question has "Skip this question", and the whole flow has "Skip setup". Answers are saved as they're given, so leaving half-way loses nothing. When finished, `/welcome` sends people home; "Change my preferences" in the account menu reopens it with `?again=1`.
+- **What the answers change.** The search starts from the saved place and distance. Government hospitals are listed first (a stable partition, so best match / nearest still holds inside each group). The emergency screen shows "Call [name]" under Call 108.
+- **What is stored** (`src/lib/profile.ts`, `carepath.profile.v1`): only those answers. Nothing medical, and no scheme or income details. Every storage read and write is guarded.
+- **Sign-in (`/sign-in?return_to=…`, `src/pages/SignIn.tsx`).** Mobile number plus a one-time code: numeric keyboards, `autocomplete="one-time-code"` for SMS autofill, auto-submit at 6 digits, a 30-second resend timer, and "Continue without signing in". `return_to` accepts same-site relative paths only. Signing in merges the device's answers into the account (device answers win), and later changes sync while signed in.
+- **Backend seam** (`src/lib/auth.ts`): `AuthClient` (`requestOtp`, `verifyOtp`, `saveProfile`). Today it uses `demoAuth`, which sends no SMS, accepts `123456`, and keeps the "account" in this browser. The sign-in page says so. Replace it with a client for the API's OTP endpoints before launch.
+- **Hosting:** `/welcome` and `/sign-in` are client routes. The host must serve `index.html` for unknown paths (SPA fallback).
+
 ## Raahi (mascot)
 
 `src/components/Raahi.tsx`. Raahi (राही, "traveller on the path") is a map pin with a face and a leaf: the pin means "care near you", and the leaf ties it to Sprout. As in Sprout, the mascot is where the product signs its name: the header, footer, favicon, and the search-area marker on the map. It also speaks at the moments a person might be unsure: the first screen, while results load, when nothing matches, and next to what could not be confirmed. There are three moods (`happy`, `thinking`, `concerned`), and its colours come from the `--raahi-*` tokens.

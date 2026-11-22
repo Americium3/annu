@@ -16,6 +16,8 @@ interface ResultsViewProps {
   onRankingModeChange: (mode: RankingMode) => void;
   selectedId?: string;
   onSelectedIdChange: (id?: string) => void;
+  /** From setup: list government hospitals before private ones. */
+  governmentFirst?: boolean;
 }
 
 function LoadingResults() {
@@ -52,6 +54,7 @@ export function ResultsView({
   onRankingModeChange,
   selectedId,
   onSelectedIdChange,
+  governmentFirst = false,
 }: ResultsViewProps) {
   const [mobileView, setMobileView] = useState<"list" | "map">("list");
   const [governmentOnly, setGovernmentOnly] = useState(false);
@@ -64,11 +67,16 @@ export function ResultsView({
     const filtered = data.results.filter(
       (facility) => !governmentOnly || isGovernment(facility.operatorType),
     );
-    return sortFacilities(filtered, rankingMode).map((facility, index) => ({
-      ...facility,
-      rank: index + 1,
-    }));
-  }, [data, governmentOnly, rankingMode]);
+    const sorted = sortFacilities(filtered, rankingMode);
+    // A stable partition keeps the chosen order inside each group.
+    const ordered = governmentFirst
+      ? [
+          ...sorted.filter((facility) => isGovernment(facility.operatorType)),
+          ...sorted.filter((facility) => !isGovernment(facility.operatorType)),
+        ]
+      : sorted;
+    return ordered.map((facility, index) => ({ ...facility, rank: index + 1 }));
+  }, [data, governmentFirst, governmentOnly, rankingMode]);
 
   const detailFacility = data?.results.find((facility) => facility.id === detailId);
 
