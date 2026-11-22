@@ -18,7 +18,7 @@ const INTRO_STEPS: Step[] = ["intro1", "intro2", "intro3"];
 
 /**
  * First-run setup, after Sprout's tutorial: language first, then three short
- * scenes where Raahi shows how CarePath works (ask in your own words,
+ * scenes where Raahi shows how Annu works (ask in your own words,
  * emergencies go first, proof then distance), then one question per screen.
  * Raahi asks each, every step can be skipped, and the whole thing can be skipped.
  * It's offered once and never stands between anyone and search or the

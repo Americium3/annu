@@ -388,7 +388,7 @@ review. Missing labels prevent winner selection. Failures are recorded, never ca
 results. No-result distances must not be interpreted as zero.
 
 `backend/evidence_support.py` adds independently auditable clause guards. Production defaults
-to `CAREPATH_CLAIM_GUARD=explicit`: exclude explicit negatives/plans/conflicts before radius
+to `ANNU_CLAIM_GUARD=explicit`: exclude explicit negatives/plans/conflicts before radius
 selection; malformed formal rows without usable evidence are omitted with an audit instead
 of failing the whole request. `off` reproduces the previous policy; `strict` also excludes
 referral/education/training-only descriptions. Strict is experimental pending real-data

@@ -36,7 +36,7 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
       headers: { "Content-Type": "application/json", ...(init?.headers ?? {}) },
     });
   } catch {
-    throw new ApiError("Cannot reach the CarePath API. Is the backend running on port 8000?");
+    throw new ApiError("Cannot reach the Annu API. Is the backend running on port 8000?");
   }
   if (!response.ok) {
     const body = await response.json().catch(() => undefined);

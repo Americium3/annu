@@ -34,7 +34,7 @@ export class AuthError extends Error {
 }
 
 const wait = (ms: number) => new Promise((resolve) => window.setTimeout(resolve, ms));
-const accountKey = (phone: string) => `carepath.demo-account.${phone}`;
+const accountKey = (phone: string) => `annu.demo-account.${phone}`;
 
 export const DEMO_CODE = "123456";
 
@@ -68,7 +68,7 @@ export const demoAuth: AuthClient = {
 
 export const auth: AuthClient = demoAuth;
 
-const sessionStore = createStore<Session | null>("carepath.session.v1", null, (raw) => {
+const sessionStore = createStore<Session | null>("annu.session.v1", null, (raw) => {
   const value = raw as Partial<Session> | null;
   return value && typeof value.phone === "string" && typeof value.signedInAt === "string"
     ? { phone: value.phone, signedInAt: value.signedInAt }
@@ -113,8 +113,8 @@ export function formatPhone(digits: string, masked = false) {
 export function safeReturnTo(value: string | null): string {
   if (!value || !value.startsWith("/") || value.startsWith("//")) return "/";
   try {
-    const url = new URL(value, "https://carepath.local");
-    if (url.origin !== "https://carepath.local") return "/";
+    const url = new URL(value, "https://annu.local");
+    if (url.origin !== "https://annu.local") return "/";
     if (url.pathname === "/sign-in") return "/";
     return `${url.pathname}${url.search}${url.hash}`;
   } catch {

@@ -1,11 +1,10 @@
 import { useState } from "react";
 
 /**
- * Raahi (राही, "traveller on the path") — CarePath's mascot.
+ * Raahi (राही, "traveller on the path") — Annu's mascot.
  *
  * A map pin with a face and a single leaf: the pin says "care near you", the
- * leaf ties it to Sprout. The name reads the same in Hindi and English. Like Sprout's mascot, Raahi is where the product signs
- * its name (header, footer, favicon) and the voice that speaks at the moments
+ * leaf ties it to Sprout. The name reads the same in Hindi and English. Like Sprout's mascot, Raahi is the voice that speaks at the moments
  * a person might be unsure: the first screen, while results load, when nothing
  * matches, and beside what we could not confirm.
  *
@@ -80,39 +79,6 @@ export function Raahi({
 }
 
 /** Raahi at icon size: same pin, leaf and face, simplified to read at 20px. */
-export function RaahiMark({ size = 28 }: { size?: number }) {
-  return (
-    <svg
-      className="raahi raahi-mark"
-      viewBox="0 0 32 36"
-      width={size}
-      height={(size * 36) / 32}
-      aria-hidden="true"
-      focusable="false"
-    >
-      <g className="raahi-leaf">
-        <path d="M16 6.4V2.6" fill="none" strokeWidth="1.6" strokeLinecap="round" />
-        <path d="M16 3.4c.9-2.6 3.9-3.6 6.5-2.8-.4 2.8-3.2 4.1-6 3.6z" />
-      </g>
-      <path
-        className="raahi-body"
-        d="M16 34.5c-3-5-11.5-10.6-11.5-19.3a11.5 11.5 0 1 1 23 0c0 8.7-8.5 14.3-11.5 19.3z"
-      />
-      <path
-        className="raahi-rim"
-        d="M16 34.5c-3-5-11.5-10.6-11.5-19.3a11.5 11.5 0 1 1 23 0c0 8.7-8.5 14.3-11.5 19.3z"
-        fill="none"
-        strokeWidth="1.6"
-      />
-      <g className="raahi-face">
-        <circle cx="12.4" cy="14.6" r="1.5" />
-        <circle cx="19.6" cy="14.6" r="1.5" />
-        <path d="M13 18.6q3 2.4 6 0" fill="none" strokeWidth="1.6" strokeLinecap="round" />
-      </g>
-    </svg>
-  );
-}
-
 /** Raahi with a speech bubble: the mascot used as a label for a short message. */
 export function RaahiSays({
   children,

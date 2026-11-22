@@ -1,0 +1,31 @@
+/**
+ * Annu's logo: the Devanagari letter अ ("a", the first letter of the alphabet
+ * and of अन्नू) in a teal tile, hanging from a warm coral headline. The
+ * headline is the shirorekha that Devanagari letters hang from; here it is
+ * the one warm stroke in the mark, a roof over the letter: care.
+ *
+ * The letter is an outline of Noto Sans Devanagari ExtraBold, so the mark
+ * looks the same before web fonts load and in the favicon (public/favicon.svg
+ * holds the same drawing with fixed light-theme colours). Colours come from
+ * the --mark-* tokens so it follows light and dark themes.
+ */
+
+const LETTER_A =
+  "M23.55 13.21V24.13H20.11V18.8Q20.02 18.82 19.93 18.82Q19.3 18.95 18.64 18.95Q18.25 18.95 17.85 18.91Q17.87 19.08 17.87 19.28Q17.87 21.1 16.72 22.12Q15.57 23.14 13.51 23.14Q12 23.14 10.8 22.56Q9.59 21.98 8.54 20.6Q7.49 19.22 6.5 16.81L9.11 15.49Q10.12 18.01 11.03 19.18Q11.93 20.36 13.07 20.36Q13.82 20.36 14.24 19.99Q14.65 19.63 14.65 18.93Q14.65 18.27 14.19 17.68Q14.13 17.62 14.06 17.53Q13.12 17.77 11.93 17.84L11.52 15.38Q12.59 15.27 13.18 15.09Q13.78 14.9 14.01 14.64Q14.24 14.37 14.24 14Q14.24 13.5 13.9 13.27Q13.56 13.04 12.96 13.04Q12.35 13.04 11.7 13.21Q11.06 13.39 10.4 13.74L9.5 11.22Q10.36 10.78 11.34 10.53Q12.33 10.27 13.45 10.27Q14.89 10.27 15.8 10.74Q16.71 11.2 17.13 11.98Q17.54 12.77 17.54 13.8Q17.54 15.32 16.49 16.3Q16.65 16.32 16.78 16.32Q17.28 16.39 17.92 16.39Q18.75 16.39 19.52 16.21Q19.82 16.17 20.11 16.06V13.21H18.79V10.49H25.5V13.21Z";
+
+export function AnnuMark({ size = 28 }: { size?: number }) {
+  return (
+    <svg
+      className="annu-mark"
+      viewBox="0 0 32 32"
+      width={size}
+      height={size}
+      aria-hidden="true"
+      focusable="false"
+    >
+      <rect className="annu-mark-tile" width="32" height="32" rx="8" />
+      <path className="annu-mark-letter" d={LETTER_A} />
+      <rect className="annu-mark-headline" x="5.5" y="7.9" width="21" height="2.6" rx="1.3" />
+    </svg>
+  );
+}

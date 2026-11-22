@@ -2,7 +2,7 @@ import { useSyncExternalStore } from "react";
 import { createStore } from "./store";
 
 /**
- * What CarePath remembers about the person: only answers that change their
+ * What Annu remembers about the person: only answers that change their
  * results or their emergency screen. Distance and government preferences
  * are applied in the browser on top of the recommender's own results. Nothing medical, no scheme or income
  * details. Kept on this device; signing in copies it to their account.
@@ -56,7 +56,7 @@ function parse(raw: unknown): Profile {
   };
 }
 
-const store = createStore<Profile>("carepath.profile.v1", emptyProfile, parse);
+const store = createStore<Profile>("annu.profile.v1", emptyProfile, parse);
 
 export function profileSnapshot() {
   return store.snapshot();
