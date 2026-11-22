@@ -7,6 +7,7 @@ import { localizeWarning, searchedFrom, serviceName } from "../lib/localize";
 import { withTransition } from "../lib/motion";
 import type { RecommendationResponse } from "../types";
 import { BoardRow, TopPick } from "./FacilityCard";
+import { ErrorBoundary } from "./ErrorBoundary";
 import { FacilityDetail } from "./FacilityDetail";
 import { FacilityMap } from "./FacilityMap";
 import { Raahi, RaahiSays } from "./Raahi";
@@ -259,7 +260,19 @@ export function ResultsView({
           </div>
         </div>
       </section>
-      <FacilityDetail facility={detailFacility} service={service} onClose={() => setDetailId(undefined)} />
+      <ErrorBoundary
+        resetKey={detailId}
+        fallback={
+          <div className="detail-failed" role="alert">
+            <p>{t.detailFailed}</p>
+            <button type="button" className="secondary-button" onClick={() => setDetailId(undefined)}>
+              {t.close}
+            </button>
+          </div>
+        }
+      >
+        <FacilityDetail facility={detailFacility} service={service} onClose={() => setDetailId(undefined)} />
+      </ErrorBoundary>
     </>
   );
 }

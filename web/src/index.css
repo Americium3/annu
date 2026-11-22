@@ -6074,3 +6074,25 @@ html[data-transition="turn"]::view-transition-group(raahi-guide) {
     animation: none !important;
   }
 }
+
+.detail-failed {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 60;
+  display: grid;
+  max-width: 380px;
+  gap: 12px;
+  padding: 18px 20px;
+  background: var(--surface);
+  border: 1px solid var(--warn-line);
+  border-left: 4px solid var(--warn);
+  border-radius: 14px;
+  box-shadow: var(--shadow-md);
+  animation: rise-in 320ms var(--ease-out) backwards;
+}
+
+.detail-failed p {
+  margin: 0;
+  color: var(--text);
+}
