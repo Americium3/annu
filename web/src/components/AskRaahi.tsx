@@ -66,11 +66,14 @@ export function AskRaahi({
   initialText = "",
   isLoading,
   compact = false,
+  clearOnAsk = false,
   onAsk,
 }: {
   initialText?: string;
   isLoading: boolean;
   compact?: boolean;
+  /** In the conversation the words move onto the trail, so the box empties for the next turn. */
+  clearOnAsk?: boolean;
   onAsk: (text: string) => void;
 }) {
   const { t, lang } = useI18n();
@@ -102,7 +105,10 @@ export function AskRaahi({
 
   function submit(value = text) {
     const clean = value.trim();
-    if (clean && !isLoading) onAsk(clean);
+    if (clean && !isLoading) {
+      onAsk(clean);
+      if (clearOnAsk) setText("");
+    }
   }
 
   /** Show the heard words in the box, then ask: the person sees exactly what Raahi will read. */

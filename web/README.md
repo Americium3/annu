@@ -44,6 +44,13 @@ All colours, type sizes, radii and shadows are tokens in the `:root` block at th
 - **Squared, not pill-shaped.** Corners are small and consistent (4–12px). There are no uppercase eyebrow labels, gradient blobs or decorative cards. A label is words.
 - **Readable sizes.** No text is smaller than 12px. Body copy is 16px, because most visitors are on a phone.
 
+## 两个页面 / Two pages
+
+- **`/`: a conversation with Raahi, and nothing else** (`src/pages/Conversation.tsx`). It is drawn as a trail, Raahi being "the traveller on the path": the person's words are footsteps on the right, each reply is a stop where Raahi stands (the mascot glides to the newest stop), and what Raahi understood is planted along the trail as signposts (care, place, urgency), each with the words it came from and "Change". A question forks the trail into answer tiles. Before the first message the page is just Raahi's greeting and the ask box.
+- **When a match is found** the trail runs on to a destination pin, Raahi says how many hospitals have proof, and after a beat (a bar fills inside "See the hospitals") the page moves to the results: Raahi and the signposts glide into the results page's summary bar (shared view-transition names), the old page lifts away and the results rise in.
+- **`/results?care=&place=&urgency=`** (`src/pages/Results.tsx`): the summary bar ("Back to Raahi" plus the signs), the results, map and drawer. Opened from a link it searches by itself; Back returns to the same conversation (`src/lib/session.tsx` keeps it), and never bounces forward again.
+- An emergency score of 80+ opens `/?mode=emergency` straight away; "not an emergency" continues as an urgent search for the care behind the red flag.
+
 ## 决策优先 / Decision first
 
 The visitor's only question is "which hospital should I go to?" Every screen answers that first.

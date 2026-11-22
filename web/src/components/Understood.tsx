@@ -1,11 +1,9 @@
-import { ArrowRight, Crosshair, LoaderCircle, PencilLine, TriangleAlert } from "lucide-react";
+import { ArrowRight, Crosshair, LoaderCircle } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { careName, careTerms } from "../data/careTerms";
 import { useI18n } from "../i18n";
 import { fetchLocations, fetchServices } from "../lib/api";
-import { placeName } from "../lib/localize";
 import type { AskResponse, AskSpan, LocationOption, ServiceOption } from "../types";
-import { RaahiSays } from "./Raahi";
 
 export type Coordinates = { latitude: number; longitude: number };
 
@@ -60,7 +58,7 @@ export function UrgencyMeter({ score, level, compact = false }: { score: number;
   );
 }
 
-function CarePicker({ onPick }: { onPick: (id: string, name: string) => void }) {
+export function CarePicker({ onPick }: { onPick: (id: string, name: string) => void }) {
   const { t, lang } = useI18n();
   const [query, setQuery] = useState("");
   const [services, setServices] = useState<ServiceOption[]>([]);
@@ -101,7 +99,7 @@ function CarePicker({ onPick }: { onPick: (id: string, name: string) => void }) 
   );
 }
 
-function PlacePicker({
+export function PlacePicker({
   message,
   suggestions = [],
   onPick,
@@ -172,170 +170,4 @@ function PlacePicker({
       </ul>
     </div>
   );
-}
-
-/**
- * Raahi's reply: the person's words with what was found in them marked, one
- * row each for care, place and urgency (each with the exact words it came
- * from, and a way to change it), and a question when something is missing.
- */
-export function Understood({
-  answer,
-  onPickCare,
-  onPickPlace,
-  topDistanceKm,
-}: {
-  answer: AskResponse;
-  onPickCare: (id: string) => void;
-  onPickPlace: (place: { text: string; coordinates?: Coordinates }) => void;
-  topDistanceKm?: number;
-}) {
-  const { t, lang } = useI18n();
-  const [editing, setEditing] = useState<"care" | "place" | null>(null);
-  useEffect(() => setEditing(null), [answer]);
-
-  const asking = answer.next === "ask_care" ? "care" : answer.next === "ask_place" ? "place" : null;
-  const open = editing ?? asking;
-  const care = answer.care;
-  const place = answer.place;
-  const travel = answer.results?.queryContext.searchParameters.travelKm;
-  const urgentFar =
-    answer.urgency.level === 3 && topDistanceKm !== undefined && travel !== undefined && topDistanceKm > 2 * travel;
-
-  const placeLabel = place?.text
-    ? placeName(place.text, lang)
-    : place?.here || answer.results?.queryContext.location.type === "coordinates"
-      ? t.currentLocation
-      : null;
-  const placeFrom =
-    place?.span ? t.fromWords(place.span.quote) : place?.source === "saved" ? (place.here ? t.fromDevice : t.fromSaved) : null;
-
-  return (
-    <section className="understood" aria-live="polite" aria-labelledby="understood-title">
-      <div className="said">
-        <span className="said-label">{t.youSaid}</span>
-        <SaidText answer={answer} />
-      </div>
-
-      <RaahiSays mood={answer.next === "results" ? "happy" : "thinking"} size={56} className="understood-raahi">
-        <h2 id="understood-title" className="understood-title">
-          {asking === "care"
-            ? answer.careOptions.length
-              ? t.askCareQ
-              : t.askCareNone
-            : asking === "place"
-              ? t.askPlaceQ
-              : t.understoodTitle}
-        </h2>
-      </RaahiSays>
-
-      <dl className="understood-rows">
-        {answer.condition && (lang !== "hi" || answer.condition.nameHi) && (
-          <div className="understood-row is-found" style={{ "--i": 0 } as React.CSSProperties}>
-            <dt>{t.rowDescribed}</dt>
-            <dd>
-              <strong>{lang === "hi" ? answer.condition.nameHi : answer.condition.name}</strong>
-              {answer.condition.span && <small>{t.fromWords(answer.condition.span.quote)}</small>}
-            </dd>
-          </div>
-        )}
-        <div className={`understood-row ${care ? "is-found" : "is-missing"}`} style={{ "--i": 0 } as React.CSSProperties}>
-          <dt>{t.rowCare}</dt>
-          <dd>
-            {care ? (
-              <>
-                <strong>{careName(care.id, lang, care.name)}</strong>
-                {care.span && <small>{t.fromWords(care.span.quote)}</small>}
-              </>
-            ) : (
-              <span className="understood-missing">{answer.careOptions.length ? t.pickOne : t.notFound}</span>
-            )}
-          </dd>
-          {care && (
-            <button type="button" className="link-button" onClick={() => setEditing(open === "care" ? null : "care")}>
-              <PencilLine size={15} aria-hidden="true" />
-              {t.change}
-            </button>
-          )}
-        </div>
-        {open === "care" && (
-          <div className="understood-ask">
-            {answer.careOptions.length > 0 && !editing ? (
-              <ul className="option-list">
-                {answer.careOptions.map((option, index) => (
-                  <li key={option.id} style={{ "--i": index } as React.CSSProperties}>
-                    <button type="button" onClick={() => onPickCare(option.id)}>
-                      <span>{lang === "hi" ? option.nameHi : option.name}</span>
-                      <ArrowRight size={18} aria-hidden="true" />
-                    </button>
-                  </li>
-                ))}
-                <li>
-                  <button type="button" className="option-other" onClick={() => setEditing("care")}>
-                    {t.askCareOther}
-                  </button>
-                </li>
-              </ul>
-            ) : (
-              <CarePicker onPick={(id) => onPickCare(id)} />
-            )}
-          </div>
-        )}
-
-        <div
-          className={`understood-row ${placeLabel ? "is-found" : "is-missing"}`}
-          style={{ "--i": 1 } as React.CSSProperties}
-        >
-          <dt>{t.rowPlace}</dt>
-          <dd>
-            {placeLabel ? (
-              <>
-                <strong>{placeLabel}</strong>
-                {placeFrom && <small>{placeFrom}</small>}
-              </>
-            ) : (
-              <span className="understood-missing">{t.notFound}</span>
-            )}
-          </dd>
-          {placeLabel && (
-            <button type="button" className="link-button" onClick={() => setEditing(open === "place" ? null : "place")}>
-              <PencilLine size={15} aria-hidden="true" />
-              {t.change}
-            </button>
-          )}
-        </div>
-        {open === "place" && (
-          <div className="understood-ask">
-            <PlacePicker
-              message={answer.placeMessage ? localizePlaceMessage(answer.placeMessage, t) : undefined}
-              suggestions={answer.placeSuggestions}
-              onPick={onPickPlace}
-            />
-          </div>
-        )}
-
-        <div className="understood-row understood-row--urgency" style={{ "--i": 2 } as React.CSSProperties}>
-          <dt>{t.rowUrgency}</dt>
-          <dd>
-            <UrgencyMeter score={answer.urgency.score} level={answer.urgency.level} />
-            {answer.urgency.span && answer.urgency.level < 4 && <small>{t.fromWords(answer.urgency.span.quote)}</small>}
-          </dd>
-        </div>
-      </dl>
-
-      {urgentFar && (
-        <p className="understood-warning">
-          <TriangleAlert size={16} aria-hidden="true" />
-          {t.urgentFar(topDistanceKm!.toFixed(0))}{" "}
-          <a href="tel:108">{t.call108Short}</a>
-        </p>
-      )}
-    </section>
-  );
-}
-
-function localizePlaceMessage(message: string, t: ReturnType<typeof useI18n>["t"]) {
-  if (/outside India/i.test(message)) return t.outsideIndia;
-  if (/demo data only covers|No demo hospital/i.test(message)) return t.demoPlaceOnly;
-  return t.placeNotFound;
 }

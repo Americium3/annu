@@ -159,7 +159,12 @@ const careRef = (id: string) => {
 };
 
 /** The rules half of /api/ask: urgency, care and place, each with the person's own words. */
-export function understand(rawText: string, knownPlace: (name: string) => boolean): Omit<AskResponse, "next"> {
+export function understand(
+  rawText: string,
+  knownPlace: (name: string) => boolean,
+  /** After the person said it is not an emergency: still read the care behind the red flag. */
+  { readPastEmergency = false } = {},
+): Omit<AskResponse, "next"> {
   const text = rawText.trim();
   let level: 1 | 2 | 3 | 4 = 4;
   let rule: string | null = null;
@@ -203,7 +208,7 @@ export function understand(rawText: string, knownPlace: (name: string) => boolea
     care: null as AskResponse["care"],
     careOptions: [] as AskResponse["careOptions"],
   };
-  if (base.urgency.emergency) return base;
+  if (base.urgency.emergency && !readPastEmergency) return base;
   const hits = matches(text, terms).sort((a, b) => b.span.end - b.span.start - (a.span.end - a.span.start));
   if (hits.length) {
     return { ...base, care: { ...careRef(hits[0].key), source: "rules", span: hits[0].span } };

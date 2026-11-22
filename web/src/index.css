@@ -5343,3 +5343,733 @@ html[data-transition="emergency"]::view-transition-new(root) {
     animation: none !important;
   }
 }
+
+/* ==========================================================================
+   v6: the conversation page (a trail with Raahi) and the results page
+   ========================================================================== */
+
+.conversation-shell {
+  background-color: var(--brand-soft);
+  background-image: var(--dots);
+  background-size: 22px 22px;
+}
+
+.conversation {
+  display: flex;
+  width: min(880px, calc(100% - 32px));
+  min-height: calc(100vh - 66px);
+  min-height: calc(100dvh - 66px);
+  flex-direction: column;
+  margin: 0 auto;
+  padding: 40px 0 0;
+}
+
+/* Before the first message: Raahi's greeting large and centred, the ask box right under it. */
+.conversation:not(.is-started) {
+  justify-content: center;
+  padding-bottom: 12vh;
+}
+
+.conversation:not(.is-started) .trail::before {
+  display: none;
+}
+
+.conversation:not(.is-started) .stop--greet {
+  grid-template-columns: 132px minmax(0, 1fr);
+  align-items: center;
+}
+
+.conversation:not(.is-started) .stop--greet .raahi-mark svg {
+  width: 124px;
+  height: auto;
+}
+
+.conversation:not(.is-started) .stop--greet .raahi-line {
+  font-size: clamp(28px, 4.2vw, 50px);
+  line-height: 1.18;
+  letter-spacing: -0.025em;
+}
+
+/* ---- the trail ---- */
+
+.trail {
+  position: relative;
+  display: grid;
+  gap: 22px;
+  margin: 0;
+  padding: 0 0 28px;
+  list-style: none;
+}
+
+/* A soft road with a dashed centre line, running behind every stop. */
+.trail::before {
+  position: absolute;
+  top: 24px;
+  bottom: 0;
+  left: 22px;
+  width: 16px;
+  background:
+    repeating-linear-gradient(to bottom, var(--brand-mid) 0 7px, transparent 7px 15px) center / 2px 100% no-repeat,
+    var(--surface);
+  border: 1px solid var(--brand-line);
+  border-radius: 999px;
+  content: "";
+  animation: road-grow 700ms var(--ease-out) backwards;
+  transform-origin: top;
+}
+
+@keyframes road-grow {
+  from {
+    transform: scaleY(0.2);
+    opacity: 0;
+  }
+}
+
+.stop {
+  position: relative;
+  display: grid;
+  grid-template-columns: 60px minmax(0, 1fr);
+  align-items: start;
+  gap: 16px;
+  animation: rise-in 520ms var(--ease-out) backwards;
+}
+
+.raahi-mark {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.raahi-mark.is-current .raahi {
+  filter: drop-shadow(0 6px 10px rgb(var(--shadow-rgb) / 0.18));
+}
+
+.trail-pin {
+  width: 14px;
+  height: 14px;
+  margin-top: 12px;
+  background: var(--brand);
+  border: 3px solid var(--surface);
+  border-radius: 50% 50% 50% 0;
+  box-shadow: 0 0 0 1px var(--brand-line);
+  transform: rotate(-45deg);
+}
+
+.stop-body {
+  display: grid;
+  min-width: 0;
+  gap: 14px;
+  padding-top: 6px;
+}
+
+.raahi-line {
+  margin: 0;
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: clamp(21px, 2.5vw, 28px);
+  font-weight: 750;
+  line-height: 1.3;
+  letter-spacing: -0.015em;
+  text-wrap: pretty;
+}
+
+:lang(hi) .raahi-line {
+  line-height: 1.55;
+  letter-spacing: 0;
+}
+
+.stop.is-past .raahi-line {
+  color: var(--text-3);
+  font-size: var(--fs-lg);
+  font-weight: 650;
+}
+
+.stop-aside {
+  margin: 0;
+  color: var(--text-3);
+  font-size: var(--fs-sm);
+}
+
+.raahi-line.is-thinking {
+  color: var(--text-3);
+}
+
+.dots {
+  display: inline-flex;
+  gap: 4px;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+.dots i {
+  width: 7px;
+  height: 7px;
+  background: var(--brand);
+  border-radius: 50%;
+  animation: dot-bounce 1s ease-in-out infinite;
+}
+
+.dots i:nth-child(2) {
+  animation-delay: 150ms;
+}
+
+.dots i:nth-child(3) {
+  animation-delay: 300ms;
+}
+
+@keyframes dot-bounce {
+  0%,
+  80%,
+  100% {
+    opacity: 0.35;
+    transform: translateY(0);
+  }
+  40% {
+    opacity: 1;
+    transform: translateY(-5px);
+  }
+}
+
+/* ---- the person's words: footsteps on the trail, words on the right ---- */
+
+.stop--you {
+  align-items: center;
+}
+
+.footstep {
+  position: relative;
+  z-index: 1;
+  justify-self: center;
+  width: 10px;
+  height: 14px;
+  background: var(--accent);
+  border-radius: 50% 50% 45% 45%;
+  box-shadow: 9px -9px 0 -1px var(--accent);
+  opacity: 0.75;
+  animation: pop-in 420ms var(--ease-out) backwards;
+}
+
+.you-line {
+  justify-self: end;
+  max-width: min(600px, 100%);
+  padding: 4px 4px 4px 18px;
+  border-left: 3px solid var(--accent);
+}
+
+.you-line p,
+.you-line .said-text {
+  margin: 0;
+  color: var(--text);
+  font-family: var(--font-serif);
+  font-size: clamp(18px, 2vw, 22px);
+  font-style: italic;
+  line-height: 1.5;
+}
+
+:lang(hi) .you-line p,
+:lang(hi) .you-line .said-text {
+  font-style: normal;
+}
+
+/* ---- signposts ---- */
+
+.signposts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 14px 12px;
+  padding-bottom: 14px;
+}
+
+.signpost {
+  position: relative;
+  padding-bottom: 14px;
+}
+
+/* the post the sign stands on */
+.signpost::after {
+  position: absolute;
+  bottom: 0;
+  left: 22px;
+  width: 4px;
+  height: 18px;
+  background: var(--line-strong);
+  border-radius: 0 0 2px 2px;
+  content: "";
+}
+
+.sign {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  min-width: 150px;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 2px 8px;
+  padding: 10px 14px 10px 12px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-top: 4px solid var(--brand);
+  border-radius: 10px;
+  box-shadow: var(--shadow-sm);
+  transform-origin: 24px 100%;
+  animation: plant 760ms calc(220ms + var(--i, 0) * 140ms) var(--ease-out) backwards;
+}
+
+.signpost:nth-child(2) .sign {
+  transform: rotate(0.8deg);
+}
+
+.signpost:nth-child(3) .sign {
+  transform: rotate(-0.6deg);
+}
+
+.sign--place {
+  border-top-color: var(--warn);
+}
+
+.sign--urgency {
+  min-width: 220px;
+  border-top-color: var(--brand-mid);
+}
+
+.sign--u3 {
+  border-top-color: var(--warn);
+}
+
+.sign--u1,
+.sign--u2 {
+  border-top-color: var(--emergency);
+}
+
+.sign > svg {
+  grid-row: span 2;
+  color: var(--text-3);
+}
+
+.sign-label {
+  color: var(--text-3);
+  font-size: var(--fs-2xs);
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.sign strong {
+  grid-column: 2;
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.sign small {
+  grid-column: 2;
+  color: var(--text-3);
+  font-size: var(--fs-xs);
+}
+
+.sign .urgency {
+  grid-column: 2;
+  max-width: 220px;
+}
+
+.sign-change {
+  grid-column: 2;
+  justify-self: start;
+  padding: 0;
+  color: var(--brand-ink);
+  background: none;
+  border: 0;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@keyframes plant {
+  0% {
+    opacity: 0;
+    transform: translateY(-26px) rotate(-7deg);
+  }
+  55% {
+    opacity: 1;
+    transform: translateY(3px) rotate(2.5deg);
+  }
+  78% {
+    transform: translateY(0) rotate(-1deg);
+  }
+  100% {
+    transform: none;
+  }
+}
+
+/* ---- a question: the trail forks ---- */
+
+.fork {
+  padding: 4px 0 6px;
+  animation: rise-in 420ms var(--ease-out) backwards;
+}
+
+.fork .picker {
+  max-width: 520px;
+}
+
+/* ---- found: the destination ---- */
+
+.destination {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  animation: rise-in 520ms 500ms var(--ease-out) backwards;
+}
+
+.destination-pin {
+  position: relative;
+  display: inline-flex;
+  width: 46px;
+  height: 46px;
+  align-items: center;
+  justify-content: center;
+  color: var(--on-brand);
+  background: var(--brand);
+  border-radius: 50%;
+}
+
+.destination.is-found .destination-pin::before,
+.destination.is-found .destination-pin::after {
+  position: absolute;
+  inset: 0;
+  border: 2px solid var(--brand);
+  border-radius: 50%;
+  animation: ping 1.8s var(--ease-out) infinite;
+  content: "";
+}
+
+.destination.is-found .destination-pin::after {
+  animation-delay: 0.9s;
+}
+
+@keyframes ping {
+  from {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(2.1);
+  }
+}
+
+.destination.is-empty .destination-pin {
+  color: var(--warn-ink);
+  background: var(--warn-soft);
+}
+
+.destination-go {
+  position: relative;
+  display: inline-flex;
+  min-height: 50px;
+  align-items: center;
+  gap: 10px;
+  padding: 0 22px;
+  overflow: hidden;
+  border-radius: 14px;
+  font-size: var(--fs-md);
+}
+
+.trail-end {
+  scroll-margin-bottom: 190px;
+}
+
+/* fills while Raahi waits a beat before moving on */
+.destination-timer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  width: 100%;
+  background: rgb(255 255 255 / 0.65);
+  transform-origin: left;
+  animation: timer 2600ms 0ms linear both;
+}
+
+@keyframes timer {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+.destination-emergency {
+  justify-self: start;
+  background: var(--emergency);
+}
+
+/* ---- the composer at the foot of the trail ---- */
+
+.conversation-composer {
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
+  padding: 18px 0 18px;
+  background: linear-gradient(to bottom, rgb(var(--page-rgb) / 0), var(--brand-soft) 28%);
+}
+
+.conversation:not(.is-started) .conversation-composer {
+  position: static;
+  padding-top: 26px;
+  background: none;
+}
+
+.composer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 22px;
+  margin-top: 12px;
+  font-size: var(--fs-sm);
+}
+
+.conversation.is-started .ask {
+  gap: 26px;
+}
+
+/* ---- results page: the summary bar the signposts glide into ---- */
+
+.results-hero {
+  padding: 14px 0;
+  background-color: var(--brand-soft);
+  background-image: var(--dots);
+  background-size: 22px 22px;
+  border-bottom: 1px solid var(--brand-line);
+}
+
+.results-hero-inner {
+  display: flex;
+  width: min(1200px, calc(100% - 48px));
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 18px;
+  margin: 0 auto;
+}
+
+.back-to-chat {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px 4px 8px;
+  color: var(--brand-ink);
+  background: var(--surface);
+  border: 1px solid var(--brand-line);
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+.back-to-chat:hover {
+  border-color: var(--brand);
+}
+
+.signposts--compact {
+  gap: 10px;
+  padding: 0;
+}
+
+.signposts--compact .signpost {
+  padding: 0;
+}
+
+.signposts--compact .signpost::after {
+  display: none;
+}
+
+.signposts--compact .sign {
+  min-width: 0;
+  padding: 6px 12px 6px 10px;
+  border-top-width: 3px;
+  transform: none;
+  animation: none;
+}
+
+.signposts--compact .sign strong {
+  font-size: var(--fs-md);
+}
+
+.signposts--compact .sign .urgency {
+  min-width: 150px;
+}
+
+.results-hero-warning {
+  display: flex;
+  width: min(1200px, calc(100% - 48px));
+  align-items: center;
+  gap: 8px;
+  margin: 10px auto 0;
+  color: var(--warn-ink);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+
+.results-hero-warning a {
+  color: var(--emergency);
+  font-weight: 800;
+  text-decoration: underline;
+}
+
+/* ---- moving between the two pages ---- */
+
+::view-transition-group(raahi-guide),
+::view-transition-group(sign-care),
+::view-transition-group(sign-place),
+::view-transition-group(sign-urgency) {
+  animation-duration: 640ms;
+  animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+html[data-transition="to-results"]::view-transition-old(root) {
+  animation: page-out-up 360ms ease both;
+}
+
+html[data-transition="to-results"]::view-transition-new(root) {
+  animation: page-in-up 560ms 120ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+html[data-transition="to-conversation"]::view-transition-old(root) {
+  animation: page-out-down 320ms ease both;
+}
+
+html[data-transition="to-conversation"]::view-transition-new(root) {
+  animation: page-in-down 520ms 80ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+html[data-transition="turn"]::view-transition-group(raahi-guide) {
+  animation-duration: 520ms;
+}
+
+@keyframes page-out-up {
+  to {
+    opacity: 0;
+    transform: translateY(-24px);
+  }
+}
+
+@keyframes page-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(32px);
+  }
+}
+
+@keyframes page-out-down {
+  to {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+}
+
+@keyframes page-in-down {
+  from {
+    opacity: 0;
+    transform: translateY(-24px);
+  }
+}
+
+@media (max-width: 680px) {
+  .conversation {
+    width: calc(100% - 28px);
+    padding-top: 22px;
+  }
+
+  .conversation:not(.is-started) {
+    padding-bottom: 8vh;
+  }
+
+  .conversation:not(.is-started) .stop--greet {
+    grid-template-columns: 1fr;
+    justify-items: start;
+  }
+
+  .conversation:not(.is-started) .stop--greet .raahi-mark svg {
+    width: 92px;
+  }
+
+  .stop {
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  .trail::before {
+    left: 14px;
+  }
+
+  .raahi-mark.is-current svg {
+    width: 44px;
+    height: auto;
+  }
+
+  .sign {
+    min-width: 0;
+  }
+
+  .sign--urgency {
+    min-width: 200px;
+  }
+
+  .signposts {
+    gap: 8px;
+  }
+
+  .signpost {
+    padding-bottom: 8px;
+  }
+
+  .signpost::after {
+    height: 10px;
+  }
+
+  .sign {
+    padding: 8px 10px;
+  }
+
+  .sign strong {
+    font-size: var(--fs-md);
+  }
+
+  .trail-end {
+    scroll-margin-bottom: 270px;
+  }
+
+  .conversation-composer {
+    padding-bottom: 86px; /* clear the phone emergency bar */
+  }
+
+  .results-hero-inner,
+  .results-hero-warning {
+    width: calc(100% - 32px);
+  }
+
+  /* one swipeable row of signs under "Back to Raahi" */
+  .results-hero .signposts--compact {
+    width: 100%;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .results-hero .signposts--compact .signpost {
+    flex: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stop,
+  .sign,
+  .footstep,
+  .fork,
+  .destination,
+  .trail::before,
+  .dots i,
+  .destination-pin::before,
+  .destination-pin::after {
+    animation: none !important;
+  }
+}
