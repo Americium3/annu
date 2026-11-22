@@ -27,11 +27,28 @@ function startBackend(attempt = 0) {
     console.log("No backend/ folder: serving the site only");
     return;
   }
-  const python = process.env.PYTHON || "python";
+  // The Databricks Apps image has no bare `python` binary (spawn ENOENT), so
+  // prefer the deployment's .venv (it has uvicorn installed) and fall back to
+  // the runtime's own interpreter names.
+  const python =
+    process.env.PYTHON ||
+    [
+      path.join(__dirname, ".venv/bin/python3"),
+      path.join(__dirname, ".venv/bin/python"),
+      path.join(__dirname, "..", ".venv/bin/python3"),
+      path.join(__dirname, "..", ".venv/bin/python"),
+    ].find((p) => fs.existsSync(p)) ||
+    "python3_apps";
   const child = spawn(python, ["-m", "uvicorn", "main:app", "--host", "127.0.0.1", "--port", String(API_PORT)], {
     cwd: BACKEND_DIR,
     env: { ...process.env, PYTHONUNBUFFERED: "1" },
     stdio: ["ignore", "pipe", "pipe"],
+  });
+  child.on("error", (err) => {
+    // A failed spawn must not crash the whole app with an unhandled 'error'.
+    console.log(`Recommender failed to start (${err.message}); retrying`);
+    const wait = Math.min(30, 2 ** attempt);
+    setTimeout(() => startBackend(attempt + 1), wait * 1000);
   });
   const log = (chunk) => {
     const text = chunk.toString();
