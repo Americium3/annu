@@ -1,49 +1,70 @@
-import { CircleHelp, Database, Menu, X } from "lucide-react";
-import { useState } from "react";
-import { Brand } from "./Brand";
+import { Moon, Sun } from "lucide-react";
+import { useTheme } from "../hooks/useTheme";
+import { useI18n, type Lang } from "../i18n";
 import { USE_DEMO } from "../lib/api";
+import { AccountMenu } from "./AccountMenu";
+import { EmergencyButton } from "./EmergencyButton";
+import { withTransition } from "../lib/motion";
+import { Brand } from "./Brand";
+
+const languages: Array<{ value: Lang; label: string }> = [
+  { value: "en", label: "English" },
+  { value: "hi", label: "हिंदी" },
+];
 
 export function Header() {
-  const [menuOpen, setMenuOpen] = useState(false);
+  const { theme, toggle } = useTheme();
+  const { t, lang, setLang } = useI18n();
+  const themeLabel = theme === "dark" ? t.themeToLight : t.themeToDark;
 
   return (
-    <header className="site-header">
-      <div className="header-inner">
-        <Brand />
-        <nav className={`primary-nav ${menuOpen ? "is-open" : ""}`} aria-label="Primary">
-          <a className="nav-link is-active" href="#search">
-            Find care
-          </a>
-          <a className="nav-link" href="#how-it-works">
-            How it works
-          </a>
-          <a className="nav-link" href="#evidence">
-            Our evidence
-          </a>
-        </nav>
-        <div className="header-actions">
-          <span className="demo-pill">
-            <Database size={13} aria-hidden="true" />
-            {USE_DEMO ? "Demo data" : "Live data"}
-          </span>
-          <a
-            className="icon-button help-button"
-            href="#how-it-works"
-            aria-label="Help and information"
-          >
-            <CircleHelp size={19} />
-          </a>
-          <button
-            className="icon-button menu-button"
-            type="button"
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
-            aria-expanded={menuOpen}
-            onClick={() => setMenuOpen((open) => !open)}
-          >
-            {menuOpen ? <X size={21} /> : <Menu size={21} />}
-          </button>
+    <>
+      <a className="skip-link" href="#search">
+        {t.skipToSearch}
+      </a>
+      <div className="top-strip">
+        <div className="top-strip-inner">
+          <p className="top-strip-note">{USE_DEMO ? t.prototypeNote : t.liveNote}</p>
         </div>
       </div>
-    </header>
+      <header className="site-header">
+        <div className="header-inner">
+          <Brand />
+          <div className="header-actions">
+            <EmergencyButton variant="header" />
+            <AccountMenu />
+            <div className="lang-switch" role="group" aria-label={t.language}>
+              {languages.map((option) => (
+                <button
+                  key={option.value}
+                  type="button"
+                  lang={option.value}
+                  aria-pressed={lang === option.value}
+                  onClick={() => withTransition(() => setLang(option.value), "fade")}
+                >
+                  {option.label}
+                </button>
+              ))}
+            </div>
+            <button
+              className="icon-button"
+              type="button"
+              aria-label={themeLabel}
+              title={themeLabel}
+              onClick={(event) => {
+                // The new theme spreads out from the button that was pressed.
+                const root = document.documentElement;
+                root.style.setProperty("--reveal-x", `${event.clientX}px`);
+                root.style.setProperty("--reveal-y", `${event.clientY}px`);
+                withTransition(toggle, "theme");
+              }}
+            >
+              {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+            </button>
+          </div>
+        </div>
+      </header>
+      <EmergencyButton variant="bar" />
+    </>
   );
 }

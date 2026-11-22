@@ -1,15 +1,21 @@
+import { useI18n } from "../i18n";
+
 export function MapLegend() {
+  const { t } = useI18n();
   return (
-    <div className="map-legend" aria-label="Map score legend">
-      <span>
-        <i className="legend-marker legend-marker-strong" /> 85+
-      </span>
-      <span>
-        <i className="legend-marker legend-marker-mid" /> 70–84
-      </span>
-      <span>
-        <i className="legend-marker legend-marker-low" /> &lt;70
-      </span>
-    </div>
+    <dl className="map-legend" aria-label={t.mapLegend}>
+      <div>
+        <dt className="legend-pin legend-pin-strong" />
+        <dd>{t.legendStrong} · 85+</dd>
+      </div>
+      <div>
+        <dt className="legend-pin legend-pin-mid" />
+        <dd>{t.legendMid} · 70–84</dd>
+      </div>
+      <div>
+        <dt className="legend-pin legend-pin-low" />
+        <dd>{t.legendLow} · &lt;70</dd>
+      </div>
+    </dl>
   );
 }

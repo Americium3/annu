@@ -1,27 +1,20 @@
-import { Activity, ShieldCheck } from "lucide-react";
+import { useI18n } from "../i18n";
+import { RaahiMark } from "./Raahi";
 
 export function Footer() {
+  const { t } = useI18n();
   return (
     <footer className="site-footer">
       <div className="footer-inner">
         <div className="footer-brand">
-          <span className="footer-mark">
-            <Activity size={18} />
-          </span>
-          <div>
-            <strong>CarePath</strong>
-            <span>Evidence-led care search</span>
-          </div>
+          <RaahiMark size={24} />
+          <strong>CarePath</strong>
         </div>
-        <p>
-          <ShieldCheck size={15} />
-          Prototype with illustrative facilities and sources. Not medical advice.
-        </p>
-        <div className="footer-links">
-          <a href="#how-it-works">Methodology</a>
-          <a href="#evidence">Evidence policy</a>
+        <p>{t.footerNote}</p>
+        <nav className="footer-links" aria-label="Footer">
+          <a href="#how-it-works">{t.footerMethod}</a>
           <span>© 2026 CarePath</span>
-        </div>
+        </nav>
       </div>
     </footer>
   );
