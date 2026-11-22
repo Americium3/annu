@@ -8,7 +8,7 @@ from unittest.mock import patch
 import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from stt import HINTS, Transcriber, TranscriptionError  # noqa: E402
+from stt import HINTS, Transcriber, TranscriptionError, normalize  # noqa: E402
 
 
 class FakeProcessor:
@@ -18,9 +18,10 @@ class FakeProcessor:
 
 class FakePipe:
     def __init__(self, text):
-        self.text, self.calls = text, []
+        self.text, self.calls, self.raw = text, [], []
 
     def __call__(self, audio, generate_kwargs):
+        self.raw.append(audio["raw"])
         self.calls.append((len(audio["raw"]), audio["sampling_rate"], generate_kwargs))
         return {"text": self.text}
 
@@ -52,6 +53,17 @@ class TranscriberTest(unittest.TestCase):
 
     def test_an_echoed_hint_is_not_a_transcript(self):
         self.assertEqual(transcriber("कटक, भुवनेश्वर").transcribe(pcm(1), "hi")["transcript"], "")
+
+    def test_quiet_speech_is_raised_and_silence_left_alone(self):
+        quiet = np.sin(np.linspace(0, 400, 16000)).astype(np.float32) * 0.03
+        self.assertAlmostEqual(float(np.max(np.abs(normalize(quiet)))), 0.9, places=2)
+        hiss = quiet / 30
+        self.assertIs(normalize(hiss), hiss)
+        loud = quiet * 31
+        self.assertIs(normalize(loud), loud)
+        t = transcriber("ok")
+        t.transcribe((quiet * 32768).astype("<i2").tobytes(), "en")
+        self.assertGreater(float(np.max(np.abs(t._pipe.raw[-1]))), 0.85)
 
     def test_long_recordings_are_cut(self):
         t = transcriber("ok")
