@@ -222,3 +222,128 @@ candidate fairness, geographic policies, qrels denominators, unlabeled results, 
 plot outputs and a mocked bi-encoder. Real neural weights and live Databricks data require
 your environment; passing these tests does not demonstrate healthcare recommendation
 quality. No clinical ground truth or benchmark results are bundled.
+
+## Optional NFHS district context
+
+NFHS is used for **historical background, evaluation strata and experiment-map
+overlays**. It never enters service extraction, eligibility, ranking weights, search
+radius, or hospital recommendation reasons. This feature lives in the experiment
+runner/notebook; the production React app/API are unchanged.
+
+### Run with context
+
+```bash
+python -m experiments.run \
+  --facilities /path/model_facilities.tsv --evidence /path/model_evidence_items.tsv \
+  --queries experiments/queries.nfhs.example.csv \
+  --nfhs /path/nfhs_5_district_health_indicators.csv \
+  --district-aliases /path/reviewed_district_aliases.csv \
+  --methods rules tfidf bm25 --out data/experiments/nfhs_dev_001
+```
+
+The alias argument is optional; without it only normalized exact district/state names
+match. For SQL access, replace `--nfhs` with:
+
+```text
+--nfhs-table databricks_virtue_foundation_dataset_dais_2026.virtue_foundation_dataset.nfhs_5_district_health_indicators
+```
+
+Use `--district-alias-table catalog.schema.reviewed_aliases` instead of an alias file
+when an adapted table is available. `--from-databricks` continues to load the model
+tables. All table adapters issue SELECT only. In the notebook, set `nfhs_table` to the
+full table above, optionally set `district_alias_table`, choose an appropriate query
+CSV, and run with a new `out` path. Blank `nfhs_table` keeps context disabled.
+
+### District identity and crosswalk contract
+
+Coordinate and city queries need **reviewed `context_state,context_district` metadata**.
+Audited PIN queries and resolved district-name queries supply these automatically.
+No nearest hospital, nearest PIN, or city-name-as-district assignment is made for raw
+coordinates/cities. The NFHS example file includes illustrative district assignments
+for four queries and leaves the two ambiguous examples blank; review all query geography
+before evaluation. These are not gold location labels.
+
+Map context is shown at the **query reference point**, not as a district boundary.
+NFHS supplies no polygons. `district_context.geojson` contains points with explicit
+reference-point metadata; this change does not invent choropleth geometries.
+
+Your existing `ref_district_alias` must be exported/adapted to these columns:
+
+| Column | Meaning |
+|---|---|
+| `source_state`, `source_district` | Reviewed names in PIN/facility/query data |
+| `target_state`, `target_district` | Names identifying the corresponding NFHS district |
+| `mapping_type` | `name_alias`, `boundary_change`, or `unresolved` |
+
+Only `name_alias` is joined. Boundary changes and unresolved entries remain unmatched
+for review, even if the original district name happens to match NFHS. True split/merge
+crosswalks require population/boundary information and are outside this feature.
+Unicode/case/whitespace/punctuation are normalized, but there is no fuzzy matching or
+automatic renaming. Duplicate NFHS keys or duplicate alias source keys fail before
+joining, preventing row multiplication. A reviewed many-to-one name mapping is allowed;
+one-to-many mappings must be resolved externally. Aliases with absent targets are audited.
+
+Facilities use `state_key`/`state`/`address_stateOrRegion` and `district_key`/`district`.
+The raw facilities table has no district; supply the cleaned model table. PIN directory
+joins and postal-office deduplication remain upstream responsibilities.
+
+### Cleaning and interpretation
+
+- Preserve raw values, numeric values and separate statuses: `valid`, `low_sample`,
+  `suppressed`, `missing`, `invalid`, `out_of_range`. `(42.5)` retains 42.5 plus a
+  low-sample flag; `*` stays suppressed, never zero. Percentages must be in 0–100.
+- Parse all `_pct` indicators, `sex_ratio_*` fields and available sample-count columns.
+  Household/women/men counts are metadata, not indicator-specific denominators, survey
+  precision estimates, population weights, or weights for calculating state estimates.
+- Preserve the historical survey period, 2019–2021. Administrative geography may differ
+  from current PIN geography. Health burden/utilization is not directly service demand.
+- The map displays insurance background for all services; maternal/birth/ANC/PNC
+  indicators additionally appear for C-section/NICU. It does not invent MRI/burn-care
+  demand indicators. District context is separate from the facility evidence popups.
+- No patient's insurance, income, condition or urgency is inferred. No public/private
+  preference or insurance acceptance is inferred from district rates. Preference
+  elicitation and any future ranking interactions require separate validation.
+
+The marker convention is documented by the [official NFHS district factsheet catalog](https://www.data.gov.in/catalog/national-family-health-survey-5-nfhs-5-india-districts-factsheet-data-provisional).
+For weighting, see the [DHS statistics guide](https://www.dhsprogram.com/pubs/pdf/DHSG1/Guide_to_DHS_Statistics_DHS-8.pdf).
+
+### Context outputs and evaluation
+
+| Output | Purpose |
+|---|---|
+| `district_context.csv` | Long-form raw/value/status indicator and sample metadata |
+| `district_join_audit.csv` | One match result per facility; missing/unmatched/boundary-review retained |
+| `query_district_join_audit.csv` | One district match/assignment source per query |
+| `district_service_coverage.csv` | Dataset facility count, service-text-supported count, usable-evidence/location count per district/service |
+| `metrics_by_district_context.csv` | Macro query means by method × service × supplied density group × NFHS group, with per-metric denominators |
+| `district_context_manifest.json` | Input fingerprint, survey period, cut points and facility/query match counts |
+| `district_context.geojson`, `map.html` | Toggleable reference-point background; no boundary geometry |
+| `plots/nfhs_groups_*.png` | Descriptive no-answer, P@k and top-1 distance comparisons, with effective query counts |
+
+Coverage counts describe **providers identifiable in the supplied dataset**; zero does
+not establish that no service exists. They are not population-normalized capacity or
+unmet-demand estimates. Unmatched facilities are accounted for in the join audit, not
+silently assigned to a district. Service text support is the existing heuristic, not
+independently confirmed availability. The usable count also respects identity/location
+policy, independent of the particular query's distance radius.
+
+Default evaluation indicators are insurance coverage and institutional birth rate when
+present. Use `--nfhs-group-indicators exact_column_name ...` to choose others. Valid
+district values define equal-weight district tertiles; this is an evaluation grouping,
+not a population estimate. Low-sample, suppressed, missing and unmatched context form
+separate groups. The cut points and tie rule are recorded in both manifests.
+
+Freeze cut points before comparing benchmark runs: save the manifest's `group_bins`
+object as a JSON file and pass `--nfhs-group-bins /path/frozen_bins.json` (or the notebook
+widget). Do not tune thresholds on test outcomes. Bins may collapse with tied values;
+inspect group counts rather than assuming three equally sized groups.
+
+No qrels means correctness metrics stay blank with denominator zero. No recommendation
+means distance is missing, not zero; no-answer coverage is still measurable. Subgroup
+CSV includes query count, matched district count, each metric's valid count and mean
+number of geolocated dataset facilities within the fixed search radius. Multiple query
+methods repeat the same queries; do not treat them as independent survey samples.
+Plots pool services/density strata descriptively; use the stratified CSV to check
+composition effects. These comparisons have no confidence intervals and establish no
+causal relationship. Use sufficient independent district/query groups and uncertainty
+estimates before making fairness or improvement claims.

@@ -12,24 +12,48 @@ from pathlib import Path
 
 import pandas as pd
 
-from .engine import ExperimentEngine, Settings, METHODS, canonical_service, geojson
+from .engine import ExperimentEngine, Settings, METHODS, canonical_service, geojson, haversine, validate_point
+from .district_context import DistrictContext, context_geojson, context_plots, name_key, service_coverage, subgroup_metrics
 from .evaluation import annotation_pool, evaluate, plots
-from .io import augment_facility_text, dump_json, load_tables, read_frame, resolve_location
+from .io import augment_facility_text, dump_json, load_context_table, load_tables, read_frame, resolve_location
 
 
 def map_html(runs):
     """One map with switchable method/query layers; escape data before embedding."""
-    layers = [{"label": f"{r['query_id']} / {r['method']}", "data": geojson(r), "query": r["query"]} for r in runs]
+    layers = [{"label": f"{r['query_id']} / {r['method']}", "data": geojson(r), "query": r["query"],
+               "context": r.get("district_context")} for r in runs]
     data = json.dumps(layers, ensure_ascii=False, allow_nan=False).replace("<", "\\u003c")
     return '''<!doctype html><html><head><meta charset="utf-8"><title>Reranking comparison</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-<style>body{margin:0;font:14px system-ui}#map{height:88vh}header{padding:12px}select{max-width:80vw}</style></head>
+<style>body{margin:0;font:14px system-ui}#map{height:76vh}header{padding:12px}select{max-width:80vw}
+#context{padding:10px;max-height:24vh;overflow:auto}#context p{margin:4px 0}label{display:inline-block;margin:8px}</style></head>
 <body><header><b>Candidate reranking experiments</b> <select id="choice"></select>
-<div>Approximate straight-line distances. Text support is not verified availability. PIN markers are area references.</div></header>
-<div id="map"></div><script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script><script>
+<div>Approximate straight-line distances. Text support is not verified availability. PIN markers are area references.</div>
+<label><input type="checkbox" id="nfhs"> Show NFHS district background</label>
+<select id="indicator" aria-label="District background indicator"></select></header>
+<div id="context" hidden></div><div id="map"></div><script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script><script>
 const layers=DATA; const map=L.map('map').setView([22,79],5);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap contributors'}).addTo(map);
 const select=document.getElementById('choice'); let active=L.layerGroup().addTo(map);
+const toggle=document.getElementById('nfhs'), indicator=document.getElementById('indicator'), panel=document.getElementById('context');
+const background=L.layerGroup().addTo(map);
+function textLine(parent,text){const el=document.createElement('p');el.textContent=text;parent.appendChild(el)}
+function showContext(reset=false){background.clearLayers();panel.replaceChildren();panel.hidden=!toggle.checked;
+const x=layers[Number(select.value)], c=x?.context;if(!x)return;
+if(reset){indicator.replaceChildren();(c?.display_indicators||[]).forEach(m=>{const o=document.createElement('option');
+o.value=m.indicator;o.textContent=m.indicator;indicator.appendChild(o)})}
+indicator.disabled=!toggle.checked||!c?.display_indicators?.length;if(!toggle.checked)return;
+if(!c){textLine(panel,'NFHS context was not supplied for this run.');return}
+textLine(panel,c.note);textLine(panel,'District match: '+c.match_status+'; assignment: '+c.assignment_source);
+if(!c.district){textLine(panel,'District context unavailable. No district inferred from nearby hospitals.');return}
+textLine(panel,c.district+', '+c.state+'; survey '+c.survey_period);
+textLine(panel,'Background is shown at the query reference point; this is not a district boundary or patient measurement.');
+const m=c.display_indicators.find(m=>m.indicator===indicator.value);
+if(!m){textLine(panel,'No corresponding display indicator is available.');return}
+const label=m.indicator+': '+(m.value===null?'not available':m.value+'%')+' ['+m.status+']; raw: '+m.raw;
+textLine(panel,label);const popup=document.createElement('div');textLine(popup,c.district+', '+c.state);textLine(popup,label);
+const colour=m.status==='valid'?'#24669b':'#777';
+L.circleMarker([x.query.latitude,x.query.longitude],{radius:14,color:colour,fillOpacity:.2}).addTo(background).bindPopup(popup);}
 layers.forEach((x,i)=>{const o=document.createElement('option');o.value=i;o.textContent=x.label;select.appendChild(o)});
 function show(){active.clearLayers();const x=layers[Number(select.value)];if(!x)return;
 const points=[[x.query.latitude,x.query.longitude]];
@@ -37,14 +61,16 @@ L.circleMarker(points[0],{color:'black',radius:6}).addTo(active).bindPopup('Quer
 x.data.features.forEach(f=>{const p=f.properties;const pt=[f.geometry.coordinates[1],f.geometry.coordinates[0]];points.push(pt);
 const box=document.createElement('div');const title=document.createElement('b');title.textContent=p.rank+'. '+p.name;box.appendChild(title);
 [p.recommendation_reason,'Location: '+p.location_tier,...p.warnings].forEach(t=>{const el=document.createElement('p');el.textContent=t;box.appendChild(el)});
-L.marker(pt).addTo(active).bindPopup(box)});map.fitBounds(points,{maxZoom:12,padding:[30,30]});}
-select.onchange=show;show();</script></body></html>'''.replace("DATA", data, 1)
+L.marker(pt).addTo(active).bindPopup(box)});map.fitBounds(points,{maxZoom:12,padding:[30,30]});showContext(true);}
+select.onchange=show;toggle.onchange=()=>showContext();indicator.onchange=()=>showContext();show();</script></body></html>'''.replace("DATA", data, 1)
 
 
-def run_experiments(engine, queries, methods, out, qrels=None, pins=None):
+def run_experiments(engine, queries, methods, out, qrels=None, pins=None, district_context=None):
     required = {"query_id", "service"}
     if not required.issubset(queries):
         raise ValueError("Queries need query_id and service; plus latitude/longitude or location")
+    if queries.empty:
+        raise ValueError("Queries must contain at least one row")
     if queries.query_id.isna().any() or queries.query_id.astype(str).duplicated().any():
         raise ValueError("query_id must be unique and non-null")
     if not methods or len(set(methods)) != len(methods) or not set(methods).issubset(METHODS):
@@ -60,7 +86,12 @@ def run_experiments(engine, queries, methods, out, qrels=None, pins=None):
             loc = resolve_location(f"{q['latitude']},{q['longitude']}", engine.facilities)
         else:
             loc = resolve_location(q.get("location", ""), engine.facilities, pins)
-        resolved.append({**q, **loc})
+        resolved_query = {**q, **loc}
+        # Explicit audited query metadata works for coordinates too; no nearest-hospital guess.
+        if name_key(q.get("context_state")) and name_key(q.get("context_district")):
+            resolved_query.update(context_state=q["context_state"], context_district=q["context_district"],
+                                  context_assignment_source="explicit_query_metadata")
+        resolved.append(resolved_query)
     # Eagerly precompute all service/model pairs. Time this separately from warm queries.
     timings = []
     for method in methods:
@@ -69,14 +100,44 @@ def run_experiments(engine, queries, methods, out, qrels=None, pins=None):
             engine.score_service(service, method)  # fail visibly; never substitute another model
             timings.append({"service_id": service, "method": method, "seconds": time.perf_counter()-start})
     runs = []
+    dataset_points = []
+    for fac in engine.facilities.to_dict("records"):
+        for a, b in (("loc_lat", "loc_lon"), ("best_lat", "best_lon"), ("latitude", "longitude")):
+            if validate_point(fac.get(a), fac.get(b)):
+                dataset_points.append((float(fac[a]), float(fac[b])))
+                break
     for q in resolved:
+        context = district_context.query_context(q, canonical_service(q["service"])) if district_context is not None else None
+        nearby_count = int(sum(haversine(q["latitude"], q["longitude"], *zip(*dataset_points)) <= engine.settings.max_radius_km)) if dataset_points else 0
         for method in methods:
             run = engine.recommend(q["service"], q["latitude"], q["longitude"], method)
             run.update(query_id=str(q["query_id"]), density_group=q.get("density_group", "unspecified"))
             run["query"].update(precision=q["precision"], resolved=q["resolved"])
+            run["nearby_dataset_facility_count"] = nearby_count
+            if context is not None:
+                run["district_context"] = context
             runs.append(run)
     empty_qrels = pd.DataFrame(columns=["query_id", "unique_id", "relevance"])
     per_query, summary = evaluate(runs, qrels if qrels is not None else empty_qrels, engine.settings.top_k)
+    per_query["nearby_dataset_facility_count"] = [r["nearby_dataset_facility_count"] for r in runs]
+    if district_context is not None:
+        contexts = [r["district_context"] for r in runs]
+        per_query["nfhs_match_status"] = [c["match_status"] for c in contexts]
+        per_query["nfhs_district_id"] = [(c["state_key"] + "/" + c["district_key"]) if "state_key" in c else None for c in contexts]
+        for col in district_context.group_bins:
+            per_query["nfhs_group__" + col] = [c["groups"][col] for c in contexts]
+        matches = district_context.join_facilities(engine.facilities)
+        matches.to_csv(out / "district_join_audit.csv", index=False)
+        pd.DataFrame(district_context.long_rows).to_csv(out / "district_context.csv", index=False)
+        subgroup_metrics(per_query).to_csv(out / "metrics_by_district_context.csv", index=False)
+        service_coverage(district_context, matches, runs).to_csv(out / "district_service_coverage.csv", index=False)
+        dump_json(out / "district_context.geojson", context_geojson(runs))
+        query_matches = pd.DataFrame([{"query_id": r["query_id"], "match_status": r["district_context"]["match_status"],
+                                     "assignment_source": r["district_context"]["assignment_source"]} for r in runs]).drop_duplicates("query_id")
+        query_matches.to_csv(out / "query_district_join_audit.csv", index=False)
+        dump_json(out / "district_context_manifest.json", {**district_context.manifest(),
+                  "facility_join_counts": matches.match_status.value_counts().to_dict(),
+                  "query_join_counts": query_matches.match_status.value_counts().to_dict()})
     dump_json(out / "runs.json", runs)
     pd.DataFrame(timings).to_csv(out / "precompute_timings.csv", index=False)
     per_query.to_csv(out / "metrics_per_query.csv", index=False)
@@ -100,11 +161,14 @@ def run_experiments(engine, queries, methods, out, qrels=None, pins=None):
         "python": platform.python_version(), "packages": versions, "setup_seconds": engine.setup_seconds,
         "orphan_evidence_count": engine.orphan_evidence_count, "queries": len(resolved),
         "labelled": qrels is not None, "latency_scope": "warm recommendation only; see precompute_timings.csv",
+        "nfhs": district_context.manifest() if district_context is not None else None,
         "notes": ["No clinical verification. Metrics use independent human qrels.",
                   "Recall/nDCG are relative to the annotated candidate pool.",
                   "Positive/negative clause detection is heuristic; independently inspect missed cases.",
                   "Pin model_revision for exact neural artifact reproducibility."]})
     plots(per_query, summary, out / "plots")
+    if district_context is not None:
+        context_plots(per_query, out / "plots")
     return runs, per_query, summary
 
 
@@ -120,6 +184,14 @@ def main():
     parser.add_argument("--methods", nargs="+", choices=METHODS, default=["rules", "tfidf", "bm25"])
     parser.add_argument("--out", required=True)
     parser.add_argument("--settings", help="Settings JSON; omit to use documented defaults")
+    nfhs_input = parser.add_mutually_exclusive_group()
+    nfhs_input.add_argument("--nfhs", help="Optional NFHS CSV/TSV/parquet export")
+    nfhs_input.add_argument("--nfhs-table", help="Optional NFHS Databricks table; SELECT only")
+    alias_input = parser.add_mutually_exclusive_group()
+    alias_input.add_argument("--district-aliases", help="Reviewed alias export; see README for columns")
+    alias_input.add_argument("--district-alias-table", help="Reviewed alias Databricks table in documented format")
+    parser.add_argument("--nfhs-group-indicators", nargs="+", help="Exact percentage indicator columns for subgroup evaluation")
+    parser.add_argument("--nfhs-group-bins", help="JSON file mapping indicator to two frozen cut points")
     args = parser.parse_args()
     if args.from_databricks:
         fac, ev = load_tables(args.schema)
@@ -129,9 +201,18 @@ def main():
         parser.error("Supply --facilities and --evidence or --from-databricks")
     settings = Settings(**json.loads(Path(args.settings).read_text())) if args.settings else Settings()
     engine = ExperimentEngine(fac, augment_facility_text(fac, ev), settings)
+    context = None
+    if args.nfhs or args.nfhs_table:
+        nfhs = read_frame(args.nfhs) if args.nfhs else load_context_table(args.nfhs_table)
+        aliases = read_frame(args.district_aliases) if args.district_aliases else (
+            load_context_table(args.district_alias_table) if args.district_alias_table else None)
+        context = DistrictContext(nfhs, aliases, args.nfhs_group_indicators,
+                                  json.loads(Path(args.nfhs_group_bins).read_text()) if args.nfhs_group_bins else None)
+    elif any((args.district_aliases, args.district_alias_table, args.nfhs_group_indicators, args.nfhs_group_bins)):
+        parser.error("NFHS options require --nfhs or --nfhs-table")
     _, _, summary = run_experiments(engine, read_frame(args.queries), args.methods, args.out,
                                    read_frame(args.qrels) if args.qrels else None,
-                                   read_frame(args.pins) if args.pins else None)
+                                   read_frame(args.pins) if args.pins else None, district_context=context)
     print(summary.to_string(index=False))
     print(f"Outputs: {args.out}; unlabelled accuracy cells remain blank, not fabricated.")
 
