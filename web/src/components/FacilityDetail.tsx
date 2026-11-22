@@ -1,6 +1,7 @@
 import { ArrowLeft, Check, Copy, ExternalLink, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { operatorLabel, useI18n } from "../i18n";
+import { knownOperator } from "../lib/reason";
 import type { FacilityRecommendation, SourceType } from "../types";
 import { ConfidenceBadge } from "./ConfidenceBadge";
 import { FacilityActions } from "./FacilityActions";
@@ -128,7 +129,9 @@ export function FacilityDetail({ facility, service, onClose }: FacilityDetailPro
           <div className="detail-hero">
             <div>
               <p className="detail-kicker">
-                {t.rank(facility.rank)} · {facility.type} · {operatorLabel(t, facility.operatorType)}
+                {[t.rank(facility.rank), facility.type, knownOperator(facility.operatorType) && operatorLabel(t, facility.operatorType)]
+                  .filter(Boolean)
+                  .join(" · ")}
               </p>
               <h2 id="detail-title">{facility.name}</h2>
               <p className="detail-location">

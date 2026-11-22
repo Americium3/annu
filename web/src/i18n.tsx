@@ -145,7 +145,7 @@ const en = {
   sourceGovernment: "Government listing",
   sourceDirectory: "Directory",
   sourceSocial: "Social media",
-  sourceUnknown: "Unknown source",
+  sourceUnknown: "Other web page",
   unsureTitle: "What Raahi couldn't confirm",
   unsureHint: "Read this before you travel. Call the hospital first if you can.",
   missing: "Missing details:",
@@ -191,7 +191,7 @@ const en = {
   srcListGovernment: "a government listing",
   srcListDirectory: "a directory",
   srcListSocial: "social media",
-  srcListUnknown: "an unknown source",
+  reasonWebOnly: "Mentioned on public web pages. Call to confirm before you go.",
   howToggle: "How we choose hospitals",
 
   // account & onboarding
@@ -404,7 +404,7 @@ const hi: Dict = {
   sourceGovernment: "सरकारी सूची",
   sourceDirectory: "डायरेक्टरी",
   sourceSocial: "सोशल मीडिया",
-  sourceUnknown: "अज्ञात स्रोत",
+  sourceUnknown: "अन्य वेब पेज",
   unsureTitle: "जो राही पक्का नहीं कर सका",
   unsureHint: "जाने से पहले इसे पढ़ें। हो सके तो पहले अस्पताल को फ़ोन करें।",
   missing: "जो जानकारी नहीं मिली:",
@@ -446,7 +446,7 @@ const hi: Dict = {
   srcListGovernment: "सरकारी सूची",
   srcListDirectory: "डायरेक्टरी",
   srcListSocial: "सोशल मीडिया",
-  srcListUnknown: "अज्ञात स्रोत",
+  reasonWebOnly: "सार्वजनिक वेब पेजों पर ज़िक्र है। जाने से पहले फ़ोन करके पुष्टि करें।",
   howToggle: "हम अस्पताल कैसे चुनते हैं",
 
   signIn: "साइन इन",
