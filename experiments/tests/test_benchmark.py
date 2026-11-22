@@ -31,3 +31,16 @@ class BenchmarkTest(unittest.TestCase):
   p=pd.DataFrame([dict(query_id=q,method=m,group_id=q,ndcg_at_k_pool=v)
                   for q in ['a','b'] for m,v in [('baseline',.5),('candidate',.75)]])
   self.assertEqual(paired_interval(p,'baseline','candidate',draws=20)['delta'],.25)
+
+ def test_all_skipped_attempts_are_checkpointed_after_model_failure(self):
+  import json
+  from unittest.mock import patch
+  from experiments.benchmark import GuardedEngine
+  with tempfile.TemporaryDirectory() as tmp:
+   root=Path(tmp)/'input';build(root)
+   with patch.object(GuardedEngine,'score_service',side_effect=RuntimeError('simulated unavailable model')):
+    report=benchmark(pd.read_csv(root/'facilities.csv'),pd.read_csv(root/'evidence.csv'),
+       pd.read_csv(root/'queries.csv'),None,Path(tmp)/'out',methods=['rules','cross_encoder'],data_kind='synthetic')
+   attempts=json.loads((Path(tmp)/'out'/'attempts.json').read_text())
+   self.assertEqual(len(attempts),len(report['configs']))
+   self.assertEqual(attempts[-1]['status'],'skipped_after_model_failure')

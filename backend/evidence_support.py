@@ -17,7 +17,7 @@ SERVICE_PATTERNS = {
 }
 
 
-def claim_status(text, service, pattern=None):
+def claim_status(text, service, pattern=None, recognize_referral_centers=True):
     """Assess only clauses containing the service; unrelated negation must not leak.
 
     States are operational linguistic flags, not an NLI probability. Multiple
@@ -33,14 +33,22 @@ def claim_status(text, service, pattern=None):
             before = clause[max(0, match.start()-90):match.start()]
             after = clause[match.end():match.end()+90]
             local = before + match.group() + after
-            exemption = re.search(r'\b(?:no[ -](?:cost|charges?|fees?)|not only)\s*$', before, re.I)
+            exemption = re.search(
+                r'\b(?:not only(?:\s+\w+){0,3}|no[ -](?:cost|charges?|fees?)|'
+                r'no (?:appointments?|waiting|waits?|referrals?)(?:\s+\w+){0,4})\s*$', before, re.I)
             if (not exemption and re.search(r'\b(?:not|no|without|never)\s+(?:\w+[ -]+){0,4}$', before, re.I)) or re.search(
                 r'\b(?:discontinued|suspended|unavailable|ceased|not (?:available|offered|provided))\b', local, re.I):
                 states.append('negative')
             elif re.search(r'\b(?:planned|planning|proposed|future|coming soon|will (?:offer|open|provide)|used to|formerly)\b', local, re.I):
                 states.append('planned_or_historical')
             elif re.search(r'\b(?:refer(?:red|ral|ring)?|awareness|counsell?ing|education(?:al)?|training|trained|worked at)\b', local, re.I):
-                states.append('indirect')
+                # A referral center RECEIVES patients; it is not an outgoing referral claim.
+                # Found in the repository's real burns-unit example. This only resolves
+                # that wording, not the identity/availability of the described facility.
+                incoming = re.search(r'\breferral[ -]+(?:cent(?:er|re)|hospital|unit)\b', local, re.I)
+                outgoing = re.search(r'\b(?:elsewhere|another (?:hospital|institution)|referred (?:out|to))\b', local, re.I)
+                other_indirect = re.search(r'\b(?:awareness|counsell?ing|education(?:al)?|training|trained|worked at)\b', local, re.I)
+                states.append('support' if recognize_referral_centers and incoming and not outgoing and not other_indirect else 'indirect')
             elif re.search(r'\b(?:unknown|not specified|not mentioned|no explicit|unclear)\b', local, re.I):
                 states.append('uncertain')
             else:

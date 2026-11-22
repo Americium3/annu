@@ -6,6 +6,8 @@ The repository did not contain a usable export of `model_facilities`, `model_evi
 or the serving snapshot, and this environment had no Databricks credentials. Read-only
 workspace API checks returned 401 for both referenced workspaces (`access.json`). No
 real-facility accuracy improvement or best production model has been established.
+A separate audit of 62 real text excerpts already present in the repository is recorded below;
+these excerpts do not constitute a complete facility dataset.
 
 ## What was actually executed
 
@@ -91,6 +93,33 @@ Only 5 services are included; emergency C-section, clinical readiness, merged en
 location conflicts, sparse geography and present-day availability are not validated.
 Weights and latency cannot be chosen from this small, highly constructed dataset.
 
+## Additional check: 62 repository-derived real text excerpts
+
+`data/tags/tfidf_tag_report.json` includes selected excerpts whose metadata names
+`model_evidence_items` as the source. We audited all **62 displayed examples** for the
+six target service tags with the actual MiniLM cross-encoder and the linguistic guard.
+No hospital ID, coordinates, full record or independent availability labels are included.
+
+This caught an actual wording error in the strict guard: “Burns unit is a high-referral
+center for complex burns...” describes a center receiving referrals, not patients being
+referred elsewhere. The guard now recognizes this distinction while still filtering
+outgoing-referral-only wording. On the 30 examples the **previous model** called strong,
+strict retention changes from 29/30 to 30/30. This is an excerpt-retention diagnostic,
+**not a measured accuracy gain**: the original buckets/probabilities are model outputs.
+
+Two other excerpts remain flagged indirect under strict mode: outgoing C-section referral,
+and a description of a training/lactation center near a NICU. Their real availability
+cannot be adjudicated without their full facility records. Default explicit mode retains
+all 62. The samples are selected and small, so these counts cannot establish full-dataset
+recall or safety. See `repository_excerpts/excerpt_audit.csv`, `retention_counts.csv` and
+`manifest.json` for exact text, scores, source hashes and before/after flags.
+
+Reproduce this **separate, unlabelled excerpt audit** with:
+
+```bash
+python -m experiments.audit_repository_examples --neural --out /path/new_excerpt_audit
+```
+
 ## Reproduce and continue on real data
 
 Install `experiments/requirements-neural.txt`, then from the repository root run:
@@ -110,6 +139,6 @@ false abstention and error types. Missing labels prevent winner selection; nothi
 automatically replaces the production policy. Outputs contain evidence and belong in a
 private Volume. The raw real dataset should not be committed to this public repository.
 
-Validation: 105 tests passed (23 backend, 34 experiment, 44 API/pipeline, 4 ranking),
+Validation: 108 tests passed (25 backend, 35 experiment, 44 API/pipeline, 4 ranking),
 plus Python compilation and `git diff --check`. Real Databricks notebook execution
 has not occurred in this environment.

@@ -428,3 +428,10 @@ excluded from latency; shared pair-cache hits/cold misses make timings descripti
 See [recorded diagnostic results](results/claim_challenge/README.md) for the methods actually
 executed, all parameters/results, and the explicit synthetic-data limitations. This log is
 not an experiment on the 10,088 real facilities. No real-data production winner is claimed.
+
+The existing `data/tags/tfidf_tag_report.json` also contains selected real text excerpts,
+not facility records or independent labels. `python -m experiments.audit_repository_examples
+--neural --out /path/new_excerpt_audit` audits all 62 displayed examples for the six target
+services. This caught the incoming “burns referral center” vs outgoing referral distinction.
+Original strong/mention/suggested buckets are previous model outputs: retention is a
+diagnostic, **not accuracy**, and it cannot select production weights or establish recall.

@@ -10,7 +10,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.2057514660009474
+    "seconds": 0.2147730139986379
   },
   {
     "id": "v001",
@@ -23,7 +23,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.17472111999813933
+    "seconds": 0.17611268399923574
   },
   {
     "id": "v002",
@@ -36,7 +36,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.28226162099963403
+    "seconds": 0.25864055100100813
   },
   {
     "id": "v003",
@@ -49,7 +49,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.23630885599777685
+    "seconds": 0.2283669730022666
   },
   {
     "id": "v004",
@@ -62,7 +62,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.244793904999824
+    "seconds": 0.2644329350005137
   },
   {
     "id": "v005",
@@ -75,7 +75,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.1969069650003803
+    "seconds": 0.19054239999968559
   },
   {
     "id": "v006",
@@ -88,7 +88,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.28030511799806845
+    "seconds": 0.34351984500244725
   },
   {
     "id": "v007",
@@ -101,7 +101,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.24350411200066446
+    "seconds": 0.22158245500031626
   },
   {
     "id": "v008",
@@ -114,7 +114,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.18873212199832778
+    "seconds": 0.18392664099883405
   },
   {
     "id": "v009",
@@ -127,7 +127,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.17580705599903013
+    "seconds": 0.16479125000114436
   },
   {
     "id": "v010",
@@ -140,7 +140,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.24172498600091785
+    "seconds": 0.20883153199974913
   },
   {
     "id": "v011",
@@ -153,7 +153,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.17495831199994427
+    "seconds": 0.16393254099966725
   },
   {
     "id": "v012",
@@ -166,7 +166,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.17440239899951848
+    "seconds": 0.1779899450011726
   },
   {
     "id": "v013",
@@ -179,7 +179,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.19022041599964723
+    "seconds": 0.17029880699919886
   },
   {
     "id": "v014",
@@ -192,7 +192,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.23827942600109964
+    "seconds": 0.2400538929978211
   },
   {
     "id": "v015",
@@ -205,7 +205,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.2431813509974745
+    "seconds": 0.22402992299976177
   },
   {
     "id": "v016",
@@ -218,7 +218,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.2298793099980685
+    "seconds": 0.2296575699983805
   },
   {
     "id": "v017",
@@ -231,7 +231,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.24102530599702732
+    "seconds": 0.23681880999720306
   },
   {
     "id": "v018",
@@ -244,7 +244,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.2446726089983713
+    "seconds": 0.23045077999995556
   },
   {
     "id": "v019",
@@ -257,7 +257,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.23063464300139458
+    "seconds": 0.22650569899997208
   },
   {
     "id": "v020",
@@ -270,7 +270,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.2684160399985558
+    "seconds": 0.2379489539998758
   },
   {
     "id": "v021",
@@ -283,7 +283,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.22129957500146702
+    "seconds": 0.20850236899786978
   },
   {
     "id": "v022",
@@ -296,7 +296,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.20561705100044492
+    "seconds": 0.19811747999847285
   },
   {
     "id": "v023",
@@ -309,7 +309,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.2581795189980767
+    "seconds": 0.24611396999898716
   },
   {
     "id": "v024",
@@ -322,7 +322,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.20585379600015585
+    "seconds": 0.1973711499995261
   },
   {
     "id": "v025",
@@ -335,7 +335,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.20271268199940096
+    "seconds": 0.19978580500173848
   },
   {
     "id": "v026",
@@ -348,7 +348,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.2691840429979493
+    "seconds": 0.26125682900237734
   },
   {
     "id": "v027",
@@ -361,7 +361,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.2314602120022755
+    "seconds": 0.22770732099888846
   },
   {
     "id": "v028",
@@ -374,7 +374,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.23182509999969625
+    "seconds": 0.31722604999959003
   },
   {
     "id": "v029",
@@ -387,7 +387,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.22833411100145895
+    "seconds": 0.25290347499685595
   },
   {
     "id": "v030",
@@ -400,7 +400,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.23536451800100622
+    "seconds": 0.2645756359997904
   },
   {
     "id": "v031",
@@ -413,7 +413,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.22172447399861994
+    "seconds": 0.24030586200024118
   },
   {
     "id": "v032",
@@ -426,7 +426,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.1789750850002747
+    "seconds": 0.19064924600024824
   },
   {
     "id": "v033",
@@ -439,7 +439,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.1752160450014344
+    "seconds": 0.2012745799984259
   },
   {
     "id": "v034",
@@ -452,7 +452,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.17600438899899018
+    "seconds": 0.18320497300010175
   },
   {
     "id": "v035",
@@ -465,7 +465,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.17405474900078843
+    "seconds": 0.1852079700001923
   },
   {
     "id": "v036",
@@ -478,7 +478,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.17665637800018885
+    "seconds": 0.17698869200103218
   },
   {
     "id": "v037",
@@ -491,7 +491,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.23869717400157242
+    "seconds": 0.23388843900102074
   },
   {
     "id": "v038",
@@ -504,7 +504,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.258519161001459
+    "seconds": 0.2413889770032256
   },
   {
     "id": "v039",
@@ -517,7 +517,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.23866232199725346
+    "seconds": 0.2285918590023357
   },
   {
     "id": "v040",
@@ -530,7 +530,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.21978955699887592
+    "seconds": 0.2275916779981344
   },
   {
     "id": "v041",
@@ -543,7 +543,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.21303057800105307
+    "seconds": 0.2547829110008024
   },
   {
     "id": "v042",
@@ -556,7 +556,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.21582519900039188
+    "seconds": 0.2519220130016038
   },
   {
     "id": "v043",
@@ -569,7 +569,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.21862329299983685
+    "seconds": 0.37727289099711925
   },
   {
     "id": "v044",
@@ -582,7 +582,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.23054633299761917
+    "seconds": 0.2899496070021996
   },
   {
     "id": "v045",
@@ -595,7 +595,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.21095225400131312
+    "seconds": 0.22646159100258956
   },
   {
     "id": "v046",
@@ -608,7 +608,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.1990093849999539
+    "seconds": 0.23666479700113996
   },
   {
     "id": "v047",
@@ -621,7 +621,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.2337645209991024
+    "seconds": 0.2341905230023258
   },
   {
     "id": "v048",
@@ -634,7 +634,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.23118167799839284
+    "seconds": 0.2333237620005093
   },
   {
     "id": "v049",
@@ -647,7 +647,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.22036629400099628
+    "seconds": 0.264556973001163
   },
   {
     "id": "v050",
@@ -660,7 +660,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.3613158049993217
+    "seconds": 0.4914197170000989
   },
   {
     "id": "v051",
@@ -673,7 +673,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.23567492800066248
+    "seconds": 0.29052415499972994
   },
   {
     "id": "v052",
@@ -686,7 +686,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.2620099899977504
+    "seconds": 0.22450557500269497
   },
   {
     "id": "v053",
@@ -699,7 +699,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.27007565299936687
+    "seconds": 0.21815540399984457
   },
   {
     "id": "v054",
@@ -712,7 +712,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.24483292500008247
+    "seconds": 0.22811335000005784
   },
   {
     "id": "v055",
@@ -725,7 +725,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.2932911259995308
+    "seconds": 0.21401495899772272
   },
   {
     "id": "v056",
@@ -738,7 +738,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 8.441942017001566
+    "seconds": 10.076396878997912
   },
   {
     "id": "v057",
@@ -751,7 +751,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.18396811300044646
+    "seconds": 0.18892917400080478
   },
   {
     "id": "v058",
@@ -764,7 +764,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.17445145799865713
+    "seconds": 0.1887524179983302
   },
   {
     "id": "v059",
@@ -777,7 +777,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.1838821530000132
+    "seconds": 0.18815563099997235
   },
   {
     "id": "v060",
@@ -790,7 +790,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.1742133420011669
+    "seconds": 0.20525849200203083
   },
   {
     "id": "v061",
@@ -803,7 +803,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.17262959399886313
+    "seconds": 0.19594809200134478
   },
   {
     "id": "v062",
@@ -816,7 +816,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.4705008060009277
+    "seconds": 0.5232320950017311
   },
   {
     "id": "v063",
@@ -829,7 +829,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.21582044099704945
+    "seconds": 0.2484111949997896
   },
   {
     "id": "v064",
@@ -842,7 +842,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.21402110600320157
+    "seconds": 0.24871429899940267
   },
   {
     "id": "v065",
@@ -855,7 +855,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.21517928799949004
+    "seconds": 0.24029465099738445
   },
   {
     "id": "v066",
@@ -868,7 +868,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.21227854800235946
+    "seconds": 0.25513649500135216
   },
   {
     "id": "v067",
@@ -881,7 +881,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.21244704999844544
+    "seconds": 0.2674510030010424
   },
   {
     "id": "v068",
@@ -894,7 +894,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.4294314149992715
+    "seconds": 0.5103629530021863
   },
   {
     "id": "v069",
@@ -907,7 +907,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.19228047099750256
+    "seconds": 0.21173766300125862
   },
   {
     "id": "v070",
@@ -920,7 +920,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.19178062100036186
+    "seconds": 0.22112160799952107
   },
   {
     "id": "v071",
@@ -933,7 +933,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.1990446170020732
+    "seconds": 0.21565001099952497
   },
   {
     "id": "v072",
@@ -946,7 +946,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.18828979399768286
+    "seconds": 0.21823748400129261
   },
   {
     "id": "v073",
@@ -959,7 +959,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.19295950899686432
+    "seconds": 0.2090110149983957
   },
   {
     "id": "v074",
@@ -972,7 +972,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.4782938780008408
+    "seconds": 0.5551180820002628
   },
   {
     "id": "v075",
@@ -985,7 +985,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.23231778499757638
+    "seconds": 0.2633673179989273
   },
   {
     "id": "v076",
@@ -998,7 +998,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.22062375899986364
+    "seconds": 0.24866456399831804
   },
   {
     "id": "v077",
@@ -1011,7 +1011,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.22162620900053298
+    "seconds": 0.2625199279973458
   },
   {
     "id": "v078",
@@ -1024,7 +1024,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.22523986799933482
+    "seconds": 0.2526803920009115
   },
   {
     "id": "v079",
@@ -1037,7 +1037,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.22635468999942532
+    "seconds": 0.24089617500067106
   },
   {
     "id": "v080",
@@ -1050,7 +1050,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 1.2340583539989893
+    "seconds": 1.2434767939994344
   },
   {
     "id": "v081",
@@ -1063,7 +1063,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.1857843670004513
+    "seconds": 0.1921025270021346
   },
   {
     "id": "v082",
@@ -1076,7 +1076,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.1904598149994854
+    "seconds": 0.18509840299884672
   },
   {
     "id": "v083",
@@ -1089,7 +1089,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.18576348399801645
+    "seconds": 0.1909358049997536
   },
   {
     "id": "v084",
@@ -1102,7 +1102,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.18877223000163212
+    "seconds": 0.1900085939996643
   },
   {
     "id": "v085",
@@ -1115,7 +1115,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.18423807900035172
+    "seconds": 0.23453633999815793
   },
   {
     "id": "v086",
@@ -1128,7 +1128,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.2876963910021004
+    "seconds": 0.2903364859994326
   },
   {
     "id": "v087",
@@ -1141,7 +1141,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.21957682199717965
+    "seconds": 0.2562128070021572
   },
   {
     "id": "v088",
@@ -1154,7 +1154,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.21981317500103614
+    "seconds": 0.27803098100048373
   },
   {
     "id": "v089",
@@ -1167,7 +1167,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.2565249839972239
+    "seconds": 0.24906529799773125
   },
   {
     "id": "v090",
@@ -1180,7 +1180,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.2144457090034848
+    "seconds": 0.2484121280031104
   },
   {
     "id": "v091",
@@ -1193,7 +1193,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.21933738100051414
+    "seconds": 0.23226444499960053
   },
   {
     "id": "v092",
@@ -1206,7 +1206,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.2461016990018834
+    "seconds": 0.2475617609998153
   },
   {
     "id": "v093",
@@ -1219,7 +1219,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.21450563899998087
+    "seconds": 0.20024778399965726
   },
   {
     "id": "v094",
@@ -1232,7 +1232,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.21017993499845034
+    "seconds": 0.2067320660025871
   },
   {
     "id": "v095",
@@ -1245,7 +1245,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.21259577200180502
+    "seconds": 0.2511849450020236
   },
   {
     "id": "v096",
@@ -1258,7 +1258,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.22162012600165326
+    "seconds": 0.2327634239991312
   },
   {
     "id": "v097",
@@ -1271,7 +1271,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.21301659399978234
+    "seconds": 0.23070629100038786
   },
   {
     "id": "v098",
@@ -1284,7 +1284,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.5778195390012115
+    "seconds": 0.5654828109982191
   },
   {
     "id": "v099",
@@ -1297,7 +1297,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.2662920620023215
+    "seconds": 0.2664168379997136
   },
   {
     "id": "v100",
@@ -1310,7 +1310,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.23562337900148123
+    "seconds": 0.2750710270011041
   },
   {
     "id": "v101",
@@ -1323,7 +1323,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.239291238001897
+    "seconds": 0.24623709300067276
   },
   {
     "id": "v102",
@@ -1336,7 +1336,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.2295804749992385
+    "seconds": 0.24378564300059224
   },
   {
     "id": "v103",
@@ -1349,7 +1349,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.23049556799742277
+    "seconds": 0.24060180500237038
   },
   {
     "id": "v104",
@@ -1362,7 +1362,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 1.0212192879989743
+    "seconds": 1.339575579000666
   },
   {
     "id": "v105",
@@ -1375,7 +1375,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.19484898900191183
+    "seconds": 0.20915232799961814
   },
   {
     "id": "v106",
@@ -1388,7 +1388,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.17918527599977097
+    "seconds": 0.19552248800027883
   },
   {
     "id": "v107",
@@ -1401,7 +1401,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.1768942460003018
+    "seconds": 0.20614132700211485
   },
   {
     "id": "v108",
@@ -1414,7 +1414,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.17775098199854256
+    "seconds": 0.1917333929995948
   },
   {
     "id": "v109",
@@ -1427,7 +1427,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.17302975600250647
+    "seconds": 0.18346404500334756
   },
   {
     "id": "v110",
@@ -1440,7 +1440,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.25928537900108495
+    "seconds": 0.25766048000150477
   },
   {
     "id": "v111",
@@ -1453,7 +1453,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.22962595299759414
+    "seconds": 0.23507387299832772
   },
   {
     "id": "v112",
@@ -1466,7 +1466,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.22388800100088702
+    "seconds": 0.24652922899986152
   },
   {
     "id": "v113",
@@ -1479,7 +1479,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.23886016300093615
+    "seconds": 0.24481620599908638
   },
   {
     "id": "v114",
@@ -1492,7 +1492,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.22851221199744032
+    "seconds": 0.22484892600186868
   },
   {
     "id": "v115",
@@ -1505,7 +1505,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.2216353039984824
+    "seconds": 0.2310314769965771
   },
   {
     "id": "v116",
@@ -1518,7 +1518,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.2423399450017314
+    "seconds": 0.24066120999850682
   },
   {
     "id": "v117",
@@ -1531,7 +1531,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.19886298999699648
+    "seconds": 0.2095948509995651
   },
   {
     "id": "v118",
@@ -1544,7 +1544,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.19477215000006254
+    "seconds": 0.21259430300051463
   },
   {
     "id": "v119",
@@ -1557,7 +1557,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.20086977200116962
+    "seconds": 0.21829963600248448
   },
   {
     "id": "v120",
@@ -1570,7 +1570,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.19626210600108607
+    "seconds": 0.2002973970011226
   },
   {
     "id": "v121",
@@ -1583,7 +1583,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.19173282900010236
+    "seconds": 0.20589936400210718
   },
   {
     "id": "v122",
@@ -1596,7 +1596,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.2629846820018429
+    "seconds": 0.3056844569982786
   },
   {
     "id": "v123",
@@ -1609,7 +1609,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.219419963999826
+    "seconds": 0.24130737900122767
   },
   {
     "id": "v124",
@@ -1622,7 +1622,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.2183690870006103
+    "seconds": 0.2432983079997939
   },
   {
     "id": "v125",
@@ -1635,7 +1635,7 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.2259359149975353
+    "seconds": 0.23190547899866942
   },
   {
     "id": "v126",
@@ -1648,7 +1648,7 @@
       "distance_decay_km": 15.0
     },
     "status": "success",
-    "seconds": 0.2168650340026943
+    "seconds": 0.23874709099982283
   },
   {
     "id": "v127",
@@ -1661,6 +1661,6 @@
       "distance_decay_km": 60.0
     },
     "status": "success",
-    "seconds": 0.21744335100083845
+    "seconds": 0.23054392600170104
   }
 ]

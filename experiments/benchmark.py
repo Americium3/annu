@@ -131,6 +131,7 @@ def benchmark(facilities, evidence, queries, qrels, out, methods=('rules','tfidf
         model_key=(config['method'],config['model'])
         if model_key in failed:
             attempts.append({'id':run_id,'config':config,'status':'skipped_after_model_failure'})
+            dump_json(out/'attempts.json',attempts)
             continue
         try:
             per,summary,_=run(config,dev,run_id)
@@ -179,6 +180,10 @@ def benchmark(facilities, evidence, queries, qrels, out, methods=('rules','tfidf
         try: report['runtime']['packages'][package]=importlib.metadata.version(package)
         except importlib.metadata.PackageNotFoundError: report['runtime']['packages'][package]=None
     report['source_hash']=hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
+    root=Path(__file__).resolve().parents[1]
+    report['source_hashes']={str(p.relative_to(root)):hashlib.sha256(p.read_bytes()).hexdigest() for p in
+        [Path(__file__).resolve(),root/'backend/evidence_support.py',root/'backend/cross_encoder.py',
+         root/'experiments/engine.py',root/'experiments/evaluation.py',root/'pipeline/tag_dictionary.py']}
     report['model_revisions']={}
     try:
         from huggingface_hub import try_to_load_from_cache

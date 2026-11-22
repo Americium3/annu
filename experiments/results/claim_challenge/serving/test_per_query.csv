@@ -1,11 +1,11 @@
 query_id,method,service_id,density_group,answered,no_answer,top1_distance_km,mean_distance_km,returned_count,candidate_count,judged_query,known_positives,judged_result_fraction,precision_at_k,precision_returned,ndcg_at_k_pool,candidate_recall_pool,hit_at_k,false_abstention,latency_ms,group_id,split
 test-dialysis,baseline,kidney-dialysis,unspecified,1,0,0.1,0.20000000000000004,3,12,1,3,1.0,0.6666666666666666,0.6666666666666666,0.7039180890341348,,1,0,7,test-dialysis,test
 test-mri,baseline,mri,unspecified,1,0,0.3,0.6,3,12,1,3,1.0,0.0,0.0,0.0,,0,0,7,test-mri,test
-test-nicu,baseline,nicu,unspecified,1,0,0.3,0.5333333333333333,3,12,1,3,1.0,0.0,0.0,0.0,,0,0,6,test-nicu,test
-test-cardiac-surgery,baseline,cardiac-surgery,unspecified,1,0,0.3,0.6,3,12,1,3,1.0,0.0,0.0,0.0,,0,0,7,test-cardiac-surgery,test
-test-burns,baseline,burns,unspecified,1,0,0.6,0.3,3,12,1,3,1.0,0.6666666666666666,0.6666666666666666,0.5307212739772436,,1,0,7,test-burns,test
+test-nicu,baseline,nicu,unspecified,1,0,0.3,0.5333333333333333,3,12,1,3,1.0,0.0,0.0,0.0,,0,0,7,test-nicu,test
+test-cardiac-surgery,baseline,cardiac-surgery,unspecified,1,0,0.3,0.6,3,12,1,3,1.0,0.0,0.0,0.0,,0,0,6,test-cardiac-surgery,test
+test-burns,baseline,burns,unspecified,1,0,0.6,0.3,3,12,1,3,1.0,0.6666666666666666,0.6666666666666666,0.5307212739772436,,1,0,6,test-burns,test
 test-dialysis,s024,kidney-dialysis,unspecified,1,0,0.1,0.43333333333333335,3,4,1,3,1.0,1.0,1.0,1.0,,1,0,7,test-dialysis,test
-test-mri,s024,mri,unspecified,1,0,0.1,0.43333333333333335,3,4,1,3,1.0,1.0,1.0,1.0,,1,0,8,test-mri,test
+test-mri,s024,mri,unspecified,1,0,0.1,0.43333333333333335,3,4,1,3,1.0,1.0,1.0,1.0,,1,0,7,test-mri,test
 test-nicu,s024,nicu,unspecified,1,0,0.1,0.43333333333333335,3,4,1,3,1.0,1.0,1.0,1.0,,1,0,7,test-nicu,test
 test-cardiac-surgery,s024,cardiac-surgery,unspecified,1,0,0.1,0.43333333333333335,3,4,1,3,1.0,1.0,1.0,1.0,,1,0,7,test-cardiac-surgery,test
 test-burns,s024,burns,unspecified,1,0,0.1,0.43333333333333335,3,4,1,3,1.0,1.0,1.0,1.0,,1,0,7,test-burns,test

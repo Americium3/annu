@@ -1068,10 +1068,18 @@
       "MKL_NUM_THREADS": "2"
     }
   },
-  "source_hash": "56d22f324f04f8140ded2918d21198aa2566fb232b68d252e6ab6488cc5353b5",
+  "source_hash": "fa30d7c939da8637f16cb3858a0431ea4a577fb7bdcb1fd7b8b94c147e30d56b",
+  "source_hashes": {
+    "experiments/benchmark.py": "fa30d7c939da8637f16cb3858a0431ea4a577fb7bdcb1fd7b8b94c147e30d56b",
+    "backend/evidence_support.py": "ccb7650174f759952e64926d52feaf9c8094578a5a63448dbbec6f9f13eef464",
+    "backend/cross_encoder.py": "c9826a7b463a7a2c4b1d30af2ee548bec75be03553db2e93414bdf07be809400",
+    "experiments/engine.py": "6fe0a48a2fa11eba4e4b4ffbfe2a2a5e3d4047c773e3c7abd648059d42e937a8",
+    "experiments/evaluation.py": "57053f27ebc17dcbb900e4735e205ab2dda1f5002398661165966c295a737578",
+    "pipeline/tag_dictionary.py": "a0cd7a5bdb37a70cb3c7cbc0341dd130dadf0bb53fa55371bc4da843a52c2266"
+  },
   "model_revisions": {
-    "sentence-transformers/multi-qa-MiniLM-L6-cos-v1": "b207367332321f8e44f96e224ef15bc607f4dbf0",
     "cross-encoder/ms-marco-MiniLM-L6-v2": "233902d25c440f23af6f7d6e94d2946bac0bee0a",
+    "sentence-transformers/multi-qa-MiniLM-L6-cos-v1": "b207367332321f8e44f96e224ef15bc607f4dbf0",
     "cross-encoder/ms-marco-TinyBERT-L2-v2": "81d1926f67cb8eee2c2be17ca9f793c7c3bd20cc"
   }
 }

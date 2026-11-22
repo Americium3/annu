@@ -9,7 +9,7 @@
       "travel_multiplier": 1.0
     },
     "status": "success",
-    "seconds": 8.536567336002918
+    "seconds": 7.252537978998589
   },
   {
     "id": "s001",
@@ -21,7 +21,7 @@
       "travel_multiplier": 0.5
     },
     "status": "success",
-    "seconds": 0.04666789299881202
+    "seconds": 0.05358104600236402
   },
   {
     "id": "s002",
@@ -33,7 +33,7 @@
       "travel_multiplier": 1.0
     },
     "status": "success",
-    "seconds": 0.03422345999933896
+    "seconds": 0.046001888997125207
   },
   {
     "id": "s003",
@@ -45,7 +45,7 @@
       "travel_multiplier": 2.0
     },
     "status": "success",
-    "seconds": 0.037042012001620606
+    "seconds": 0.04305071999988286
   },
   {
     "id": "s004",
@@ -57,7 +57,7 @@
       "travel_multiplier": 0.5
     },
     "status": "success",
-    "seconds": 0.045213379999040626
+    "seconds": 0.05472706500222557
   },
   {
     "id": "s005",
@@ -69,7 +69,7 @@
       "travel_multiplier": 1.0
     },
     "status": "success",
-    "seconds": 0.046717897999769775
+    "seconds": 0.05516123699999298
   },
   {
     "id": "s006",
@@ -81,7 +81,7 @@
       "travel_multiplier": 2.0
     },
     "status": "success",
-    "seconds": 0.06454920800024411
+    "seconds": 0.043873313999938546
   },
   {
     "id": "s007",
@@ -93,7 +93,7 @@
       "travel_multiplier": 0.5
     },
     "status": "success",
-    "seconds": 0.06639796400122577
+    "seconds": 0.04507463700065273
   },
   {
     "id": "s008",
@@ -105,7 +105,7 @@
       "travel_multiplier": 2.0
     },
     "status": "success",
-    "seconds": 0.062195884998800466
+    "seconds": 0.045944693996716524
   },
   {
     "id": "s009",
@@ -117,7 +117,7 @@
       "travel_multiplier": 0.5
     },
     "status": "success",
-    "seconds": 0.057612553999206284
+    "seconds": 0.07481710499996552
   },
   {
     "id": "s010",
@@ -129,7 +129,7 @@
       "travel_multiplier": 1.0
     },
     "status": "success",
-    "seconds": 0.061092788997484604
+    "seconds": 0.04942704499990214
   },
   {
     "id": "s011",
@@ -141,7 +141,7 @@
       "travel_multiplier": 2.0
     },
     "status": "success",
-    "seconds": 0.06514401100139366
+    "seconds": 0.0592036839989305
   },
   {
     "id": "s012",
@@ -153,7 +153,7 @@
       "travel_multiplier": 0.5
     },
     "status": "success",
-    "seconds": 0.05125091400259407
+    "seconds": 0.052169526999932714
   },
   {
     "id": "s013",
@@ -165,7 +165,7 @@
       "travel_multiplier": 1.0
     },
     "status": "success",
-    "seconds": 0.04610378700090223
+    "seconds": 0.05047595499854651
   },
   {
     "id": "s014",
@@ -177,7 +177,7 @@
       "travel_multiplier": 2.0
     },
     "status": "success",
-    "seconds": 0.0460205209965352
+    "seconds": 0.04893066500153509
   },
   {
     "id": "s015",
@@ -189,7 +189,7 @@
       "travel_multiplier": 0.5
     },
     "status": "success",
-    "seconds": 0.05729786200026865
+    "seconds": 0.05718371300099534
   },
   {
     "id": "s016",
@@ -201,7 +201,7 @@
       "travel_multiplier": 1.0
     },
     "status": "success",
-    "seconds": 0.057820807000098284
+    "seconds": 0.05579066200152738
   },
   {
     "id": "s017",
@@ -213,7 +213,7 @@
       "travel_multiplier": 2.0
     },
     "status": "success",
-    "seconds": 0.05935296700045001
+    "seconds": 0.06824451600186876
   },
   {
     "id": "s018",
@@ -225,7 +225,7 @@
       "travel_multiplier": 0.5
     },
     "status": "success",
-    "seconds": 0.057334596996952314
+    "seconds": 0.05648366199966404
   },
   {
     "id": "s019",
@@ -237,7 +237,7 @@
       "travel_multiplier": 1.0
     },
     "status": "success",
-    "seconds": 0.05875792399820057
+    "seconds": 0.05614777799928561
   },
   {
     "id": "s020",
@@ -249,7 +249,7 @@
       "travel_multiplier": 2.0
     },
     "status": "success",
-    "seconds": 0.05560674300068058
+    "seconds": 0.0550455630000215
   },
   {
     "id": "s021",
@@ -261,7 +261,7 @@
       "travel_multiplier": 0.5
     },
     "status": "success",
-    "seconds": 0.05639757999961148
+    "seconds": 0.05298402900007204
   },
   {
     "id": "s022",
@@ -273,7 +273,7 @@
       "travel_multiplier": 1.0
     },
     "status": "success",
-    "seconds": 0.06307582599765738
+    "seconds": 0.05538777699985076
   },
   {
     "id": "s023",
@@ -285,7 +285,7 @@
       "travel_multiplier": 2.0
     },
     "status": "success",
-    "seconds": 0.058798865000426304
+    "seconds": 0.06537256500087096
   },
   {
     "id": "s024",
@@ -297,7 +297,7 @@
       "travel_multiplier": 0.5
     },
     "status": "success",
-    "seconds": 0.049341827998432564
+    "seconds": 0.05055247899872484
   },
   {
     "id": "s025",
@@ -309,7 +309,7 @@
       "travel_multiplier": 1.0
     },
     "status": "success",
-    "seconds": 0.051291584997670725
+    "seconds": 0.04714292099743034
   },
   {
     "id": "s026",
@@ -321,7 +321,7 @@
       "travel_multiplier": 2.0
     },
     "status": "success",
-    "seconds": 0.05235446100050467
+    "seconds": 0.04643139499967219
   },
   {
     "id": "s027",
@@ -333,7 +333,7 @@
       "travel_multiplier": 0.5
     },
     "status": "success",
-    "seconds": 0.06095077599820797
+    "seconds": 0.05514433099961025
   },
   {
     "id": "s028",
@@ -345,7 +345,7 @@
       "travel_multiplier": 1.0
     },
     "status": "success",
-    "seconds": 0.06367639800009783
+    "seconds": 0.055953736999072134
   },
   {
     "id": "s029",
@@ -357,7 +357,7 @@
       "travel_multiplier": 2.0
     },
     "status": "success",
-    "seconds": 0.05598398900110624
+    "seconds": 0.05723367799873813
   },
   {
     "id": "s030",
@@ -369,7 +369,7 @@
       "travel_multiplier": 0.5
     },
     "status": "success",
-    "seconds": 0.05418189400006668
+    "seconds": 0.057661459999508224
   },
   {
     "id": "s031",
@@ -381,7 +381,7 @@
       "travel_multiplier": 1.0
     },
     "status": "success",
-    "seconds": 0.057947638000769075
+    "seconds": 0.05611968599987449
   },
   {
     "id": "s032",
@@ -393,7 +393,7 @@
       "travel_multiplier": 2.0
     },
     "status": "success",
-    "seconds": 0.05763000100341742
+    "seconds": 0.059282302998326486
   },
   {
     "id": "s033",
@@ -405,7 +405,7 @@
       "travel_multiplier": 0.5
     },
     "status": "success",
-    "seconds": 0.05645459499646677
+    "seconds": 0.06010697100282414
   },
   {
     "id": "s034",
@@ -417,7 +417,7 @@
       "travel_multiplier": 1.0
     },
     "status": "success",
-    "seconds": 0.057579485001042485
+    "seconds": 0.055231483001989545
   },
   {
     "id": "s035",
@@ -429,6 +429,6 @@
       "travel_multiplier": 2.0
     },
     "status": "success",
-    "seconds": 0.05519304200061015
+    "seconds": 0.05530320099933306
   }
 ]

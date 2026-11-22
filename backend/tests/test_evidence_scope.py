@@ -16,3 +16,14 @@ class ScopeTest(unittest.TestCase):
  def test_field_membership_is_preserved(self):
   e=[dict(text='MRI available.',evidence_status='elsewhere')]
   self.assertEqual(supported_items(e,'mri')[0],[])
+
+ def test_access_convenience_is_not_service_denial(self):
+  for text in ['No appointment is needed for MRI.', 'No waiting for MRI.',
+               'Our hospital not only provides MRI but also CT.']:
+   self.assertEqual(claim_status(text,'mri'),'support',text)
+
+ def test_referral_center_is_not_an_outgoing_referral(self):
+  text='Burns unit is a high-referral center for complex burns (thermal, electric and chemical) in coastal and central Karnataka'
+  self.assertEqual(claim_status(text,'burns'),'support')
+  self.assertEqual(claim_status(text,'burns',recognize_referral_centers=False),'indirect')
+  self.assertEqual(claim_status('Patients referred elsewhere to a burns referral center.','burns'),'indirect')
