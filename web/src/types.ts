@@ -87,6 +87,28 @@ export interface Uncertainty {
   conflicts: string[];
 }
 
+export interface RankFactors {
+  /** 0-1: how strongly the evidence says it offers the service, at a location we trust. */
+  proof: number;
+  /** 0-1: 1 next door, 0.5 at travelKm. */
+  closeness: number;
+  /** proof x closeness: the number the list is sorted by. */
+  score: number;
+  /** How far people reasonably travel for this kind of care (km). */
+  travelKm: number | null;
+  proofTier: number;
+  onlyEquipment: boolean;
+  mentionsOther: boolean;
+  locationTier: string;
+  statements: number;
+  /** False: weak proof, always listed after every facility with solid proof. */
+  solidProof: boolean;
+  /** 0-1 cross-encoder match between the best quote and the service; null in rules mode. */
+  textMatch?: number | null;
+  /** 0-1 evidence strength: proof alone, or blended with text match. */
+  evidence?: number;
+}
+
 export interface FacilityRecommendation {
   id: string;
   rank: number;
@@ -101,6 +123,8 @@ export interface FacilityRecommendation {
   phone?: string;
   /** The facility's own website, when the data has one. */
   website?: string;
+  /** Why it ranks where it does: rank score = evidence strength x closeness. */
+  rankFactors?: RankFactors;
   latitude: number;
   longitude: number;
   distanceKm: number;
@@ -115,7 +139,8 @@ export interface FacilityRecommendation {
     evidenceScore: number;
     distanceScore: number;
     totalScore: number;
-    weights: { text: number; evidence: number; distance: number };
+    /** Shares of evidence strength: evidence = text x textMatch + proof x proofStrength. */
+    weights: { text: number; proof: number };
     bestEvidenceRef: string;
     bestEvidenceText: string;
     scoredItemCount: number;

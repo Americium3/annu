@@ -6,8 +6,9 @@ import { knownOperator, reasonText, statusLabel } from "../lib/reason";
 import type { FacilityRecommendation } from "../types";
 import { FacilityActions } from "./FacilityActions";
 
+/** Pin colour by rank score (proof x closeness): 70+ strong, 45+ fair, else weak. */
 export function scoreBand(score: number) {
-  return score >= 85 ? "strong" : score >= 70 ? "mid" : "low";
+  return score >= 70 ? "strong" : score >= 45 ? "mid" : "low";
 }
 
 type T = ReturnType<typeof useI18n>["t"];

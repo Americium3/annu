@@ -8,6 +8,7 @@ export function TrustSection() {
     [t.how2Title, t.how2Body],
     [t.how3Title, t.how3Body],
     [t.how4Title, t.how4Body],
+    [t.how5Title, t.how5Body],
   ];
 
   return (

@@ -66,7 +66,8 @@ class ServingCrossEncoderTest(unittest.TestCase):
         r = self.rec.recommend("dialysis", "26.9,75.8")
         self.assertEqual([f["id"] for f in r["results"]], ["far", "near"])
         self.assertEqual(r["metadata"]["ranking"]["method"], "cross_encoder")
-        self.assertEqual(r["queryContext"]["searchParameters"]["radiusKm"], 25)
+        # Pool starts at twice the travel distance for dialysis (15 km), i.e. the 50 km step.
+        self.assertEqual(r["queryContext"]["searchParameters"]["radiusKm"], 50)
         passages = [text for call in self.model.calls for _, text in call]
         self.assertEqual(len(passages), 2)  # blocked, outside and unusable text never scored
         self.assertNotIn("unusable specialized dialysis text", passages)
@@ -81,7 +82,7 @@ class ServingCrossEncoderTest(unittest.TestCase):
         self.assertIn(detail["bestEvidenceText"], [e["quote"] for e in r["evidence"]])
         self.assertAlmostEqual(sum(sb[k] for k in sb if k.endswith("Score") and k != "totalScore"), 100 * detail["totalScore"])
         self.assertEqual(r["totalScore"], round(100 * detail["totalScore"]))
-        self.assertEqual(detail["evidenceScore"], 1.)
+        self.assertEqual(detail["evidenceScore"], .55)  # proof strength of a tier-3 statement at a verified point
 
     def test_repeat_location_query_reuses_service_text_pair_scores(self):
         self.rec.recommend("dialysis", "26.9,75.8")
@@ -140,6 +141,7 @@ class ServingCrossEncoderTest(unittest.TestCase):
         snap = snapshot()
         snap.facilities["loc_lat"], snap.facilities["latitude"] = 26.91, 26.91
         for i in snap.index.index:
+            snap.index.at[i, "evidence_tier"] = 1  # equal proof too, so only the id can break the tie
             snap.index.at[i, "evidence"] = [{"text": "We provide dialysis.", "field": "procedure", "pos": 0, "evidence_status": "usable"}]
         r = Recommender(snap, scorer=self.scorer).recommend("dialysis", "26.9,75.8")
         self.assertEqual([f["id"] for f in r["results"]], ["far", "near", "outside"])

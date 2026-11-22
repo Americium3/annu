@@ -1,7 +1,9 @@
 """Service-first recommender (port of facilities_qc/03_recommender_lib.py, section F) + mapping to web/src/types.ts.
 
-Flow: service text → tag → formal eligibility + location → widening radius →
-cross-encoder evidence relevance + distance. The old rule sort is an explicit opt-in.
+Flow: service text → tag → formal eligibility + location → widening radius → rank score =
+evidence strength × closeness. Evidence strength blends the cross-encoder's text match (live default) with
+proof strength; closeness depends on how far people travel for this kind of care. Facilities with weak proof
+are always listed after those with solid proof. Rules-only ranking (proof × closeness) is an explicit opt-in.
 """
 from __future__ import annotations
 
@@ -57,6 +59,45 @@ def _norm(s: str | None) -> str:
     return re.sub(r"[^a-z0-9]+", " ", (s or "").lower()).strip()
 
 
+def travel_km(tag: str) -> float:
+    """How far people reasonably travel for this kind of care (km); closeness halves at this distance."""
+    return float(config.TRAVEL_KM_BY_TAG.get(tag, config.TRAVEL_KM_DEFAULT))
+
+
+def closeness(distance_km, travel: float):
+    """1 next door, 0.5 at the travel distance, falling quickly after it."""
+    d = np.asarray(distance_km, dtype=float)
+    return 1.0 / (1.0 + (d / travel) ** 2)
+
+
+def proof_strength(df: pd.DataFrame) -> pd.Series:
+    """0-1: how strongly the evidence says this facility offers the service, at a location we can trust."""
+    tier = df["evidence_tier"].map(config.PROOF_BY_TIER).fillna(0.0)
+    equipment = np.where(df["only_equipment"].astype(bool), config.PROOF_ONLY_EQUIPMENT, 1.0)
+    other = np.where(df["n_explicit_elsewhere"].fillna(0) > 0, config.PROOF_MENTIONS_OTHER, 1.0)
+    location = df["location_tier"].astype(str).map(config.PROOF_BY_LOCATION).fillna(0.7)
+    return tier * equipment * other * location
+
+
+def rank_candidates(ok: pd.DataFrame, tag: str, text_match: pd.Series | None = None) -> pd.DataFrame:
+    """Order eligible facilities: solid proof before weak proof; within each, rank score = evidence x closeness
+    (ties: nearer first, then id). Evidence is proof strength alone, or blended with the cross-encoder's
+    text match when one is given."""
+    out = ok.copy()
+    out["proof"] = proof_strength(out)
+    out["closeness"] = closeness(out["distance_km"].to_numpy(), travel_km(tag))
+    if text_match is None:
+        out["evidence_strength"] = out["proof"]
+    else:
+        w = config.RERANK_WEIGHTS
+        out["text_match"] = text_match.reindex(out.index).astype(float)
+        out["evidence_strength"] = w["text"] * out["text_match"] + w["proof"] * out["proof"]
+    out["rank_score"] = out["evidence_strength"] * out["closeness"]
+    out["solid_proof"] = (out["proof"] >= config.PROOF_SOLID_MIN) & ~out["only_equipment"].astype(bool)
+    return out.sort_values(["solid_proof", "rank_score", "distance_km", "n_explicit_usable", "unique_id"],
+                           ascending=[False, False, True, False, True])
+
+
 _PHONE_SPLIT = re.compile(r"[,;/|]| or |\n")
 
 
@@ -88,7 +129,8 @@ class Recommender:
         self.ranking_method = ranking_method or config.RANKING_METHOD
         if self.ranking_method not in {"cross_encoder", "rules"}:
             raise ValueError("CAREPATH_RANKING_METHOD must be cross_encoder or rules")
-        self.ranking_version = "service-first-cross-encoder-v1" if self.ranking_method == "cross_encoder" else "service-first-rules-v2"
+        self.ranking_version = ("cross-encoder-x-closeness-v4" if self.ranking_method == "cross_encoder"
+                                else "proof-x-closeness-v4")
         self.scorer = scorer if scorer is not None else CrossEncoderScorer(
             config.CROSS_ENCODER_MODEL, config.CROSS_ENCODER_REVISION, config.CROSS_ENCODER_DEVICE,
             config.CROSS_ENCODER_BATCH_SIZE, config.CROSS_ENCODER_MAX_LENGTH,
@@ -129,14 +171,15 @@ class Recommender:
 
     def ranking_info(self):
         return {"method": self.ranking_method, "version": self.ranking_version,
-                **({"scorer": self.scorer.info(), "weights": config.RERANK_WEIGHTS,
-                    "distanceDecayKm": config.DISTANCE_DECAY_KM} if self.ranking_method == "cross_encoder" else {})}
+                "formula": "evidence x closeness; closeness = 1 / (1 + (km / travel_km)^2)",
+                **({"scorer": self.scorer.info(), "weights": config.RERANK_WEIGHTS}
+                   if self.ranking_method == "cross_encoder" else {})}
 
     def _cross_encoder_order(self, within, tag, label):
-        """Only already-formal candidates enter. No CE threshold certifies capability."""
+        """Text match for already-formal candidates, then the shared ranking. No CE threshold certifies capability."""
         within = within.copy()
         if within.empty:
-            return within
+            return rank_candidates(within, tag)
         query = " ".join(dict.fromkeys([label, *self.tags.loc[tag, "synonyms"], *config.SERVICE_INPUT_SYNONYMS.get(tag, [])]))
         selected, texts = {}, []
         for idx, row in within.iterrows():
@@ -159,16 +202,11 @@ class Recommender:
             local = scores[start:start + len(evidence)]
             best = max(range(len(local)), key=local.__getitem__)
             within.at[idx, "ce_text_score"] = float(local[best])
-            within.at[idx, "ce_evidence_score"] = 1.0  # formal eligibility, not calibrated clinical certainty
-            within.at[idx, "ce_distance_score"] = float(np.exp(-within.at[idx, "distance_km"] / config.DISTANCE_DECAY_KM))
-            w = config.RERANK_WEIGHTS
-            within.at[idx, "ranking_score"] = (w["text"] * local[best] + w["evidence"]
-                                               + w["distance"] * within.at[idx, "ce_distance_score"])
             best_ev = evidence[best]
             within.at[idx, "ce_evidence_ref"] = f"{best_ev.get('field')}:{best_ev.get('pos', best_ev.get('item_idx', ''))}"
             within.at[idx, "ce_best_quote"] = best_ev["text"]
             within.at[idx, "ce_item_count"] = len(evidence)
-        return within.sort_values(["ranking_score", "distance_km", "unique_id"], ascending=[False, True, True])
+        return rank_candidates(within, tag, text_match=within["ce_text_score"])
 
     # ------------------------------------------------------------------ catalog / suggestions
     def services(self) -> list[dict]:
@@ -301,34 +339,28 @@ class Recommender:
         prov["km_point"] = np.where(prov["point_first"] == 0, prov["distance_km"], np.inf)
         ok = prov[prov["eligibility"] == "formal"]
 
+        # Candidate pool: at least twice the travel distance for this kind of care, widened (25 -> 50 -> 100 -> 200 km)
+        # until a provider is found. Inside it, distance is a ranking factor, not a cut-off.
         steps = list(config.RADIUS_STEPS_KM)
-        radius = next((r for r in steps if (ok["distance_km"] <= r).any()), steps[-1])
-        within = ok[ok["distance_km"] <= radius].sort_values(
-            ["evidence_tier", "attribution", "band_idx", "point_first", "km_point", "n_explicit_usable"],
-            ascending=[True, True, True, True, True, False])
+        travel = travel_km(tag)
+        first_step = next((r for r in steps if r >= 2 * travel), steps[-1])
+        candidates = [r for r in steps if r >= first_step]
+        radius = next((r for r in candidates if (ok["distance_km"] <= r).any()), steps[-1])
+        pool = ok[ok["distance_km"] <= radius]
+        within = (self._cross_encoder_order(pool, tag, label) if self.ranking_method == "cross_encoder"
+                  else rank_candidates(pool, tag))
         blocked = prov[(prov["eligibility"] == "review_blocked") & (prov["distance_km"] <= radius)]
 
-        if self.ranking_method == "cross_encoder":
-            within = self._cross_encoder_order(within, tag, label)
-            picked = within.head(limit).copy()
-            picked["lane"] = ["A" if i < config.K_MAIN else "C" for i in range(len(picked))]
-        else:
-            # Explicit legacy comparison; never used as an automatic model failure fallback.
-            lane_a = within.head(config.K_MAIN)
-            a_max = lane_a["n_explicit_usable"].max() if len(lane_a) else 0
-            rest = within.iloc[len(lane_a):]
-            lane_b = rest[rest["n_explicit_usable"] > a_max].sort_values(["n_explicit_usable", "band_idx"],
-                                                                         ascending=[False, True]).head(config.K_SUPPORT)
-            lane_c = rest.drop(lane_b.index)
-            picked = pd.concat([lane_a.assign(lane="A"), lane_b.assign(lane="B"), lane_c.assign(lane="C")]).head(limit)
+        picked = within.head(limit).copy()
+        picked["lane"] = ["A" if i < config.K_MAIN else "C" for i in range(len(picked))]
 
         results = [self._facility(r, i + 1, label, loc, radius) for i, (_, r) in enumerate(picked.iterrows())]
 
         warnings = [f"{n_dataset} facilities in the dataset list {label} ({n_dataset_ok} with usable evidence and "
                     f"location); {len(within)} within {radius:g} km; {len(blocked)} more within {radius:g} km are "
                     f"review-blocked (identity, location or evidence problems) and not shown."]
-        if radius != steps[0]:
-            warnings.append(f"No listed provider within {steps[0]:g} km; search widened to {radius:g} km.")
+        if radius != first_step:
+            warnings.append(f"No listed provider within {first_step:g} km; search widened to {radius:g} km.")
         if not len(within):
             near = ok["distance_km"].min() if len(ok) else None
             warnings.insert(0, f"No facility within {radius:g} km lists {label} with usable evidence."
@@ -410,24 +442,24 @@ class Recommender:
             "capacityScore": {0: 0, 1: 4, 2: 7}[capacity_known],
             "penaltyScore": -(3 if r["n_explicit_elsewhere"] > 0 else 0) - (2 if dup else 0) - (1 if trunc else 0),
         }
-        total = int(max(0, min(100, sum(sb.values()))))
-        sb.update({"totalScore": total, "modelVersion": f"{self.ranking_version} (score = display summary; "
-                                                          "order = evidence-first rules)"})
+        # The number shown is the rank score itself, so the order and the number always agree.
+        total = int(round(100 * float(r["rank_score"])))
+        sb.update({"totalScore": total, "modelVersion": self.ranking_version})
         reranking = None
         if self.ranking_method == "cross_encoder":
-            w = config.RERANK_WEIGHTS
-            sb = {"serviceMatchScore": 100 * w["text"] * float(r["ce_text_score"]),
-                  "evidenceScore": 100 * w["evidence"] * float(r["ce_evidence_score"]),
-                  "distanceScore": 100 * w["distance"] * float(r["ce_distance_score"]),
-                  "sourceScore": 0, "locationQualityScore": 0, "capacityScore": 0, "penaltyScore": 0}
-            total = int(round(100 * float(r["ranking_score"])))
-            sb.update(totalScore=total, modelVersion=self.ranking_version)
+            # Components add up to the rank score: text and proof shares of evidence strength, each times closeness.
+            w, c = config.RERANK_WEIGHTS, float(r["closeness"])
+            sb = {"serviceMatchScore": 100 * c * w["text"] * float(r["text_match"]),
+                  "evidenceScore": 100 * c * w["proof"] * float(r["proof"]),
+                  "distanceScore": 0, "sourceScore": 0, "locationQualityScore": 0, "capacityScore": 0, "penaltyScore": 0,
+                  "totalScore": total, "modelVersion": self.ranking_version}
             reranking = {"method": "cross_encoder", "model": self.scorer.model_name,
-                         "textScore": float(r["ce_text_score"]), "evidenceScore": float(r["ce_evidence_score"]),
-                         "distanceScore": float(r["ce_distance_score"]), "totalScore": float(r["ranking_score"]),
+                         "textScore": float(r["text_match"]), "evidenceScore": float(r["proof"]),
+                         "distanceScore": c, "totalScore": float(r["rank_score"]),
                          "weights": w, "bestEvidenceRef": r["ce_evidence_ref"], "bestEvidenceText": r["ce_best_quote"],
                          "scoredItemCount": int(r["ce_item_count"]),
-                         "scoreMeaning": "text relevance, formal eligibility and distance; not clinical quality or availability"}
+                         "scoreMeaning": "(text match and proof strength) x closeness for this kind of care; "
+                                         "not clinical quality or availability"}
 
         reasons, msgs, missing = [], ["Current availability, hours, beds and cost are not in the data."], ["current_availability"]
         if only_eq:
@@ -488,6 +520,16 @@ class Recommender:
             "uncertainty": {"level": unc_level, "reasonCodes": reasons, "messages": msgs, "missingFields": missing,
                             "conflicts": []},
             "tags": tags,
+            # Why it ranks here: rank score = proof strength x closeness (see config.py).
+            "rankFactors": {
+                "proof": round(float(r["proof"]), 2), "closeness": round(float(r["closeness"]), 2),
+                "textMatch": round(float(r["text_match"]), 2) if "text_match" in r else None,
+                "evidence": round(float(r["evidence_strength"]), 2),
+                "score": round(float(r["rank_score"]), 2), "travelKm": travel_km(r["tag_id"]) if "tag_id" in r else None,
+                "proofTier": tier, "onlyEquipment": only_eq, "mentionsOther": bool(r["n_explicit_elsewhere"] > 0),
+                "locationTier": ltier, "statements": int(r["n_explicit_usable"]),
+                "solidProof": bool(r["solid_proof"]),
+            },
             # How to check before travelling: the UI shows Call / Website buttons only when these exist.
             "phone": contact_phone(r["contact_phone"]),
             "website": contact_website(r["contact_website"]),

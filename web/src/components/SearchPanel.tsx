@@ -1,16 +1,12 @@
 import { ArrowRight, Check, Crosshair, LoaderCircle, LocateFixed } from "lucide-react";
 import { Fragment, useEffect, useRef, useState } from "react";
 import { useI18n } from "../i18n";
-import { DistancePicker } from "./DistancePicker";
 import { fetchLocations, fetchServices } from "../lib/api";
-import { RADIUS_OPTIONS } from "../lib/profile";
 import type { LocationOption, ServiceOption } from "../types";
 
 export interface SearchValues {
   service: string;
   location: string;
-  /** Distance cap in km; 0 = any distance (the recommender decides). */
-  radiusKm: number;
   coordinates?: {
     latitude: number;
     longitude: number;
@@ -20,7 +16,6 @@ export interface SearchValues {
 interface SearchPanelProps {
   initialService: string;
   initialLocation: string;
-  radiusKm: number;
   isLoading: boolean;
   onSearch: (values: SearchValues) => void;
 }
@@ -35,16 +30,14 @@ function matchesService(service: ServiceOption, query: string) {
 }
 
 /**
- * Search as one sentence with blanks: "I need [care] near [place] [within
- * 10 km]." It reads the way people describe what they need, the blanks are
+ * Search as one sentence with two blanks: "I need [care] near [place]." It reads the way people describe what they need, the blanks are
  * big enough to tap, and each language orders the blanks its own way (the
  * template lives in i18n). Every blank is a real labelled input.
  */
-export function SearchPanel({ initialService, initialLocation, radiusKm, isLoading, onSearch }: SearchPanelProps) {
+export function SearchPanel({ initialService, initialLocation, isLoading, onSearch }: SearchPanelProps) {
   const { t } = useI18n();
   const [service, setService] = useState(initialService);
   const [location, setLocation] = useState(initialLocation);
-  const [radius, setRadius] = useState(radiusKm);
   const [serviceOpen, setServiceOpen] = useState(false);
   const [locationOpen, setLocationOpen] = useState(false);
   const [geoState, setGeoState] = useState<"idle" | "locating" | "found" | "error">("idle");
@@ -57,8 +50,7 @@ export function SearchPanel({ initialService, initialLocation, radiusKm, isLoadi
   useEffect(() => {
     setService(initialService);
     setLocation(initialLocation);
-    setRadius(radiusKm);
-  }, [initialService, initialLocation, radiusKm]);
+  }, [initialService, initialLocation]);
 
   useEffect(() => {
     function closeOnOutsideClick(event: MouseEvent) {
@@ -87,8 +79,10 @@ export function SearchPanel({ initialService, initialLocation, radiusKm, isLoadi
 
   const serviceMatches = services.filter((item) => matchesService(item, service)).slice(0, 8);
 
-  function submit(serviceText = service, radiusValue = radius) {
-    onSearch({ service: serviceText.trim(), location: location.trim(), radiusKm: radiusValue, coordinates });
+  // The two inputs the challenge asks for: the care and the place. Distance is
+  // weighed by the recommender itself (rank score = proof x closeness).
+  function submit(serviceText = service) {
+    onSearch({ service: serviceText.trim(), location: location.trim(), coordinates });
   }
 
   function useCurrentLocation() {
@@ -255,15 +249,6 @@ export function SearchPanel({ initialService, initialLocation, radiusKm, isLoadi
           </span>
         )}
       </span>
-    ),
-    "{distance}": (
-      <DistancePicker
-        id="radius-select"
-        label={t.distanceLabel}
-        value={radius}
-        onChange={setRadius}
-        options={RADIUS_OPTIONS.map((km) => ({ value: km, label: km === 0 ? t.distanceAny : t.distanceWithin(km) }))}
-      />
     ),
   };
 

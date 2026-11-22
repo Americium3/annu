@@ -18,15 +18,45 @@ EMERGENCY_TAG = "emergency-24x7"
 K_MAIN, K_SUPPORT = 3, 2                      # lane A / lane B sizes (as in notebook 70)
 RESULT_LIMIT = 8                              # results returned per search (system setting, not a user input)
 RANKING_METHOD = os.environ.get("CAREPATH_RANKING_METHOD", "cross_encoder")
-RANKING_VERSION = "service-first-cross-encoder-v1" if RANKING_METHOD == "cross_encoder" else "service-first-rules-v2"
+RANKING_VERSION = "cross-encoder-x-closeness-v4" if RANKING_METHOD == "cross_encoder" else "proof-x-closeness-v4"
 CROSS_ENCODER_MODEL = os.environ.get("CAREPATH_CROSS_ENCODER_MODEL", "cross-encoder/ms-marco-MiniLM-L6-v2")
 CROSS_ENCODER_REVISION = os.environ.get("CAREPATH_CROSS_ENCODER_REVISION") or None
 CROSS_ENCODER_DEVICE = os.environ.get("CAREPATH_CROSS_ENCODER_DEVICE", "cpu")
 CROSS_ENCODER_BATCH_SIZE = int(os.environ.get("CAREPATH_CROSS_ENCODER_BATCH_SIZE", "32"))
 CROSS_ENCODER_MAX_LENGTH = int(os.environ.get("CAREPATH_CROSS_ENCODER_MAX_LENGTH", "512"))
 CROSS_ENCODER_MAX_EVIDENCE = 5
-RERANK_WEIGHTS = {"text": .4, "evidence": .3, "distance": .3}
-DISTANCE_DECAY_KM = 30.0
+# Evidence strength with the cross-encoder (the live default) blends how well the best quote matches the service
+# with proof strength; the 4:3 split keeps the earlier text:evidence weighting. Distance is not a third weight:
+# closeness multiplies the whole evidence score, with the travel distance set per kind of care (above).
+#   evidence = 4/7 x text match + 3/7 x proof strength      rank score = evidence x closeness
+RERANK_WEIGHTS = {"text": 4 / 7, "proof": 3 / 7}
+
+
+# How far people reasonably travel for each kind of care (km). Closeness halves at this distance:
+#   closeness = 1 / (1 + (km / travel_km)^2)      rank score = evidence strength x closeness
+# Urgent care has to be near; planned specialist care is worth a longer trip.
+TRAVEL_KM_URGENT, TRAVEL_KM_ROUTINE, TRAVEL_KM_DIAGNOSTIC, TRAVEL_KM_PLANNED = 10, 15, 30, 60
+TRAVEL_KM_DEFAULT = 25
+TRAVEL_KM_BY_TAG = {
+    **dict.fromkeys(["emergency-24x7", "icu", "ambulance", "blood-bank", "nicu", "picu", "c-section",
+                     "pregnancy-delivery", "fracture-trauma", "burns", "snakebite-rabies"], TRAVEL_KM_URGENT),
+    **dict.fromkeys(["kidney-dialysis", "physiotherapy", "chemotherapy", "radiotherapy", "vaccination", "pathology-lab",
+                     "x-ray", "ecg", "ultrasound", "root-canal", "tooth-extraction", "dentures", "orthodontics",
+                     "family-planning", "pregnancy-termination", "health-checkup", "palliative-care"], TRAVEL_KM_ROUTINE),
+    **dict.fromkeys(["mri", "ct-scan", "echocardiography", "stress-test", "mammography", "endoscopy", "eeg-emg",
+                     "pulmonary-function", "bone-density", "ent", "angiography", "dental-implants"], TRAVEL_KM_DIAGNOSTIC),
+    **dict.fromkeys(["cardiac-surgery", "angioplasty", "pacemaker", "neurosurgery", "spine-surgery", "joint-replacement",
+                     "arthroscopy", "bariatric-surgery", "liver-transplant", "kidney-transplant", "bone-marrow-transplant",
+                     "ivf", "iui", "hysterectomy", "cosmetic-surgery", "refractive-surgery", "pet-ct"], TRAVEL_KM_PLANNED),
+}
+# Proof strength: evidence tier, then multipliers for weaker kinds of evidence or location.
+PROOF_BY_TIER = {1: 1.0, 2: 0.8, 3: 0.55}
+PROOF_ONLY_EQUIPMENT = 0.6          # only equipment is mentioned, not the service itself
+PROOF_MENTIONS_OTHER = 0.85         # some statements also name another institution
+PROOF_BY_LOCATION = {"point_verified": 1.0, "point_unverified": 0.9, "pin_area": 0.75}
+# Weak proof (equipment only, or proof below this) is always listed after every facility with solid proof,
+# however close it is: being next door must never push a weak claim above a solid one.
+PROOF_SOLID_MIN = 0.5
 
 # Extra user wordings → tag id (kept in sync with SERVICE_INPUT_SYNONYMS in facilities_qc/00_config.py)
 SERVICE_INPUT_SYNONYMS = {

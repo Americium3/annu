@@ -16,10 +16,29 @@ web (Vite :5173) ──/api──▶ backend (FastAPI :8000) ──SQL──▶ 
    If none in the whole dataset, the response says so.
 3. **Usable evidence + location**: rows marked `review_blocked` (identity conflict, evidence about another institution,
    coordinates vs PIN conflict, no location) are counted but never recommended.
-4. **Where**: search starts at 25 km and widens 50 → 100 → 200 km until a provider is found (system decision, not a user setting).
-5. **Default order: cross-encoder**. Score the canonical service name + synonyms jointly with each usable original
-   evidence passage, then combine relevance and straight-line distance. The selected radius and `formal` eligibility
-   remain upstream gates. Review-blocked rows cannot be rescued by a high model score.
+4. **Where**: the candidate pool is at least twice the travel distance for this kind of care (see below), widened
+   25 → 50 → 100 → 200 km until a provider is found. Inside the pool, distance is a ranking factor, not a cut-off.
+5. **Order**: rank score = **evidence strength × closeness** (`rank_candidates` in `recommender.py`, weights in
+   `config.py`). The selected pool and `formal` eligibility stay upstream gates: review-blocked rows cannot be rescued
+   by a high score.
+   - *Proof strength* (0–1): evidence tier 1 / 2 / 3 → 1.0 / 0.8 / 0.55, × 0.6 if only equipment is mentioned,
+     × 0.85 if statements also name another institution, × 1.0 / 0.9 / 0.75 for a verified point / unverified point /
+     PIN-area location.
+   - *Text match* (0–1, default `cross_encoder` mode): how well the best quote matches the service, from the
+     cross-encoder (below).
+   - *Evidence strength* = 4/7 × text match + 3/7 × proof strength (the earlier 0.4 : 0.3 text : evidence split).
+     In `rules` mode (`CAREPATH_RANKING_METHOD=rules`) there is no text match and evidence strength = proof strength.
+   - *Closeness* (0–1) = 1 / (1 + (km / travel_km)²): it halves at the distance people reasonably travel for this kind
+     of care, about 10 km for emergencies and births, 15 km for dialysis and routine care, 30 km for scans and 60 km for
+     planned surgery (default 25 km). It multiplies evidence, so a far facility needs much stronger evidence to rank first.
+   - Weak proof (equipment only, or proof below 0.5) is always listed after every facility with solid proof, however
+     close it is or however well its text matches.
+   - The score shown in the UI is this rank score × 100, so the number and the order always agree. Each result also
+     carries `rankFactors` (text match, proof, evidence, closeness, travel distance and the reasons behind proof
+     strength), `reranking` in cross-encoder mode, and `phone` / `website` when the record has them.
+
+Run `python test_ranking.py` (rules mode) and `python -m unittest tests.test_serving_cross_encoder` (cross-encoder
+mode, fake model) for the ranking tests: synthetic data, no Databricks access or model download needed.
 
 The serving tables are built by notebook `06_build_serving_tables` and must be rebuilt after the tags or location
 policy change. The optional old rules mode mirrors `03_recommender_lib` (section F); the default reranker does not.
@@ -32,14 +51,12 @@ truncated by its tokenizer. Raw single-label logits receive sigmoid exactly once
 **not a calibrated probability of service availability or medical quality**.
 
 ```text
-ranking_score = 0.4 * cross_encoder_relevance + 0.3 * formal_eligibility + 0.3 * exp(-straight_km / 30)
+rank_score = (4/7 * cross_encoder_relevance + 3/7 * proof_strength) * 1 / (1 + (straight_km / travel_km)^2)
 ```
 
-`formal_eligibility` is 1 for every admitted candidate; it does not distinguish their evidence quality. Sort by
-the unrounded score descending, then distance and facility ID for deterministic ties. Return at most eight;
-the old B-lane promotion no longer reorders the default results. The UI's rounded 0–100 score and its component
-bars now reflect this formula. Each result's `reranking` object records the checkpoint, components, weights,
-selected evidence reference/text and scored passage count. Existing evidence confidence remains separate.
+Solid proof first, then the unrounded score descending, then distance and facility ID for deterministic ties.
+Return at most eight; the old B-lane promotion no longer reorders results. Each result's `reranking` object records
+the checkpoint, components, weights, selected evidence reference/text and scored passage count.
 
 ## Run
 

@@ -14,19 +14,7 @@ interface FacilityDetailProps {
   onClose: () => void;
 }
 
-type NumericScoreKey = Exclude<
-  keyof FacilityRecommendation["scoreBreakdown"],
-  "totalScore" | "modelVersion"
->;
 
-const scoreMaximums: Array<[NumericScoreKey, number]> = [
-  ["serviceMatchScore", 29],
-  ["evidenceScore", 24],
-  ["sourceScore", 15],
-  ["distanceScore", 10],
-  ["locationQualityScore", 9],
-  ["capacityScore", 7],
-];
 
 export function FacilityDetail({ facility, service, onClose }: FacilityDetailProps) {
   const [copied, setCopied] = useState(false);
@@ -41,15 +29,7 @@ export function FacilityDetail({ facility, service, onClose }: FacilityDetailPro
     }, 220);
   };
   const { t, lang } = useI18n();
-  const scoreLabels: Record<NumericScoreKey, string> = {
-    serviceMatchScore: t.scoreService,
-    evidenceScore: t.scoreEvidence,
-    sourceScore: t.scoreSource,
-    distanceScore: t.scoreDistance,
-    locationQualityScore: t.scoreLocation,
-    capacityScore: t.scoreCapacity,
-    penaltyScore: t.scorePenalty,
-  };
+
   const sourceTypeLabels: Record<SourceType, string> = {
     official_site: t.sourceOfficial,
     government: t.sourceGovernment,
@@ -169,46 +149,7 @@ export function FacilityDetail({ facility, service, onClose }: FacilityDetailPro
           </section>
           )}
 
-          <section className="detail-section">
-            <div className="detail-section-heading">
-              <h3>{t.scoreTitle}</h3>
-            </div>
-            <div className="score-breakdown">
-              {(facility.reranking ? [
-                ["serviceMatchScore", 100 * facility.reranking.weights.text],
-                ["evidenceScore", 100 * facility.reranking.weights.evidence],
-                ["distanceScore", 100 * facility.reranking.weights.distance],
-              ] as Array<[NumericScoreKey, number]> : scoreMaximums).map(([key, maximum]) => {
-                const value = facility.scoreBreakdown[key];
-                return (
-                  <div className="score-row" key={key}>
-                    <span>{facility.reranking && key === "evidenceScore" ? t.scoreEligibility : scoreLabels[key]}</span>
-                    <div className="score-track">
-                      <i style={{ width: `${maximum > 0 ? Math.min(100, Math.max(0, (value / maximum) * 100)) : 0}%` }} />
-                    </div>
-                    <strong>
-                      {Number(value.toFixed(1))}
-                      <small>/{maximum}</small>
-                    </strong>
-                  </div>
-                );
-              })}
-              {facility.scoreBreakdown.penaltyScore !== 0 && (
-                <div className="score-row score-penalty">
-                  <span>{scoreLabels.penaltyScore}</span>
-                  <div className="score-track">
-                    <i
-                      style={{
-                        width: `${Math.min(100, Math.abs(facility.scoreBreakdown.penaltyScore) * 8)}%`,
-                      }}
-                    />
-                  </div>
-                  <strong>{facility.scoreBreakdown.penaltyScore}</strong>
-                </div>
-              )}
-            </div>
-            <p className="score-disclaimer">{t.scoreDisclaimer}</p>
-          </section>
+          {facility.rankFactors && <RankExplanation facility={facility} />}
 
           <section className="detail-section" id="evidence">
             <div className="detail-section-heading">
@@ -285,5 +226,78 @@ export function FacilityDetail({ facility, service, onClose }: FacilityDetailPro
         </div>
       </section>
     </div>
+  );
+}
+
+/**
+ * WHY it ranks here, in the recommender's own terms: rank score = proof
+ * strength x closeness, with each factor's reasons spelled out.
+ */
+function RankExplanation({ facility }: { facility: FacilityRecommendation }) {
+  const { t } = useI18n();
+  const f = facility.rankFactors!;
+  const pct = (value: number) => Math.round(value * 100);
+  const proofReasons = [
+    f.proofTier === 1 ? t.proofTier1 : f.proofTier === 2 ? t.proofTier2 : t.proofTier3,
+    f.onlyEquipment && t.proofEquipment,
+    f.mentionsOther && t.proofOther,
+    f.locationTier === "point_verified"
+      ? t.proofLocVerified
+      : f.locationTier === "pin_area"
+        ? t.proofLocPin
+        : t.proofLocUnverified,
+  ].filter(Boolean) as string[];
+  return (
+    <section className="detail-section rank-explain" aria-labelledby="rank-title">
+      <div className="detail-section-heading">
+        <h3 id="rank-title">{t.rankTitle}</h3>
+      </div>
+      <p className="rank-lede">{t.rankLede(facility.rank)}</p>
+      {f.textMatch != null && (
+        <div className="rank-factor">
+          <div className="score-row">
+            <span>{t.textMatchLabel}</span>
+            <div className="score-track">
+              <i style={{ width: `${pct(f.textMatch)}%` }} />
+            </div>
+            <strong>{pct(f.textMatch)}</strong>
+          </div>
+          <ul className="rank-reasons">
+            <li>{t.textMatchNote}</li>
+          </ul>
+        </div>
+      )}
+      <div className="rank-factor">
+        <div className="score-row">
+          <span>{t.proofLabel}</span>
+          <div className="score-track">
+            <i style={{ width: `${pct(f.proof)}%` }} />
+          </div>
+          <strong>{pct(f.proof)}</strong>
+        </div>
+        <ul className="rank-reasons">
+          {proofReasons.map((reason) => (
+            <li key={reason}>{reason}</li>
+          ))}
+        </ul>
+      </div>
+      <div className="rank-factor">
+        <div className="score-row">
+          <span>{t.closenessLabel}</span>
+          <div className="score-track">
+            <i style={{ width: `${pct(f.closeness)}%` }} />
+          </div>
+          <strong>{pct(f.closeness)}</strong>
+        </div>
+        <ul className="rank-reasons">
+          <li>{t.closenessNote(facility.distanceKm.toFixed(1), f.travelKm ?? 25)}</li>
+        </ul>
+      </div>
+      <p className="rank-formula">
+        {t.rankFormula(pct(f.evidence ?? f.proof), pct(f.closeness), pct(f.score))}
+      </p>
+      {!f.solidProof && <p className="rank-weak">{t.rankWeak}</p>}
+      <p className="score-disclaimer">{t.scoreDisclaimer}</p>
+    </section>
   );
 }
