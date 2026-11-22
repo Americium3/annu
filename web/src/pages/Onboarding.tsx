@@ -2,6 +2,7 @@ import { ArrowRight, Check, Crosshair, LoaderCircle } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Header } from "../components/Header";
+import { IntroScene } from "../components/IntroScenes";
 import { RaahiSays } from "../components/Raahi";
 import { locations } from "../data/demo";
 import { useI18n, type Lang } from "../i18n";
@@ -10,13 +11,16 @@ import { formatPhone } from "../lib/auth";
 import { withTransition } from "../lib/motion";
 import { isValidMobile, profileSnapshot, saveProfile, type Profile } from "../lib/profile";
 
-const STEPS = ["language", "place", "cost", "contact", "done"] as const;
+const STEPS = ["language", "intro1", "intro2", "intro3", "place", "cost", "contact", "done"] as const;
 type Step = (typeof STEPS)[number];
 const QUESTION_COUNT = STEPS.length - 1;
+const INTRO_STEPS: Step[] = ["intro1", "intro2", "intro3"];
 
 /**
- * First-run setup, after Sprout's tutorial: one question per screen, Raahi
- * asks it, every question can be skipped, and the whole thing can be skipped.
+ * First-run setup, after Sprout's tutorial: language first, then three short
+ * scenes where Raahi shows how CarePath works (ask in your own words,
+ * emergencies go first, proof then distance), then one question per screen.
+ * Raahi asks each, every step can be skipped, and the whole thing can be skipped.
  * It's offered once and never stands between anyone and search or the
  * emergency screen; "Call 108" stays in the header throughout.
  *
@@ -110,6 +114,14 @@ export function Onboarding() {
                   ))}
                 </div>
               </Question>
+            )}
+
+            {INTRO_STEPS.includes(step) && (
+              <IntroScene
+                index={INTRO_STEPS.indexOf(step)}
+                onNext={next}
+                onSkip={() => withTransition(() => setStep("place"), "step")}
+              />
             )}
 
             {step === "place" && (

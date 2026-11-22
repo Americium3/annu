@@ -3,12 +3,13 @@ import { useEffect, useMemo, useState } from "react";
 import { orderFacilities } from "../data/demo";
 import { useMediaQuery } from "../hooks/useMediaQuery";
 import { isGovernment, useI18n } from "../i18n";
+import { localizeWarning, searchedFrom, serviceName } from "../lib/localize";
 import { withTransition } from "../lib/motion";
 import type { RecommendationResponse } from "../types";
 import { BoardRow, TopPick } from "./FacilityCard";
 import { FacilityDetail } from "./FacilityDetail";
 import { FacilityMap } from "./FacilityMap";
-import { RaahiSays } from "./Raahi";
+import { Raahi, RaahiSays } from "./Raahi";
 import { Segmented } from "./Segmented";
 
 type SortMode = "best" | "nearest";
@@ -20,6 +21,8 @@ interface ResultsViewProps {
   onSelectedIdChange: (id?: string) => void;
   /** From setup: list government hospitals before private ones. */
   governmentFirst: boolean;
+  /** The language model is reading the top hospitals' records (second pass). */
+  judging?: boolean;
 }
 
 function LoadingResults() {
@@ -49,13 +52,14 @@ export function ResultsView({
   selectedId,
   onSelectedIdChange,
   governmentFirst,
+  judging = false,
 }: ResultsViewProps) {
   const [mobileView, setMobileView] = useState<"list" | "map">("list");
   const [sort, setSort] = useState<SortMode>("best");
   const [governmentOnly, setGovernmentOnly] = useState(false);
   const [detailId, setDetailId] = useState<string>();
   const isMobileLayout = useMediaQuery("(max-width: 680px)");
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
 
   const ordered = useMemo(() => {
     if (!data) return [];
@@ -96,7 +100,8 @@ export function ResultsView({
 
   if (!data && !isLoading) return null;
 
-  const service = data?.queryContext.service.displayName ?? "";
+  const service = data ? serviceName(data, lang) : "";
+  const warnings = data ? data.metadata.warnings.map((w) => localizeWarning(w, lang, service)) : [];
   const [top, ...rest] = facilities;
 
   const noGovernmentAtAll =
@@ -109,23 +114,29 @@ export function ResultsView({
           <div className="results-title-row">
             <h2 id="results-heading" className="results-title">
               {data && !isLoading
-                ? t.resultsTitle(facilities.length, service, data.queryContext.location.resolvedName)
+                ? t.resultsTitle(facilities.length, service, searchedFrom(data, lang, t.currentLocation))
                 : t.resultsSearching}
             </h2>
             {/* The recommender's notes on this search: one tap away, not in the way. */}
-            {data && data.metadata.warnings.length > 0 && !isLoading && facilities.length > 0 && (
+            {data && warnings.length > 0 && !isLoading && facilities.length > 0 && (
               <details className="results-about">
                 <summary aria-label={t.aboutResults} title={t.aboutResults}>
                   <Info size={18} aria-hidden="true" />
                 </summary>
                 <ul>
-                  {data.metadata.warnings.map((warning) => (
+                  {warnings.map((warning) => (
                     <li key={warning}>{warning}</li>
                   ))}
                 </ul>
               </details>
             )}
           </div>
+          {data && !isLoading && (judging || data.metadata.judge?.used) && (
+            <p className={`judge-status ${judging ? "is-reading" : "is-done"}`} aria-live="polite">
+              <Raahi size={22} mood={judging ? "thinking" : "happy"} />
+              {judging ? t.judging : t.judgedNote(data.metadata.judge?.judged ?? 0)}
+            </p>
+          )}
           <div className="results-controls">
             <Segmented<SortMode>
               label={t.sortBy}
@@ -227,7 +238,7 @@ export function ResultsView({
                   </>
                 ) : (
                   <RaahiSays mood="concerned" size={56}>
-                    <strong>{t.emptyTitle}</strong> {data?.metadata.warnings[0] ?? t.emptyBody}
+                    <strong>{t.emptyTitle}</strong> {warnings[0] ?? t.emptyBody}
                   </RaahiSays>
                 )}
               </div>

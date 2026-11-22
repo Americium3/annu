@@ -20,6 +20,11 @@ CACHE_FILE = Path(os.environ.get("CAREPATH_CACHE", Path(__file__).resolve().pare
 RADIUS_STEPS_KM = [25, 50, 100, 200]          # search widens until MIN_POOL_SIZE recommendable providers are found
 DISTANCE_BANDS_KM = [0, 10, 30, 60, 100, 200, 500]
 EMERGENCY_TAG = "emergency-24x7"
+# Urgency from the request text (nlu.py): an emergency score of 80+ (levels 1-2) opens the emergency screen;
+# level 3 ("needs care today") shrinks the travel distance, so nearer hospitals count more.
+EMERGENCY_SCORE_MIN = 80
+URGENT_TRAVEL_FACTOR = 0.5
+INDIA_BBOX = {"lat": (6.0, 37.6), "lon": (68.0, 97.5)}   # device locations outside it are refused
 K_MAIN, K_SUPPORT = 3, 2                      # lane A / lane B sizes (as in notebook 70)
 RESULT_LIMIT = 8                              # results returned per search (system setting, not a user input)
 # Default "rules" (proof x closeness): on the golden dev set no text model beat it once stage 1 was fixed
@@ -36,12 +41,28 @@ CROSS_ENCODER_MAX_EVIDENCE = 5
 # golden-set grid, experiments/RESULTS.md), "keywords" = label + synonyms (the earlier default).
 CROSS_ENCODER_QUERY_STYLE = os.environ.get("CAREPATH_CROSS_ENCODER_QUERY_STYLE", "natural")
 # Evidence strength with the cross-encoder (the live default) blends how well the best quote matches the service
-# with proof strength; the 4:3 split keeps the earlier text:evidence weighting. Distance is not a third weight:
-# closeness multiplies the whole evidence score, with the travel distance set per kind of care (above).
-#   evidence = 4/7 x text match + 3/7 x proof strength      rank score = evidence x closeness
-# text 0.25 / proof 0.75 was picked by leave-one-query-out CV on the golden dev set (was 4/7 : 3/7)
-RERANK_WEIGHTS = {"text": 0.25, "proof": 0.75}
+# with proof strength. Proof carries more weight: the model is noisy on short passages ("3 Tesla MRI available round
+# the clock" scores below a bare "MRI"), and a weak listing must not outrank a clear statement on wording alone.
+# Distance is not a third weight: closeness multiplies the whole evidence score, set per kind of care (below).
+#   evidence = 0.3 x text match + 0.7 x proof strength      rank score = evidence x closeness
+RERANK_WEIGHTS = {"text": 0.3, "proof": 0.7}
+# The checkpoint's sigmoid scores are tiny even for clearly relevant quotes (raw logits about -9 to +4; unrelated
+# text about -11), so the raw value would barely move the ranking. Text match maps the logit onto a fixed 0-1 scale:
+# -11 (unrelated text, e.g. a dental line scored for dialysis) = 0, -5 and above (plainly about the service) = 1.
+# Measured on sample passages for dialysis, MRI, childbirth and emergency; re-check if the checkpoint changes.
+TEXT_MATCH_LOGIT_RANGE = (-11.0, -5.0)
 
+
+# Voice input (stt.py): Whisper inside the app, so speech never leaves Databricks. "off" disables it.
+STT_MODEL = os.environ.get("CAREPATH_STT_MODEL", "openai/whisper-small")
+STT_MAX_SECONDS = 30
+
+# LLM judge (judge.py): one verdict per top candidate on whether its own record lines support the care.
+# Proof strength is multiplied by the verdict's factor (never raised); equipment_only / not_supported become weak proof.
+JUDGE_TOP_K = 8
+JUDGE_MAX_LINES = 6
+JUDGE_MULTIPLIER = {"offers": 1.0, "likely": 0.85, "mentions_only": 0.65, "equipment_only": 0.5, "not_supported": 0.25}
+JUDGE_WEAK = {"equipment_only", "not_supported"}
 
 # How far people reasonably travel for each kind of care (km). Closeness halves at this distance:
 #   closeness = 1 / (1 + (km / travel_km)^2)      rank score = evidence strength x closeness

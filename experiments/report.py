@@ -13,7 +13,7 @@ from experiments.run_golden import EXPERIMENTS, RESULTS, ROOT
 ORDER = ["E0_live_ce", "E0_live_rules", "E1_location_ce", "E1_location_rules", "E3_v2index_ce", "E3_v2index_rules",
          "E4_v2_osm_rules", "E5a_minpool3_rules", "E5b_intent_rules", "E5c_urgent_rules", "E6_plausibility_rules",
          "E7_final_ce", "E7_final_rules", "E8a_solid_evidence_rules", "E8b_solid_off_rules", "E8c_solid_evidence_ce",
-         "E9_shipped_defaults", "E10_freetext_baseline", "E10_freetext_service"]
+         "E9_shipped_defaults", "E11_calibrated_ce", "E10_freetext_baseline", "E10_freetext_service"]
 
 
 def fmt(x, d=3):

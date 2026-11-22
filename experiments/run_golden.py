@@ -286,6 +286,13 @@ def e10_base(golden):
     return run_baseline_backend(g, "rules")
 
 
+@experiment("E11_calibrated_ce", "E9 with main's calibrated cross-encoder (PR #16: logit mapped to 0-1 over [-11, -5], "
+            "evidence = 0.3 text + 0.7 proof), backend defaults otherwise")
+def e11(golden):
+    from recommender import Recommender
+    return run_backend_like(Recommender(snapshot_v2(use_plausibility=True), ranking_method="cross_encoder"), golden)
+
+
 def main(selected: list[str]):
     golden = load_golden()
     RESULTS.mkdir(exist_ok=True)

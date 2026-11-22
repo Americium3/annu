@@ -2,6 +2,8 @@ import { AlertTriangle, ArrowRight, HelpCircle, ShieldAlert } from "lucide-react
 import { operatorLabel, useI18n } from "../i18n";
 import { transitionName } from "../lib/motion";
 import { displayPhone, telUrl } from "../lib/facilityActions";
+import { cardWarning, facilityType } from "../lib/localize";
+import { verdictLabel, verdictWarns } from "../lib/verdict";
 import { knownOperator, reasonText, statusLabel } from "../lib/reason";
 import type { FacilityRecommendation } from "../types";
 import { FacilityActions } from "./FacilityActions";
@@ -56,11 +58,11 @@ function Status({ facility, large = false }: { facility: FacilityRecommendation;
 
 /** "Type · Ownership · Area", leaving out ownership the data doesn't know. */
 function Meta({ facility }: { facility: FacilityRecommendation }) {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const operator = knownOperator(facility.operatorType);
   return (
     <p className="facility-meta">
-      {facility.type} ·{" "}
+      {facilityType(facility.type, lang)} ·{" "}
       {operator && (
         <>
           <span className="operator">{operatorLabel(t, operator)}</span> ·{" "}
@@ -72,11 +74,21 @@ function Meta({ facility }: { facility: FacilityRecommendation }) {
 }
 
 function Warning({ facility }: { facility: FacilityRecommendation }) {
+  const { t, lang } = useI18n();
+  // The language model's reading wins when it found a problem: it read this hospital's own record.
+  if (facility.judgement && verdictWarns(facility.judgement.verdict)) {
+    return (
+      <p className="card-warning">
+        <ShieldAlert size={16} aria-hidden="true" />
+        {verdictLabel(t, facility.judgement.verdict)}
+      </p>
+    );
+  }
   if (facility.uncertainty.level !== "high") return null;
   return (
     <p className="card-warning">
       <ShieldAlert size={16} aria-hidden="true" />
-      {facility.uncertainty.messages[0]}
+      {cardWarning(facility.uncertainty, lang)}
     </p>
   );
 }
@@ -170,7 +182,11 @@ export function BoardRow({ facility, service, selected, index, onSelect, onOpen 
       <div className="board-body">
         <h3 id={`facility-${facility.id}-name`}>{facility.name}</h3>
         <Meta facility={facility} />
-        <Status facility={facility} />
+        {facility.judgement && verdictWarns(facility.judgement.verdict) ? (
+          <Warning facility={facility} />
+        ) : (
+          <Status facility={facility} />
+        )}
       </div>
       <div className="board-actions">
         <FacilityActions facility={facility} service={service} compact />

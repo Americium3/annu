@@ -1,9 +1,12 @@
 import { ArrowLeft, Check, Copy, ExternalLink, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { operatorLabel, useI18n } from "../i18n";
+import { facilityType, unsureMessages } from "../lib/localize";
+import { verdictLabel, verdictWarns } from "../lib/verdict";
 import { knownOperator } from "../lib/reason";
 import type { FacilityRecommendation, SourceType } from "../types";
 import { ConfidenceBadge } from "./ConfidenceBadge";
+import { reasonLine } from "./FacilityCard";
 import { FacilityActions } from "./FacilityActions";
 import { Raahi } from "./Raahi";
 import { ScoreRing } from "./ScoreRing";
@@ -109,7 +112,7 @@ export function FacilityDetail({ facility, service, onClose }: FacilityDetailPro
           <div className="detail-hero">
             <div>
               <p className="detail-kicker">
-                {[t.rank(facility.rank), facility.type, knownOperator(facility.operatorType) && operatorLabel(t, facility.operatorType)]
+                {[t.rank(facility.rank), facilityType(facility.type, lang), knownOperator(facility.operatorType) && operatorLabel(t, facility.operatorType)]
                   .filter(Boolean)
                   .join(" · ")}
               </p>
@@ -129,7 +132,8 @@ export function FacilityDetail({ facility, service, onClose }: FacilityDetailPro
 
           <div className="detail-summary">
             <h3>{t.summary}</h3>
-            <p>{facility.recommendationSummary}</p>
+            {/* One plain sentence from the page's own copy (both languages); the proof and the ranking follow below. */}
+            <p>{reasonLine(t, facility).text}</p>
           </div>
 
           {facility.uncertainty.messages.length > 0 && (
@@ -142,12 +146,14 @@ export function FacilityDetail({ facility, service, onClose }: FacilityDetailPro
               </div>
             </div>
             <ul>
-              {facility.uncertainty.messages.map((message) => (
+              {unsureMessages(facility.uncertainty, lang).map((message) => (
                 <li key={message}>{message}</li>
               ))}
             </ul>
           </section>
           )}
+
+          {facility.judgement && <JudgeSection facility={facility} />}
 
           {facility.rankFactors && <RankExplanation facility={facility} />}
 
@@ -156,6 +162,7 @@ export function FacilityDetail({ facility, service, onClose }: FacilityDetailPro
               <h3>{t.proofTitle}</h3>
               <span className="evidence-count">{t.items(facility.evidence.length)}</span>
             </div>
+            {t.proofOriginal && <p className="proof-original">{t.proofOriginal}</p>}
             <div className="full-evidence-list">
               {facility.evidence.map((evidence) => {
                 const source = facility.sources.find(
@@ -241,6 +248,7 @@ function RankExplanation({ facility }: { facility: FacilityRecommendation }) {
     f.proofTier === 1 ? t.proofTier1 : f.proofTier === 2 ? t.proofTier2 : t.proofTier3,
     f.onlyEquipment && t.proofEquipment,
     f.mentionsOther && t.proofOther,
+    f.llmVerdict && t.proofJudged(verdictLabel(t, f.llmVerdict)),
     f.locationTier === "point_verified"
       ? t.proofLocVerified
       : f.locationTier === "pin_area"
@@ -298,6 +306,39 @@ function RankExplanation({ facility }: { facility: FacilityRecommendation }) {
       </p>
       {!f.solidProof && <p className="rank-weak">{t.rankWeak}</p>}
       <p className="score-disclaimer">{t.scoreDisclaimer}</p>
+    </section>
+  );
+}
+
+/** The language model's reading of this hospital's record for the care asked, with the line it rests on. */
+function JudgeSection({ facility }: { facility: FacilityRecommendation }) {
+  const { t } = useI18n();
+  const j = facility.judgement!;
+  const at = j.line.toLowerCase().indexOf(j.quote.toLowerCase());
+  return (
+    <section className={`detail-section judge ${verdictWarns(j.verdict) ? "judge--warn" : ""}`} aria-labelledby="judge-title">
+      <div className="detail-section-heading">
+        <h3 id="judge-title">{t.judgeTitle}</h3>
+      </div>
+      <p className="judge-verdict">
+        <Raahi size={30} mood={verdictWarns(j.verdict) ? "concerned" : "happy"} />
+        <strong>{verdictLabel(t, j.verdict)}</strong>
+      </p>
+      <blockquote className="judge-line">
+        “
+        {at >= 0 ? (
+          <>
+            {j.line.slice(0, at)}
+            <mark>{j.line.slice(at, at + j.quote.length)}</mark>
+            {j.line.slice(at + j.quote.length)}
+          </>
+        ) : (
+          j.line
+        )}
+        ”<small>{t.judgeField(j.field)}</small>
+      </blockquote>
+      {j.reason && <p className="judge-reason">{j.reason}</p>}
+      <p className="score-disclaimer">{t.judgeNote}</p>
     </section>
   );
 }

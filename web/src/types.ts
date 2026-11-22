@@ -43,6 +43,10 @@ export interface QueryContext {
     /** Chosen by the system (search widens until a provider is found), not by the user. */
     radiusKm: number;
     limit: number;
+    /** Distance at which closeness halves; halved again when the request is urgent. */
+    travelKm?: number;
+    /** From the person's words: 3 = needs care today, 4 = not urgent. */
+    urgencyLevel?: number;
   };
 }
 
@@ -107,6 +111,22 @@ export interface RankFactors {
   textMatch?: number | null;
   /** 0-1 evidence strength: proof alone, or blended with text match. */
   evidence?: number;
+  /** The language model's verdict on this hospital's own record lines, when it judged them. */
+  llmVerdict?: JudgeVerdict | null;
+}
+
+export type JudgeVerdict = "offers" | "likely" | "mentions_only" | "equipment_only" | "not_supported";
+
+/** A language model read this hospital's record lines for the care asked (backend/judge.py). */
+export interface Judgement {
+  verdict: JudgeVerdict;
+  /** Record field the deciding line came from: procedure, capability, equipment, specialty, description. */
+  field: string;
+  /** The model's quote, found verbatim in `line`. */
+  quote: string;
+  line: string;
+  reason: string;
+  model: string | null;
 }
 
 export interface FacilityRecommendation {
@@ -132,6 +152,7 @@ export interface FacilityRecommendation {
   confidence: ConfidenceLevel;
   recommendationSummary: string;
   scoreBreakdown: ScoreBreakdown;
+  judgement?: Judgement;
   reranking?: {
     method: "cross_encoder";
     model: string;
@@ -169,6 +190,8 @@ export interface RecommendationResponse {
     isPartialResult: boolean;
     executionTimeMs: number;
     warnings: string[];
+    /** Whether the language model judged the top hospitals' records for this response. */
+    judge?: { used: boolean; available: boolean; model?: string; asked?: number; judged?: number; error?: string };
     funnel?: {
       datasetProviders: number;
       datasetRecommendable: number;
@@ -181,4 +204,48 @@ export interface RecommendationResponse {
       dataSource: string;
     };
   };
+}
+
+/** Where a finding comes from in the person's own words: text.slice(start, end) === quote. */
+export interface AskSpan {
+  quote: string;
+  start: number;
+  end: number;
+}
+
+export interface CareRef {
+  id: string;
+  name: string;
+  nameHi: string;
+}
+
+/** /api/ask: what the person asked for, in their own words, and what to do next. */
+export interface AskResponse {
+  text: string;
+  /** "rules+llm" when a Databricks-hosted model filled gaps (only grounded answers kept). */
+  method: "rules" | "rules+llm";
+  llm: { used: boolean; endpoint?: string | null; error?: string; kept?: string[]; dropped?: string[] };
+  urgency: {
+    level: 1 | 2 | 3 | 4;
+    /** 0-100: 100 life-threatening, 85 emergency, 60 urgent, 15 not urgent. 80+ opens the emergency screen. */
+    score: number;
+    label: string;
+    rule: string | null;
+    source: "rules" | "llm" | "none";
+    crisis: boolean;
+    emergency: boolean;
+    span?: AskSpan;
+  };
+  care: (CareRef & { source: string; span?: AskSpan }) | null;
+  /** What the person described (a symptom, or a disease they named), never a guessed cause. */
+  condition?: { name: string; nameHi?: string | null; source: string; span?: AskSpan } | null;
+  /** A broad word ("kidney") fits several kinds of care: the person picks one. */
+  careOptions: CareRef[];
+  careOptionsSpan?: AskSpan;
+  place: { text: string | null; here: boolean; source: string; span?: AskSpan } | null;
+  next: "emergency" | "ask_care" | "ask_place" | "results";
+  results?: RecommendationResponse;
+  placeMessage?: string;
+  placeSuggestions?: string[];
+  careMessage?: string;
 }
