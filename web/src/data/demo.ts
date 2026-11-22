@@ -1,7 +1,6 @@
 import type {
   FacilityRecommendation,
   LocationOption,
-  RankingMode,
   ServiceOption,
   SourceReference,
 } from "../types";
@@ -823,16 +822,7 @@ export const demoFacilities: FacilityRecommendation[] = [
   },
 ];
 
-export function sortFacilities(facilities: FacilityRecommendation[], mode: RankingMode) {
-  const sorted = [...facilities];
-  if (mode === "nearest") {
-    return sorted.sort((a, b) => a.distanceKm - b.distanceKm);
-  }
-  if (mode === "most_evidence") {
-    return sorted.sort((a, b) => {
-      const evidenceDifference = b.evidence.length - a.evidence.length;
-      return evidenceDifference || b.totalScore - a.totalScore;
-    });
-  }
-  return sorted.sort((a, b) => b.totalScore - a.totalScore);
+/** Results in recommendation order (the order comes from the recommender, not from user settings). */
+export function orderFacilities(facilities: FacilityRecommendation[]) {
+  return [...facilities].sort((a, b) => a.rank - b.rank || b.totalScore - a.totalScore);
 }

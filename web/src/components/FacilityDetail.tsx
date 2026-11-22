@@ -167,7 +167,7 @@ export function FacilityDetail({ facility, service, onClose }: FacilityDetailPro
           <section className="detail-section">
             <div className="detail-section-heading">
               <h3>{t.scoreTitle}</h3>
-              <span className="model-label">{t.scoreModel}</span>
+              <span className="model-label">{facility.scoreBreakdown.modelVersion}</span>
             </div>
             <div className="score-breakdown">
               {scoreMaximums.map(([key, maximum]) => {

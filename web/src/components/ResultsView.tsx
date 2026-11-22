@@ -1,9 +1,9 @@
 import { List, Map } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import { sortFacilities } from "../data/demo";
+import { orderFacilities } from "../data/demo";
 import { useMediaQuery } from "../hooks/useMediaQuery";
-import { isGovernment, useI18n } from "../i18n";
-import type { RankingMode, RecommendationResponse } from "../types";
+import { useI18n } from "../i18n";
+import type { RecommendationResponse } from "../types";
 import { FacilityCard } from "./FacilityCard";
 import { FacilityDetail } from "./FacilityDetail";
 import { FacilityMap } from "./FacilityMap";
@@ -12,12 +12,8 @@ import { RaahiSays } from "./Raahi";
 interface ResultsViewProps {
   data?: RecommendationResponse;
   isLoading: boolean;
-  rankingMode: RankingMode;
-  onRankingModeChange: (mode: RankingMode) => void;
   selectedId?: string;
   onSelectedIdChange: (id?: string) => void;
-  /** From setup: list government hospitals before private ones. */
-  governmentFirst?: boolean;
 }
 
 function LoadingResults() {
@@ -50,33 +46,17 @@ function LoadingResults() {
 export function ResultsView({
   data,
   isLoading,
-  rankingMode,
-  onRankingModeChange,
   selectedId,
   onSelectedIdChange,
-  governmentFirst = false,
 }: ResultsViewProps) {
   const [mobileView, setMobileView] = useState<"list" | "map">("list");
-  const [governmentOnly, setGovernmentOnly] = useState(false);
   const [detailId, setDetailId] = useState<string>();
   const isMobileLayout = useMediaQuery("(max-width: 680px)");
   const { t } = useI18n();
 
-  const facilities = useMemo(() => {
-    if (!data) return [];
-    const filtered = data.results.filter(
-      (facility) => !governmentOnly || isGovernment(facility.operatorType),
-    );
-    const sorted = sortFacilities(filtered, rankingMode);
-    // A stable partition keeps the chosen order inside each group.
-    const ordered = governmentFirst
-      ? [
-          ...sorted.filter((facility) => isGovernment(facility.operatorType)),
-          ...sorted.filter((facility) => !isGovernment(facility.operatorType)),
-        ]
-      : sorted;
-    return ordered.map((facility, index) => ({ ...facility, rank: index + 1 }));
-  }, [data, governmentFirst, governmentOnly, rankingMode]);
+  // Shown exactly in the recommender's order: it owns ranking and radius, the
+  // person only says what care and where.
+  const facilities = useMemo(() => (data ? orderFacilities(data.results) : []), [data]);
 
   const detailFacility = data?.results.find((facility) => facility.id === detailId);
 
@@ -97,11 +77,6 @@ export function ResultsView({
   if (!data && !isLoading) return null;
 
   const service = data?.queryContext.service.displayName ?? "";
-  const sortOptions: Array<{ value: RankingMode; label: string }> = [
-    { value: "best_match", label: t.sortBest },
-    { value: "nearest", label: t.sortNearest },
-  ];
-
   return (
     <>
       <section className="results-section" aria-labelledby="results-heading">
@@ -111,27 +86,15 @@ export function ResultsView({
             : t.resultsSearching}
         </h2>
 
-        <div className="results-toolbar">
-          <div className="segmented" role="group" aria-label={t.sortBy}>
-            {sortOptions.map((option) => (
-              <button
-                key={option.value}
-                type="button"
-                onClick={() => onRankingModeChange(option.value)}
-                aria-pressed={rankingMode === option.value}
-              >
-                {option.label}
-              </button>
+        {data && data.metadata.warnings.length > 0 && !isLoading && facilities.length > 0 && (
+          <ul className="results-notices">
+            {data.metadata.warnings.map((warning) => (
+              <li key={warning}>{warning}</li>
             ))}
-          </div>
-          <label className="inline-check">
-            <input
-              type="checkbox"
-              checked={governmentOnly}
-              onChange={(event) => setGovernmentOnly(event.target.checked)}
-            />
-            {t.governmentOnly}
-          </label>
+          </ul>
+        )}
+
+        <div className="results-toolbar">
           <div className="segmented mobile-view-toggle" role="group" aria-label={`${t.viewList} / ${t.viewMap}`}>
             <button type="button" aria-pressed={mobileView === "list"} onClick={() => setMobileView("list")}>
               <List size={16} aria-hidden="true" /> {t.viewList}
@@ -163,11 +126,8 @@ export function ResultsView({
             ) : (
               <div className="empty-results">
                 <RaahiSays mood="concerned" size={56}>
-                  <strong>{t.emptyTitle}</strong> {t.emptyBody}
+                  <strong>{t.emptyTitle}</strong> {data?.metadata.warnings[0] ?? t.emptyBody}
                 </RaahiSays>
-                <button className="secondary-button" type="button" onClick={() => setGovernmentOnly(false)}>
-                  {t.clearFilters}
-                </button>
               </div>
             )}
           </div>

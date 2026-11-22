@@ -1,6 +1,7 @@
 import { Moon, Phone, Sun } from "lucide-react";
 import { useTheme } from "../hooks/useTheme";
 import { useI18n, type Lang } from "../i18n";
+import { USE_DEMO } from "../lib/api";
 import { AccountMenu } from "./AccountMenu";
 import { Brand } from "./Brand";
 
@@ -22,7 +23,7 @@ export function Header() {
       {/* Always visible: the one thing this site must never get in the way of. */}
       <div className="top-strip">
         <div className="top-strip-inner">
-          <p className="top-strip-note">{t.prototypeNote}</p>
+          <p className="top-strip-note">{USE_DEMO ? t.prototypeNote : t.liveNote}</p>
           <a className="top-strip-emergency" href="tel:108">
             <Phone size={14} aria-hidden="true" />
             <span>{t.emergency}</span> <strong>{t.emergencyCall}</strong>

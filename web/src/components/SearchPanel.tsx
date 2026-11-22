@@ -1,14 +1,12 @@
 import { Check, Crosshair, LoaderCircle, LocateFixed, MapPin, Search } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { locations, services } from "../data/demo";
 import { useI18n } from "../i18n";
-import { resolveLocation, resolveService } from "../lib/demoApi";
+import { fetchLocations, fetchServices } from "../lib/api";
 import type { LocationOption, ServiceOption } from "../types";
 
 export interface SearchValues {
   service: string;
   location: string;
-  radiusKm: number;
   coordinates?: {
     latitude: number;
     longitude: number;
@@ -18,7 +16,6 @@ export interface SearchValues {
 interface SearchPanelProps {
   initialService: string;
   initialLocation: string;
-  radiusKm: number;
   isLoading: boolean;
   onSearch: (values: SearchValues) => void;
 }
@@ -37,13 +34,11 @@ function matchesService(service: ServiceOption, query: string) {
 export function SearchPanel({
   initialService,
   initialLocation,
-  radiusKm,
   isLoading,
   onSearch,
 }: SearchPanelProps) {
   const [service, setService] = useState(initialService);
   const [location, setLocation] = useState(initialLocation);
-  const [radius, setRadius] = useState(radiusKm);
   const [serviceOpen, setServiceOpen] = useState(false);
   const [locationOpen, setLocationOpen] = useState(false);
   const [geoState, setGeoState] = useState<"idle" | "locating" | "found" | "error">("idle");
@@ -55,8 +50,7 @@ export function SearchPanel({
   useEffect(() => {
     setService(initialService);
     setLocation(initialLocation);
-    setRadius(radiusKm);
-  }, [initialService, initialLocation, radiusKm]);
+  }, [initialService, initialLocation]);
 
   useEffect(() => {
     function closeOnOutsideClick(event: MouseEvent) {
@@ -71,7 +65,28 @@ export function SearchPanel({
     return () => document.removeEventListener("mousedown", closeOnOutsideClick);
   }, []);
 
-  const serviceMatches = services.filter((item) => matchesService(item, service));
+  const [services, setServices] = useState<ServiceOption[]>([]);
+  const [locationOptions, setLocationOptions] = useState<LocationOption[]>([]);
+
+  // Service catalogue from the backend, loaded once.
+  useEffect(() => {
+    fetchServices()
+      .then(setServices)
+      .catch(() => setServices([]));
+  }, []);
+
+  // Place suggestions (districts, cities, PIN codes) from the backend, debounced.
+  useEffect(() => {
+    if (!locationOpen || coordinates) return;
+    const handle = window.setTimeout(() => {
+      fetchLocations(location)
+        .then(setLocationOptions)
+        .catch(() => setLocationOptions([]));
+    }, 180);
+    return () => window.clearTimeout(handle);
+  }, [location, locationOpen, coordinates]);
+
+  const serviceMatches = services.filter((item) => matchesService(item, service)).slice(0, 8);
 
   function handleServiceSelect(option: ServiceOption) {
     setService(option.name);
@@ -90,14 +105,11 @@ export function SearchPanel({
   }
 
   function submit(serviceText: string) {
-    const normalizedService = resolveService(serviceText).name;
-    const normalizedLocation = resolveLocation(location);
-    setService(normalizedService);
-    setLocation(`${normalizedLocation.name}, ${normalizedLocation.region}`);
+    // The backend resolves free text (service → tag, place → district / city / PIN / coordinates)
+    // and chooses the radius itself, widening until it finds a facility with evidence.
     onSearch({
-      service: normalizedService,
-      location: `${normalizedLocation.name}, ${normalizedLocation.region}`,
-      radiusKm: radius,
+      service: serviceText.trim(),
+      location: location.trim(),
       coordinates,
     });
   }
@@ -170,7 +182,7 @@ export function SearchPanel({
                   >
                     <span>
                       <strong>{option.name}</strong>
-                      <small>{option.synonyms.slice(0, 2).join(" · ")}</small>
+                      <small>{option.synonyms.slice(0, 2).join(" · ") || option.category}</small>
                     </span>
                     {service === option.name && <Check className="suggestion-check" size={16} />}
                   </button>
@@ -231,43 +243,28 @@ export function SearchPanel({
                   <LocateFixed size={14} /> {t.useLocation}
                 </button>
               </div>
-              {locations
-                .filter((option) =>
-                  `${option.name} ${option.region}`.toLowerCase().includes(location.toLowerCase()),
-                )
-                .map((option) => (
-                  <button
-                    type="button"
-                    className="suggestion-item"
-                    key={option.id}
-                    role="option"
-                    aria-selected={location.includes(option.name)}
-                    onMouseDown={(event) => event.preventDefault()}
-                    onClick={() => handleLocationSelect(option)}
-                  >
-                    <span>
-                      <strong>{option.name}</strong>
-                      <small>{option.region}</small>
-                    </span>
-                  </button>
-                ))}
+              {locationOptions.length === 0 && <p className="suggestion-empty">{t.placeEmpty}</p>}
+              {locationOptions.map((option) => (
+                <button
+                  type="button"
+                  className="suggestion-item"
+                  key={option.id}
+                  role="option"
+                  aria-selected={location.includes(option.name)}
+                  onMouseDown={(event) => event.preventDefault()}
+                  onClick={() => handleLocationSelect(option)}
+                >
+                  <span>
+                    <strong>{option.name}</strong>
+                    <small>
+                      {option.kind ? `${option.kind} · ` : ""}
+                      {option.region}
+                    </small>
+                  </span>
+                </button>
+              ))}
             </div>
           )}
-        </div>
-
-        <div className="search-field search-field-radius">
-          <label htmlFor="radius-select">{t.distanceLabel}</label>
-          <select
-            id="radius-select"
-            value={radius}
-            onChange={(event) => setRadius(Number(event.target.value))}
-          >
-            {[5, 10, 20, 50].map((km) => (
-              <option key={km} value={km}>
-                {t.within(km)}
-              </option>
-            ))}
-          </select>
         </div>
 
         <button className="primary-button search-submit" type="submit" disabled={isLoading}>

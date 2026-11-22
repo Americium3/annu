@@ -9,7 +9,7 @@ import { useSession } from "../lib/auth";
 import { formatPhone } from "../lib/auth";
 import { isValidMobile, profileSnapshot, saveProfile, type Profile } from "../lib/profile";
 
-const STEPS = ["language", "place", "distance", "cost", "contact", "done"] as const;
+const STEPS = ["language", "place", "contact", "done"] as const;
 type Step = (typeof STEPS)[number];
 const QUESTION_COUNT = STEPS.length - 1;
 
@@ -19,8 +19,9 @@ const QUESTION_COUNT = STEPS.length - 1;
  * It's offered once and never stands between anyone and search or the
  * emergency screen; "Call 108" stays in the header throughout.
  *
- * Only questions whose answers change results (or the emergency screen) are
- * asked. Answers are saved as they're given, so leaving half-way loses nothing.
+ * Only questions whose answers change something are asked: language, where
+ * to search from, and who to call in an emergency. Radius and order belong to
+ * the recommender, so they are not asked. Answers are saved as they're given, so leaving half-way loses nothing.
  */
 export function Onboarding() {
   const { t, lang, setLang } = useI18n();
@@ -119,55 +120,6 @@ export function Onboarding() {
               />
             )}
 
-            {step === "distance" && (
-              <Question ask={t.obDistanceAsk}>
-                <div className="choice-grid choice-grid-4">
-                  {[5, 10, 20, 50].map((km) => (
-                    <button
-                      key={km}
-                      type="button"
-                      className="choice"
-                      aria-pressed={draft.radiusKm === km}
-                      onClick={() => {
-                        update({ radiusKm: km });
-                        next();
-                      }}
-                    >
-                      {t.within(km)}
-                    </button>
-                  ))}
-                </div>
-                <SkipQuestion onClick={next} />
-              </Question>
-            )}
-
-            {step === "cost" && (
-              <Question ask={t.obCostAsk}>
-                <div className="choice-grid choice-grid-stack">
-                  {(
-                    [
-                      [true, t.obCostYes],
-                      [false, t.obCostNo],
-                    ] as Array<[boolean, string]>
-                  ).map(([value, label]) => (
-                    <button
-                      key={String(value)}
-                      type="button"
-                      className="choice"
-                      aria-pressed={draft.governmentFirst === value}
-                      onClick={() => {
-                        update({ governmentFirst: value });
-                        next();
-                      }}
-                    >
-                      {label}
-                    </button>
-                  ))}
-                </div>
-                <SkipQuestion onClick={next} />
-              </Question>
-            )}
-
             {step === "contact" && (
               <ContactStep
                 value={draft.emergencyContact}
@@ -192,20 +144,6 @@ export function Onboarding() {
                   <div>
                     <dt>{t.obSumPlace}</dt>
                     <dd>{draft.location ?? t.obNotSet}</dd>
-                  </div>
-                  <div>
-                    <dt>{t.obSumDistance}</dt>
-                    <dd>{draft.radiusKm ? t.within(draft.radiusKm) : t.obNotSet}</dd>
-                  </div>
-                  <div>
-                    <dt>{t.obSumCost}</dt>
-                    <dd>
-                      {draft.governmentFirst === null
-                        ? t.obNotSet
-                        : draft.governmentFirst
-                          ? t.obSumCostFirst
-                          : t.obSumCostNormal}
-                    </dd>
                   </div>
                   <div>
                     <dt>{t.obSumContact}</dt>

@@ -1,4 +1,3 @@
-export type RankingMode = "best_match" | "nearest" | "most_evidence";
 export type ConfidenceLevel = "high" | "medium" | "low";
 export type SourceType = "official_site" | "government" | "directory" | "social_media" | "unknown";
 export type EvidenceStrength = "strong" | "medium" | "weak";
@@ -8,7 +7,8 @@ export interface ServiceOption {
   id: string;
   name: string;
   synonyms: string[];
-  category: "dialysis" | "emergency" | "specialty" | "diagnostic";
+  category: string;
+  facilityCount?: number;
 }
 
 export interface LocationOption {
@@ -18,6 +18,7 @@ export interface LocationOption {
   latitude: number;
   longitude: number;
   confidence: ConfidenceLevel;
+  kind?: "district" | "city" | "pincode";
 }
 
 export interface QueryContext {
@@ -39,9 +40,9 @@ export interface QueryContext {
     confidence: ConfidenceLevel;
   };
   searchParameters: {
+    /** Chosen by the system (search widens until a provider is found), not by the user. */
     radiusKm: number;
     limit: number;
-    rankingMode: RankingMode;
   };
 }
 
@@ -128,5 +129,16 @@ export interface RecommendationResponse {
     isPartialResult: boolean;
     executionTimeMs: number;
     warnings: string[];
+    funnel?: {
+      datasetProviders: number;
+      datasetRecommendable: number;
+      withinRadius: number;
+      reviewBlockedWithinRadius: number;
+      radiusStepsKm: number[];
+      radiusKm: number;
+      locationNote: string;
+      serviceMatch: string;
+      dataSource: string;
+    };
   };
 }

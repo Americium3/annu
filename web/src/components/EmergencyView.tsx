@@ -2,6 +2,7 @@ import { ArrowLeft, LoaderCircle, LocateFixed, Phone, UserRound } from "lucide-r
 import { useEffect, useMemo, useRef, useState } from "react";
 import { demoFacilities } from "../data/demo";
 import { useI18n } from "../i18n";
+import { getRecommendations, USE_DEMO } from "../lib/api";
 import { telUrl } from "../lib/facilityActions";
 import type { EmergencyContact } from "../lib/profile";
 import type { FacilityRecommendation } from "../types";
@@ -27,9 +28,10 @@ function distanceKm(a: Point, b: Point) {
  * on the screen; below it, the nearest hospitals by straight-line distance,
  * each with Directions and Call. No scores, no evidence, no filters.
  *
- * Prototype note: the demo data has no "emergency department" field, so this
- * lists the nearest hospitals (clinics excluded). Production needs a verified
- * emergency-capability flag before this list can claim more than that.
+ * Live data: the list asks the recommender for "emergency" near the person
+ * and shows the closest five of what it returns. Demo data has no emergency
+ * field, so demo mode lists the nearest hospitals (clinics excluded). If the
+ * list can't load, the screen still has Call 108 and the saved contact.
  */
 export function EmergencyView({
   origin,
@@ -68,15 +70,32 @@ export function EmergencyView({
   }, []);
 
   const from = position ?? origin;
-  const hospitals = useMemo<FacilityRecommendation[]>(
-    () =>
-      demoFacilities
-        .filter((facility) => !/clinic/i.test(facility.type))
-        .map((facility) => ({ ...facility, distanceKm: distanceKm(from, facility) }))
-        .sort((a, b) => a.distanceKm - b.distanceKm)
-        .slice(0, 5),
-    [from],
-  );
+  const [live, setLive] = useState<FacilityRecommendation[] | null>(null);
+  const [liveFailed, setLiveFailed] = useState(false);
+
+  useEffect(() => {
+    if (USE_DEMO) return;
+    let cancelled = false;
+    setLiveFailed(false);
+    getRecommendations({ serviceText: "emergency", locationText: originName, coordinates: position })
+      .then((response) => {
+        if (!cancelled) setLive(response.results);
+      })
+      .catch(() => {
+        if (!cancelled) setLiveFailed(true);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [originName, position]);
+
+  const hospitals = useMemo<FacilityRecommendation[]>(() => {
+    const pool = USE_DEMO ? demoFacilities.filter((facility) => !/clinic/i.test(facility.type)) : (live ?? []);
+    return pool
+      .map((facility) => ({ ...facility, distanceKm: distanceKm(from, facility) }))
+      .sort((a, b) => a.distanceKm - b.distanceKm)
+      .slice(0, 5);
+  }, [from, live]);
 
   return (
     <section className="emergency" aria-labelledby="emergency-title">
@@ -124,6 +143,8 @@ export function EmergencyView({
             )}
           </p>
         </div>
+
+        {liveFailed && <p className="emergency-failed">{t.emListFailed}</p>}
 
         <ol className="emergency-list">
           {hospitals.map((facility, index) => (

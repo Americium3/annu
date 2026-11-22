@@ -3,7 +3,8 @@ import { createStore } from "./store";
 
 /**
  * What CarePath remembers about the person: only answers that change their
- * results or their emergency screen. Nothing medical, no scheme or income
+ * results or their emergency screen. The recommender owns radius and order,
+ * so there is nothing to remember about either. Nothing medical, no scheme or income
  * details. Kept on this device; signing in copies it to their account.
  */
 export interface EmergencyContact {
@@ -15,9 +16,6 @@ export interface EmergencyContact {
 export interface Profile {
   /** Default search place, e.g. "Bhubaneswar, Odisha". */
   location: string | null;
-  radiusKm: number | null;
-  /** Show government hospitals before private ones. */
-  governmentFirst: boolean | null;
   emergencyContact: EmergencyContact | null;
   /** Finished or skipped the welcome steps; either way, don't offer again. */
   onboardingDone: boolean;
@@ -27,14 +25,10 @@ export interface Profile {
 
 export const emptyProfile: Profile = {
   location: null,
-  radiusKm: null,
-  governmentFirst: null,
   emergencyContact: null,
   onboardingDone: false,
   promptDismissed: false,
 };
-
-const RADII = [5, 10, 20, 50];
 
 export function isValidMobile(digits: string) {
   return /^[6-9]\d{9}$/.test(digits);
@@ -46,8 +40,6 @@ function parse(raw: unknown): Profile {
   const contact = value.emergencyContact as Record<string, unknown> | null | undefined;
   return {
     location: typeof value.location === "string" ? value.location.slice(0, 80) : null,
-    radiusKm: typeof value.radiusKm === "number" && RADII.includes(value.radiusKm) ? value.radiusKm : null,
-    governmentFirst: typeof value.governmentFirst === "boolean" ? value.governmentFirst : null,
     emergencyContact:
       contact &&
       typeof contact.name === "string" &&

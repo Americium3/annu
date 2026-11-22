@@ -9,15 +9,14 @@ import { ResultsView } from "./components/ResultsView";
 import { SearchPanel, type SearchValues } from "./components/SearchPanel";
 import { SetupPrompt } from "./components/SetupPrompt";
 import { TrustSection } from "./components/TrustSection";
-import { getDemoRecommendations } from "./lib/demoApi";
+import { ApiError, getRecommendations } from "./lib/api";
 import { useI18n } from "./i18n";
 import { profileSnapshot, useProfile } from "./lib/profile";
-import type { RankingMode, RecommendationResponse } from "./types";
+import type { RecommendationResponse } from "./types";
 
 const defaultSearch: SearchValues = {
   service: "Kidney dialysis",
   location: "Bhubaneswar, Odisha",
-  radiusKm: 10,
 };
 
 /** Search defaults: the person's saved answers first, then the demo city. */
@@ -26,7 +25,6 @@ function startingSearch(): SearchValues {
   return {
     service: defaultSearch.service,
     location: profile.location ?? defaultSearch.location,
-    radiusKm: profile.radiusKm ?? defaultSearch.radiusKm,
   };
 }
 
@@ -36,7 +34,7 @@ function App() {
   const [data, setData] = useState<RecommendationResponse>();
   const [isLoading, setIsLoading] = useState(true);
   const [searchValues, setSearchValues] = useState<SearchValues>(startingSearch);
-  const [rankingMode, setRankingMode] = useState<RankingMode>("best_match");
+  const [error, setError] = useState<ApiError>();
   const [selectedId, setSelectedId] = useState<string>();
   const { t } = useI18n();
   const emergency = searchParams.get("mode") === "emergency";
@@ -59,12 +57,11 @@ function App() {
     return {
       service: searchParams.get("service") || start.service,
       location: searchParams.get("location") || start.location,
-      radiusKm: Number(searchParams.get("radius")) || start.radiusKm,
     };
   }, [searchParams]);
 
   const runSearch = useCallback(
-    async (values: SearchValues, mode: RankingMode, replaceUrl = true) => {
+    async (values: SearchValues, replaceUrl = true) => {
       setIsLoading(true);
       setSelectedId(undefined);
       setSearchValues(values);
@@ -74,41 +71,38 @@ function App() {
           {
             service: values.service,
             location: values.location,
-            radius: String(values.radiusKm),
           },
           { replace: true },
         );
       }
 
-      const response = await getDemoRecommendations({
-        serviceText: values.service,
-        locationText: values.location,
-        radiusKm: values.radiusKm,
-        rankingMode: mode,
-        limit: 8,
-        coordinates: values.coordinates,
-      });
-
-      setData(response);
-      setSelectedId(undefined);
-      setIsLoading(false);
+      try {
+        const response = await getRecommendations({
+          serviceText: values.service,
+          locationText: values.location,
+          coordinates: values.coordinates,
+        });
+        setData(response);
+        setError(undefined);
+      } catch (caught) {
+        setData(undefined);
+        setError(caught instanceof ApiError ? caught : new ApiError(String(caught)));
+      } finally {
+        setSelectedId(undefined);
+        setIsLoading(false);
+      }
     },
     [setSearchParams],
   );
 
   useEffect(() => {
-    void runSearch(urlSearch, "best_match", false);
+    void runSearch(urlSearch, false);
     // Initial URL hydration only; subsequent searches are user-driven.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function handleSearch(values: SearchValues) {
-    void runSearch(values, rankingMode);
-  }
-
-  function handleRankingChange(mode: RankingMode) {
-    setRankingMode(mode);
-    setSelectedId(undefined);
+    void runSearch(values);
   }
 
   if (emergency) {
@@ -157,7 +151,6 @@ function App() {
           <SearchPanel
             initialService={searchValues.service}
             initialLocation={searchValues.location}
-            radiusKm={searchValues.radiusKm}
             isLoading={isLoading}
             onSearch={handleSearch}
           />
@@ -166,14 +159,45 @@ function App() {
           </div>
         </section>
 
+        {error && (
+          <section className="api-error" role="alert">
+            <div className="api-error-inner">
+              <strong>
+                {error.field === "service"
+                  ? t.errService
+                  : error.field === "location"
+                    ? t.errLocation
+                    : t.errSearch}
+              </strong>
+              <p>{error.message}</p>
+              {error.suggestions.length > 0 && (
+                <p className="common-searches">
+                  <span>{t.errTry}</span>
+                  {error.suggestions.map((suggestion) => (
+                    <button
+                      key={suggestion}
+                      type="button"
+                      onClick={() =>
+                        handleSearch(
+                          error.field === "service"
+                            ? { ...searchValues, service: suggestion }
+                            : { ...searchValues, location: suggestion, coordinates: undefined },
+                        )
+                      }
+                    >
+                      {suggestion}
+                    </button>
+                  ))}
+                </p>
+              )}
+            </div>
+          </section>
+        )}
         <ResultsView
           data={data}
           isLoading={isLoading}
-          rankingMode={rankingMode}
-          onRankingModeChange={handleRankingChange}
           selectedId={selectedId}
           onSelectedIdChange={setSelectedId}
-          governmentFirst={profile.governmentFirst === true}
         />
         <TrustSection />
       </main>

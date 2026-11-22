@@ -15,6 +15,12 @@ const en = {
   // header / chrome
   skipToSearch: "Skip to search",
   prototypeNote: "Prototype. Hospitals and sources shown are examples, not real listings.",
+  liveNote: "Live data from Virtue Foundation facility records. Confirm with the hospital before you travel.",
+  errService: "We didn't recognise that service.",
+  errLocation: "We couldn't find that place.",
+  errSearch: "The search didn't work.",
+  errTry: "Try:",
+  placeEmpty: "Type a district, city, 6-digit PIN code, or “lat, lon”.",
   emergency: "Medical emergency?",
   emergencyCall: "Call 108",
   navFind: "Find care",
@@ -72,8 +78,8 @@ const en = {
   viewList: "List",
   viewMap: "Map",
   loadingRaahi: "Finding hospitals…",
-  emptyTitle: "No hospitals match these filters.",
-  emptyBody: "Try a longer distance, or turn off a filter.",
+  emptyTitle: "No hospital with evidence for this service was found.",
+  emptyBody: "Try a nearby city, or another name for the service.",
   clearFilters: "Clear filters",
 
   // card
@@ -127,7 +133,7 @@ const en = {
   scoreCapacity: "Capacity details",
   scorePenalty: "Deducted for weak proof",
   scoreDisclaimer:
-    "Scores compare hospitals for this search only. They do not rate medical quality, safety or outcomes.",
+    "The score sums up the signals the ranking uses. The order itself follows evidence-first rules: evidence, then distance, then how well the location is confirmed. Scores do not rate medical quality, safety or outcomes.",
   proofTitle: "The proof",
   items: (n: number) => `${n} ${n === 1 ? "item" : "items"}`,
   polarityPositive: "Supports",
@@ -172,6 +178,7 @@ const en = {
   emLocating: "Finding your location…",
   emUseLocation: "Use my location",
   emBack: "Not an emergency? Search for care",
+  emListFailed: "We couldn't load nearby hospitals. Call 108; the ambulance will take you to the right place.",
 
   // decision-first cards
   raahiAsk: "Namaste! What care do you need?",
@@ -193,7 +200,7 @@ const en = {
   signedInAs: "Signed in as",
   signOut: "Sign out",
   editPreferences: "Change my preferences",
-  setupPrompt: "First time here? Tell Raahi 4 things for faster results next time.",
+  setupPrompt: "First time here? Tell Raahi 3 things for faster results next time.",
   setupStart: "Set up in 30 seconds",
   setupDismiss: "Not now",
   obStep: (n: number, total: number) => `Step ${n} of ${total}`,
@@ -256,6 +263,12 @@ type Dict = typeof en;
 const hi: Dict = {
   skipToSearch: "खोज पर जाएँ",
   prototypeNote: "प्रोटोटाइप। दिखाए गए अस्पताल और स्रोत उदाहरण हैं, असली सूची नहीं।",
+  liveNote: "Virtue Foundation के अस्पताल रिकॉर्ड से असली डेटा। जाने से पहले अस्पताल से पुष्टि करें।",
+  errService: "यह सेवा पहचान में नहीं आई।",
+  errLocation: "यह जगह नहीं मिली।",
+  errSearch: "खोज नहीं हो सकी।",
+  errTry: "यह आज़माएँ:",
+  placeEmpty: "ज़िला, शहर, 6 अंकों का पिन कोड या “lat, lon” लिखें।",
   emergency: "मेडिकल इमरजेंसी?",
   emergencyCall: "108 पर कॉल करें",
   navFind: "इलाज खोजें",
@@ -309,8 +322,8 @@ const hi: Dict = {
   viewList: "सूची",
   viewMap: "नक्शा",
   loadingRaahi: "अस्पताल खोज रहे हैं…",
-  emptyTitle: "इन फ़िल्टर से कोई अस्पताल नहीं मिला।",
-  emptyBody: "दूरी बढ़ाइए, या कोई फ़िल्टर हटाइए।",
+  emptyTitle: "इस सेवा के सबूत वाला कोई अस्पताल नहीं मिला।",
+  emptyBody: "पास का कोई शहर, या सेवा का दूसरा नाम आज़माएँ।",
   clearFilters: "फ़िल्टर हटाएँ",
 
   rank: (n) => `क्रम ${n}`,
@@ -361,7 +374,7 @@ const hi: Dict = {
   scoreCapacity: "क्षमता की जानकारी",
   scorePenalty: "कमज़ोर सबूत के लिए कटौती",
   scoreDisclaimer:
-    "स्कोर सिर्फ़ इस खोज के अस्पतालों की तुलना करता है। यह इलाज की गुणवत्ता, सुरक्षा या नतीजों को नहीं आँकता।",
+    "स्कोर उन्हीं संकेतों का सार है जिनसे क्रम तय होता है। क्रम सबूत-पहले नियमों से बनता है: पहले सबूत, फिर दूरी, फिर लोकेशन कितनी पक्की है। स्कोर इलाज की गुणवत्ता, सुरक्षा या नतीजों को नहीं आँकता।",
   proofTitle: "सबूत",
   items: (n) => `${n} चीज़ें`,
   polarityPositive: "समर्थन करता है",
@@ -403,6 +416,7 @@ const hi: Dict = {
   emLocating: "आपकी लोकेशन ढूँढ रहे हैं…",
   emUseLocation: "मेरी लोकेशन लें",
   emBack: "इमरजेंसी नहीं है? इलाज खोजें",
+  emListFailed: "पास के अस्पताल लोड नहीं हो सके। 108 पर कॉल करें, एम्बुलेंस आपको सही जगह ले जाएगी।",
 
   raahiAsk: "नमस्ते! आपको कौन-सा इलाज चाहिए?",
   whyHospital: "यह अस्पताल क्यों?",
@@ -422,7 +436,7 @@ const hi: Dict = {
   signedInAs: "इस नंबर से साइन इन",
   signOut: "साइन आउट",
   editPreferences: "मेरी पसंद बदलें",
-  setupPrompt: "पहली बार आए हैं? राही को 4 बातें बताइए, अगली बार नतीजे जल्दी मिलेंगे।",
+  setupPrompt: "पहली बार आए हैं? राही को 3 बातें बताइए, अगली बार नतीजे जल्दी मिलेंगे।",
   setupStart: "30 सेकंड में सेट करें",
   setupDismiss: "अभी नहीं",
   obStep: (n, total) => `चरण ${n} / ${total}`,

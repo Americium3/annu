@@ -659,7 +659,7 @@ h4 {
   position: relative;
   z-index: 10;
   display: grid;
-  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1.25fr) minmax(150px, 0.6fr) auto;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
   align-items: stretch;
   padding: 6px;
   background: var(--surface);
@@ -679,7 +679,7 @@ h4 {
   border-right: 1px solid var(--line);
 }
 
-.search-field-radius {
+.search-field-place {
   border-right: 0;
 }
 
@@ -1987,12 +1987,8 @@ h4 {
     border-right: 0;
   }
 
-  .search-field-radius {
-    border-top: 1px solid var(--line);
-    border-right: 1px solid var(--line);
-  }
-
   .search-submit {
+    grid-column: 1 / -1;
     margin-top: 6px;
   }
 
@@ -2077,12 +2073,6 @@ h4 {
     padding: 10px 12px;
     border-right: 0;
     border-bottom: 1px solid var(--line);
-  }
-
-  .search-field-radius {
-    border-top: 0;
-    border-right: 0;
-    border-bottom: 0;
   }
 
   .search-submit {
@@ -3114,6 +3104,68 @@ h4 {
 
   .setup-prompt span {
     flex-basis: 100%;
+  }
+}
+
+
+/* ---- recommender messages ---- */
+
+.api-error {
+  padding: 24px 0 0;
+}
+
+.api-error-inner {
+  width: min(1200px, calc(100% - 48px));
+  margin: 0 auto;
+  padding: 14px 18px;
+  color: var(--critical-ink);
+  background: var(--critical-soft);
+  border: 1px solid var(--critical-line);
+  border-radius: var(--radius-lg);
+}
+
+.api-error-inner p {
+  margin-top: 4px;
+  color: var(--text);
+}
+
+.api-error-inner .common-searches {
+  margin-top: 8px;
+}
+
+.results-notices {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 10px 0 0;
+  padding: 0;
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  list-style: none;
+}
+
+.results-notices li::before {
+  margin-right: 6px;
+  color: var(--text-3);
+  content: "·";
+}
+
+.emergency-failed {
+  margin-top: 12px;
+  padding: 12px 14px;
+  color: var(--warn-ink);
+  background: var(--warn-soft);
+  border: 1px solid var(--warn-line);
+  border-radius: var(--radius-lg);
+}
+
+@media (max-width: 680px) {
+  .api-error-inner {
+    width: calc(100% - 32px);
+  }
+
+  .search-field-place {
+    border-bottom: 0;
   }
 }
 
