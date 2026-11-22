@@ -1,0 +1,7 @@
+query_id,service,latitude,longitude,density_group,context_state,context_district
+jaipur-dialysis,kidney-dialysis,26.9124,75.7873,unclassified,Rajasthan,Jaipur
+patna-emergency-csection,emergency-c-section,25.5941,85.1376,unclassified,Bihar,Patna
+lucknow-nicu,nicu,26.8467,80.9462,unclassified,Uttar Pradesh,Lucknow
+pune-heart,cardiac-surgery,18.5204,73.8567,unclassified,Maharashtra,Pune
+hyderabad-mri,mri,17.3850,78.4867,unclassified,,
+delhi-burns,burns,28.6139,77.2090,unclassified,,

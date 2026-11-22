@@ -7,11 +7,13 @@ Uploads the generated files to the volume ``workspace.cardinal_virtues.tag_files
                                              with facility counts, TF-IDF evidence counts and
                                              MeSH / ICD-10 / NUCC references
   workspace.cardinal_virtues.facility_tags   one row per (facility, tag): evidence class
-                                             (strong / mention / suggested / specialty),
-                                             TF-IDF probability and evidence refs into
-                                             model_evidence_items (field:item_idx)
+                                             (strong / mention / suggested / specialty /
+                                             condition_mention), TF-IDF probability and
+                                             evidence refs into model_evidence_items
+  workspace.cardinal_virtues.alias_table     search alias -> MeSH descriptor -> tags
+  workspace.cardinal_virtues.facility_comprehensiveness   (view) search fallback score
 
-Run after build_tags.py, tfidf_classify.py and crosswalk_taxonomies.py.
+Run after build_tags.py, tfidf_classify.py, crosswalk_taxonomies.py and medical_vocabulary.py.
 
 Usage:
   export DATABRICKS_HOST=... DATABRICKS_WAREHOUSE_ID=... [DATABRICKS_TOKEN=...]
@@ -35,6 +37,7 @@ VOLUME_PATH = f"/Volumes/{SCHEMA.replace('.', '/')}/{VOLUME}"
 
 def build_catalog_rows(tags_dir: Path) -> list[dict]:
     service = json.loads((tags_dir / "service_tags.json").read_text())["tags"]
+    conditions = json.loads((tags_dir / "condition_tags.json").read_text())["tags"]
     specialty = json.loads((tags_dir / "specialty_tags.json").read_text())["tags"]
     crosswalk = json.loads((tags_dir / "taxonomy_crosswalk.json").read_text())
     tfidf = {t["id"]: t for t in json.loads((tags_dir / "tfidf_tag_report.json").read_text())["tags"]}
@@ -66,6 +69,15 @@ def build_catalog_rows(tags_dir: Path) -> list[dict]:
             "nucc_relation": n["relation"] if n else None,
             "example_evidence": [], "raw_variants": t["variants"],
         })
+    for c in conditions:
+        rows.append({
+            "tag_id": c["id"], "label": c["label"], "tag_type": "mesh_condition", "group_name": None,
+            "synonyms": c["matchedTerms"], "facility_count": c["facilityCount"],
+            "strong_facility_count": None, "mention_facility_count": None, "suggested_facility_count": None,
+            "mesh_ids": [c["meshId"]], "mesh_labels": [c["label"]], "mesh_categories": c["categories"],
+            "icd10_codes": [], "icd10_labels": [], "nucc_code": None, "nucc_display_name": None, "nucc_relation": None,
+            "example_evidence": c["exampleEvidence"], "raw_variants": c["curatedTags"] + c["fallbackSpecialties"],
+        })
     return rows
 
 
@@ -92,6 +104,8 @@ def main():
             "tag_catalog.jsonl": catalog,
             "facility_tags.csv": tags_dir / "facility_tags.csv",
             "facility_tag_scores.csv": tags_dir / "facility_tag_scores.csv",
+            "facility_condition_tags.csv": tags_dir / "facility_condition_tags.csv",
+            "alias_table.csv": tags_dir / "alias_table.csv",
         }
         db.query(f"CREATE VOLUME IF NOT EXISTS {SCHEMA}.{VOLUME} "
                  "COMMENT 'Generated tag catalog files (cardinal_virtues pipeline)'")
@@ -115,6 +129,15 @@ def main():
           SELECT * FROM read_files('{VOLUME_PATH}/facility_tag_scores.csv', format => 'csv', header => true,
             schema => 'unique_id STRING, tag_id STRING, class STRING, best_probability DOUBLE, best_evidence_ref STRING, regex_sentence_count INT')
         )
+        , m AS (
+          SELECT * FROM read_files('{VOLUME_PATH}/facility_condition_tags.csv', format => 'csv', header => true,
+            schema => 'unique_id STRING, tag_id STRING, evidence_refs STRING')
+        )
+        SELECT unique_id, tag_id, 'mesh_condition' AS tag_type, 'condition_mention' AS evidence_class,
+               CAST(NULL AS DOUBLE) AS tfidf_probability, split(evidence_refs, ';')[0] AS best_evidence_ref,
+               CAST(NULL AS INT) AS regex_sentence_count, evidence_refs
+        FROM m
+        UNION ALL
         SELECT
           coalesce(t.unique_id, s.unique_id) AS unique_id,
           coalesce(t.tag_id, s.tag_id) AS tag_id,
@@ -129,13 +152,25 @@ def main():
         LEFT JOIN {SCHEMA}.tag_catalog c ON c.tag_id = coalesce(t.tag_id, s.tag_id)
     """)
 
+    db.query(f"""
+        CREATE OR REPLACE TABLE {SCHEMA}.alias_table
+        COMMENT 'Search aliases (MeSH terms, MedlinePlus names, colloquial terms, tag names) -> MeSH descriptor -> curated tags, condition tag, fallback specialties. Built by pipeline/medical_vocabulary.py.'
+        AS SELECT * FROM read_files('{VOLUME_PATH}/alias_table.csv', format => 'csv', header => true,
+          schema => 'alias STRING, alias_normalized STRING, source STRING, mesh_id STRING, mesh_label STRING, curated_tags STRING, condition_tag STRING, fallback_specialties STRING, facilities_with_condition_evidence INT')
+    """)
+    view_sql = (Path(__file__).resolve().parent / "sql" / "facility_comprehensiveness.sql").read_text()
+    db.query("\n".join(l for l in view_sql.splitlines() if not l.lstrip().startswith("--")).strip().rstrip(";"))
+
     _, rows = db.query(f"""
         SELECT 'tag_catalog', count(*), count(DISTINCT tag_type) FROM {SCHEMA}.tag_catalog
         UNION ALL SELECT 'facility_tags', count(*), count(DISTINCT unique_id) FROM {SCHEMA}.facility_tags
+        UNION ALL SELECT 'alias_table', count(*), count(DISTINCT mesh_id) FROM {SCHEMA}.alias_table
+        UNION ALL SELECT 'facility_comprehensiveness', count(*), count(DISTINCT state) FROM {SCHEMA}.facility_comprehensiveness
     """)
     for name, n, extra in rows:
-        print(f"{SCHEMA}.{name}: {int(n):,} rows ({extra} distinct {'tag types' if name == 'tag_catalog' else 'facilities'})",
-              file=sys.stderr)
+        what = {"tag_catalog": "tag types", "facility_tags": "facilities", "alias_table": "MeSH descriptors",
+                "facility_comprehensiveness": "states"}[name]
+        print(f"{SCHEMA}.{name}: {int(n):,} rows ({extra} distinct {what})", file=sys.stderr)
 
 
 if __name__ == "__main__":

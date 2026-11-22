@@ -1,12 +1,12 @@
 {
   "meta": {
-    "generatedAt": "2026-11-21T21:20:45+00:00",
+    "generatedAt": "2026-11-22T02:57:48+00:00",
     "source": {
       "facilities": "workspace.cardinal_virtues.model_facilities",
       "evidence": "workspace.cardinal_virtues.model_evidence_items"
     },
     "facilityCount": 9989,
-    "facilitiesWithServiceTag": 9153,
+    "facilitiesWithServiceTag": 9151,
     "evidenceSentencesScanned": 433053,
     "minFacilities": 5,
     "unmappedValues": 1926

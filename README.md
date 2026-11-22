@@ -10,6 +10,8 @@ Healthcare facility discovery and recommendation project.
 - `api/` — standalone phase-1 rule ranker, not the frontend's serving entry point (see [`docs/ranking_model.md`](docs/ranking_model.md)).
 - `experiments/` — high-recall service candidates + rules/TF-IDF/BM25/bi-encoder/cross-encoder comparisons, independent qrels metrics and map outputs (see [`experiments/README.md`](experiments/README.md)).
 - `notebooks/100_two_stage_experiments.py` — Databricks Free Edition experiment entry point.
+- Optional NFHS context in the experiment runner: audited district joins, marker-aware survey cleaning,
+  subgroup metrics and map reference-point background; see [NFHS usage](experiments/README.md#optional-nfhs-district-context).
 - `APP_FRAMEWORK_REQUIREMENTS.en.md` — product, data, API, ranking, and deployment requirements.
 
 ## Frontend

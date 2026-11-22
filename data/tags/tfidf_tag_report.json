@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generatedAt": "2026-11-21T21:30:15+00:00",
+    "generatedAt": "2026-11-22T03:15:38+00:00",
     "source": "workspace.cardinal_virtues.model_evidence_items (procedure, capability, equipment)",
     "sentences": 433053,
     "vocabularySize": 96813,
@@ -21,13 +21,13 @@
       "suggested": 0.8
     },
     "facilityTagPairs": {
-      "strong": 67794,
-      "mention": 2968,
+      "strong": 67761,
+      "mention": 2953,
       "suggested": 50
     },
     "overallAgreementWithRegex": {
       "precision": 0.9977,
-      "recall": 0.9375
+      "recall": 0.9376
     }
   },
   "tags": [
@@ -4579,39 +4579,39 @@
       "kind": "condition",
       "group": "Brain & nerves",
       "facilities": {
-        "strong": 297,
-        "mention": 63,
+        "strong": 264,
+        "mention": 48,
         "suggested": 0,
-        "regexTotal": 360
+        "regexTotal": 312
       },
       "agreementWithRegex": {
-        "regexSentences": 628,
-        "precision": 0.9961,
-        "recall": 0.8137
+        "regexSentences": 538,
+        "precision": 0.9956,
+        "recall": 0.8401
       },
       "topTerms": [
         "stroke",
-        "paralysis",
         "thrombolysis",
         "strokes",
         "post-stroke",
         "stroke-ready",
         "thrombolytic",
-        "brain",
-        "epilepsy",
+        "paralysis",
         "thrombolytic therapy",
-        "neurological",
-        "conditions"
+        "epilepsy",
+        "brain",
+        "disorders",
+        "facility"
       ],
       "examples": {
         "strong": [
           {
             "text": "Cerebrovascular department for stroke and related conditions",
-            "probability": 0.996
+            "probability": 0.99
           },
           {
             "text": "Stroke treatment in Jaipur",
-            "probability": 0.993
+            "probability": 0.995
           },
           {
             "text": "Stroke unit",
@@ -4619,7 +4619,7 @@
           },
           {
             "text": "Stroke rehabilitation program available",
-            "probability": 0.995
+            "probability": 0.997
           },
           {
             "text": "Specializes in stroke care",
@@ -4629,23 +4629,23 @@
         "mention": [
           {
             "text": "District Civil Hospital participates in the National Program for Prevention and Control of Diabetes, Cardio-Vascular Diseases, Cancer and Stroke",
-            "probability": 0.18
-          },
-          {
-            "text": "Critical Care & Internal Medicine department with ICU care and stroke management",
-            "probability": 0.432
+            "probability": 0.135
           },
           {
             "text": "Brain stroke surgeries are performed at Rabindranath Tagore International Institute of Cardiac Sciences, Kolkata.",
-            "probability": 0.245
+            "probability": 0.251
           },
           {
             "text": "Offers emergency care for heart attacks and strokes",
-            "probability": 0.016
+            "probability": 0.018
           },
           {
-            "text": "Sai Ayush Ayurveda Hospital offers paralysis and Parkinson's disease treatment",
-            "probability": 0.304
+            "text": "Participated as a center in a multicenter retrospective study on COVID-19-related strokes conducted from June 2020 to August 2020",
+            "probability": 0.035
+          },
+          {
+            "text": "Catheter Directed Thrombolysis for Deep Vein Thrombosis",
+            "probability": 0.498
           }
         ],
         "suggested": []

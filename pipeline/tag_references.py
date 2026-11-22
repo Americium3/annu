@@ -12,7 +12,7 @@
 REFERENCES: dict[str, dict[str, list[str]]] = {
     # Kidney & urinary
     "kidney-dialysis": {"mesh": ["Renal Dialysis"], "icd10": ["Z49"]},
-    "kidney-failure": {"mesh": ["Renal Insufficiency, Chronic", "Kidney Failure, Chronic"], "icd10": ["N18", "N19"]},
+    "kidney-failure": {"mesh": ["Renal Insufficiency", "Renal Insufficiency, Chronic", "Kidney Failure, Chronic"], "icd10": ["N18", "N19"]},
     "kidney-transplant": {"mesh": ["Kidney Transplantation"], "icd10": ["Z94.0"]},
     "kidney-stones": {"mesh": ["Kidney Calculi", "Urolithiasis", "Lithotripsy"], "icd10": ["N20"]},
     "prostate": {"mesh": ["Prostatic Hyperplasia", "Prostatic Diseases"], "icd10": ["N40", "N42"]},
@@ -69,13 +69,13 @@ REFERENCES: dict[str, dict[str, list[str]]] = {
     # Bones, joints & spine
     "joint-replacement": {"mesh": ["Arthroplasty, Replacement, Knee", "Arthroplasty, Replacement, Hip"], "icd10": ["Z96.6"]},
     "arthroscopy": {"mesh": ["Arthroscopy"], "icd10": []},
-    "spine-surgery": {"mesh": ["Spinal Fusion", "Diskectomy", "Laminectomy"], "icd10": ["M51"]},
+    "spine-surgery": {"mesh": ["Spinal Fusion", "Diskectomy", "Laminectomy", "Intervertebral Disc Displacement"], "icd10": ["M51"]},
     "fracture-trauma": {"mesh": ["Fractures, Bone", "Wounds and Injuries", "Trauma Centers"], "icd10": ["XIX"]},
     "arthritis": {"mesh": ["Arthritis", "Osteoarthritis", "Arthritis, Rheumatoid", "Gout"], "icd10": ["M05", "M06", "M10", "M15-M19"]},
     "back-pain": {"mesh": ["Back Pain", "Neck Pain", "Sciatica", "Spondylosis"], "icd10": ["M54", "M47"]},
     "physiotherapy": {"mesh": ["Physical Therapy Modalities", "Rehabilitation"], "icd10": []},
     # Brain & nerves
-    "stroke": {"mesh": ["Stroke", "Thrombolytic Therapy", "Paralysis"], "icd10": ["I63", "I64", "G81"]},
+    "stroke": {"mesh": ["Stroke", "Thrombolytic Therapy"], "icd10": ["I63", "I64"]},
     "epilepsy": {"mesh": ["Epilepsy", "Seizures"], "icd10": ["G40", "G41"]},
     "neurosurgery": {"mesh": ["Neurosurgical Procedures", "Craniotomy", "Brain Neoplasms"], "icd10": []},
     "eeg-emg": {"mesh": ["Electroencephalography", "Electromyography", "Neural Conduction"], "icd10": []},
@@ -84,7 +84,7 @@ REFERENCES: dict[str, dict[str, list[str]]] = {
     # Digestive & liver
     "endoscopy": {"mesh": ["Endoscopy, Gastrointestinal", "Colonoscopy", "Cholangiopancreatography, Endoscopic Retrograde"], "icd10": []},
     "gallstones": {"mesh": ["Gallstones", "Cholecystectomy"], "icd10": ["K80"]},
-    "hernia": {"mesh": ["Hernia", "Herniorrhaphy"], "icd10": ["K40-K46"]},
+    "hernia": {"mesh": ["Hernia, Abdominal", "Herniorrhaphy"], "icd10": ["K40-K46"]},
     "piles-fistula": {"mesh": ["Hemorrhoids", "Rectal Fistula", "Fissure in Ano", "Pilonidal Sinus"], "icd10": ["K64", "K60", "L05"]},
     "appendicitis": {"mesh": ["Appendicitis", "Appendectomy"], "icd10": ["K35", "K36", "K37"]},
     "liver-disease": {"mesh": ["Liver Diseases", "Liver Cirrhosis", "Hepatitis", "Fatty Liver"], "icd10": ["K70-K77", "B15-B19"]},
