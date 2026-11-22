@@ -356,3 +356,30 @@ Plots pool services/density strata descriptively; use the stratified CSV to chec
 composition effects. These comparisons have no confidence intervals and establish no
 causal relationship. Use sufficient independent district/query groups and uncertainty
 estimates before making fairness or improvement claims.
+
+## End-to-end evaluation on golden_eval (dev)
+
+`experiments/RESULTS.md` holds the results. These scripts compare recommender variants on the team's graded set
+`workspace.golden_eval` (dev split only; the test split is never read). Every variant gets only the user's
+service text and location text, exactly like the app.
+
+| File | Purpose |
+|---|---|
+| `export_data.py` | export the evidence, facilities (with OSM location trust), PINs, tags, address aliases and dev labels to `experiments/data/` (git-ignored) |
+| `golden_eval.py` | metrics: P@3, nDCG@3 (unjudged = 0), condensed `_j` versions, bad@3, answered / abstain, paired bootstrap |
+| `run_golden.py` | the ablation E0 → E6, one function per experiment. E0 runs the unmodified backend from main in a subprocess |
+| `../pipeline/service_index_v2.py` | stage 1 v2: high-recall facility × service candidates with sentence-level evidence status |
+| `rankers.py` | stage-2 text models: rules, BM25, bi-encoder, cross-encoders, NLI, small instruction LLMs as verifiers |
+| `grid.py` | stage-2 grid per text model + leave-one-query-out CV (`GRID_BASE=E6`, `GRID_SMALL=1` for slow models) |
+| `rules_grid.py` | rules-only parameter grid + LOO-CV |
+| `report.py` | writes `RESULTS.md` from `experiments/results/*.csv` |
+
+```bash
+python experiments/export_data.py
+python pipeline/service_index_v2.py --evidence experiments/data/evidence.parquet \
+    --facilities experiments/data/facilities.parquet --out experiments/data/service_index_v2.parquet
+python -m experiments.run_golden            # ablation
+GRID_BASE=E6 python -m experiments.grid      # stage-2 text models
+python -m experiments.rules_grid
+python -m experiments.report
+```

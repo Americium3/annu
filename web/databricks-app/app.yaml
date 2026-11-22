@@ -13,8 +13,12 @@ env:
   # Load fresh tables from Databricks on every start.
   - name: CAREPATH_REFRESH
     value: "1"
-  # Production default: cross-encoder reranking of already-eligible facilities.
+  # Ranking: rules (proof x closeness). On the golden dev set no text model beat it once stage 1 was fixed
+  # (experiments/RESULTS.md); set cross_encoder to rerank with the cross-encoder instead.
   - name: CAREPATH_RANKING_METHOD
-    value: cross_encoder
+    value: rules
+  # Stage 1: v2 high-recall candidates built from model_evidence_items at start (about 2 minutes); v1 = old table.
+  - name: CAREPATH_SERVICE_INDEX
+    value: v2
   - name: HF_HOME
     value: /tmp/carepath/huggingface

@@ -20,3 +20,7 @@ backend/.cache/
 # Local retrieval experiment exports and model caches (never commit source medical records)
 data/experiments/
 experiments/.cache/
+
+# experiment data cache (exported from Databricks)
+experiments/data/
+experiments/.cache/

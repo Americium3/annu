@@ -27,7 +27,7 @@ class FakeModel:
 def snapshot():
     facilities, index = [], []
     for uid, lat, status, tier, text in (
-        ("near", 26.91, "formal", 1, "We provide dialysis."),
+        ("near", 26.91, "formal", 3, "We provide dialysis."),
         ("far", 26.96, "formal", 3, "Our specialized dialysis treatment unit offers haemodialysis."),
         ("blocked", 26.90, "review_blocked", 1, "Our specialized dialysis treatment is provided."),
         ("outside", 27.5, "formal", 1, "Our specialized dialysis unit is open."),
@@ -59,17 +59,22 @@ class ServingCrossEncoderTest(unittest.TestCase):
     def setUp(self):
         self.model = FakeModel()
         self.scorer = CrossEncoderScorer(model=self.model)
-        self.rec = Recommender(snapshot(), scorer=self.scorer)
+        self.rec = Recommender(snapshot(), scorer=self.scorer, ranking_method="cross_encoder")
 
-    def test_actual_serving_default_reorders_using_cross_encoder(self):
-        self.assertEqual(config.RANKING_METHOD, "cross_encoder")
+    def test_default_is_rules(self):
+        self.assertEqual(config.RANKING_METHOD, "rules")
+        self.assertEqual(Recommender(snapshot(), scorer=self.scorer).ranking_method, "rules")
+
+    def test_cross_encoder_reorders_equal_proof(self):
         r = self.rec.recommend("dialysis", "26.9,75.8")
-        self.assertEqual([f["id"] for f in r["results"]], ["far", "near"])
+        # near and far both have one statement (equal proof); the better-matching text wins despite distance
+        self.assertEqual([f["id"] for f in r["results"]], ["far", "near", "outside"])
         self.assertEqual(r["metadata"]["ranking"]["method"], "cross_encoder")
-        # Pool starts at twice the travel distance for dialysis (15 km), i.e. the 50 km step.
-        self.assertEqual(r["queryContext"]["searchParameters"]["radiusKm"], 50)
+        # Pool starts at twice the travel distance for dialysis (15 km), i.e. the 50 km step, and widens until at
+        # least config.MIN_POOL_SIZE (3) facilities are inside: 'outside' (66 km) needs the 100 km step.
+        self.assertEqual(r["queryContext"]["searchParameters"]["radiusKm"], 100)
         passages = [text for call in self.model.calls for _, text in call]
-        self.assertEqual(len(passages), 2)  # blocked, outside and unusable text never scored
+        self.assertEqual(len(passages), 3)  # blocked and unusable text never scored
         self.assertNotIn("unusable specialized dialysis text", passages)
         scores = [f["reranking"]["totalScore"] for f in r["results"]]
         self.assertEqual(scores, sorted(scores, reverse=True))
@@ -93,7 +98,7 @@ class ServingCrossEncoderTest(unittest.TestCase):
         rec = Recommender(snapshot(), scorer=self.scorer, ranking_method="rules")
         rec.warmup()
         r = rec.recommend("dialysis", "26.9,75.8")
-        self.assertEqual([f["id"] for f in r["results"]], ["near", "far"])
+        self.assertEqual([f["id"] for f in r["results"]], ["near", "far", "outside"])
         self.assertNotIn("reranking", r["results"][0])
         self.assertEqual(self.model.calls, [])
 

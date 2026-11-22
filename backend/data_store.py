@@ -24,6 +24,7 @@ class Snapshot:
     pins: pd.DataFrame
     loaded_at: str
     source: str
+    aliases: pd.DataFrame | None = None   # ref_address_alias: kind, variant, standard (state / city spellings)
 
 
 def _frame(cols, rows, numeric=(), boolean=(), json_cols=()):
@@ -70,9 +71,42 @@ def load_from_databricks() -> Snapshot:
     pins = _frame(*db.query(f"SELECT pincode, to_json(states) AS states, to_json(districts) AS districts, lat, lon, "
                             f"is_precise FROM {config.TABLE_PINS}"),
                   numeric=["lat", "lon"], boolean=["is_precise"], json_cols=["states", "districts"])
+    aliases = _frame(*db.query(f"SELECT kind, variant, standard FROM {config.TABLE_ADDRESS_ALIAS}"))
+    if config.SERVICE_INDEX_VERSION == "v2":
+        index = build_index_v2(db, facilities)
     print(f"loaded from Databricks in {time.time() - t0:.1f}s: {len(index)} facility×service rows, "
-          f"{len(facilities)} facilities, {len(pins)} PINs", file=sys.stderr)
-    return Snapshot(tags, index, facilities, pins, pd.Timestamp.now("UTC").isoformat(timespec="seconds"), "databricks")
+          f"{len(facilities)} facilities, {len(pins)} PINs, {len(aliases)} address aliases", file=sys.stderr)
+    return Snapshot(tags, index, facilities, pins, pd.Timestamp.now("UTC").isoformat(timespec="seconds"), "databricks",
+                    aliases)
+
+
+def adapt_index_v2(v2: pd.DataFrame, facilities: pd.DataFrame, use_plausibility: bool = True) -> pd.DataFrame:
+    """v2 candidates -> serving-index rows: grade >= 2 is 'formal' unless the facility's location is unusable
+    (coordinate/PIN conflict, no location) or its identity is conflicting; grade 1 and 0 stay review-only."""
+    loc = facilities.set_index("unique_id")
+    blocked = loc["location_tier"].isin(["conflict", "none"]) | loc["core_identity_conflict"].astype(bool)
+    v2 = v2[v2["unique_id"].isin(loc.index)].copy()
+    good = (v2["grade"] >= 2) & ~v2["unique_id"].map(blocked).fillna(True)
+    v2["eligibility"] = np.where(good, "formal", "review_blocked")
+    v2["reason_codes"] = [list(rc) + (["location_conflict_coords_vs_pin"] if blocked.get(u, True) else [])
+                          for rc, u in zip(v2["reason_codes"], v2["unique_id"])]
+    v2["evidence"] = v2["evidence"].map(lambda ev: [dict(e) for e in ev])
+    v2["evidence_tier"] = v2["evidence_tier"].where(v2["grade"] >= 2, 3)
+    if not use_plausibility:
+        v2 = v2.drop(columns=[c for c in ("source_factor", "plausibility") if c in v2])
+    return v2.reset_index(drop=True)
+
+
+def build_index_v2(db, facilities: pd.DataFrame) -> pd.DataFrame:
+    """Read model_evidence_items and build the v2 candidates with pipeline/service_index_v2.py."""
+    from service_index_v2 import build
+    parts = []
+    for b in range(8):
+        cols, rows = db.query(f"SELECT unique_id, field, to_json(collect_list(struct(item_idx, text))) items "
+                              f"FROM {config.TABLE_EVIDENCE} WHERE pmod(hash(unique_id), 8) = {b} GROUP BY unique_id, field")
+        parts.append(pd.DataFrame(rows, columns=cols))
+    v2 = build(pd.concat(parts, ignore_index=True), facilities[["unique_id", "name", "facility_category"]])
+    return adapt_index_v2(v2, facilities)
 
 
 def get_snapshot(refresh: bool = False) -> Snapshot:

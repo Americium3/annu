@@ -55,6 +55,11 @@ def _clean(o):
     return o
 
 
+_GENERIC_NAME_WORDS = {"hospital", "hospitals", "clinic", "centre", "center", "medical", "health", "care", "the", "and",
+                       "of", "multispeciality", "multispecialty", "speciality", "specialty", "super", "nursing", "home",
+                       "pvt", "ltd", "private", "limited", "institute", "research", "dr", "trust", "memorial"}
+
+
 def _norm(s: str | None) -> str:
     return re.sub(r"[^a-z0-9]+", " ", (s or "").lower()).strip()
 
@@ -76,7 +81,23 @@ def proof_strength(df: pd.DataFrame) -> pd.Series:
     equipment = np.where(df["only_equipment"].astype(bool), config.PROOF_ONLY_EQUIPMENT, 1.0)
     other = np.where(df["n_explicit_elsewhere"].fillna(0) > 0, config.PROOF_MENTIONS_OTHER, 1.0)
     location = df["location_tier"].astype(str).map(config.PROOF_BY_LOCATION).fillna(0.7)
-    return tier * equipment * other * location
+    urgent = df["emergency_factor"].astype(float) if "emergency_factor" in df else 1.0
+    # v2 index: explicit wording only in specialty/name/description, and facility type / name plausibility
+    source = df["source_factor"].astype(float).fillna(1.0) if "source_factor" in df else 1.0
+    plausible = df["plausibility"].astype(float).fillna(1.0) if "plausibility" in df else 1.0
+    return tier * equipment * other * location * urgent * source * plausible
+
+
+def solid_proof(df: pd.DataFrame) -> pd.Series:
+    """Which candidates count as solid proof (always listed before weak proof), per config.SOLID_GATE."""
+    not_equipment = ~df["only_equipment"].astype(bool)
+    if config.SOLID_GATE == "off":
+        return pd.Series(True, index=df.index)
+    if config.SOLID_GATE == "evidence":
+        source = df["source_factor"].astype(float).fillna(1.0) if "source_factor" in df else 1.0
+        plausible = df["plausibility"].astype(float).fillna(1.0) if "plausibility" in df else 1.0
+        return not_equipment & (source * plausible >= 0.99)
+    return (df["proof"] >= config.PROOF_SOLID_MIN) & not_equipment
 
 
 def rank_candidates(ok: pd.DataFrame, tag: str, text_match: pd.Series | None = None) -> pd.DataFrame:
@@ -93,7 +114,7 @@ def rank_candidates(ok: pd.DataFrame, tag: str, text_match: pd.Series | None = N
         out["text_match"] = text_match.reindex(out.index).astype(float)
         out["evidence_strength"] = w["text"] * out["text_match"] + w["proof"] * out["proof"]
     out["rank_score"] = out["evidence_strength"] * out["closeness"]
-    out["solid_proof"] = (out["proof"] >= config.PROOF_SOLID_MIN) & ~out["only_equipment"].astype(bool)
+    out["solid_proof"] = solid_proof(out)
     return out.sort_values(["solid_proof", "rank_score", "distance_km", "n_explicit_usable", "unique_id"],
                            ascending=[False, False, True, False, True])
 
@@ -129,8 +150,8 @@ class Recommender:
         self.ranking_method = ranking_method or config.RANKING_METHOD
         if self.ranking_method not in {"cross_encoder", "rules"}:
             raise ValueError("CAREPATH_RANKING_METHOD must be cross_encoder or rules")
-        self.ranking_version = ("cross-encoder-x-closeness-v4" if self.ranking_method == "cross_encoder"
-                                else "proof-x-closeness-v4")
+        self.ranking_version = ("cross-encoder-x-closeness-v5" if self.ranking_method == "cross_encoder"
+                                else "proof-x-closeness-v5")
         self.scorer = scorer if scorer is not None else CrossEncoderScorer(
             config.CROSS_ENCODER_MODEL, config.CROSS_ENCODER_REVISION, config.CROSS_ENCODER_DEVICE,
             config.CROSS_ENCODER_BATCH_SIZE, config.CROSS_ENCODER_MAX_LENGTH,
@@ -164,6 +185,16 @@ class Recommender:
         self.cities = (pts.groupby(["city", "state_u"])
                           .agg(lat=("loc_lat", "median"), lon=("loc_lon", "median"), n=("loc_lat", "size")).reset_index())
         self.states = set(self.districts["state"]) | set(self.cities["state_u"])
+        # spelling variants (ref_address_alias): states, old city names, cities that sit inside a district
+        al = getattr(snap, "aliases", None)
+        al = al if al is not None else pd.DataFrame(columns=["kind", "variant", "standard"])
+        pick = lambda kind: {self._alias_key(v): str(t) for k, v, t in al[["kind", "variant", "standard"]].itertuples(index=False)
+                             if k == kind}
+        self._state_alias, self._city_alias = pick("state"), pick("city")
+        self._city_district = pick("city -> district (fallback)")
+        self._state_by_key = {self._alias_key(x): x for x in self.states}
+        self._place_names = set(self.districts["district"]) | set(self.cities["city"])
+        self.fac["name_key"] = self.fac["name"].fillna("").str.lower().str.replace(r"[^a-z0-9]+", " ", regex=True)
 
     def warmup(self):
         if self.ranking_method == "cross_encoder":
@@ -180,7 +211,10 @@ class Recommender:
         within = within.copy()
         if within.empty:
             return rank_candidates(within, tag)
-        query = " ".join(dict.fromkeys([label, *self.tags.loc[tag, "synonyms"], *config.SERVICE_INPUT_SYNONYMS.get(tag, [])]))
+        if config.CROSS_ENCODER_QUERY_STYLE == "natural":
+            query = f"a hospital that provides {label.lower()}"
+        else:
+            query = " ".join(dict.fromkeys([label, *self.tags.loc[tag, "synonyms"], *config.SERVICE_INPUT_SYNONYMS.get(tag, [])]))
         selected, texts = {}, []
         for idx, row in within.iterrows():
             # Keep evidence selection independent of model score and stable across requests.
@@ -275,8 +309,11 @@ class Recommender:
             return {"type": "coordinates", "lat": float(m.group(1)), "lon": float(m.group(2)), "precision": "point",
                     "name": raw, "district": "", "state": "", "note": "user-supplied coordinates", "confidence": "high",
                     "ambiguous": []}
-        pin = re.sub(r"\D", "", raw) if re.fullmatch(r"[\d\s]{6,7}", raw) else ""
-        if pin:
+        # a six-digit PIN anywhere in the text: "PIN 232115", "pincode 560 034", "near 751024"
+        pm = re.search(r"(?<!\d)(\d{3})\s?(\d{3})(?!\d)", raw)
+        if pm and re.fullmatch(r"(?i)[\s,.:#-]*(pin|pin ?code|pincode|postal code|near)?[\s,.:#-]*", raw[:pm.start()]) \
+                and not re.search(r"\d", raw[pm.end():]):
+            pin = pm.group(1) + pm.group(2)
             if pin not in self.pins.index or pd.isna(self.pins.loc[pin, "lat"]):
                 raise LocationNotFound(f"PIN {pin} is not in the India Post directory or has no coordinates.", [])
             r = self.pins.loc[pin]
@@ -288,13 +325,91 @@ class Recommender:
         parts = [p.strip().upper() for p in raw.split(",") if p.strip()]
         if not parts:
             raise LocationNotFound("Enter a city, district, PIN code or coordinates.", [])
-        name = re.sub(r"\s+(DISTRICT|DIST\.?|CITY)$", "", parts[0])
-        state = parts[-1] if len(parts) > 1 and parts[-1] in self.states else None
+        name = re.sub(r"^(NEAR|IN|AROUND)\s+|\s+(DISTRICT|DIST\.?|CITY|TOWN|TALUK|TEHSIL)$", "", parts[0]).strip()
+        state = self._state_of(parts[-1]) if len(parts) > 1 else None
+        for candidate, how in self._name_variants(name):
+            hit = self._place_lookup(candidate, state)
+            if hit:
+                if how != "as typed":
+                    hit["note"] += f" ('{name.title()}' read as '{candidate.title()}', {how})"
+                return hit
+        landmark = self._facility_landmark(parts)
+        if landmark:
+            return landmark
+        close = difflib.get_close_matches(name, list(self._place_names), n=1, cutoff=0.88)
+        if close:
+            hit = self._place_lookup(close[0], state)
+            if hit:
+                hit["note"] += f" (closest place name to '{name.title()}')"
+                hit["confidence"] = "low"
+                return hit
+        sugg = [f"{s['name']}, {s['region']}" for s in self.location_suggestions(name[:4], 5)]
+        raise LocationNotFound(f"Could not find '{raw}'. Try a district, city, 6-digit PIN or 'lat, lon'.", sugg)
+
+    # ------------------------------------------------------------------ service intent
+    def service_intent(self, text: str, primary: str) -> tuple[list[str], bool]:
+        """All services named in the text ("Trauma / emergency care" -> trauma + 24/7 emergency) and whether the
+        wording is urgent ("emergency C-section", "accident")."""
+        t = _norm(text)
+        urgent = bool(re.search(config.EMERGENCY_WORDS, (text or "").lower()))
+        tags = [primary]
+        if config.MULTI_INTENT and re.search(r"/|\band\b|&|,|\+", text or ""):
+            for part in re.split(r"/|\band\b|&|,|\+", text or ""):
+                if not _norm(part):
+                    continue
+                try:
+                    other, _, _ = self.match_service(part)
+                except ServiceNotFound:
+                    continue
+                # a condition named next to a service ("chemotherapy / cancer treatment") describes it; only other
+                # *services* ("trauma / emergency care") widen the search
+                if other not in tags and self.tags.loc[other, "kind"] == "service":
+                    tags.append(other)
+        return tags, urgent
+
+    def _providers(self, tags: list[str]) -> pd.DataFrame:
+        """Index rows for one or several services; one row per facility (its strongest evidence across them)."""
+        frames = [self.by_tag[t] for t in tags if t in self.by_tag]
+        if not frames:
+            return self.index.iloc[0:0].copy()
+        prov = pd.concat(frames).copy()
+        if len(tags) > 1:
+            prov["_formal"] = (prov["eligibility"] == "formal").astype(int)
+            prov = (prov.sort_values(["_formal", "evidence_tier", "n_explicit_usable"], ascending=[False, True, False])
+                        .drop_duplicates("unique_id").drop(columns="_formal"))
+        return prov
+
+    # ------------------------------------------------------------------ location helpers
+    @staticmethod
+    def _alias_key(s: str) -> str:
+        return re.sub(r"[^a-z]", "", (s or "").lower())
+
+    def _state_of(self, text: str) -> str | None:
+        """Facility-state spelling for a typed state ('UP', 'Orissa', 'NCT of Delhi'), or None."""
+        t = text.strip().upper()
+        if t in self.states:
+            return t
+        key = self._state_alias.get(self._alias_key(t), self._alias_key(t))
+        return self._state_by_key.get(key)
+
+    def _name_variants(self, name: str):
+        """The typed place, then its alias ('Calcutta' -> 'Kolkata'), then a district the alias table maps it to."""
+        yield name, "as typed"
+        key = self._alias_key(name)
+        if key in self._city_alias:
+            yield self._city_alias[key].upper(), "old or variant spelling"
+        if key in self._city_district:
+            yield self._city_district[key].upper(), "city inside this district"
+
+    def _place_lookup(self, name: str, state: str | None) -> dict | None:
         d = self.districts[self.districts["district"] == name]
         if not len(d):   # "Leh" → "LEH LADAKH": accept a unique district starting with the input
             pre = self.districts[self.districts["district"].str.startswith(name + " ")]
             if pre["district"].nunique() == 1:
                 d = pre
+        if not len(d):   # alias tables drop spaces ("gautambuddhanagar")
+            key = self._alias_key(name)
+            d = self.districts[self.districts["district"].map(self._alias_key) == key]
         if state:
             d = d[d["state"] == state]
         if len(d):
@@ -316,8 +431,30 @@ class Recommender:
                     "name": top.city.title(), "district": top.city.title(), "state": top.state_u.title(),
                     "note": f"approximate centre of {top.city.title()} from {int(top.n)} facility addresses",
                     "confidence": "medium", "ambiguous": []}
-        sugg = [f"{s['name']}, {s['region']}" for s in self.location_suggestions(name[:4], 5)]
-        raise LocationNotFound(f"Could not find '{raw}'. Try a district, city, 6-digit PIN or 'lat, lon'.", sugg)
+        return None
+
+    def _facility_landmark(self, parts: list[str]) -> dict | None:
+        """A facility named as the location ('Chole Eye Hospital, Bhandara'): use that facility's own position."""
+        words = [w for w in re.findall(r"[a-z0-9]+", parts[0].lower()) if w not in _GENERIC_NAME_WORDS]
+        if len(words) < 1 or len(parts[0]) < 6:
+            return None
+        names = self.fac["name_key"]
+        mask = np.ones(len(names), dtype=bool)
+        for w in words:
+            mask &= names.str.contains(rf"\b{re.escape(w)}\b", regex=True).to_numpy()
+        hits = self.fac[mask & self.fac["rec_lat"].notna().to_numpy()]
+        if len(parts) > 1 and len(hits) > 1:   # use the rest of the text ("Bhandara") to pick the right branch
+            place = " ".join(parts[1:]).lower()
+            local = hits[hits[["city_raw", "district", "state"]].fillna("").apply(
+                lambda r: any(x and x.lower() in place or place in x.lower() for x in r), axis=1)]
+            hits = local if len(local) else hits
+        if len(hits) != 1:
+            return None
+        r = hits.iloc[0]
+        return {"type": "facility", "lat": float(r["rec_lat"]), "lon": float(r["rec_lon"]), "precision": "point",
+                "name": _s(r["name"]), "district": _s(r["district"]), "state": _s(r["state"]),
+                "note": f"position of {_s(r['name'])} (a facility named as the location)",
+                "confidence": "medium", "ambiguous": []}
 
     # ------------------------------------------------------------------ steps 2–4
     def recommend(self, service_text: str, location_text: str, coordinates: dict | None = None) -> dict:
@@ -328,7 +465,13 @@ class Recommender:
         tag, how, _ = self.match_service(service_text)
         label = self.tags.loc[tag, "label"]
         loc = self.resolve_location(location_text, coordinates)
-        prov = self.by_tag.get(tag, self.index.iloc[0:0]).copy()
+        tags, urgent = self.service_intent(service_text, tag)
+        prov = self._providers(tags)
+        if urgent:
+            has = prov["lists_emergency_24x7"].astype(bool)
+            if "emergency_evidence" in prov:
+                has |= prov["emergency_evidence"].fillna(0).astype(float) > 0
+            prov["emergency_factor"] = np.where(has, 1.0, config.EMERGENCY_MISSING_FACTOR)
         n_dataset = len(prov)
         n_dataset_ok = int((prov["eligibility"] == "formal").sum())
 
@@ -345,7 +488,9 @@ class Recommender:
         travel = travel_km(tag)
         first_step = next((r for r in steps if r >= 2 * travel), steps[-1])
         candidates = [r for r in steps if r >= first_step]
-        radius = next((r for r in candidates if (ok["distance_km"] <= r).any()), steps[-1])
+        radius = next((r for r in candidates if (ok["distance_km"] <= r).sum() >= config.MIN_POOL_SIZE),
+                      next((r for r in candidates if (ok["distance_km"] <= r).any()), steps[-1]) if config.MIN_POOL_SIZE <= 1
+                      else steps[-1])
         pool = ok[ok["distance_km"] <= radius]
         within = (self._cross_encoder_order(pool, tag, label) if self.ranking_method == "cross_encoder"
                   else rank_candidates(pool, tag))

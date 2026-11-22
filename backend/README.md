@@ -10,29 +10,46 @@ web (Vite :5173) ──/api──▶ backend (FastAPI :8000) ──SQL──▶ 
 
 ## How a request is answered
 
+> Measured on `workspace.golden_eval` (dev): P@3 0.369 → 0.881, nDCG@3 0.351 → 0.779 against the previous main.
+> Every step, model and parameter that was tried is in [experiments/RESULTS.md](../experiments/RESULTS.md).
+
 1. **Service → tag**: the text is mapped to one of the 100 service tags (`ref_service_tags`; labels, synonyms and
-   `SERVICE_INPUT_SYNONYMS` in `config.py`). Ambiguous text ("surgery") returns 422 with suggestions.
-2. **Who lists it**: facilities whose services column contains the tag (`model_facility_services` → `serving_service_index`).
-   If none in the whole dataset, the response says so.
-3. **Usable evidence + location**: rows marked `review_blocked` (identity conflict, evidence about another institution,
+   `SERVICE_INPUT_SYNONYMS` in `config.py`). Ambiguous text ("surgery") returns 422 with suggestions. Text that names
+   several *services* ("Trauma / emergency care") searches all of them; a condition next to a service
+   ("chemotherapy / cancer treatment") only describes it. Whole sentences work too ("Bangalore ke paas an emergency
+   C-section kahan milega?").
+2. **Location**: coordinates; a 6-digit PIN anywhere in the text ("PIN 232115", "pincode 560 034"); district or city,
+   also through old / variant spellings from `ref_address_alias` ("Calcutta", "Bombay", "UP"); a facility named as the
+   location ("Chole Eye Hospital, Bhandara"); last, the closest place name (marked low confidence).
+3. **Who offers it (stage 1, v2)**: `pipeline/service_index_v2.py` builds facility × service candidates from every
+   evidence field when the snapshot loads (`CAREPATH_SERVICE_INDEX=v2`, about 2 minutes). Each sentence gets a status:
+   explicit, related (specialty only), negated / planned / outsourced / referred, or about another institution. Grade
+   3 = explicit and corroborated, 2 = one explicit statement (both recommendable), 1 = related only, 0 = negative only.
+   Wrong senses are dropped ("gastric bypass" is not cardiac surgery, "emergency dentistry" is not emergency care,
+   jaw fractures are not trauma care). Down-weights: explicit wording only in specialty / name / description (× 0.75),
+   a facility name announcing another specialty ("… Eye Hospital" claiming burns care: × 0.6, likely merged records),
+   inpatient-only services at a clinic (× 0.7). `CAREPATH_SERVICE_INDEX=v1` reads the old `serving_service_index`.
+4. **Usable evidence + location**: rows marked `review_blocked` (identity conflict, evidence about another institution,
    coordinates vs PIN conflict, no location) are counted but never recommended.
-4. **Where**: the candidate pool is at least twice the travel distance for this kind of care (see below), widened
-   25 → 50 → 100 → 200 km until a provider is found. Inside the pool, distance is a ranking factor, not a cut-off.
-5. **Order**: rank score = **evidence strength × closeness** (`rank_candidates` in `recommender.py`, weights in
+5. **Where**: the candidate pool is at least twice the travel distance for this kind of care (see below), widened
+   25 → 50 → 100 → 200 km until at least `MIN_POOL_SIZE` (3) facilities are inside, so people get options to compare.
+   Inside the pool, distance is a ranking factor, not a cut-off.
+6. **Order**: rank score = **evidence strength × closeness** (`rank_candidates` in `recommender.py`, weights in
    `config.py`). The selected pool and `formal` eligibility stay upstream gates: review-blocked rows cannot be rescued
    by a high score.
    - *Proof strength* (0–1): evidence tier 1 / 2 / 3 → 1.0 / 0.8 / 0.55, × 0.6 if only equipment is mentioned,
      × 0.85 if statements also name another institution, × 1.0 / 0.9 / 0.75 for a verified point / unverified point /
      PIN-area location.
-   - *Text match* (0–1, default `cross_encoder` mode): how well the best quote matches the service, from the
-     cross-encoder (below).
-   - *Evidence strength* = 4/7 × text match + 3/7 × proof strength (the earlier 0.4 : 0.3 text : evidence split).
-     In `rules` mode (`CAREPATH_RANKING_METHOD=rules`) there is no text match and evidence strength = proof strength.
+   - *Text match* (0–1, only in `cross_encoder` mode): how well the best quote matches "a hospital that provides
+     <service>", from the cross-encoder (below).
+   - *Evidence strength* = proof strength in the default `rules` mode. In `cross_encoder` mode it is 0.25 × text match
+     + 0.75 × proof strength (picked by leave-one-query-out CV; was 4/7 : 3/7).
    - *Closeness* (0–1) = 1 / (1 + (km / travel_km)²): it halves at the distance people reasonably travel for this kind
      of care, about 10 km for emergencies and births, 15 km for dialysis and routine care, 30 km for scans and 60 km for
      planned surgery (default 25 km). It multiplies evidence, so a far facility needs much stronger evidence to rank first.
-   - Weak proof (equipment only, or proof below 0.5) is always listed after every facility with solid proof, however
-     close it is or however well its text matches.
+   - Weak proof (equipment only, or explicit wording that was down-weighted for its source or plausibility) is always
+     listed after every facility with solid proof (`SOLID_GATE=evidence`). The earlier gate (`proof`, proof strength
+     ≥ 0.5) also pushed a one-statement claim at an unverified point behind everything, however close.
    - The score shown in the UI is this rank score × 100, so the number and the order always agree. Each result also
      carries `rankFactors` (text match, proof, evidence, closeness, travel distance and the reasons behind proof
      strength), `reranking` in cross-encoder mode, and `phone` / `website` when the record has them.
@@ -51,7 +68,8 @@ truncated by its tokenizer. Raw single-label logits receive sigmoid exactly once
 **not a calibrated probability of service availability or medical quality**.
 
 ```text
-rank_score = (4/7 * cross_encoder_relevance + 3/7 * proof_strength) * 1 / (1 + (straight_km / travel_km)^2)
+rank_score = proof_strength * 1 / (1 + (straight_km / travel_km)^2)                                   # rules (default)
+rank_score = (0.25 * cross_encoder_relevance + 0.75 * proof_strength) * 1 / (1 + (straight_km / travel_km)^2)  # cross_encoder
 ```
 
 Solid proof first, then the unrounded score descending, then distance and facility ID for deterministic ties.
@@ -72,7 +90,7 @@ uvicorn main:app --port 8000
 The first start loads the tables from Databricks (~15 s) and writes `backend/.cache/snapshot.pkl` (git-ignored).
 Later starts read the snapshot (~1 s, no token needed). Set `CAREPATH_REFRESH=1` to reload from Databricks.
 
-The app additionally loads and warms the cross-encoder before reporting startup readiness. First startup requires
+In `cross_encoder` mode the app additionally loads and warms the cross-encoder before reporting startup readiness. First startup requires
 access to the Hugging Face checkpoint (and can be slower); subsequent model loads use its normal disk cache.
 For offline deployments, pre-download the checkpoint and set `CAREPATH_CROSS_ENCODER_MODEL` to its local directory.
 The Databricks Apps bundle includes the scorer and neural dependencies automatically; `app.yaml` sets the default
@@ -82,7 +100,12 @@ Configuration:
 
 | Environment variable | Default |
 |---|---|
-| `CAREPATH_RANKING_METHOD` | `cross_encoder`; explicitly use `rules` only for a legacy comparison |
+| `CAREPATH_RANKING_METHOD` | `rules`; `cross_encoder` reranks with the cross-encoder (no gain on the golden dev set) |
+| `CAREPATH_SERVICE_INDEX` | `v2` (build candidates from evidence at load); `v1` reads `serving_service_index` |
+| `CAREPATH_MIN_POOL_SIZE` | `3` facilities before the search stops widening |
+| `CAREPATH_SOLID_GATE` | `evidence`; `proof` restores the earlier proof ≥ 0.5 gate |
+| `CAREPATH_CROSS_ENCODER_QUERY_STYLE` | `natural` ("a hospital that provides X"); `keywords` = label + synonyms |
+| `CAREPATH_EMERGENCY_MISSING_FACTOR` | `1.0` (off); e.g. `0.6` ranks facilities with emergency evidence first for urgent wording |
 | `CAREPATH_CROSS_ENCODER_MODEL` | `cross-encoder/ms-marco-MiniLM-L6-v2` or a local checkpoint directory |
 | `CAREPATH_CROSS_ENCODER_REVISION` | unset; pin a checkpoint revision for reproducible final runs |
 | `CAREPATH_CROSS_ENCODER_DEVICE` | `cpu` |

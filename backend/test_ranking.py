@@ -38,7 +38,19 @@ def test_trade_offs():
 
 def test_weak_proof_never_beats_solid():
     rows = [fac("equipment-next-door", 3, 0.5, only_eq=True), fac("solid-24km", 1, 24), fac("weak-pin", 3, 1, loc="pin_area")]
-    assert order(rows, "kidney-dialysis") == ["solid-24km", "weak-pin", "equipment-next-door"]  # weak group: proof x closeness
+    # default gate ("evidence"): any explicit, non-equipment claim is solid; equipment-only next door is still last,
+    # and a one-statement claim 1 km away competes on proof x closeness with a strong claim 24 km away
+    assert order(rows, "kidney-dialysis") == ["weak-pin", "solid-24km", "equipment-next-door"]
+
+
+def test_legacy_proof_gate():
+    import config
+    old, config.SOLID_GATE = config.SOLID_GATE, "proof"
+    try:
+        rows = [fac("equipment-next-door", 3, 0.5, only_eq=True), fac("solid-24km", 1, 24), fac("weak-pin", 3, 1, loc="pin_area")]
+        assert order(rows, "kidney-dialysis") == ["solid-24km", "weak-pin", "equipment-next-door"]
+    finally:
+        config.SOLID_GATE = old
 
 
 def test_end_to_end():
