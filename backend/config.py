@@ -43,6 +43,10 @@ RERANK_WEIGHTS = {"text": 0.3, "proof": 0.7}
 TEXT_MATCH_LOGIT_RANGE = (-11.0, -5.0)
 
 
+# Voice input (stt.py): Whisper inside the app, so speech never leaves Databricks. "off" disables it.
+STT_MODEL = os.environ.get("CAREPATH_STT_MODEL", "openai/whisper-small")
+STT_MAX_SECONDS = 30
+
 # LLM judge (judge.py): one verdict per top candidate on whether its own record lines support the care.
 # Proof strength is multiplied by the verdict's factor (never raised); equipment_only / not_supported become weak proof.
 JUDGE_TOP_K = 8

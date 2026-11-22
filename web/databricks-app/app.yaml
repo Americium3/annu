@@ -22,3 +22,7 @@ env:
   # Only answers that quote the message are kept. If the endpoint is missing, the rules result stands.
   - name: CAREPATH_LLM_ENDPOINT
     value: databricks-meta-llama-3-3-70b-instruct
+  # Voice input (backend/stt.py): Whisper runs inside the app, so speech stays on Databricks.
+  # About 1 GB of memory; set to "off" to disable (the page then uses the browser's own voice typing).
+  - name: CAREPATH_STT_MODEL
+    value: openai/whisper-small

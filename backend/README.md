@@ -100,6 +100,16 @@ Urgency also changes the ranking: level 3 halves the travel distance (`URGENT_TR
 count more. When the best option for an urgent request is still far (more than twice that distance), the page
 suggests calling 108. Nothing here is a diagnosis.
 
+## Voice input (`stt.py`, `POST /api/transcribe`)
+
+As in Sprout, the browser records and the server transcribes. Sprout uses Groq's Whisper; CarePath runs the same
+open model inside the app (`CAREPATH_STT_MODEL`, default `openai/whisper-small`, CPU) so speech stays on
+Databricks. The page records with the Web Audio API and sends 16 kHz mono 16-bit PCM (no audio decoder needed on
+the server). Recording stops on a tap, after ~1.4 s of silence once the person has spoken, or at 20 s. A short hint
+of Indian place names and kinds of care is passed as Whisper's prompt (it turned "near Kodak" into "near Cuttack"
+on sample audio). Small, not base: base writes Hindi in Urdu script. If the server can't transcribe (503), the page
+falls back to the browser's own voice typing where it exists; microphone problems get their own messages.
+
 ## Run
 
 ```bash

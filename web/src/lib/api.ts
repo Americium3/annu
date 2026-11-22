@@ -6,7 +6,7 @@ export { ApiError };
 import { locations as demoLocations, services as demoServices } from "../data/demo";
 
 /** Backend base URL. Empty = same origin (Vite dev server proxies /api to the FastAPI backend). */
-const API_BASE = (import.meta.env.VITE_API_BASE as string | undefined) ?? "";
+export const API_BASE = (import.meta.env.VITE_API_BASE as string | undefined) ?? "";
 /** Set VITE_USE_DEMO=true to run the UI on the bundled mock data without a backend. */
 export const USE_DEMO = import.meta.env.VITE_USE_DEMO === "true";
 

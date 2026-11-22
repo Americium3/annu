@@ -4280,7 +4280,7 @@ html[data-transition="emergency"]::view-transition-new(root) {
 .ask {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 32px;
   animation: rise-in 600ms var(--ease-out) backwards;
 }
 
@@ -4366,6 +4366,10 @@ html[data-transition="emergency"]::view-transition-new(root) {
   background: var(--brand-line);
 }
 
+.ask-mic {
+  position: relative;
+}
+
 .ask-mic[aria-pressed="true"] {
   position: relative;
   color: #ffffff;
@@ -4413,13 +4417,45 @@ html[data-transition="emergency"]::view-transition-new(root) {
   cursor: default;
 }
 
-.ask-listening {
+.ask-voice-status {
   position: absolute;
   bottom: -26px;
   left: 24px;
-  color: var(--critical-ink);
+  color: var(--text-3);
   font-size: var(--fs-xs);
   font-weight: 700;
+}
+
+.ask-voice-status:empty {
+  display: none;
+}
+
+.ask-box.is-listening .ask-voice-status {
+  color: var(--critical-ink);
+}
+
+.ask-voice-status.is-error {
+  right: 16px;
+  color: var(--warn-ink);
+}
+
+/* The ring follows the speaker's loudness (--level, 0-1, set from the recorder). */
+.ask-box.is-listening .ask-mic::before {
+  position: absolute;
+  inset: -4px;
+  border-radius: inherit;
+  background: rgb(194 72 59 / 0.18);
+  transform: scale(calc(1 + var(--level, 0) * 0.55));
+  transition: transform 90ms linear;
+  content: "";
+}
+
+.ask-box.is-transcribing {
+  border-color: var(--brand-line);
+}
+
+.ask-box.is-transcribing textarea {
+  opacity: 0.55;
 }
 
 .ask--compact .ask-box {

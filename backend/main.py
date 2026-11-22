@@ -7,7 +7,7 @@ from __future__ import annotations
 import os
 import sys
 from contextlib import asynccontextmanager
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -16,6 +16,7 @@ from recommender import LocationNotFound, Recommender, ServiceNotFound
 from cross_encoder import CrossEncoderError
 from judge import EvidenceJudge
 from nlu import LlmClient, Understander
+from stt import Transcriber, TranscriptionError
 
 STATE: dict = {}
 
@@ -36,6 +37,8 @@ async def lifespan(app: FastAPI):
             print(f"LLM unavailable ({type(exc).__name__}); using rules only", file=sys.stderr)
     STATE["nlu"] = Understander(known_place=rec.known_place, llm=llm or False)
     rec.judge = EvidenceJudge(llm) if llm else None
+    STATE["stt"] = Transcriber()
+    STATE["stt"].warmup_in_background()  # voice input; loading never delays the rest of the app
     print(f"CarePath API ready – data: {snap.source}", file=sys.stderr)
     yield
 
@@ -79,7 +82,8 @@ def health():
     rec: Recommender = STATE["rec"]
     return {"status": "ok", "data": rec.snap.source, "facilityServiceRows": len(rec.index), "services": len(rec.tags),
             "ranking": rec.ranking_info(), "understanding": STATE["nlu"].info() if "nlu" in STATE else None,
-            "judge": rec.judge.info() if rec.judge else None}
+            "judge": rec.judge.info() if rec.judge else None,
+            "voice": STATE["stt"].info() if "stt" in STATE else None}
 
 
 @app.get("/api/services")
@@ -142,3 +146,21 @@ def ask(req: AskRequest):
     except CrossEncoderError as e:
         raise HTTPException(503, {"message": str(e)})
     return {**out, "next": "results", "results": results}
+
+
+@app.post("/api/transcribe")
+async def transcribe(request: Request, lang: str = Query(default="en", pattern="^(en|hi)$")):
+    """Voice input: the body is 16 kHz mono 16-bit little-endian PCM recorded in the browser (no file upload or
+    audio decoder needed). Returns {transcript}. 503 when voice is off or the model is unavailable, so the page can
+    fall back to the browser's own speech recognition or to typing."""
+    stt: Transcriber | None = STATE.get("stt")
+    if stt is None or not stt.enabled:
+        raise HTTPException(503, {"message": "Voice input is not set up on this server."})
+    body = await request.body()
+    if len(body) > 2 * 16000 * 40:
+        raise HTTPException(413, {"message": "The recording is too long."})
+    try:
+        from starlette.concurrency import run_in_threadpool
+        return await run_in_threadpool(stt.transcribe, body, lang)
+    except TranscriptionError as e:
+        raise HTTPException(503, {"message": str(e)})
