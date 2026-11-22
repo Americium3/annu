@@ -1,7 +1,8 @@
 import { AlertTriangle, ArrowRight, CheckCircle2, HelpCircle, ShieldAlert } from "lucide-react";
 import { operatorLabel, useI18n } from "../i18n";
 import { transitionName } from "../lib/motion";
-import { knownOperator, reasonText } from "../lib/reason";
+import { displayPhone, telUrl } from "../lib/facilityActions";
+import { knownOperator, reasonText, statusLabel } from "../lib/reason";
 import type { FacilityRecommendation } from "../types";
 import { FacilityActions } from "./FacilityActions";
 
@@ -13,7 +14,7 @@ type T = ReturnType<typeof useI18n>["t"];
 
 /** One plain sentence on whether the service is confirmed, and by what. */
 export function reasonLine(t: T, facility: FacilityRecommendation) {
-  return reasonText(t, facility.confidence, facility.sources.map((source) => source.sourceType));
+  return reasonText(t, facility.confidence, facility.sources.map((source) => source.sourceType), facility);
 }
 
 function Reason({ facility }: { facility: FacilityRecommendation }) {
@@ -40,7 +41,19 @@ function Status({ facility }: { facility: FacilityRecommendation }) {
   const risky = facility.confidence === "low" || facility.uncertainty.level === "high";
   const level = confirmed && !risky ? "high" : risky ? "low" : "medium";
   const Icon = level === "high" ? CheckCircle2 : level === "medium" ? HelpCircle : AlertTriangle;
-  const label = level === "high" ? t.statusConfirmed : level === "medium" ? t.statusCheck : t.statusNot;
+  const label = statusLabel(t, level, facility);
+  // "Call first" names the number and dials it, so the advice can be acted on.
+  if (level !== "high" && facility.phone) {
+    return (
+      <p className={`card-reason board-status confidence-${level}`} title={text}>
+        <Icon size={15} aria-hidden="true" />
+        <a href={telUrl(facility.phone)} onClick={(event) => event.stopPropagation()}>
+          {label} · <span className="action-number">{displayPhone(facility.phone)}</span>
+        </a>
+        <span className="sr-only">: {text}</span>
+      </p>
+    );
+  }
   return (
     <p className={`card-reason board-status confidence-${level}`} title={text}>
       <Icon size={15} aria-hidden="true" />
