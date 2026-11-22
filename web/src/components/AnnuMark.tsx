@@ -1,17 +1,21 @@
 /**
- * Annu's logo: the Devanagari letter अ ("a", the first letter of the alphabet
- * and of अन्नू) in a teal tile, hanging from a warm coral headline. The
- * headline is the shirorekha that Devanagari letters hang from; here it is
- * the one warm stroke in the mark, a roof over the letter: care.
+ * Annu's logo: the Devanagari letter अ ("a", the first letter of अन्नू) held
+ * in the centre of a soft green medical cross. The cross says "healthcare" at a
+ * glance, in the green people in India know from clinics and chemists; the
+ * letter is set small enough to leave the cross room to read as a cross.
  *
- * The letter is an outline of Noto Sans Devanagari ExtraBold, so the mark
- * looks the same before web fonts load and in the favicon (public/favicon.svg
- * holds the same drawing with fixed light-theme colours). Colours come from
- * the --mark-* tokens so it follows light and dark themes.
+ * The letter is an outline of Noto Sans Devanagari ExtraBold plus a full
+ * headline (shirorekha), so the mark looks the same before web fonts load and
+ * in the favicon (public/favicon.svg holds the same drawing with light-theme
+ * colours). Colours come from the --mark-* tokens.
  */
 
+/** Rounded plus: arms 13 wide, outer corners r3.5, inner corners r2. */
+const CROSS =
+  "M9.5 3.5A3.5 3.5 0 0 1 13 0H19A3.5 3.5 0 0 1 22.5 3.5V7.5A2 2 0 0 0 24.5 9.5H28.5A3.5 3.5 0 0 1 32 13V19A3.5 3.5 0 0 1 28.5 22.5H24.5A2 2 0 0 0 22.5 24.5V28.5A3.5 3.5 0 0 1 19 32H13A3.5 3.5 0 0 1 9.5 28.5V24.5A2 2 0 0 0 7.5 22.5H3.5A3.5 3.5 0 0 1 0 19V13A3.5 3.5 0 0 1 3.5 9.5H7.5A2 2 0 0 0 9.5 7.5Z";
+
 const LETTER_A =
-  "M23.55 13.21V24.13H20.11V18.8Q20.02 18.82 19.93 18.82Q19.3 18.95 18.64 18.95Q18.25 18.95 17.85 18.91Q17.87 19.08 17.87 19.28Q17.87 21.1 16.72 22.12Q15.57 23.14 13.51 23.14Q12 23.14 10.8 22.56Q9.59 21.98 8.54 20.6Q7.49 19.22 6.5 16.81L9.11 15.49Q10.12 18.01 11.03 19.18Q11.93 20.36 13.07 20.36Q13.82 20.36 14.24 19.99Q14.65 19.63 14.65 18.93Q14.65 18.27 14.19 17.68Q14.13 17.62 14.06 17.53Q13.12 17.77 11.93 17.84L11.52 15.38Q12.59 15.27 13.18 15.09Q13.78 14.9 14.01 14.64Q14.24 14.37 14.24 14Q14.24 13.5 13.9 13.27Q13.56 13.04 12.96 13.04Q12.35 13.04 11.7 13.21Q11.06 13.39 10.4 13.74L9.5 11.22Q10.36 10.78 11.34 10.53Q12.33 10.27 13.45 10.27Q14.89 10.27 15.8 10.74Q16.71 11.2 17.13 11.98Q17.54 12.77 17.54 13.8Q17.54 15.32 16.49 16.3Q16.65 16.32 16.78 16.32Q17.28 16.39 17.92 16.39Q18.75 16.39 19.52 16.21Q19.82 16.17 20.11 16.06V13.21H18.79V10.49H25.5V13.21Z";
+  "M20.97 14.12V21.3H18.7V17.8Q18.65 17.81 18.59 17.81Q18.17 17.9 17.74 17.9Q17.48 17.9 17.22 17.87Q17.23 17.98 17.23 18.11Q17.23 19.31 16.48 19.98Q15.72 20.65 14.36 20.65Q13.37 20.65 12.58 20.27Q11.78 19.89 11.09 18.98Q10.4 18.07 9.75 16.48L11.47 15.62Q12.13 17.28 12.73 18.05Q13.33 18.82 14.08 18.82Q14.57 18.82 14.84 18.58Q15.11 18.34 15.11 17.88Q15.11 17.45 14.81 17.06Q14.77 17.02 14.72 16.96Q14.1 17.12 13.33 17.16L13.05 15.55Q13.76 15.48 14.15 15.35Q14.54 15.23 14.69 15.06Q14.84 14.88 14.84 14.64Q14.84 14.31 14.62 14.16Q14.39 14 14 14Q13.6 14 13.17 14.12Q12.75 14.24 12.32 14.47L11.73 12.81Q12.29 12.52 12.94 12.35Q13.59 12.19 14.32 12.19Q15.27 12.19 15.87 12.49Q16.47 12.79 16.74 13.31Q17.02 13.83 17.02 14.51Q17.02 15.5 16.32 16.15Q16.43 16.17 16.51 16.17Q16.84 16.21 17.26 16.21Q17.81 16.21 18.31 16.1Q18.52 16.07 18.7 15.99V14.12H17.84V12.33H22.25V14.12Z";
 
 export function AnnuMark({ size = 28 }: { size?: number }) {
   return (
@@ -23,9 +27,11 @@ export function AnnuMark({ size = 28 }: { size?: number }) {
       aria-hidden="true"
       focusable="false"
     >
-      <rect className="annu-mark-tile" width="32" height="32" rx="8" />
-      <path className="annu-mark-letter" d={LETTER_A} />
-      <rect className="annu-mark-headline" x="5.5" y="7.9" width="21" height="2.6" rx="1.3" />
+      <path className="annu-mark-cross" d={CROSS} />
+      <g className="annu-mark-letter">
+        <path d={LETTER_A} />
+        <rect x="9.25" y="10.7" width="13.5" height="1.69" rx="0.84" />
+      </g>
     </svg>
   );
 }

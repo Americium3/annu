@@ -68,10 +68,9 @@
   --accent: #e07a5f;
   --accent-soft: #fdeee8;
 
-  /* ---- logo (AnnuMark): teal tile, letter, coral headline ---- */
-  --mark-tile: var(--brand);
-  --mark-letter: var(--on-brand);
-  --mark-headline: #f2a088;
+  /* ---- logo (AnnuMark): green medical cross, white letter ---- */
+  --mark-cross: #1e8a5e;
+  --mark-letter: #ffffff;
 
   /* ---- status (always with icon + word) ---- */
   --good: #2f8a55;
@@ -186,7 +185,7 @@
     --on-brand: #062421;
     --accent: #ee9a82;
     --accent-soft: #3a231d;
-    --mark-headline: #e07a5f;
+    --mark-cross: #23a06d;
     --good: #5fbf82;
     --good-ink: #7fd19c;
     --good-soft: #183a26;
@@ -257,7 +256,7 @@
   --on-brand: #062421;
   --accent: #ee9a82;
   --accent-soft: #3a231d;
-  --mark-headline: #e07a5f;
+  --mark-cross: #23a06d;
   --good: #5fbf82;
   --good-ink: #7fd19c;
   --good-soft: #183a26;
@@ -535,16 +534,12 @@ h4 {
   flex: none;
 }
 
-.annu-mark-tile {
-  fill: var(--mark-tile);
+.annu-mark-cross {
+  fill: var(--mark-cross);
 }
 
 .annu-mark-letter {
   fill: var(--mark-letter);
-}
-
-.annu-mark-headline {
-  fill: var(--mark-headline);
 }
 
 .brand-name {
@@ -1297,9 +1292,7 @@ h4 {
 }
 
 .site-footer .annu-mark {
-  --mark-tile: var(--inverse-accent);
-  --mark-letter: var(--inverse-bg);
-  --mark-headline: var(--accent);
+  --mark-cross: #23a06d;
 }
 
 .footer-links {
