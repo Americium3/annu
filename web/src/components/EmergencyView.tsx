@@ -113,7 +113,6 @@ export function EmergencyView({
           <Phone size={28} aria-hidden="true" />
           <span>
             <strong>{t.emCall}</strong>
-            <small>{t.emCallHint}</small>
           </span>
         </a>
 
@@ -126,22 +125,15 @@ export function EmergencyView({
 
         <div className="emergency-list-head">
           <h2>{t.emNearest}</h2>
-          <p>
-            {locating ? (
-              <>
-                <LoaderCircle className="spin" size={15} aria-hidden="true" /> {t.emLocating}
-              </>
-            ) : position ? (
-              t.emFrom(t.emYourLocation)
-            ) : (
-              <>
-                {t.emFrom(originName)} ·{" "}
-                <button type="button" className="link-button" onClick={locate}>
-                  <LocateFixed size={15} aria-hidden="true" /> {t.emUseLocation}
-                </button>
-              </>
-            )}
-          </p>
+          {locating ? (
+            <LoaderCircle className="spin emergency-locating" size={20} aria-label={t.emLocating} />
+          ) : (
+            !position && (
+              <button type="button" className="icon-button" onClick={locate} aria-label={t.emUseLocation} title={t.emUseLocation}>
+                <LocateFixed size={18} />
+              </button>
+            )
+          )}
         </div>
 
         {liveFailed && <p className="emergency-failed">{t.emListFailed}</p>}
@@ -151,7 +143,6 @@ export function EmergencyView({
             <li key={facility.id} style={{ "--i": index } as React.CSSProperties}>
               <div className="emergency-hospital">
                 <h3>{facility.name}</h3>
-                <p>{facility.address}</p>
               </div>
               <p className="card-distance">
                 <strong>{facility.distanceKm.toFixed(1)}</strong> km

@@ -1,7 +1,6 @@
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "../hooks/useTheme";
 import { useI18n, type Lang } from "../i18n";
-import { USE_DEMO } from "../lib/api";
 import { AccountMenu } from "./AccountMenu";
 import { EmergencyButton } from "./EmergencyButton";
 import { withTransition } from "../lib/motion";
@@ -22,11 +21,6 @@ export function Header() {
       <a className="skip-link" href="#search">
         {t.skipToSearch}
       </a>
-      <div className="top-strip">
-        <div className="top-strip-inner">
-          <p className="top-strip-note">{USE_DEMO ? t.prototypeNote : t.liveNote}</p>
-        </div>
-      </div>
       <header className="site-header">
         <div className="header-inner">
           <Brand />

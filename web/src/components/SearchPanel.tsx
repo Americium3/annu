@@ -24,8 +24,6 @@ interface SearchPanelProps {
   onSearch: (values: SearchValues) => void;
 }
 
-const commonSearches = ["Kidney dialysis", "MRI scan", "Emergency C-section", "NICU"];
-
 function matchesService(service: ServiceOption, query: string) {
   const normalized = query.toLowerCase().trim();
   if (!normalized) return true;
@@ -306,21 +304,6 @@ export function SearchPanel({ initialService, initialLocation, radiusKm, isLoadi
             {isLoading ? t.finding : t.find}
             {isLoading ? <LoaderCircle className="spin" size={20} /> : <ArrowRight size={20} />}
           </button>
-          <p className="common-searches">
-            <span>{t.commonSearches}</span>
-            {commonSearches.map((name) => (
-              <button
-                key={name}
-                type="button"
-                onClick={() => {
-                  setService(name);
-                  submit(name);
-                }}
-              >
-                {name}
-              </button>
-            ))}
-          </p>
         </div>
       </form>
     </div>

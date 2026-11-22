@@ -1,12 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { EmergencyView } from "./components/EmergencyView";
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
 import { RaahiSays } from "./components/Raahi";
 import { ResultsView } from "./components/ResultsView";
 import { SearchPanel, type SearchValues } from "./components/SearchPanel";
-import { SetupPrompt } from "./components/SetupPrompt";
 import { TrustSection } from "./components/TrustSection";
 import { ApiError, getRecommendations } from "./lib/api";
 import { useI18n } from "./i18n";
@@ -144,7 +143,15 @@ function App() {
               {t.heroTitle}
             </h1>
             <RaahiSays className="hero-raahi" size={150} tappable>
-              {t.raahiFill}
+              {profile.onboardingDone ? (
+                t.raahiFill
+              ) : (
+                // The only invitation to set up: part of Raahi's one line, never a banner.
+                <>
+                  {t.raahiSetupPre} <Link to="/welcome">{t.raahiSetupLink}</Link>
+                  {t.raahiSetupPost}
+                </>
+              )}
             </RaahiSays>
             <SearchPanel
               initialService={searchValues.service}
@@ -153,9 +160,6 @@ function App() {
               isLoading={isLoading}
               onSearch={handleSearch}
             />
-          </div>
-          <div className="hero-foot">
-            <SetupPrompt />
           </div>
         </section>
 
@@ -171,7 +175,7 @@ function App() {
               </strong>
               <p>{error.message}</p>
               {error.suggestions.length > 0 && (
-                <p className="common-searches">
+                <p className="error-suggestions">
                   <span>{t.errTry}</span>
                   {error.suggestions.map((suggestion) => (
                     <button

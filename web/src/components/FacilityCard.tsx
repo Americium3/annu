@@ -30,6 +30,26 @@ function Reason({ facility }: { facility: FacilityRecommendation }) {
   );
 }
 
+/**
+ * The other options get a one-word status instead of a sentence; the full
+ * reason is in the tooltip and in "Why this hospital?".
+ */
+function Status({ facility }: { facility: FacilityRecommendation }) {
+  const { t } = useI18n();
+  const { text, confirmed } = reasonLine(t, facility);
+  const risky = facility.confidence === "low" || facility.uncertainty.level === "high";
+  const level = confirmed && !risky ? "high" : risky ? "low" : "medium";
+  const Icon = level === "high" ? CheckCircle2 : level === "medium" ? HelpCircle : AlertTriangle;
+  const label = level === "high" ? t.statusConfirmed : level === "medium" ? t.statusCheck : t.statusNot;
+  return (
+    <p className={`card-reason board-status confidence-${level}`} title={text}>
+      <Icon size={15} aria-hidden="true" />
+      {label}
+      <span className="sr-only">: {text}</span>
+    </p>
+  );
+}
+
 /** "Type · Ownership · Area", leaving out ownership the data doesn't know. */
 function Meta({ facility }: { facility: FacilityRecommendation }) {
   const { t } = useI18n();
@@ -101,7 +121,7 @@ function WhyButton({ onOpen }: { onOpen: () => void }) {
  * The answer, set large: the one place this person should most likely go,
  * with the distance as the headline number and one filled action.
  */
-export function TopPick({ facility, service, selected, onSelect, onOpen, nearest = false }: ResultProps & { nearest?: boolean }) {
+export function TopPick({ facility, service, selected, onSelect, onOpen }: ResultProps & { nearest?: boolean }) {
   const { t } = useI18n();
   return (
     <article
@@ -110,7 +130,6 @@ export function TopPick({ facility, service, selected, onSelect, onOpen, nearest
       aria-labelledby={`facility-${facility.id}-name`}
       style={{ "--vt-name": transitionName("result", facility.id) } as React.CSSProperties}
     >
-      <p className="top-pick-label">{nearest ? t.topPickNearest : t.topPick}</p>
       <div className="top-pick-main">
         <Distance km={facility.distanceKm} large />
         <div className="top-pick-body">
@@ -147,8 +166,7 @@ export function BoardRow({ facility, service, selected, index, onSelect, onOpen 
       <div className="board-body">
         <h3 id={`facility-${facility.id}-name`}>{facility.name}</h3>
         <Meta facility={facility} />
-        <Reason facility={facility} />
-        <Warning facility={facility} />
+        <Status facility={facility} />
       </div>
       <div className="board-actions">
         <FacilityActions facility={facility} service={service} compact />
