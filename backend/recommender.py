@@ -214,12 +214,12 @@ class Recommender:
             within.at[idx, "ce_evidence_ref"] = f"{best_ev.get('field')}:{best_ev.get('pos', best_ev.get('item_idx', ''))}"
             within.at[idx, "ce_best_quote"] = best_ev["text"]
             within.at[idx, "ce_item_count"] = len(evidence)
-        # Relative text match (see config.TEXT_MATCH_TEMPERATURE): invert the scorer's sigmoid back to logits.
+        # Text match on a fixed scale (config.TEXT_MATCH_LOGIT_RANGE): invert the scorer's sigmoid back to logits.
         p = within["ce_text_score"].astype(float).clip(1e-12, 1 - 1e-12)
         logit = np.log(p / (1 - p))
+        lo, hi = config.TEXT_MATCH_LOGIT_RANGE
         within["ce_text_logit"] = logit
-        return rank_candidates(within, tag, text_match=np.exp((logit - logit.max()) / config.TEXT_MATCH_TEMPERATURE),
-                               travel=travel)
+        return rank_candidates(within, tag, text_match=((logit - lo) / (hi - lo)).clip(0, 1), travel=travel)
 
     # ------------------------------------------------------------------ catalog / suggestions
     def services(self) -> list[dict]:
@@ -522,7 +522,7 @@ class Recommender:
                    + ("" if point else f" ({'PIN area' if ltier == 'pin_area' else 'from ' + loc['note']})") + ".")
         if reranking is not None:
             summary += (f" Best matching service text: {r['ce_best_quote']} "
-                        "Order balances service-text relevance, eligibility and distance.")
+                        "Rank score = evidence strength (text match and proof) x closeness for this kind of care.")
         return {
             "id": uid, "rank": rank, "name": _s(r["name"]) or "(unnamed facility)",
             "type": (r["facility_category"] or "facility").title() if isinstance(r["facility_category"], str) else "Facility",

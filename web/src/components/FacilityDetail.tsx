@@ -131,8 +131,8 @@ export function FacilityDetail({ facility, service, onClose }: FacilityDetailPro
 
           <div className="detail-summary">
             <h3>{t.summary}</h3>
-            {/* The data's summary is English; Hindi pages say the same thing from the card's own copy. */}
-            <p>{lang === "hi" ? reasonLine(t, facility).text : facility.recommendationSummary}</p>
+            {/* One plain sentence from the page's own copy (both languages); the proof and the ranking follow below. */}
+            <p>{reasonLine(t, facility).text}</p>
           </div>
 
           {facility.uncertainty.messages.length > 0 && (

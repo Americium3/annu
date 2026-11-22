@@ -92,7 +92,7 @@ export function EmergencyView({
     if (USE_DEMO) return;
     let cancelled = false;
     setLiveFailed(false);
-    getRecommendations({ serviceText: "emergency", locationText: originName, coordinates: position })
+    getRecommendations({ serviceText: "emergency-24x7", locationText: originName, coordinates: position, urgency: 2 })
       .then((response) => {
         if (!cancelled) setLive(response.results);
       })

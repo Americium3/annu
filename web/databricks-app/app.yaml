@@ -18,3 +18,7 @@ env:
     value: cross_encoder
   - name: HF_HOME
     value: /tmp/carepath/huggingface
+  # Free-text understanding (backend/nlu.py): rules first; this Databricks model serving endpoint fills gaps.
+  # Only answers that quote the message are kept. If the endpoint is missing, the rules result stands.
+  - name: CAREPATH_LLM_ENDPOINT
+    value: databricks-meta-llama-3-3-70b-instruct

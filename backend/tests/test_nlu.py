@@ -107,6 +107,42 @@ class ModelTest(unittest.TestCase):
         self.assertIn("mri", u.care_options)
 
 
+class LlmClientTest(unittest.TestCase):
+    def test_calls_a_databricks_serving_endpoint_and_feeds_the_understander(self):
+        import threading
+        from http.server import BaseHTTPRequestHandler, HTTPServer
+        from nlu import LlmClient
+        seen = {}
+
+        class Endpoint(BaseHTTPRequestHandler):
+            def do_POST(self):
+                seen["path"], seen["auth"] = self.path, self.headers["Authorization"]
+                seen["body"] = json.loads(self.rfile.read(int(self.headers["Content-Length"])))
+                reply = {"care": [{"id": "kidney-dialysis", "quote": "kidneys have failed"}], "place": None,
+                         "near_me": False, "urgency": {"level": 4, "quote": ""}}
+                out = json.dumps({"choices": [{"message": {"content": "```json\n" + json.dumps(reply) + "\n```"}}]})
+                self.send_response(200)
+                self.send_header("Content-Type", "application/json")
+                self.end_headers()
+                self.wfile.write(out.encode())
+
+            def log_message(self, *args):
+                pass
+
+        server = HTTPServer(("127.0.0.1", 0), Endpoint)
+        threading.Thread(target=server.serve_forever, daemon=True).start()
+        env = {"DATABRICKS_HOST": f"http://127.0.0.1:{server.server_port}", "DATABRICKS_TOKEN": "test-token"}
+        try:
+            with patch.dict("os.environ", env):
+                u = nlu(LlmClient("test-llm")).understand("my father's kidneys have failed, we are in Jaipur")
+        finally:
+            server.shutdown()
+        self.assertEqual(seen["path"], "/serving-endpoints/test-llm/invocations")
+        self.assertEqual(seen["auth"], "Bearer test-token")
+        self.assertEqual(seen["body"]["messages"][1]["content"], "my father's kidneys have failed, we are in Jaipur")
+        self.assertEqual((u.care_id, u.care_source, u.place_text), ("kidney-dialysis", "llm", "Jaipur"))
+
+
 class AskEndpointTest(unittest.TestCase):
     def setUp(self):
         import main

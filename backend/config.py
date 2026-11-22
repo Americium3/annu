@@ -31,14 +31,16 @@ CROSS_ENCODER_BATCH_SIZE = int(os.environ.get("CAREPATH_CROSS_ENCODER_BATCH_SIZE
 CROSS_ENCODER_MAX_LENGTH = int(os.environ.get("CAREPATH_CROSS_ENCODER_MAX_LENGTH", "512"))
 CROSS_ENCODER_MAX_EVIDENCE = 5
 # Evidence strength with the cross-encoder (the live default) blends how well the best quote matches the service
-# with proof strength; the 4:3 split keeps the earlier text:evidence weighting. Distance is not a third weight:
-# closeness multiplies the whole evidence score, with the travel distance set per kind of care (above).
-#   evidence = 4/7 x text match + 3/7 x proof strength      rank score = evidence x closeness
-RERANK_WEIGHTS = {"text": 4 / 7, "proof": 3 / 7}
-# The checkpoint's sigmoid scores are tiny even for clearly relevant quotes (about 0.001-0.1 for "Dialysis unit",
-# "1.5 Tesla MRI"), so the raw value would barely move the ranking. Text match is therefore relative to the best quote
-# in this search: exp((logit - best logit) / T). The best match gets 1; a quote 2T logits worse gets about 0.14.
-TEXT_MATCH_TEMPERATURE = 2.0
+# with proof strength. Proof carries more weight: the model is noisy on short passages ("3 Tesla MRI available round
+# the clock" scores below a bare "MRI"), and a weak listing must not outrank a clear statement on wording alone.
+# Distance is not a third weight: closeness multiplies the whole evidence score, set per kind of care (below).
+#   evidence = 0.3 x text match + 0.7 x proof strength      rank score = evidence x closeness
+RERANK_WEIGHTS = {"text": 0.3, "proof": 0.7}
+# The checkpoint's sigmoid scores are tiny even for clearly relevant quotes (raw logits about -9 to +4; unrelated
+# text about -11), so the raw value would barely move the ranking. Text match maps the logit onto a fixed 0-1 scale:
+# -11 (unrelated text, e.g. a dental line scored for dialysis) = 0, -5 and above (plainly about the service) = 1.
+# Measured on sample passages for dialysis, MRI, childbirth and emergency; re-check if the checkpoint changes.
+TEXT_MATCH_LOGIT_RANGE = (-11.0, -5.0)
 
 
 # How far people reasonably travel for each kind of care (km). Closeness halves at this distance:

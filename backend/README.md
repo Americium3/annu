@@ -25,8 +25,10 @@ web (Vite :5173) ──/api──▶ backend (FastAPI :8000) ──SQL──▶ 
      × 0.85 if statements also name another institution, × 1.0 / 0.9 / 0.75 for a verified point / unverified point /
      PIN-area location.
    - *Text match* (0–1, default `cross_encoder` mode): how well the best quote matches the service, from the
-     cross-encoder (below).
-   - *Evidence strength* = 4/7 × text match + 3/7 × proof strength (the earlier 0.4 : 0.3 text : evidence split).
+     cross-encoder (below). Its raw scores are tiny even for relevant quotes, so the logit is mapped onto a fixed
+     scale: −11 (unrelated text) = 0, −5 and above = 1 (`TEXT_MATCH_LOGIT_RANGE`, measured on sample passages).
+   - *Evidence strength* = 0.3 × text match + 0.7 × proof strength. Proof weighs more because the model is noisy on
+     short passages, and a weak listing must not outrank a clear statement on wording alone.
      In `rules` mode (`CAREPATH_RANKING_METHOD=rules`) there is no text match and evidence strength = proof strength.
    - *Closeness* (0–1) = 1 / (1 + (km / travel_km)²): it halves at the distance people reasonably travel for this kind
      of care, about 10 km for emergencies and births, 15 km for dialysis and routine care, 30 km for scans and 60 km for
@@ -51,12 +53,35 @@ truncated by its tokenizer. Raw single-label logits receive sigmoid exactly once
 **not a calibrated probability of service availability or medical quality**.
 
 ```text
-rank_score = (4/7 * cross_encoder_relevance + 3/7 * proof_strength) * 1 / (1 + (straight_km / travel_km)^2)
+rank_score = (0.3 * text_match + 0.7 * proof_strength) * 1 / (1 + (straight_km / travel_km)^2)
 ```
 
 Solid proof first, then the unrounded score descending, then distance and facility ID for deterministic ties.
 Return at most eight; the old B-lane promotion no longer reorders results. Each result's `reranking` object records
 the checkpoint, components, weights, selected evidence reference/text and scored passage count.
+
+## Free-text requests (`/api/ask`, `nlu.py`)
+
+The flow is fixed in code; a model fills in one step at most (after the pre-consultation agent in
+`Americium3/ai-medical-demo`):
+
+1. **Screen**: red-flag rules over the person's words in English, Hindi and Hinglish, with negation ("no chest pain",
+   "सीने में दर्द नहीं है" do not trigger). Urgency level → emergency score: 1 = 100 (unconscious, not breathing),
+   2 = 85 (chest pain, breathing trouble, stroke signs, heavy bleeding, poisoning, snakebite, seizure, crisis),
+   3 = 60 (labour, fracture, accident, high fever, missed dialysis), 4 = 15. **80 or more opens the emergency
+   screen at once: no model call, no search.** The place is still read, so the screen lists hospitals near it.
+2. **Extract**: care and place from `web/src/data/lexicon.json` (shared with the web app's demo mode): 100 kinds of
+   care with everyday English/Hindi/Hinglish words, matched as whole phrases, longest first. A broad word ("kidney",
+   "दाँत") becomes a question with options, never a guess. Places: PIN codes, Hindi city names, "near X" / "X के पास" /
+   "X mein", or a bare city the location reference knows; "near me" uses the device location.
+3. **Model (optional)**: set `CAREPATH_LLM_ENDPOINT` to a Databricks model serving endpoint (the app's own identity
+   is used). One chat call fills what the rules left open. Answers are kept only if their quote appears verbatim in
+   the message and is not denied; care ids must be in the catalogue; model urgency can only raise the rule level.
+   If the call fails, the rules result stands and `llm.error` says so.
+
+Urgency also changes the ranking: level 3 halves the travel distance (`URGENT_TRAVEL_FACTOR`), so nearer hospitals
+count more. When the best option for an urgent request is still far (more than twice that distance), the page
+suggests calling 108. Nothing here is a diagnosis.
 
 ## Run
 
@@ -109,6 +134,7 @@ Vite proxies `/api` to port 8000.
 | GET | `/api/health` | data source, row counts, ranking method/model/version and model readiness |
 | GET | `/api/services` | the 100 service tags (search suggestions) |
 | GET | `/api/locations?q=pun` | district / city / PIN suggestions |
-| POST | `/api/recommendations` | `{serviceText, locationText}` (or `coordinates` from "Use my location" instead of text) → `RecommendationResponse` (`web/src/types.ts`) plus `metadata.funnel`. Any other field is rejected with 422. |
+| POST | `/api/ask` | `{text, locationText?, coordinates?}`: a request in the person's own words → what was understood (care, place, urgency, each with the exact words it rests on) and `next`: `emergency`, `ask_care`, `ask_place` or `results` (with `results`). `locationText` / `coordinates` are the saved place or device location, used only when the text names no place. |
+| POST | `/api/recommendations` | `{serviceText, locationText, urgency?}` (or `coordinates` from "Use my location" instead of text) → `RecommendationResponse` (`web/src/types.ts`) plus `metadata.funnel`. `urgency` 3 halves the travel distance. Any other field is rejected with 422. |
 
 Errors: 422 `{"detail": {"field": "service" | "location", "message": ..., "suggestions": [...]}}`.

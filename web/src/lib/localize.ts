@@ -96,7 +96,8 @@ export function unsureMessages(
   uncertainty: { messages: string[]; reasonCodes: string[] },
   lang: Lang,
 ): string[] {
-  if (lang !== "hi") return uncertainty.messages;
+  // "Confirm with: <phone> | <site>" repeats the Call / Website buttons beside it.
+  if (lang !== "hi") return uncertainty.messages.filter((m) => !/^Confirm with:/.test(m));
   return [
     "मौजूदा उपलब्धता, समय, बिस्तर और खर्च की जानकारी डेटा में नहीं है।",
     ...uncertainty.reasonCodes.map((code) => UNSURE_HI[code]).filter(Boolean),

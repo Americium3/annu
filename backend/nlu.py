@@ -153,7 +153,7 @@ class Understanding:
 class LlmClient:
     """Chat completion on a Databricks model serving endpoint (OpenAI-style payload)."""
 
-    def __init__(self, endpoint: str, timeout: float = 15.0):
+    def __init__(self, endpoint: str, timeout: float = 8.0):
         import sys
         sys.path.insert(0, str(_HERE.parent / "pipeline"))
         from databricks_sql import DatabricksSQL  # host + token (personal token or the app's OAuth identity)
