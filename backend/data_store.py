@@ -72,9 +72,9 @@ def load_from_databricks(query=None) -> Snapshot:
     pins = _frame(*query(f"SELECT pincode, to_json(states) AS states, to_json(districts) AS districts, lat, lon, "
                             f"is_precise FROM {config.TABLE_PINS}"),
                   numeric=["lat", "lon"], boolean=["is_precise"], json_cols=["states", "districts"])
-    aliases = _frame(*db.query(f"SELECT kind, variant, standard FROM {config.TABLE_ADDRESS_ALIAS}"))
+    aliases = _frame(*query(f"SELECT kind, variant, standard FROM {config.TABLE_ADDRESS_ALIAS}"))
     if config.SERVICE_INDEX_VERSION == "v2":
-        index = build_index_v2(db, facilities)
+        index = build_index_v2(query, facilities)
     print(f"loaded from Databricks in {time.time() - t0:.1f}s: {len(index)} facility×service rows, "
           f"{len(facilities)} facilities, {len(pins)} PINs, {len(aliases)} address aliases", file=sys.stderr)
     return Snapshot(tags, index, facilities, pins, pd.Timestamp.now("UTC").isoformat(timespec="seconds"), "databricks",
@@ -98,12 +98,12 @@ def adapt_index_v2(v2: pd.DataFrame, facilities: pd.DataFrame, use_plausibility:
     return v2.reset_index(drop=True)
 
 
-def build_index_v2(db, facilities: pd.DataFrame) -> pd.DataFrame:
+def build_index_v2(query, facilities: pd.DataFrame) -> pd.DataFrame:
     """Read model_evidence_items and build the v2 candidates with pipeline/service_index_v2.py."""
     from service_index_v2 import build
     parts = []
     for b in range(8):
-        cols, rows = db.query(f"SELECT unique_id, field, to_json(collect_list(struct(item_idx, text))) items "
+        cols, rows = query(f"SELECT unique_id, field, to_json(collect_list(struct(item_idx, text))) items "
                               f"FROM {config.TABLE_EVIDENCE} WHERE pmod(hash(unique_id), 8) = {b} GROUP BY unique_id, field")
         parts.append(pd.DataFrame(rows, columns=cols))
     v2 = build(pd.concat(parts, ignore_index=True), facilities[["unique_id", "name", "facility_category"]])
