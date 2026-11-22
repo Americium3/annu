@@ -1,7 +1,8 @@
-import { AlertTriangle, ArrowRight, CheckCircle2, HelpCircle, ShieldAlert } from "lucide-react";
+import { AlertTriangle, ArrowRight, HelpCircle, ShieldAlert } from "lucide-react";
 import { operatorLabel, useI18n } from "../i18n";
 import { transitionName } from "../lib/motion";
-import { knownOperator, reasonText } from "../lib/reason";
+import { displayPhone, telUrl } from "../lib/facilityActions";
+import { knownOperator, reasonText, statusLabel } from "../lib/reason";
 import type { FacilityRecommendation } from "../types";
 import { FacilityActions } from "./FacilityActions";
 
@@ -13,36 +14,38 @@ type T = ReturnType<typeof useI18n>["t"];
 
 /** One plain sentence on whether the service is confirmed, and by what. */
 export function reasonLine(t: T, facility: FacilityRecommendation) {
-  return reasonText(t, facility.confidence, facility.sources.map((source) => source.sourceType));
-}
-
-function Reason({ facility }: { facility: FacilityRecommendation }) {
-  const { t } = useI18n();
-  const { text, confirmed } = reasonLine(t, facility);
-  // Only a named source earns the green check; anything else reads as "check first".
-  const level = confirmed ? "high" : facility.confidence === "low" ? "low" : "medium";
-  const Icon = level === "high" ? CheckCircle2 : level === "medium" ? HelpCircle : AlertTriangle;
-  return (
-    <p className={`card-reason confidence-${level}`}>
-      <Icon size={16} aria-hidden="true" />
-      {text}
-    </p>
-  );
+  return reasonText(t, facility.confidence, facility.sources.map((source) => source.sourceType), facility);
 }
 
 /**
- * The other options get a one-word status instead of a sentence; the full
- * reason is in the tooltip and in "Why this hospital?".
+ * A warning only when one is needed. A confirmed result says nothing: being
+ * listed already means it offers the service. Otherwise one short line names
+ * what to do with what the card offers (call this number, check the website),
+ * or says plainly that it isn't confirmed. The full reason is in the tooltip
+ * and in "Why this hospital?".
  */
-function Status({ facility }: { facility: FacilityRecommendation }) {
+function Status({ facility, large = false }: { facility: FacilityRecommendation; large?: boolean }) {
   const { t } = useI18n();
   const { text, confirmed } = reasonLine(t, facility);
   const risky = facility.confidence === "low" || facility.uncertainty.level === "high";
-  const level = confirmed && !risky ? "high" : risky ? "low" : "medium";
-  const Icon = level === "high" ? CheckCircle2 : level === "medium" ? HelpCircle : AlertTriangle;
-  const label = level === "high" ? t.statusConfirmed : level === "medium" ? t.statusCheck : t.statusNot;
+  if (confirmed && !risky) return null; // nothing to warn about: say nothing
+  const level = risky ? "low" : "medium";
+  const Icon = level === "medium" ? HelpCircle : AlertTriangle;
+  const label = statusLabel(t, level, facility);
+  // "Call first" names the number and dials it, so the advice can be acted on.
+  if (facility.phone) {
+    return (
+      <p className={`card-reason board-status ${large ? "is-large" : ""} confidence-${level}`} title={text}>
+        <Icon size={15} aria-hidden="true" />
+        <a href={telUrl(facility.phone)} onClick={(event) => event.stopPropagation()}>
+          {label} · <span className="action-number">{displayPhone(facility.phone)}</span>
+        </a>
+        <span className="sr-only">: {text}</span>
+      </p>
+    );
+  }
   return (
-    <p className={`card-reason board-status confidence-${level}`} title={text}>
+    <p className={`card-reason board-status ${large ? "is-large" : ""} confidence-${level}`} title={text}>
       <Icon size={15} aria-hidden="true" />
       {label}
       <span className="sr-only">: {text}</span>
@@ -135,7 +138,7 @@ export function TopPick({ facility, service, selected, onSelect, onOpen }: Resul
         <div className="top-pick-body">
           <h3 id={`facility-${facility.id}-name`}>{facility.name}</h3>
           <Meta facility={facility} />
-          <Reason facility={facility} />
+          <Status facility={facility} large />
           <Warning facility={facility} />
         </div>
       </div>

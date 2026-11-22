@@ -4114,6 +4114,42 @@ html[data-transition="emergency"]::view-transition-new(root) {
   text-underline-offset: 3px;
 }
 
+.board-status.is-large {
+  margin-top: 8px;
+  font-size: var(--fs-sm);
+}
+
+/* phone numbers: readable and dialable */
+.action-number {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.board-status a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+}
+
+@media (max-width: 680px) {
+  /* Directions and share side by side; Call, with its number, on its own row. */
+  .facility-actions:not(.is-compact) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px;
+  }
+
+  .facility-actions:not(.is-compact) a[href^="tel:"] {
+    grid-column: 1 / -1;
+    order: 3;
+  }
+
+  .facility-actions:not(.is-compact) .action-icon {
+    width: 44px;
+  }
+}
+
 /* ---- distance blank: a styled listbox, not the browser's <select> ---- */
 
 .blank-picker-button {

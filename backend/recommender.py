@@ -56,6 +56,31 @@ def _norm(s: str | None) -> str:
     return re.sub(r"[^a-z0-9]+", " ", (s or "").lower()).strip()
 
 
+_PHONE_SPLIT = re.compile(r"[,;/|]| or |\n")
+
+
+def contact_phone(raw) -> str | None:
+    """First dialable number in the record (records may list several), as digits with an optional leading +."""
+    if not isinstance(raw, str):
+        return None
+    for part in _PHONE_SPLIT.split(raw):
+        digits = re.sub(r"[^\d+]", "", part.strip())
+        digits = digits[0] + digits[1:].replace("+", "") if digits else ""
+        if 8 <= len(digits.lstrip("+")) <= 15:
+            return digits
+    return None
+
+
+def contact_website(raw) -> str | None:
+    """The record's website as an absolute https URL, or None."""
+    if not isinstance(raw, str) or not raw.strip():
+        return None
+    url = raw.strip().split()[0]
+    if not re.match(r"^https?://", url, re.I):
+        url = "https://" + url.lstrip("/")
+    return url if "." in url.split("://", 1)[1] else None
+
+
 class Recommender:
     def __init__(self, snap: Snapshot):
         self.snap = snap
@@ -382,6 +407,9 @@ class Recommender:
             "uncertainty": {"level": unc_level, "reasonCodes": reasons, "messages": msgs, "missingFields": missing,
                             "conflicts": []},
             "tags": tags,
+            # How to check before travelling: the UI shows Call / Website buttons only when these exist.
+            "phone": contact_phone(r["contact_phone"]),
+            "website": contact_website(r["contact_website"]),
         }
 
     def _sources(self, r: pd.Series) -> list[dict]:

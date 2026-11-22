@@ -1,6 +1,6 @@
-import { MessageCircle, Navigation, Phone } from "lucide-react";
+import { Globe, MessageCircle, Navigation, Phone } from "lucide-react";
 import { useI18n } from "../i18n";
-import { directionsUrl, telUrl, whatsappUrl } from "../lib/facilityActions";
+import { directionsUrl, displayPhone, telUrl, whatsappUrl } from "../lib/facilityActions";
 import type { FacilityRecommendation } from "../types";
 
 /**
@@ -40,9 +40,26 @@ export function FacilityActions({
       {facility.phone ? (
         <a className="action-button" href={telUrl(facility.phone)} onClick={stop}>
           <Phone size={17} aria-hidden="true" />
-          <span className="action-label">{t.call}</span>
+          {/* The number itself, so it can be dialled from another phone too. */}
+          <span className="action-label">
+            {t.call} <span className="action-number">{displayPhone(facility.phone)}</span>
+          </span>
         </a>
-      ) : null /* no number: no button, and no line saying so */}
+      ) : facility.website ? (
+        // No number, but the hospital's own site: the next best way to check.
+        <a
+          className="action-button"
+          href={facility.website}
+          target="_blank"
+          rel="noreferrer"
+          aria-label={t.websiteLabel(facility.name)}
+          title={t.websiteLabel(facility.name)}
+          onClick={stop}
+        >
+          <Globe size={17} aria-hidden="true" />
+          <span className="action-label">{t.website}</span>
+        </a>
+      ) : null /* nothing to call or open: no button, and no line saying so */}
       {share && (
         <a
           className="action-button action-icon"
