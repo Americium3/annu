@@ -1,0 +1,96 @@
+{
+  "name": "carepath_model_taxonomy_serverless",
+  "max_concurrent_runs": 1,
+  "timeout_seconds": 7200,
+  "environments": [
+    {
+      "environment_key": "carepath_model_env",
+      "spec": {
+        "client": "2",
+        "dependencies": [
+          "numpy==1.26.4",
+          "pandas==2.2.3",
+          "scikit-learn==1.4.2",
+          "mlflow==2.20.3"
+        ]
+      }
+    }
+  ],
+  "tasks": [
+    {
+      "task_key": "train_field_taxonomy",
+      "environment_key": "carepath_model_env",
+      "timeout_seconds": 5400,
+      "notebook_task": {
+        "notebook_path": "/Users/kevinzh3@andrew.cmu.edu/carepath_model/notebooks/01_train_field_taxonomy",
+        "source": "WORKSPACE",
+        "base_parameters": {
+          "source_table": "workspace.cardinal_virtues.model_facilities",
+          "output_catalog": "workspace",
+          "output_schema": "cardinal_virtues",
+          "register_model": "false"
+        }
+      }
+    },
+    {
+      "task_key": "build_maxo_mapping",
+      "depends_on": [
+        {
+          "task_key": "train_field_taxonomy"
+        }
+      ],
+      "environment_key": "carepath_model_env",
+      "timeout_seconds": 3600,
+      "notebook_task": {
+        "notebook_path": "/Users/kevinzh3@andrew.cmu.edu/carepath_model/notebooks/02_build_maxo_mapping",
+        "source": "WORKSPACE",
+        "base_parameters": {
+          "output_catalog": "workspace",
+          "output_schema": "cardinal_virtues",
+          "canonical_table": "workspace.cardinal_virtues.model_tag_canonical_element"
+        }
+      }
+    },
+    {
+      "task_key": "register_field_taxonomy",
+      "depends_on": [
+        {
+          "task_key": "train_field_taxonomy"
+        }
+      ],
+      "environment_key": "carepath_model_env",
+      "timeout_seconds": 1200,
+      "notebook_task": {
+        "notebook_path": "/Users/kevinzh3@andrew.cmu.edu/carepath_model/notebooks/03_register_field_taxonomy",
+        "source": "WORKSPACE",
+        "base_parameters": {
+          "metrics_table": "workspace.cardinal_virtues.model_field_taxonomy_metrics",
+          "registered_model_name": "workspace.carepath_model.model_field_taxonomy",
+          "alias": "Champion"
+        }
+      }
+    },
+    {
+      "task_key": "build_service_catalog",
+      "depends_on": [
+        {
+          "task_key": "build_maxo_mapping"
+        }
+      ],
+      "environment_key": "carepath_model_env",
+      "timeout_seconds": 1800,
+      "notebook_task": {
+        "notebook_path": "/Users/kevinzh3@andrew.cmu.edu/carepath_model/notebooks/07_build_service_catalog",
+        "source": "WORKSPACE",
+        "base_parameters": {
+          "output_catalog": "workspace",
+          "output_schema": "cardinal_virtues",
+          "service_tag_table": "workspace.cardinal_virtues.ref_service_tags",
+          "action_catalog_table": "workspace.cardinal_virtues.model_action_catalog",
+          "action_alias_table": "workspace.cardinal_virtues.model_action_alias",
+          "action_match_table": "workspace.cardinal_virtues.model_facility_action_match"
+        }
+      }
+    }
+  ]
+}

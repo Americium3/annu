@@ -7,17 +7,23 @@ const API_BASE = (import.meta.env.VITE_API_BASE as string | undefined) ?? "";
 /** Set VITE_USE_DEMO=true to run the UI on the bundled mock data without a backend. */
 export const USE_DEMO = import.meta.env.VITE_USE_DEMO === "true";
 
-/** The only user inputs: the service and the location ("Use my location" fills the location as coordinates). */
+/** Primary input is condition text; emergency mode uses the service-only compatibility path. */
 export interface SearchInput {
-  serviceText: string;
+  conditionText?: string;
+  serviceText?: string;
   locationText: string;
+  radiusKm?: number;
   coordinates?: { latitude: number; longitude: number };
 }
 
 export class ApiError extends Error {
-  field?: "service" | "location";
+  field?: "condition" | "service" | "location";
   suggestions: string[];
-  constructor(message: string, field?: "service" | "location", suggestions: string[] = []) {
+  constructor(
+    message: string,
+    field?: "condition" | "service" | "location",
+    suggestions: string[] = [],
+  ) {
     super(message);
     this.field = field;
     this.suggestions = suggestions;
@@ -56,6 +62,20 @@ export async function getRecommendations(input: SearchInput): Promise<Recommenda
 export async function fetchServices(): Promise<ServiceOption[]> {
   if (USE_DEMO) return demoServices;
   return request<ServiceOption[]>("/api/services");
+}
+
+export async function fetchConditions(query: string): Promise<ServiceOption[]> {
+  if (USE_DEMO) {
+    const q = query.toLowerCase().trim();
+    return demoServices.filter((service) =>
+      `${service.name} ${service.synonyms.join(" ")}`
+        .toLowerCase()
+        .includes(q),
+    );
+  }
+  return request<ServiceOption[]>(
+    `/api/conditions?q=${encodeURIComponent(query)}`,
+  );
 }
 
 export async function fetchLocations(query: string): Promise<LocationOption[]> {

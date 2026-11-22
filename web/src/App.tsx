@@ -1,34 +1,74 @@
-import { ArrowDown, CheckCircle2, MapPin, ShieldCheck, Sparkles } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
+import { EmergencyView } from "./components/EmergencyView";
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
+import { RaahiSays } from "./components/Raahi";
 import { ResultsView } from "./components/ResultsView";
 import { SearchPanel, type SearchValues } from "./components/SearchPanel";
 import { TrustSection } from "./components/TrustSection";
-import { ApiError, getRecommendations, USE_DEMO } from "./lib/api";
+import { ApiError, getRecommendations } from "./lib/api";
+import { useI18n } from "./i18n";
+import { withTransition } from "./lib/motion";
+import { profileSnapshot, RADIUS_OPTIONS, useProfile } from "./lib/profile";
 import type { RecommendationResponse } from "./types";
 
 const defaultSearch: SearchValues = {
-  service: "Kidney dialysis",
+  service: "Falls",
   location: "Bhubaneswar, Odisha",
+  radiusKm: 0,
 };
+
+/** Search defaults: the person's saved answers first, then the demo city. */
+function startingSearch(): SearchValues {
+  const profile = profileSnapshot();
+  return {
+    service: defaultSearch.service,
+    location: profile.location ?? defaultSearch.location,
+    radiusKm: profile.radiusKm ?? defaultSearch.radiusKm,
+  };
+}
 
 function App() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const profile = useProfile();
   const [data, setData] = useState<RecommendationResponse>();
   const [isLoading, setIsLoading] = useState(true);
-  const [searchValues, setSearchValues] = useState<SearchValues>(defaultSearch);
-  const [selectedId, setSelectedId] = useState<string>();
+  const [searchValues, setSearchValues] = useState<SearchValues>(startingSearch);
   const [error, setError] = useState<ApiError>();
+  const [selectedId, setSelectedId] = useState<string>();
+  const { t } = useI18n();
+  const emergency = searchParams.get("mode") === "emergency";
 
-  const urlSearch = useMemo(
-    () => ({
-      service: searchParams.get("service") || defaultSearch.service,
-      location: searchParams.get("location") || defaultSearch.location,
-    }),
-    [searchParams],
-  );
+  function closeEmergency() {
+    const next = new URLSearchParams(searchParams);
+    next.delete("mode");
+    withTransition(() => setSearchParams(next), "emergency");
+  }
+
+  function changeRadius(km: number) {
+    setSearchValues((current) => ({ ...current, radiusKm: km }));
+    const next = new URLSearchParams(searchParams);
+    if (km) next.set("radius", String(km));
+    else next.delete("radius");
+    setSearchParams(next, { replace: true });
+  }
+
+  const urlSearch = useMemo(() => {
+    const start = startingSearch();
+    return {
+      service:
+        searchParams.get("condition") ||
+        searchParams.get("service") ||
+        start.service,
+      location: searchParams.get("location") || start.location,
+      // Only a radius actually in the URL counts; Number(null) would read as 0 ("any").
+      radiusKm:
+        searchParams.has("radius") && RADIUS_OPTIONS.includes(Number(searchParams.get("radius")))
+          ? Number(searchParams.get("radius"))
+          : start.radiusKm,
+    };
+  }, [searchParams]);
 
   const runSearch = useCallback(
     async (values: SearchValues, replaceUrl = true) => {
@@ -39,8 +79,9 @@ function App() {
       if (replaceUrl) {
         setSearchParams(
           {
-            service: values.service,
+            condition: values.service,
             location: values.location,
+            ...(values.radiusKm ? { radius: String(values.radiusKm) } : {}),
           },
           { replace: true },
         );
@@ -48,8 +89,9 @@ function App() {
 
       try {
         const response = await getRecommendations({
-          serviceText: values.service,
+          conditionText: values.service,
           locationText: values.location,
+          radiusKm: values.radiusKm,
           coordinates: values.coordinates,
         });
         setData(response);
@@ -75,129 +117,88 @@ function App() {
     void runSearch(values);
   }
 
+  if (emergency) {
+    return (
+      <div className="app-shell">
+        <Header />
+        <main>
+          <EmergencyView
+            origin={
+              data
+                ? { latitude: data.queryContext.location.latitude, longitude: data.queryContext.location.longitude }
+                : { latitude: 20.2961, longitude: 85.8245 }
+            }
+            originName={data?.queryContext.location.resolvedName ?? "Bhubaneswar"}
+            contact={profile.emergencyContact}
+            onExit={closeEmergency}
+          />
+        </main>
+      </div>
+    );
+  }
+
   return (
     <div className="app-shell">
       <Header />
       <main>
-        <section className="hero">
-          <div className="hero-grid" aria-hidden="true" />
-          <div className="hero-orbit hero-orbit-one" aria-hidden="true" />
-          <div className="hero-orbit hero-orbit-two" aria-hidden="true" />
-          <div className="hero-content">
-            <div className="hero-copy">
-              <span className="hero-eyebrow">
-                <span className="eyebrow-icon">
-                  <ShieldCheck size={14} />
-                </span>
-                Evidence before assumptions
-              </span>
-              <h1>
-                Find the right care.
-                <br />
-                See the <em>evidence.</em>
-              </h1>
-              <p className="hero-lede">
-                Search healthcare facilities by service and location. Compare clear, traceable
-                reasons — not just a ranking score.
-              </p>
-              <div className="hero-proof">
-                <span>
-                  <CheckCircle2 size={15} />
-                  Cited service evidence
-                </span>
-                <span>
-                  <CheckCircle2 size={15} />
-                  Source quality signals
-                </span>
-                <span>
-                  <CheckCircle2 size={15} />
-                  Visible uncertainty
-                </span>
-              </div>
-            </div>
-
-            <aside className="evidence-card" id="evidence">
-              <div className="evidence-card-head">
-                <div>
-                  <span className="mini-eyebrow">
-                    <Sparkles size={13} />
-                    What makes a result
-                  </span>
-                  <strong>Evidence you can inspect</strong>
-                </div>
-                <span className="evidence-score">94</span>
-              </div>
-              <div className="mini-quote">
-                <span>“</span>
-                <p>Dedicated dialysis bays with reverse-osmosis water treatment.</p>
-              </div>
-              <div className="mini-source">
-                <span className="source-dot source-official_site" />
-                <span>
-                  Official site
-                  <small>services · dialysis</small>
-                </span>
-                <span className="mini-verified">
-                  <CheckCircle2 size={12} />
-                  Strong
-                </span>
-              </div>
-              <div className="mini-divider" />
-              <div className="mini-signal-row">
-                <span>
-                  <MapPin size={14} />
-                  High location confidence
-                </span>
-                <strong>+9</strong>
-              </div>
-            </aside>
-          </div>
-
-          <SearchPanel
-            initialService={searchValues.service}
-            initialLocation={searchValues.location}
-            isLoading={isLoading}
-            onSearch={handleSearch}
-          />
-
-          <div className="hero-bottom">
-            <a className="scroll-cue" href="#results-heading">
-              <span>Explore results</span>
-              <ArrowDown size={16} />
-            </a>
-            <p>
-              <span className="hero-demo-label">{USE_DEMO ? "Demo data" : "Live data"}</span>
-              {USE_DEMO
-                ? "Facilities and source links shown below are illustrative demo data."
-                : "Virtue Foundation facility records (web-extracted claims). Confirm with the facility before travelling."}
-            </p>
+        <section className="hero" aria-labelledby="hero-title">
+          <div className="hero-inner">
+            <h1 id="hero-title" className="sr-only">
+              {t.heroTitle}
+            </h1>
+            <RaahiSays className="hero-raahi" size={150} tappable>
+              {profile.onboardingDone ? (
+                t.raahiFill
+              ) : (
+                // The only invitation to set up: part of Raahi's one line, never a banner.
+                <>
+                  {t.raahiSetupPre} <Link to="/welcome">{t.raahiSetupLink}</Link>
+                  {t.raahiSetupPost}
+                </>
+              )}
+            </RaahiSays>
+            <SearchPanel
+              initialService={searchValues.service}
+              initialLocation={searchValues.location}
+              radiusKm={searchValues.radiusKm}
+              isLoading={isLoading}
+              onSearch={handleSearch}
+            />
           </div>
         </section>
 
         {error && (
           <section className="api-error" role="alert">
-            <strong>{error.field === "service" ? "Service not recognised" : error.field === "location" ? "Location not found" : "Search failed"}</strong>
-            <p>{error.message}</p>
-            {error.suggestions.length > 0 && (
-              <div className="api-error-suggestions">
-                <span>Try:</span>
-                {error.suggestions.map((suggestion) => (
-                  <button
-                    key={suggestion}
-                    type="button"
-                    onClick={() =>
-                      handleSearch(
-                        error.field === "service"
-                          ? { ...searchValues, service: suggestion }
-                          : { ...searchValues, location: suggestion, coordinates: undefined },
-                      )
-                    }
-                  >
-                    {suggestion}
-                  </button>
-                ))}
-              </div>
-            )}
+            <div className="api-error-inner">
+              <strong>
+                {error.field === "condition" || error.field === "service"
+                  ? t.errService
+                  : error.field === "location"
+                    ? t.errLocation
+                    : t.errSearch}
+              </strong>
+              <p>{error.message}</p>
+              {error.suggestions.length > 0 && (
+                <p className="error-suggestions">
+                  <span>{t.errTry}</span>
+                  {error.suggestions.map((suggestion) => (
+                    <button
+                      key={suggestion}
+                      type="button"
+                      onClick={() =>
+                        handleSearch(
+                          error.field === "condition" || error.field === "service"
+                            ? { ...searchValues, service: suggestion }
+                            : { ...searchValues, location: suggestion, coordinates: undefined },
+                        )
+                      }
+                    >
+                      {suggestion}
+                    </button>
+                  ))}
+                </p>
+              )}
+            </div>
           </section>
         )}
         <ResultsView
@@ -205,6 +206,9 @@ function App() {
           isLoading={isLoading}
           selectedId={selectedId}
           onSelectedIdChange={setSelectedId}
+          radiusKm={searchValues.radiusKm}
+          onRadiusChange={changeRadius}
+          governmentFirst={profile.governmentFirst === true}
         />
         <TrustSection />
       </main>

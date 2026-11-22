@@ -1,0 +1,29 @@
+{
+  "run_name": "carepath_export_local_model_snapshot",
+  "timeout_seconds": 1200,
+  "environments": [
+    {
+      "environment_key": "export_env",
+      "spec": {
+        "client": "2",
+        "dependencies": [
+          "pandas==2.2.3"
+        ]
+      }
+    }
+  ],
+  "tasks": [
+    {
+      "task_key": "export_local_snapshot",
+      "environment_key": "export_env",
+      "timeout_seconds": 1200,
+      "notebook_task": {
+        "notebook_path": "/Users/kevinzh3@andrew.cmu.edu/carepath_model/notebooks/08_export_local_model_data",
+        "source": "WORKSPACE",
+        "base_parameters": {
+          "export_dir": "/Volumes/workspace/carepath_model/model_files/local_snapshot"
+        }
+      }
+    }
+  ]
+}

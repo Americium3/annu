@@ -1,0 +1,81 @@
+{
+  "review_type": "stratified_manual_semantic_review",
+  "reviewed_at": "2026-11-21",
+  "canonical_table": "workspace.cardinal_virtues.model_tag_canonical_element",
+  "audit_export_task_run_id": 679468955573482,
+  "sampling": {
+    "method": "up_to_3_per_source_field_and_canonical_category",
+    "rows": 84,
+    "rule_rows": 44,
+    "model_rows": 40
+  },
+  "field_category_validity": {
+    "correct": 84,
+    "total": 84,
+    "accuracy": 1.0,
+    "note": "Inference now masks categories not allowed for the source field."
+  },
+  "manual_category_review": {
+    "correct": 58,
+    "total": 84,
+    "accuracy": 0.6905,
+    "incorrect_sample_numbers": [
+      18,
+      19,
+      20,
+      21,
+      23,
+      24,
+      34,
+      35,
+      40,
+      43,
+      45,
+      46,
+      47,
+      48,
+      49,
+      54,
+      55,
+      57,
+      61,
+      63,
+      67,
+      69,
+      73,
+      74,
+      80,
+      81
+    ],
+    "by_source_field": {
+      "capability_arr": {
+        "correct": 24,
+        "total": 30,
+        "accuracy": 0.8
+      },
+      "equipment_arr": {
+        "correct": 18,
+        "total": 30,
+        "accuracy": 0.6
+      },
+      "procedure_arr": {
+        "correct": 13,
+        "total": 21,
+        "accuracy": 0.619
+      },
+      "specialties_std": {
+        "correct": 3,
+        "total": 3,
+        "accuracy": 1.0
+      }
+    }
+  },
+  "common_error_patterns": [
+    "facility setting or care unit misclassified as equipment",
+    "generic diagnostic equipment misclassified as laboratory equipment",
+    "pediatric care or ICU setting misclassified as neonatal equipment",
+    "procedure type confused with care setting, screening, follow-up or marketing",
+    "multi-label cases forced into one category"
+  ],
+  "conclusion": "The field constraint is fixed, but subtype classification is not accurate enough for a clinical service catalog. For service input, use canonical action alias matching as the primary path and treat subtype labels as routing metadata."
+}

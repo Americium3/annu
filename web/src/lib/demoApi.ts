@@ -80,7 +80,8 @@ function delay(milliseconds: number) {
 }
 
 export interface DemoSearchInput {
-  serviceText: string;
+  conditionText?: string;
+  serviceText?: string;
   locationText: string;
   coordinates?: {
     latitude: number;
@@ -218,7 +219,7 @@ export async function getDemoRecommendations(
 ): Promise<RecommendationResponse> {
   await delay(WAIT_TIME_MS);
 
-  const service = resolveService(input.serviceText);
+  const service = resolveService(input.conditionText ?? input.serviceText ?? "");
   const location = resolveLocation(input.locationText);
   const sorted = orderFacilities(demoFacilities)
     .slice(0, DEMO_LIMIT)
@@ -228,6 +229,8 @@ export async function getDemoRecommendations(
   return {
     queryContext: {
       requestId,
+      inputKind: "condition",
+      inputText: input.conditionText ?? input.serviceText ?? "",
       service: {
         canonicalId: service.id,
         displayName: service.name,

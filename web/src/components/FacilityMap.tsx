@@ -7,9 +7,11 @@ import {
   TileLayer,
   useMap,
 } from "react-leaflet";
-import { ArrowUpRight, Crosshair, MapPinned } from "lucide-react";
+import { ArrowRight, Crosshair } from "lucide-react";
+import { useI18n } from "../i18n";
+import { scoreBand } from "./FacilityCard";
+import { RAAHI_MARK_HTML } from "./Raahi";
 import type { FacilityRecommendation, QueryContext } from "../types";
-import { MapLegend } from "./MapLegend";
 
 interface FacilityMapProps {
   facilities: FacilityRecommendation[];
@@ -21,15 +23,23 @@ interface FacilityMapProps {
 }
 
 function createMarkerIcon(facility: FacilityRecommendation, selected: boolean) {
-  const scoreClass =
-    facility.totalScore >= 85 ? "strong" : facility.totalScore >= 70 ? "mid" : "low";
+  // Same pin shape as the rank marker on each card; the tip sits on the location.
   return L.divIcon({
     className: "custom-marker-wrapper",
-    html: `<div class="custom-marker custom-marker-${scoreClass} ${selected ? "is-selected" : ""}"><span>${facility.rank}</span></div>`,
-    iconSize: [38, 38],
-    iconAnchor: [19, 19],
+    html: `<div class="rank-pin rank-pin-${scoreBand(facility.totalScore)} ${selected ? "is-selected" : ""}"><span>${facility.rank}</span></div>`,
+    iconSize: [32, 42],
+    iconAnchor: [16, 40],
+    popupAnchor: [0, -38],
   });
 }
+
+// Raahi stands on the search area, so "you are here" is the same face as the brand.
+const searchAreaIcon = L.divIcon({
+  className: "search-area-marker",
+  html: RAAHI_MARK_HTML,
+  iconSize: [30, 34],
+  iconAnchor: [15, 34],
+});
 
 function MapViewport({
   facilities,
@@ -77,6 +87,7 @@ export function FacilityMap({
   onOpen,
   onClearSelection,
 }: FacilityMapProps) {
+  const { t } = useI18n();
   const center = useMemo<[number, number]>(
     () =>
       queryContext
@@ -88,17 +99,14 @@ export function FacilityMap({
   return (
     <section className="map-panel" aria-label="Facilities map">
       <div className="map-toolbar">
-        <div>
-          <span className="map-eyebrow">
-            <MapPinned size={15} />
-            Explore nearby
-          </span>
-          <h2>{queryContext?.location.resolvedName ?? "Bhubaneswar"}</h2>
-        </div>
+        <h2>
+          {t.mapTitle} <span>· {queryContext?.location.resolvedName ?? "Bhubaneswar"}</span>
+        </h2>
         <button
-          className="map-locate"
+          className="icon-button"
           type="button"
-          aria-label="Center map on search area"
+          aria-label={t.mapCenter}
+          title={t.mapCenter}
           onClick={onClearSelection}
         >
           <Crosshair size={18} />
@@ -117,6 +125,7 @@ export function FacilityMap({
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
           <MapViewport facilities={facilities} selectedId={selectedId} center={center} />
+          <Marker position={center} icon={searchAreaIcon} title={t.searchArea} zIndexOffset={-100} />
           {facilities.map((facility) => (
             <Marker
               key={facility.id}
@@ -129,24 +138,18 @@ export function FacilityMap({
             >
               <Popup className="facility-popup">
                 <div className="map-popup-content">
-                  <span className="popup-rank">#{facility.rank} · Score {facility.totalScore}</span>
                   <strong>{facility.name}</strong>
                   <span>
-                    {facility.distanceKm.toFixed(1)} km · {facility.type}
+                    {t.kmAway(facility.distanceKm.toFixed(1))} · {facility.totalScore}/100 {t.matchScore}
                   </span>
                   <button type="button" onClick={() => onOpen(facility.id)}>
-                    See evidence <ArrowUpRight size={13} />
+                    {t.seeProof} <ArrowRight size={14} />
                   </button>
                 </div>
               </Popup>
             </Marker>
           ))}
         </MapContainer>
-        <MapLegend />
-        <div className="map-note">
-          <span className="map-note-dot" />
-          Facility pins are based on available coordinate data
-        </div>
       </div>
     </section>
   );

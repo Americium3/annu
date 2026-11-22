@@ -1,0 +1,32 @@
+{
+  "run_name": "carepath_model_register_from_latest_run",
+  "timeout_seconds": 1200,
+  "environments": [
+    {
+      "environment_key": "register_env",
+      "spec": {
+        "client": "2",
+        "dependencies": [
+          "mlflow==2.20.3",
+          "pandas==2.2.3"
+        ]
+      }
+    }
+  ],
+  "tasks": [
+    {
+      "task_key": "register_field_taxonomy",
+      "environment_key": "register_env",
+      "timeout_seconds": 1200,
+      "notebook_task": {
+        "notebook_path": "/Users/kevinzh3@andrew.cmu.edu/carepath_model/notebooks/03_register_field_taxonomy",
+        "source": "WORKSPACE",
+        "base_parameters": {
+          "metrics_table": "workspace.cardinal_virtues.model_field_taxonomy_metrics",
+          "registered_model_name": "workspace.carepath_model.model_field_taxonomy",
+          "alias": "Champion"
+        }
+      }
+    }
+  ]
+}

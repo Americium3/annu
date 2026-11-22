@@ -1,7 +1,7 @@
 """Service-first recommender (port of facilities_qc/03_recommender_lib.py, section F) + mapping to web/src/types.ts.
 
-Flow: service text → tag → facilities listing the tag → usable evidence + location → widening radius → evidence-first
-sort keys (no total score drives the order). The score shown in the UI is a display summary of the same signals.
+Flow: service text → tag → facilities listing the tag → usable evidence + location → widening radius.
+The displayed score is 100 × (1 - distance / radius); the frontend ranks returned candidates by that score.
 """
 from __future__ import annotations
 
@@ -252,6 +252,9 @@ class Recommender:
             warnings.append("Location is ambiguous: " + "; ".join(loc["ambiguous"]) + f". Using {loc['name']}, {loc['state']}.")
         warnings.append("Service evidence is text extracted from public web pages: confirm availability with the "
                         "facility before travelling.")
+        warnings.append(
+            f"Score = 100 × (1 - distance / {radius:g} km); closer facilities receive a higher score."
+        )
 
         rid = f"req-{uuid.uuid4().hex[:10]}"
         syn = list(self.tags.loc[tag, "synonyms"])
@@ -305,28 +308,30 @@ class Recommender:
                 else "low" if tier == 3 and ltier != "point_verified" or ltier == "pin_area" or only_eq else "medium")
         fields = sorted({ev.get("field") for ev in r["evidence"] if ev.get("evidence_status") == "usable"})
         d = float(r["distance_km"])
+        distance_km = round(d, 1)
         point = ltier.startswith("point") and loc["precision"] == "point"
         dist_txt = f"{d:.1f} km away" if point else f"about {d:.0f} km away"
 
         # display score: same signals as the sort keys, scaled to the UI's maxima (does NOT decide the order)
         n_src = int(r["n_source_urls"]) if pd.notna(r["n_source_urls"]) else 0
         has_site = isinstance(r["contact_website"], str) and bool(r["contact_website"])
-        band = int(r["band_idx"])
-        capacity_known = sum(pd.notna(r[c]) for c in ("n_beds", "n_doctors"))
         dup = pd.notna(r["same_name_city_records"]) and r["same_name_city_records"] > 1
         trunc = bool(r["capability_maybe_truncated"]) or bool(r["procedure_maybe_truncated"])
+        distance_score = round(100 * max(0.0, min(1.0, 1.0 - distance_km / radius)), 1)
         sb = {
-            "serviceMatchScore": 29,
-            "evidenceScore": {1: 24, 2: 19, 3: 12}.get(tier, 0) - (4 if only_eq else 0),
-            "sourceScore": min(15, (7 if has_site else 0) + min(n_src, 8)),
-            "distanceScore": [10, 8, 6, 4, 2, 1, 0][min(band, 6)],
-            "locationQualityScore": {"point_verified": 9, "point_unverified": 6, "pin_area": 4}.get(ltier, 0),
-            "capacityScore": {0: 0, 1: 4, 2: 7}[capacity_known],
-            "penaltyScore": -(3 if r["n_explicit_elsewhere"] > 0 else 0) - (2 if dup else 0) - (1 if trunc else 0),
+            "serviceMatchScore": 0,
+            "evidenceScore": 0,
+            "sourceScore": 0,
+            "distanceScore": distance_score,
+            "locationQualityScore": 0,
+            "capacityScore": 0,
+            "penaltyScore": 0,
         }
-        total = int(max(0, min(100, sum(sb.values()))))
-        sb.update({"totalScore": total, "modelVersion": f"{config.RANKING_VERSION} (score = display summary; "
-                                                          "order = evidence-first rules)"})
+        total = distance_score
+        sb.update({
+            "totalScore": total,
+            "modelVersion": f"{config.RANKING_VERSION} (100 × (1 - distance / search radius))",
+        })
 
         reasons, msgs, missing = [], ["Current availability, hours, beds and cost are not in the data."], ["current_availability"]
         if only_eq:
@@ -368,7 +373,7 @@ class Recommender:
             "operatorType": (r["operator_category"] or "unknown").title() if isinstance(r["operator_category"], str) else "Unknown",
             "address": address, "district": _s(r["district"]), "state": _s(r["state"]),
             "pincode": _s(r["pincode"]), "latitude": float(r["rec_lat"]), "longitude": float(r["rec_lon"]),
-            "distanceKm": round(d, 1), "totalScore": total, "confidence": conf,
+            "distanceKm": distance_km, "totalScore": total, "confidence": conf,
             "recommendationSummary": (f"Lists {label}: {int(r['n_explicit_usable'])} supporting statement(s) in "
                                       f"{', '.join(fields) or 'no usable field'} (evidence tier {tier}). {dist_txt.capitalize()}"
                                       + ("" if point else f" ({'PIN area' if ltier == 'pin_area' else 'from ' + loc['note']})") + "."),

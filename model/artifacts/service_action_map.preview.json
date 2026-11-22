@@ -1,0 +1,290 @@
+[
+  {
+    "service_id": "tag:kidney-dialysis",
+    "action_id": "MAXO:0000601",
+    "action_label": "renal dialysis",
+    "relation_type": "exact_alias",
+    "priority": 2,
+    "confidence": 0.95
+  },
+  {
+    "service_id": "tag:kidney-dialysis",
+    "action_id": "MAXO:0000602",
+    "action_label": "hemodialysis",
+    "relation_type": "exact_alias",
+    "priority": 2,
+    "confidence": 0.95
+  },
+  {
+    "service_id": "tag:kidney-dialysis",
+    "action_id": "MAXO:0000603",
+    "action_label": "peritoneal dialysis",
+    "relation_type": "exact_alias",
+    "priority": 2,
+    "confidence": 0.95
+  },
+  {
+    "service_id": "tag:kidney-transplant",
+    "action_id": "MAXO:0010043",
+    "action_label": "whole kidney transplantation",
+    "relation_type": "manual_override",
+    "priority": 1,
+    "confidence": 0.9
+  },
+  {
+    "service_id": "tag:angiography",
+    "action_id": "MAXO:0001259",
+    "action_label": "angiography",
+    "relation_type": "manual_override",
+    "priority": 1,
+    "confidence": 0.9
+  },
+  {
+    "service_id": "tag:angioplasty",
+    "action_id": "MAXO:0009038",
+    "action_label": "coronary stent insertion",
+    "relation_type": "manual_override",
+    "priority": 1,
+    "confidence": 0.9
+  },
+  {
+    "service_id": "tag:cardiac-surgery",
+    "action_id": "MAXO:0025001",
+    "action_label": "surgical procedure on cardiovascular system",
+    "relation_type": "manual_override",
+    "priority": 1,
+    "confidence": 0.9
+  },
+  {
+    "service_id": "tag:pacemaker",
+    "action_id": "MAXO:0009034",
+    "action_label": "pacemaker implantation",
+    "relation_type": "exact_alias",
+    "priority": 2,
+    "confidence": 0.95
+  },
+  {
+    "service_id": "tag:echocardiography",
+    "action_id": "MAXO:0010203",
+    "action_label": "echocardiography",
+    "relation_type": "exact_alias",
+    "priority": 2,
+    "confidence": 0.95
+  },
+  {
+    "service_id": "tag:ecg",
+    "action_id": "MAXO:0000900",
+    "action_label": "electrocardiography",
+    "relation_type": "exact_alias",
+    "priority": 2,
+    "confidence": 0.95
+  },
+  {
+    "service_id": "tag:mri",
+    "action_id": "MAXO:0000424",
+    "action_label": "magnetic resonance imaging procedure",
+    "relation_type": "exact_alias",
+    "priority": 2,
+    "confidence": 0.95
+  },
+  {
+    "service_id": "tag:ct-scan",
+    "action_id": "MAXO:0000571",
+    "action_label": "computed tomography procedure",
+    "relation_type": "exact_alias",
+    "priority": 2,
+    "confidence": 0.95
+  },
+  {
+    "service_id": "tag:x-ray",
+    "action_id": "MAXO:0000595",
+    "action_label": "radiograph imaging procedure",
+    "relation_type": "manual_override",
+    "priority": 1,
+    "confidence": 0.9
+  },
+  {
+    "service_id": "tag:ultrasound",
+    "action_id": "MAXO:0000072",
+    "action_label": "ultrasonography procedure",
+    "relation_type": "exact_alias",
+    "priority": 2,
+    "confidence": 0.95
+  },
+  {
+    "service_id": "tag:mammography",
+    "action_id": "MAXO:0010363",
+    "action_label": "mammography procedure",
+    "relation_type": "exact_alias",
+    "priority": 2,
+    "confidence": 0.95
+  },
+  {
+    "service_id": "tag:pet-ct",
+    "action_id": "MAXO:0000137",
+    "action_label": "positron emission tomography procedure",
+    "relation_type": "manual_override",
+    "priority": 1,
+    "confidence": 0.9
+  },
+  {
+    "service_id": "tag:pet-ct",
+    "action_id": "MAXO:0000571",
+    "action_label": "computed tomography procedure",
+    "relation_type": "manual_override",
+    "priority": 1,
+    "confidence": 0.9
+  },
+  {
+    "service_id": "tag:bone-density",
+    "action_id": "MAXO:0020004",
+    "action_label": "Dual-energy X-ray absorptiometry procedure",
+    "relation_type": "manual_override",
+    "priority": 1,
+    "confidence": 0.9
+  },
+  {
+    "service_id": "tag:chemotherapy",
+    "action_id": "MAXO:0000647",
+    "action_label": "chemotherapy",
+    "relation_type": "exact_alias",
+    "priority": 2,
+    "confidence": 0.95
+  },
+  {
+    "service_id": "tag:radiotherapy",
+    "action_id": "MAXO:0000014",
+    "action_label": "radiation therapy",
+    "relation_type": "exact_alias",
+    "priority": 2,
+    "confidence": 0.95
+  },
+  {
+    "service_id": "tag:bone-marrow-transplant",
+    "action_id": "MAXO:0010030",
+    "action_label": "bone marrow transplantation",
+    "relation_type": "manual_override",
+    "priority": 1,
+    "confidence": 0.9
+  },
+  {
+    "service_id": "tag:hysterectomy",
+    "action_id": "MAXO:0001058",
+    "action_label": "hysterectomy",
+    "relation_type": "exact_alias",
+    "priority": 2,
+    "confidence": 0.95
+  },
+  {
+    "service_id": "tag:vaccination",
+    "action_id": "MAXO:0001017",
+    "action_label": "vaccination",
+    "relation_type": "exact_alias",
+    "priority": 2,
+    "confidence": 0.95
+  },
+  {
+    "service_id": "tag:joint-replacement",
+    "action_id": "MAXO:0009047",
+    "action_label": "hip replacement",
+    "relation_type": "exact_alias",
+    "priority": 2,
+    "confidence": 0.95
+  },
+  {
+    "service_id": "tag:arthroscopy",
+    "action_id": "MAXO:0001182",
+    "action_label": "arthroscopy",
+    "relation_type": "exact_alias",
+    "priority": 2,
+    "confidence": 0.95
+  },
+  {
+    "service_id": "tag:physiotherapy",
+    "action_id": "MAXO:0000011",
+    "action_label": "physical therapy",
+    "relation_type": "manual_override",
+    "priority": 1,
+    "confidence": 0.9
+  },
+  {
+    "service_id": "tag:neurosurgery",
+    "action_id": "MAXO:0000947",
+    "action_label": "brain surgery",
+    "relation_type": "exact_alias",
+    "priority": 2,
+    "confidence": 0.95
+  },
+  {
+    "service_id": "tag:eeg-emg",
+    "action_id": "MAXO:0000932",
+    "action_label": "electroencephalography",
+    "relation_type": "manual_override",
+    "priority": 1,
+    "confidence": 0.9
+  },
+  {
+    "service_id": "tag:endoscopy",
+    "action_id": "MAXO:0001184",
+    "action_label": "colonoscopy",
+    "relation_type": "exact_alias",
+    "priority": 2,
+    "confidence": 0.95
+  },
+  {
+    "service_id": "tag:endoscopy",
+    "action_id": "MAXO:0035037",
+    "action_label": "gastroscopy",
+    "relation_type": "exact_alias",
+    "priority": 2,
+    "confidence": 0.95
+  },
+  {
+    "service_id": "tag:endoscopy",
+    "action_id": "MAXO:0035049",
+    "action_label": "endoscopic retrograde cholangiopancreatography",
+    "relation_type": "exact_alias",
+    "priority": 2,
+    "confidence": 0.95
+  },
+  {
+    "service_id": "tag:liver-transplant",
+    "action_id": "MAXO:0001175",
+    "action_label": "liver transplantation",
+    "relation_type": "manual_override",
+    "priority": 1,
+    "confidence": 0.9
+  },
+  {
+    "service_id": "tag:cosmetic-surgery",
+    "action_id": "MAXO:0009073",
+    "action_label": "cosmetic plastic surgery",
+    "relation_type": "exact_alias",
+    "priority": 2,
+    "confidence": 0.95
+  },
+  {
+    "service_id": "tag:dental-implants",
+    "action_id": "MAXO:0001534",
+    "action_label": "dental implantation",
+    "relation_type": "manual_override",
+    "priority": 1,
+    "confidence": 0.9
+  },
+  {
+    "service_id": "tag:dentures",
+    "action_id": "MAXO:0001533",
+    "action_label": "denture usage",
+    "relation_type": "manual_override",
+    "priority": 1,
+    "confidence": 0.9
+  },
+  {
+    "service_id": "tag:palliative-care",
+    "action_id": "MAXO:0000021",
+    "action_label": "palliative care",
+    "relation_type": "exact_alias",
+    "priority": 2,
+    "confidence": 0.95
+  }
+]

@@ -1,15 +1,13 @@
-import { Activity } from "lucide-react";
+import { Link } from "react-router-dom";
+import { useI18n } from "../i18n";
+import { RaahiMark } from "./Raahi";
 
 export function Brand() {
+  const { t } = useI18n();
   return (
-    <a className="brand" href="/" aria-label="CarePath home">
-      <span className="brand-mark" aria-hidden="true">
-        <Activity size={21} strokeWidth={2.5} />
-      </span>
-      <span className="brand-copy">
-        <strong>CarePath</strong>
-        <span>Evidence-led care search</span>
-      </span>
-    </a>
+    <Link className="brand" to="/" aria-label={t.homeLabel}>
+      <RaahiMark size={26} />
+      <span className="brand-name">CarePath</span>
+    </Link>
   );
 }

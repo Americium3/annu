@@ -1,17 +1,20 @@
-interface ScoreRingProps {
-  score: number;
-  size?: "small" | "large";
-}
+import { useI18n } from "../i18n";
 
-export function ScoreRing({ score, size = "small" }: ScoreRingProps) {
+/** The match score as a plain number with its scale, tinted by band. */
+export function ScoreRing({ score, size = "small" }: { score: number; size?: "small" | "large" }) {
+  const { t } = useI18n();
+  const band = score >= 85 ? "strong" : score >= 70 ? "mid" : "low";
   return (
     <div
-      className={`score-ring ${size === "large" ? "score-ring-large" : ""}`}
-      style={{ "--score": `${score * 3.6}deg` } as React.CSSProperties}
-      aria-label={`Recommendation score ${score} out of 100`}
+      className={`match-score match-${band} ${size === "large" ? "match-score-large" : ""}`}
+      role="img"
+      aria-label={t.scoreAria(score)}
     >
-      <span>{score}</span>
-      <small>/100</small>
+      <strong>{score}</strong>
+      <span>
+        /100 <br />
+        {t.matchScore}
+      </span>
     </div>
   );
 }

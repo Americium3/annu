@@ -9,6 +9,7 @@ export interface ServiceOption {
   synonyms: string[];
   category: string;
   facilityCount?: number;
+  actionCount?: number;
 }
 
 export interface LocationOption {
@@ -23,6 +24,27 @@ export interface LocationOption {
 
 export interface QueryContext {
   requestId: string;
+  inputKind?: "condition" | "service";
+  inputText?: string;
+  condition?: {
+    displayName: string;
+    matchedLabels: string[];
+    canonicalIds: string[];
+    inferredLabels?: string[];
+    treatmentConcepts?: string[];
+    relatedTags?: Array<{ id: string; label: string; weight: number }>;
+    confidence: ConfidenceLevel;
+    negatedMentions: string[];
+    urgency: "routine" | "urgent" | "emergency";
+  };
+  services?: Array<{
+    id: string;
+    label: string;
+    score: number;
+    routeType: string;
+    actionIds: string[];
+    conditions: string[];
+  }>;
   service: {
     canonicalId: string;
     displayName: string;
@@ -51,10 +73,14 @@ export interface EvidenceItem {
   fieldName: string;
   matchedService: string;
   quote: string;
-  matchType: "exact" | "synonym" | "semantic";
+  matchType: "exact" | "synonym" | "semantic" | "weak_bridge";
   polarity: EvidencePolarity;
   strength: EvidenceStrength;
   sourceId: string;
+  route?: string;
+  evidenceTier?: "direct" | "weak";
+  condition?: string;
+  matchedPhrase?: string;
 }
 
 export interface SourceReference {
@@ -68,10 +94,17 @@ export interface SourceReference {
 }
 
 export interface ScoreBreakdown {
+  conditionMatchScore?: number;
+  directActionScore?: number;
+  weakBridgeScore?: number;
   serviceMatchScore: number;
   evidenceScore: number;
   sourceScore: number;
   distanceScore: number;
+  distanceWeight?: number;
+  serviceEvidenceWeight?: number;
+  searchRadiusKm?: number;
+  urgency?: "routine" | "urgent" | "emergency";
   locationQualityScore: number;
   capacityScore: number;
   penaltyScore: number;
@@ -97,6 +130,10 @@ export interface FacilityRecommendation {
   district: string;
   state: string;
   pincode: string;
+  /** Front-desk number in E.164 or local form. Absent when no source lists one. */
+  phone?: string;
+  /** The facility's own website, when the data has one. */
+  website?: string;
   latitude: number;
   longitude: number;
   distanceKm: number;
@@ -104,6 +141,19 @@ export interface FacilityRecommendation {
   confidence: ConfidenceLevel;
   recommendationSummary: string;
   scoreBreakdown: ScoreBreakdown;
+  reranking?: {
+    method: "cross_encoder";
+    model: string;
+    textScore: number;
+    evidenceScore: number;
+    distanceScore: number;
+    totalScore: number;
+    weights: { text: number; evidence: number; distance: number };
+    bestEvidenceRef: string;
+    bestEvidenceText: string;
+    scoredItemCount: number;
+    scoreMeaning: string;
+  };
   evidence: EvidenceItem[];
   sources: SourceReference[];
   locationQuality: {

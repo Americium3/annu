@@ -1,0 +1,32 @@
+{
+  "run_name": "carepath_service_catalog_build",
+  "timeout_seconds": 1800,
+  "environments": [
+    {
+      "environment_key": "service_catalog_env",
+      "spec": {
+        "client": "2",
+        "dependencies": []
+      }
+    }
+  ],
+  "tasks": [
+    {
+      "task_key": "build_service_catalog",
+      "environment_key": "service_catalog_env",
+      "timeout_seconds": 1800,
+      "notebook_task": {
+        "notebook_path": "/Users/kevinzh3@andrew.cmu.edu/carepath_model/notebooks/07_build_service_catalog",
+        "source": "WORKSPACE",
+        "base_parameters": {
+          "output_catalog": "workspace",
+          "output_schema": "cardinal_virtues",
+          "service_tag_table": "workspace.cardinal_virtues.ref_service_tags",
+          "action_catalog_table": "workspace.cardinal_virtues.model_action_catalog",
+          "action_alias_table": "workspace.cardinal_virtues.model_action_alias",
+          "action_match_table": "workspace.cardinal_virtues.model_facility_action_match"
+        }
+      }
+    }
+  ]
+}

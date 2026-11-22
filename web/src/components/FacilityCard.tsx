@@ -1,127 +1,180 @@
-import {
-  ArrowRight,
-  Building2,
-  Clock3,
-  ExternalLink,
-  MapPin,
-  ShieldAlert,
-} from "lucide-react";
+import { AlertTriangle, ArrowRight, HelpCircle, ShieldAlert } from "lucide-react";
+import { operatorLabel, useI18n } from "../i18n";
+import { transitionName } from "../lib/motion";
+import { displayPhone, telUrl } from "../lib/facilityActions";
+import { knownOperator, reasonText, statusLabel } from "../lib/reason";
 import type { FacilityRecommendation } from "../types";
-import { ConfidenceBadge } from "./ConfidenceBadge";
-import { ScoreRing } from "./ScoreRing";
+import { FacilityActions } from "./FacilityActions";
 
-interface FacilityCardProps {
+export function scoreBand(score: number) {
+  return score >= 85 ? "strong" : score >= 70 ? "mid" : "low";
+}
+
+type T = ReturnType<typeof useI18n>["t"];
+
+/** One plain sentence on whether the service is confirmed, and by what. */
+export function reasonLine(t: T, facility: FacilityRecommendation) {
+  return reasonText(t, facility.confidence, facility.sources.map((source) => source.sourceType), facility);
+}
+
+/**
+ * A warning only when one is needed. A confirmed result says nothing: being
+ * listed already means it offers the service. Otherwise one short line names
+ * what to do with what the card offers (call this number, check the website),
+ * or says plainly that it isn't confirmed. The full reason is in the tooltip
+ * and in "Why this hospital?".
+ */
+function Status({ facility, large = false }: { facility: FacilityRecommendation; large?: boolean }) {
+  const { t } = useI18n();
+  const { text, confirmed } = reasonLine(t, facility);
+  const risky = facility.confidence === "low" || facility.uncertainty.level === "high";
+  if (confirmed && !risky) return null; // nothing to warn about: say nothing
+  const level = risky ? "low" : "medium";
+  const Icon = level === "medium" ? HelpCircle : AlertTriangle;
+  const label = statusLabel(t, level, facility);
+  // "Call first" names the number and dials it, so the advice can be acted on.
+  if (facility.phone) {
+    return (
+      <p className={`card-reason board-status ${large ? "is-large" : ""} confidence-${level}`} title={text}>
+        <Icon size={15} aria-hidden="true" />
+        <a href={telUrl(facility.phone)} onClick={(event) => event.stopPropagation()}>
+          {label} · <span className="action-number">{displayPhone(facility.phone)}</span>
+        </a>
+        <span className="sr-only">: {text}</span>
+      </p>
+    );
+  }
+  return (
+    <p className={`card-reason board-status ${large ? "is-large" : ""} confidence-${level}`} title={text}>
+      <Icon size={15} aria-hidden="true" />
+      {label}
+      <span className="sr-only">: {text}</span>
+    </p>
+  );
+}
+
+/** "Type · Ownership · Area", leaving out ownership the data doesn't know. */
+function Meta({ facility }: { facility: FacilityRecommendation }) {
+  const { t } = useI18n();
+  const operator = knownOperator(facility.operatorType);
+  return (
+    <p className="facility-meta">
+      {facility.type} ·{" "}
+      {operator && (
+        <>
+          <span className="operator">{operatorLabel(t, operator)}</span> ·{" "}
+        </>
+      )}
+      {facility.address}
+    </p>
+  );
+}
+
+function Warning({ facility }: { facility: FacilityRecommendation }) {
+  if (facility.uncertainty.level !== "high") return null;
+  return (
+    <p className="card-warning">
+      <ShieldAlert size={16} aria-hidden="true" />
+      {facility.uncertainty.messages[0]}
+    </p>
+  );
+}
+
+function Distance({ km, large = false }: { km: number; large?: boolean }) {
+  const { t } = useI18n();
+  const [whole, fraction] = km.toFixed(1).split(".");
+  return (
+    <p className={`board-distance ${large ? "is-large" : ""}`}>
+      <strong>
+        {whole}
+        <span>.{fraction}</span>
+      </strong>
+      <small>{t.kmUnit}</small>
+    </p>
+  );
+}
+
+interface ResultProps {
   facility: FacilityRecommendation;
+  service: string;
   selected: boolean;
+  index: number;
   onSelect: () => void;
   onOpen: () => void;
 }
 
-export function FacilityCard({
-  facility,
-  selected,
-  onSelect,
-  onOpen,
-}: FacilityCardProps) {
-  const topEvidence = facility.evidence.slice(0, 2);
-  const primarySource = facility.sources[0];
+function WhyButton({ onOpen }: { onOpen: () => void }) {
+  const { t } = useI18n();
+  return (
+    <button
+      className="text-button"
+      type="button"
+      onClick={(event) => {
+        event.stopPropagation();
+        onOpen();
+      }}
+    >
+      {t.whyHospital}
+      <ArrowRight size={16} />
+    </button>
+  );
+}
 
+/**
+ * The answer, set large: the one place this person should most likely go,
+ * with the distance as the headline number and one filled action.
+ */
+export function TopPick({ facility, service, selected, onSelect, onOpen }: ResultProps & { nearest?: boolean }) {
+  const { t } = useI18n();
   return (
     <article
-      className={`facility-card ${selected ? "is-selected" : ""}`}
+      className={`top-pick ${selected ? "is-selected" : ""}`}
       onClick={onSelect}
       aria-labelledby={`facility-${facility.id}-name`}
+      style={{ "--vt-name": transitionName("result", facility.id) } as React.CSSProperties}
     >
-      <div className="facility-rank" aria-label={`Rank ${facility.rank}`}>
-        {facility.rank}
+      <div className="top-pick-main">
+        <Distance km={facility.distanceKm} large />
+        <div className="top-pick-body">
+          <h3 id={`facility-${facility.id}-name`}>{facility.name}</h3>
+          <Meta facility={facility} />
+          <Status facility={facility} large />
+          <Warning facility={facility} />
+        </div>
       </div>
-      <div className="card-main">
-        <div className="card-topline">
-          <div>
-            <div className="card-title-row">
-              <h3 id={`facility-${facility.id}-name`}>{facility.name}</h3>
-              <ConfidenceBadge level={facility.confidence} compact />
-            </div>
-            <p className="facility-meta">
-              <Building2 size={14} aria-hidden="true" />
-              {facility.type} <span>·</span> {facility.operatorType}
-            </p>
-          </div>
-          <ScoreRing score={facility.totalScore} />
-        </div>
-
-        <div className="location-line">
-          <MapPin size={14} aria-hidden="true" />
-          <span>{facility.address}</span>
-          <span className="middot">·</span>
-          <strong>{facility.distanceKm.toFixed(1)} km</strong>
-        </div>
-
-        <p className="recommendation-summary">{facility.recommendationSummary}</p>
-
-        <div className="evidence-preview">
-          <div className="section-kicker">
-            Why this facility
-            <span>{topEvidence.length} strongest signals</span>
-          </div>
-          {topEvidence.map((evidence) => {
-            const source = facility.sources.find((item) => item.id === evidence.sourceId);
-            return (
-              <div className="evidence-quote" key={evidence.id}>
-                <p>“{evidence.quote}”</p>
-                <span>
-                  <code>{evidence.fieldName}</code>
-                  <span className={`strength-strength-${evidence.strength}`}>
-                    {evidence.strength} evidence
-                  </span>
-                </span>
-              </div>
-            );
-          })}
-        </div>
-
-        <div className="card-footer">
-          <div className="card-sources">
-            {primarySource && (
-              <a
-                href={primarySource.url}
-                target="_blank"
-                rel="noreferrer"
-                onClick={(event) => event.stopPropagation()}
-              >
-                <span className={`source-dot source-${primarySource.sourceType}`} />
-                {primarySource.domain}
-                <ExternalLink size={12} />
-              </a>
-            )}
-            {facility.sources.length > 1 && (
-              <span className="more-sources">+{facility.sources.length - 1} source</span>
-            )}
-          </div>
-          <button
-            className="text-button"
-            type="button"
-            onClick={(event) => {
-              event.stopPropagation();
-              onOpen();
-            }}
-          >
-            See evidence
-            <ArrowRight size={15} />
-          </button>
-        </div>
-
-        {facility.uncertainty.level !== "low" && (
-          <div className={`uncertainty-strip uncertainty-${facility.uncertainty.level}`}>
-            {facility.uncertainty.level === "high" ? (
-              <ShieldAlert size={15} aria-hidden="true" />
-            ) : (
-              <Clock3 size={15} aria-hidden="true" />
-            )}
-            <span>{facility.uncertainty.messages[0]}</span>
-          </div>
-        )}
+      <div className="top-pick-actions">
+        <FacilityActions facility={facility} service={service} primary />
+        <WhyButton onOpen={onOpen} />
       </div>
     </article>
+  );
+}
+
+/** Every other option as a board row: distance first, then who, then what to do. */
+export function BoardRow({ facility, service, selected, index, onSelect, onOpen }: ResultProps) {
+  const { t } = useI18n();
+  return (
+    <li
+      className={`board-row ${selected ? "is-selected" : ""}`}
+      onClick={onSelect}
+      aria-labelledby={`facility-${facility.id}-name`}
+      style={
+        { "--vt-name": transitionName("result", facility.id), "--i": index } as React.CSSProperties
+      }
+    >
+      <span className={`board-rank rank-${scoreBand(facility.totalScore)}`} aria-label={t.rank(facility.rank)}>
+        {facility.rank}
+      </span>
+      <Distance km={facility.distanceKm} />
+      <div className="board-body">
+        <h3 id={`facility-${facility.id}-name`}>{facility.name}</h3>
+        <Meta facility={facility} />
+        <Status facility={facility} />
+      </div>
+      <div className="board-actions">
+        <FacilityActions facility={facility} service={service} compact />
+        <WhyButton onOpen={onOpen} />
+      </div>
+    </li>
   );
 }

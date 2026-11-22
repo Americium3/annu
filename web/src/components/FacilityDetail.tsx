@@ -1,52 +1,94 @@
-import {
-  ArrowLeft,
-  Check,
-  Copy,
-  ExternalLink,
-  Info,
-  MapPin,
-  ShieldAlert,
-  X,
-} from "lucide-react";
+import { ArrowLeft, Check, Copy, ExternalLink, X } from "lucide-react";
 import { useEffect, useState } from "react";
+import { operatorLabel, useI18n } from "../i18n";
+import { knownOperator } from "../lib/reason";
 import type { FacilityRecommendation, SourceType } from "../types";
 import { ConfidenceBadge } from "./ConfidenceBadge";
+import { FacilityActions } from "./FacilityActions";
+import { Raahi } from "./Raahi";
 import { ScoreRing } from "./ScoreRing";
 
 interface FacilityDetailProps {
   facility?: FacilityRecommendation;
+  service: string;
   onClose: () => void;
 }
 
-type NumericScoreKey = Exclude<
-  keyof FacilityRecommendation["scoreBreakdown"],
-  "totalScore" | "modelVersion"
->;
+type NumericScoreKey =
+  | "conditionMatchScore"
+  | "directActionScore"
+  | "weakBridgeScore"
+  | "serviceMatchScore"
+  | "evidenceScore"
+  | "sourceScore"
+  | "distanceScore"
+  | "locationQualityScore"
+  | "capacityScore"
+  | "penaltyScore";
 
-const scoreLabels: Array<[NumericScoreKey, string, number]> = [
-  ["serviceMatchScore", "Service match", 29],
-  ["evidenceScore", "Evidence quality", 24],
-  ["sourceScore", "Source quality", 15],
-  ["distanceScore", "Distance", 10],
-  ["locationQualityScore", "Location quality", 9],
-  ["capacityScore", "Capacity signals", 7],
+const scoreMaximums: Array<[NumericScoreKey, number]> = [
+  ["serviceMatchScore", 29],
+  ["evidenceScore", 24],
+  ["sourceScore", 15],
+  ["distanceScore", 10],
+  ["locationQualityScore", 9],
+  ["capacityScore", 7],
 ];
 
-const sourceTypeLabels: Record<SourceType, string> = {
-  official_site: "Official",
-  government: "Government",
-  directory: "Directory",
-  social_media: "Social",
-  unknown: "Unknown",
-};
+const conditionScoreMaximums: Array<[NumericScoreKey, number]> = [
+  ["conditionMatchScore", 100],
+  ["directActionScore", 100],
+  ["weakBridgeScore", 100],
+  ["evidenceScore", 100],
+  ["distanceScore", 100],
+];
 
-export function FacilityDetail({ facility, onClose }: FacilityDetailProps) {
+export function FacilityDetail({ facility, service, onClose }: FacilityDetailProps) {
   const [copied, setCopied] = useState(false);
+  // Play the closing animation before the drawer unmounts.
+  const [closing, setClosing] = useState(false);
+  const close = () => {
+    if (closing) return;
+    setClosing(true);
+    window.setTimeout(() => {
+      setClosing(false);
+      onClose();
+    }, 220);
+  };
+  const { t, lang } = useI18n();
+  const isConditionScore = facility?.scoreBreakdown.modelVersion.startsWith(
+    "condition-service",
+  ) ?? false;
+  const scoreLabels: Record<NumericScoreKey, string> = {
+    serviceMatchScore: t.scoreService,
+    conditionMatchScore: t.scoreService,
+    directActionScore: t.scoreDirect,
+    weakBridgeScore: t.scoreWeak,
+    evidenceScore: isConditionScore ? t.scoreCombined : t.scoreEvidence,
+    sourceScore: t.scoreSource,
+    distanceScore: t.scoreDistance,
+    locationQualityScore: t.scoreLocation,
+    capacityScore: t.scoreCapacity,
+    penaltyScore: t.scorePenalty,
+  };
+  const sourceTypeLabels: Record<SourceType, string> = {
+    official_site: t.sourceOfficial,
+    government: t.sourceGovernment,
+    directory: t.sourceDirectory,
+    social_media: t.sourceSocial,
+    unknown: t.sourceUnknown,
+  };
+  const polarityLabels = {
+    positive: t.polarityPositive,
+    uncertain: t.polarityUncertain,
+    negative: t.polarityNegative,
+  };
+  const strengthLabels = { strong: t.strengthStrong, medium: t.strengthMedium, weak: t.strengthWeak };
 
   useEffect(() => {
     if (!facility) return;
     function closeOnEscape(event: KeyboardEvent) {
-      if (event.key === "Escape") onClose();
+      if (event.key === "Escape") close();
     }
     document.body.classList.add("detail-open");
     window.addEventListener("keydown", closeOnEscape);
@@ -65,7 +107,7 @@ export function FacilityDetail({ facility, onClose }: FacilityDetailProps) {
       currentFacility.recommendationSummary,
       ...currentFacility.evidence.map(
         (evidence) =>
-          `${evidence.fieldName}: “${evidence.quote}” (${currentFacility.sources.find((source) => source.id === evidence.sourceId)?.domain ?? "source unavailable"})`,
+          `“${evidence.quote}” (${currentFacility.sources.find((source) => source.id === evidence.sourceId)?.domain ?? "source unavailable"})`,
       ),
       `Uncertainty: ${currentFacility.uncertainty.messages.join(" ")}`,
     ].join("\n\n");
@@ -75,7 +117,7 @@ export function FacilityDetail({ facility, onClose }: FacilityDetailProps) {
   }
 
   return (
-    <div className="detail-backdrop" role="presentation" onClick={onClose}>
+    <div className={`detail-backdrop ${closing ? "is-closing" : ""}`} role="presentation" onClick={close}>
       <section
         className="detail-drawer"
         role="dialog"
@@ -84,16 +126,21 @@ export function FacilityDetail({ facility, onClose }: FacilityDetailProps) {
         onClick={(event) => event.stopPropagation()}
       >
         <div className="drawer-topbar">
-          <button className="back-button" type="button" onClick={onClose}>
+          <button className="back-button" type="button" onClick={close}>
             <ArrowLeft size={18} />
-            Back to results
+            {t.back}
           </button>
           <div className="drawer-actions">
-            <button className="icon-button" type="button" onClick={copyExplanation}>
+            <button
+              className="icon-button"
+              type="button"
+              onClick={copyExplanation}
+              aria-label={copied ? t.copied : t.copy}
+              title={copied ? t.copied : t.copy}
+            >
               {copied ? <Check size={18} /> : <Copy size={18} />}
-              <span className="sr-only">{copied ? "Copied" : "Copy explanation"}</span>
             </button>
-            <button className="icon-button" type="button" onClick={onClose} aria-label="Close details">
+            <button className="icon-button" type="button" onClick={close} aria-label={t.close}>
               <X size={20} />
             </button>
           </div>
@@ -102,57 +149,74 @@ export function FacilityDetail({ facility, onClose }: FacilityDetailProps) {
         <div className="drawer-scroll">
           <div className="detail-hero">
             <div>
-              <span className="detail-eyebrow">
-                Rank #{facility.rank} · {facility.type}
-              </span>
+              <p className="detail-kicker">
+                {[t.rank(facility.rank), facility.type, knownOperator(facility.operatorType) && operatorLabel(t, facility.operatorType)]
+                  .filter(Boolean)
+                  .join(" · ")}
+              </p>
               <h2 id="detail-title">{facility.name}</h2>
               <p className="detail-location">
-                <MapPin size={15} />
                 {facility.address}, {facility.district}, {facility.state} {facility.pincode}
               </p>
-              <div className="detail-badges">
+              <p className="detail-meta">
                 <ConfidenceBadge level={facility.confidence} />
-                <span className="plain-badge">{facility.distanceKm.toFixed(1)} km away</span>
-                <span className="plain-badge">{facility.operatorType}</span>
-              </div>
+                <span>{t.kmAway(facility.distanceKm.toFixed(1))}</span>
+              </p>
             </div>
             <ScoreRing score={facility.totalScore} size="large" />
           </div>
 
+          <FacilityActions facility={facility} service={service} />
+
           <div className="detail-summary">
-            <span className="summary-icon">
-              <Info size={18} />
-            </span>
-            <div>
-              <strong>Recommendation summary</strong>
-              <p>{facility.recommendationSummary}</p>
-            </div>
+            <h3>{t.summary}</h3>
+            <p>{facility.recommendationSummary}</p>
           </div>
+
+          {facility.uncertainty.messages.length > 0 && (
+          <section className="uncertainty-panel" aria-labelledby="unsure-title">
+            <div className="uncertainty-heading">
+              <Raahi size={44} mood="concerned" />
+              <div>
+                <h3 id="unsure-title">{t.unsureTitle}</h3>
+                <p>{t.unsureHint}</p>
+              </div>
+            </div>
+            <ul>
+              {facility.uncertainty.messages.map((message) => (
+                <li key={message}>{message}</li>
+              ))}
+            </ul>
+          </section>
+          )}
 
           <section className="detail-section">
             <div className="detail-section-heading">
-              <div>
-                <span className="section-number">01</span>
-                <h3>Score breakdown</h3>
-              </div>
-              <span className="model-label">{facility.scoreBreakdown.modelVersion}</span>
+              <h3>{t.scoreTitle}</h3>
             </div>
             <div className="score-breakdown">
-              {scoreLabels.map(([key, label, maximum]) => {
-                const value = facility.scoreBreakdown[key];
+              {(facility.reranking ? [
+                ["serviceMatchScore", 100 * facility.reranking.weights.text],
+                ["evidenceScore", 100 * facility.reranking.weights.evidence],
+                ["distanceScore", 100 * facility.reranking.weights.distance],
+              ] as Array<[NumericScoreKey, number]> : isConditionScore ? conditionScoreMaximums : scoreMaximums).map(([key, maximum]) => {
+                const value = facility.scoreBreakdown[key] ?? 0;
                 return (
                   <div className="score-row" key={key}>
-                    <span>{label}</span>
+                    <span>{facility.reranking && key === "evidenceScore" ? t.scoreEligibility : scoreLabels[key]}</span>
                     <div className="score-track">
-                      <i style={{ width: `${Math.max(0, (value / maximum) * 100)}%` }} />
+                      <i style={{ width: `${maximum > 0 ? Math.min(100, Math.max(0, (value / maximum) * 100)) : 0}%` }} />
                     </div>
-                    <strong>{value}</strong>
+                    <strong>
+                      {Number(value.toFixed(1))}
+                      <small>/{maximum}</small>
+                    </strong>
                   </div>
                 );
               })}
               {facility.scoreBreakdown.penaltyScore !== 0 && (
                 <div className="score-row score-penalty">
-                  <span>Evidence penalty</span>
+                  <span>{scoreLabels.penaltyScore}</span>
                   <div className="score-track">
                     <i
                       style={{
@@ -164,20 +228,20 @@ export function FacilityDetail({ facility, onClose }: FacilityDetailProps) {
                 </div>
               )}
             </div>
-            <p className="score-disclaimer">
-              The score summarises the same signals the ranking uses; the order itself follows
-              evidence-first rules (evidence tier, then distance band, then location quality). Scores do
-              not measure clinical quality, safety, or health outcomes.
-            </p>
+            {isConditionScore && (
+              <p className="score-disclaimer">
+                {lang === "hi"
+                  ? `तात्कालिकता: ${facility.scoreBreakdown.urgency ?? "routine"}; दूरी भार ${(facility.scoreBreakdown.distanceWeight ?? 0.5).toFixed(2)}. अंतिम स्कोर = 100 × (सबूत भार × सबूत + दूरी भार × सामान्य दूरी).`
+                  : `Urgency: ${facility.scoreBreakdown.urgency ?? "routine"}; distance weight ${(facility.scoreBreakdown.distanceWeight ?? 0.5).toFixed(2)}. Final score = 100 × (evidence weight × evidence + distance weight × normalised distance).`}
+              </p>
+            )}
+            <p className="score-disclaimer">{t.scoreDisclaimer}</p>
           </section>
 
           <section className="detail-section" id="evidence">
             <div className="detail-section-heading">
-              <div>
-                <span className="section-number">02</span>
-                <h3>Evidence behind this match</h3>
-              </div>
-              <span className="evidence-count">{facility.evidence.length} items</span>
+              <h3>{t.proofTitle}</h3>
+              <span className="evidence-count">{t.items(facility.evidence.length)}</span>
             </div>
             <div className="full-evidence-list">
               {facility.evidence.map((evidence) => {
@@ -186,28 +250,40 @@ export function FacilityDetail({ facility, onClose }: FacilityDetailProps) {
                 );
                 return (
                   <article className={`full-evidence evidence-${evidence.polarity}`} key={evidence.id}>
-                    <div className="evidence-header">
-                      <code>{evidence.fieldName}</code>
-                      <div>
-                        <span className={`polarity-badge polarity-${evidence.polarity}`}>
-                          {evidence.polarity}
-                        </span>
-                        <span className={`strength-badge strength-${evidence.strength}`}>
-                          {evidence.strength}
-                        </span>
-                      </div>
-                    </div>
                     <blockquote>“{evidence.quote}”</blockquote>
+                    <p className="evidence-header">
+                      <span className={`polarity polarity-${evidence.polarity}`}>
+                        {polarityLabels[evidence.polarity]}
+                      </span>
+                      <span className={`strength strength-${evidence.strength}`}>
+                        {strengthLabels[evidence.strength]}
+                      </span>
+                    </p>
                     <div className="evidence-source">
                       <span className={`source-dot source-${source?.sourceType ?? "unknown"}`} />
-                      <span>{source?.title ?? "Source unavailable"}</span>
-                      {source && (
+                      <span>
+                        {facility.sources.length > 1
+                          ? lang === "hi"
+                            ? "अस्पताल रिकॉर्ड · नीचे स्रोत देखें"
+                            : "Facility record · see source links below"
+                          : source?.title ?? t.sourceUnknown}
+                      </span>
+                      {source && facility.sources.length === 1 && (
                         <a href={source.url} target="_blank" rel="noreferrer">
                           {source.domain}
                           <ExternalLink size={12} />
                         </a>
                       )}
                     </div>
+                    {(evidence.condition || evidence.evidenceTier) && (
+                      <p className="detail-evidence-route">
+                        {evidence.condition && <span>{evidence.condition}</span>}
+                        {evidence.evidenceTier && (
+                          <strong>{evidence.evidenceTier === "weak" ? "weak bridge" : "direct action"}</strong>
+                        )}
+                        {evidence.route && <code>{evidence.route}</code>}
+                      </p>
+                    )}
                   </article>
                 );
               })}
@@ -216,10 +292,7 @@ export function FacilityDetail({ facility, onClose }: FacilityDetailProps) {
 
           <section className="detail-section">
             <div className="detail-section-heading">
-              <div>
-                <span className="section-number">03</span>
-                <h3>Source references</h3>
-              </div>
+              <h3>{t.sourcesTitle}</h3>
             </div>
             <div className="source-list">
               {facility.sources.map((source) => (
@@ -230,17 +303,15 @@ export function FacilityDetail({ facility, onClose }: FacilityDetailProps) {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  <span className={`source-icon source-icon-${source.sourceType}`}>
-                    <ExternalLink size={16} />
-                  </span>
+                  <span className={`source-dot source-${source.sourceType}`} />
                   <span className="source-card-copy">
                     <strong>{source.title}</strong>
                     <span>
                       {sourceTypeLabels[source.sourceType]} · {source.domain}
                     </span>
                     <small>
-                      Retrieved{" "}
-                      {new Intl.DateTimeFormat("en-IN", {
+                      {t.retrieved}{" "}
+                      {new Intl.DateTimeFormat(lang === "hi" ? "hi-IN" : "en-IN", {
                         day: "numeric",
                         month: "short",
                         year: "numeric",
@@ -251,37 +322,14 @@ export function FacilityDetail({ facility, onClose }: FacilityDetailProps) {
                 </a>
               ))}
             </div>
+            <p className="source-caveat">
+              {lang === "hi"
+                ? "स्रोत लिंक अस्पताल-रिकॉर्ड स्तर पर हैं; हर उद्धरण का सटीक URL हमेशा उपलब्ध नहीं होता।"
+                : "Source links are attached at facility-record level; an exact quote-to-URL pointer is not available for every extracted item."}
+            </p>
           </section>
 
-          <section className="uncertainty-panel">
-            <div className="uncertainty-heading">
-              <ShieldAlert size={19} />
-              <div>
-                <strong>What may be missing or uncertain</strong>
-                <span>Read before choosing or travelling</span>
-              </div>
-              <ConfidenceBadge level={facility.uncertainty.level} compact />
-            </div>
-            <ul>
-              {facility.uncertainty.messages.map((message) => (
-                <li key={message}>{message}</li>
-              ))}
-            </ul>
-            {facility.uncertainty.missingFields.length > 0 && (
-              <div className="missing-fields">
-                Missing signals:
-                {facility.uncertainty.missingFields.map((field) => (
-                  <code key={field}>{field}</code>
-                ))}
-              </div>
-            )}
-          </section>
-
-          <div className="detail-footer-note">
-            <Info size={15} />
-            CarePath helps compare publicly available evidence. It does not provide medical advice
-            or guarantee treatment availability. Contact the facility before travelling.
-          </div>
+          <p className="detail-footer-note">{t.detailFootnote}</p>
         </div>
       </section>
     </div>

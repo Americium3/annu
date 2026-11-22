@@ -1,0 +1,30 @@
+{
+  "run_name": "carepath_model_audit_sample",
+  "timeout_seconds": 1200,
+  "environments": [
+    {
+      "environment_key": "audit_env",
+      "spec": {
+        "client": "2",
+        "dependencies": [
+          "pandas==2.2.3"
+        ]
+      }
+    }
+  ],
+  "tasks": [
+    {
+      "task_key": "export_audit_sample",
+      "environment_key": "audit_env",
+      "timeout_seconds": 1200,
+      "notebook_task": {
+        "notebook_path": "/Users/kevinzh3@andrew.cmu.edu/carepath_model/notebooks/05_export_audit_sample",
+        "source": "WORKSPACE",
+        "base_parameters": {
+          "canonical_table": "workspace.cardinal_virtues.model_tag_canonical_element",
+          "per_category": "3"
+        }
+      }
+    }
+  ]
+}

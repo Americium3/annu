@@ -1,62 +1,89 @@
-import {
-  LoaderCircle,
-  Map,
-  SlidersHorizontal,
-  Sparkles,
-} from "lucide-react";
+import { Info, List, Map } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { orderFacilities } from "../data/demo";
 import { useMediaQuery } from "../hooks/useMediaQuery";
-import type {
-  FacilityRecommendation,
-  QueryContext,
-  RecommendationResponse,
-} from "../types";
-import { FacilityCard } from "./FacilityCard";
+import { isGovernment, useI18n } from "../i18n";
+import { withTransition } from "../lib/motion";
+import { RADIUS_OPTIONS } from "../lib/profile";
+import type { RecommendationResponse } from "../types";
+import { BoardRow, TopPick } from "./FacilityCard";
 import { FacilityDetail } from "./FacilityDetail";
 import { FacilityMap } from "./FacilityMap";
+import { RaahiSays } from "./Raahi";
+import { Segmented } from "./Segmented";
+
+type SortMode = "best" | "nearest";
 
 interface ResultsViewProps {
   data?: RecommendationResponse;
   isLoading: boolean;
   selectedId?: string;
   onSelectedIdChange: (id?: string) => void;
+  /** Distance cap from the search sentence; 0 = any distance. */
+  radiusKm: number;
+  onRadiusChange: (km: number) => void;
+  /** From setup: list government hospitals before private ones. */
+  governmentFirst: boolean;
 }
 
 function LoadingResults() {
+  const { t } = useI18n();
   return (
     <div className="results-loading" aria-live="polite" aria-busy="true">
+      <RaahiSays mood="thinking" size={48}>
+        {t.loadingRaahi}
+      </RaahiSays>
+      <div className="skeleton skeleton-pick" />
       {[0, 1, 2].map((item) => (
-        <div className="skeleton-card" key={item}>
-          <div className="skeleton skeleton-rank" />
-          <div className="skeleton-content">
-            <div className="skeleton skeleton-title" />
-            <div className="skeleton skeleton-line skeleton-line-short" />
-            <div className="skeleton skeleton-block" />
-            <div className="skeleton skeleton-line" />
-          </div>
-        </div>
+        <div className="skeleton skeleton-row" key={item} style={{ "--i": item } as React.CSSProperties} />
       ))}
-      <span className="loading-caption">
-        <LoaderCircle className="spin" size={16} />
-        Comparing service evidence and location confidence
-      </span>
     </div>
   );
 }
 
+/**
+ * Results answer "which hospital should I go to?". The recommender's list is
+ * the starting point; the person's own choices (distance, nearest first,
+ * government only, government first) are applied on top of it, in the
+ * browser, and every change animates rows to their new places.
+ */
 export function ResultsView({
   data,
   isLoading,
   selectedId,
   onSelectedIdChange,
+  radiusKm,
+  onRadiusChange,
+  governmentFirst,
 }: ResultsViewProps) {
   const [mobileView, setMobileView] = useState<"list" | "map">("list");
+  const [sort, setSort] = useState<SortMode>("best");
+  const [governmentOnly, setGovernmentOnly] = useState(false);
   const [detailId, setDetailId] = useState<string>();
   const isMobileLayout = useMediaQuery("(max-width: 680px)");
+  const { t, lang } = useI18n();
 
-  // Shown exactly in the recommender's order: no user-side re-ranking or filtering.
-  const facilities = useMemo(() => (data ? orderFacilities(data.results) : []), [data]);
+  const ordered = useMemo(() => {
+    if (!data) return [];
+    const base = orderFacilities(data.results);
+    return sort === "nearest" ? [...base].sort((a, b) => a.distanceKm - b.distanceKm) : base;
+  }, [data, sort]);
+
+  const facilities = useMemo(() => {
+    const filtered = ordered.filter(
+      (facility) =>
+        (radiusKm === 0 || facility.distanceKm <= radiusKm) &&
+        (!governmentOnly || isGovernment(facility.operatorType)),
+    );
+    // Stable partition: the chosen order still holds inside each group.
+    const arranged = governmentFirst
+      ? [
+          ...filtered.filter((facility) => isGovernment(facility.operatorType)),
+          ...filtered.filter((facility) => !isGovernment(facility.operatorType)),
+        ]
+      : filtered;
+    return arranged.map((facility, index) => ({ ...facility, rank: index + 1 }));
+  }, [governmentFirst, governmentOnly, ordered, radiusKm]);
 
   const detailFacility = data?.results.find((facility) => facility.id === detailId);
 
@@ -76,100 +103,197 @@ export function ResultsView({
 
   if (!data && !isLoading) return null;
 
+  const service = data?.queryContext.service.displayName ?? "";
+  const [top, ...rest] = facilities;
+
+  // Why the list is empty, and the one tap that fixes it.
+  const nearestHidden = ordered
+    .filter((facility) => !governmentOnly || isGovernment(facility.operatorType))
+    .reduce<number | null>(
+      (min, facility) => (min === null ? facility.distanceKm : Math.min(min, facility.distanceKm)),
+      null,
+    );
+  const widenTo = nearestHidden !== null ? (RADIUS_OPTIONS.find((km) => km > 0 && km >= nearestHidden) ?? 0) : 0;
+  const noGovernmentAtAll =
+    governmentOnly && ordered.length > 0 && !ordered.some((facility) => isGovernment(facility.operatorType));
+
   return (
     <>
       <section className="results-section" aria-labelledby="results-heading">
-        <div className="results-header">
-          <div>
-            <span className="results-eyebrow">
-              <Sparkles size={14} />
-              Evidence-first recommendations
-            </span>
-            <h2 id="results-heading">
-              {data ? (
-                <>
-                  Care options for{" "}
-                  <span>{data.queryContext.service.displayName.toLowerCase()}</span>
-                </>
-              ) : (
-                "Finding care options"
-              )}
+        <header className="results-head">
+          <div className="results-title-row">
+            <h2 id="results-heading" className="results-title">
+              {data && !isLoading
+                ? t.resultsTitle(facilities.length, service, data.queryContext.location.resolvedName)
+                : t.resultsSearching}
             </h2>
-            {data && (
-              <p className="results-context">
-                Near {data.queryContext.location.resolvedName}
-                {data.queryContext.location.state ? `, ${data.queryContext.location.state}` : ""} · within{" "}
-                {data.queryContext.searchParameters.radiusKm} km ·{" "}
-                {data.metadata.returnedCount} candidates
+            {/* The recommender's notes on this search: one tap away, not in the way. */}
+            {data && data.metadata.warnings.length > 0 && !isLoading && facilities.length > 0 && (
+              <details className="results-about">
+                <summary aria-label={t.aboutResults} title={t.aboutResults}>
+                  <Info size={18} aria-hidden="true" />
+                </summary>
+                <ul>
+                  {data.metadata.warnings.map((warning) => (
+                    <li key={warning}>{warning}</li>
+                  ))}
+                </ul>
+              </details>
+            )}
+          </div>
+          <div className="results-controls">
+            <Segmented<SortMode>
+              label={t.sortBy}
+              value={sort}
+              onChange={(value) => withTransition(() => setSort(value), "reorder")}
+              options={[
+                { value: "best", label: t.sortBest },
+                { value: "nearest", label: t.sortNearest },
+              ]}
+            />
+            <label className="switch">
+              <input
+                type="checkbox"
+                checked={governmentOnly}
+                onChange={(event) => {
+                  const checked = event.target.checked;
+                  withTransition(() => setGovernmentOnly(checked), "reorder");
+                }}
+              />
+              <span className="switch-track" aria-hidden="true" />
+              {t.governmentOnly}
+            </label>
+            <Segmented<"list" | "map">
+              className="mobile-view-toggle"
+              label={`${t.viewList} / ${t.viewMap}`}
+              value={mobileView}
+              onChange={(value) => withTransition(() => setMobileView(value))}
+              options={[
+                {
+                  value: "list",
+                  label: (
+                    <>
+                      <List size={16} aria-hidden="true" /> {t.viewList}
+                    </>
+                  ),
+                },
+                {
+                  value: "map",
+                  label: (
+                    <>
+                      <Map size={16} aria-hidden="true" /> {t.viewMap}
+                    </>
+                  ),
+                },
+              ]}
+            />
+          </div>
+
+        </header>
+
+        {data?.queryContext.condition && !isLoading && (
+          <div className="condition-path" aria-label={lang === "hi" ? "लक्षण और सेवा मैपिंग" : "Symptom-to-service mapping"}>
+            <span className="condition-path-urgency">
+              {lang === "hi" ? "तात्कालिकता" : "Urgency"}: {data.queryContext.condition.urgency}
+            </span>
+            <span aria-hidden="true">→</span>
+            {(data.queryContext.services ?? []).slice(0, 4).map((mapped) => (
+              <span
+                className={`condition-path-service ${
+                  mapped.routeType.includes("text") || mapped.routeType.includes("related")
+                    ? "is-weak"
+                    : ""
+                }`}
+                key={mapped.id}
+              >
+                {mapped.label}
+                <small>
+                  {mapped.routeType.includes("text") || mapped.routeType.includes("related")
+                    ? lang === "hi"
+                      ? "कमज़ोर"
+                      : "weak"
+                    : lang === "hi"
+                      ? "एक्शन"
+                      : "action"}
+                </small>
+              </span>
+            ))}
+            {(data.queryContext.condition.treatmentConcepts?.length ?? 0) > 0 && (
+              <p>
+                {lang === "hi" ? "जुड़े खोज शब्द" : "Related retrieval terms"}:{" "}
+                {data.queryContext.condition.treatmentConcepts?.slice(0, 5).join(" · ")}
               </p>
             )}
-            {data && data.metadata.warnings.length > 0 && (
-              <ul className="results-notices">
-                {data.metadata.warnings.map((warning) => (
-                  <li key={warning}>{warning}</li>
-                ))}
-              </ul>
-            )}
           </div>
-          <div className="results-status">
-            <span className="status-live">
-              <i />
-              Explainable ranking
-            </span>
-            <span>{data?.metadata.rankingVersion ?? "Rules model"}</span>
-          </div>
-        </div>
-
-        <div className="mobile-view-toggle" role="group" aria-label="Switch result view">
-          <button
-            type="button"
-            className={mobileView === "list" ? "is-active" : ""}
-            onClick={() => setMobileView("list")}
-          >
-            List
-          </button>
-          <button
-            type="button"
-            className={mobileView === "map" ? "is-active" : ""}
-            onClick={() => setMobileView("map")}
-          >
-            <Map size={15} /> Map
-          </button>
-        </div>
+        )}
 
         <div className="results-layout">
           <div className={`results-list-wrap mobile-${mobileView}`}>
-            <div className="list-heading">
-              <span>
-                {isLoading ? "Searching…" : `${facilities.length} facilities`}
-              </span>
-              <span>
-                {data?.metadata.funnel
-                  ? `${data.metadata.funnel.datasetProviders} in dataset · ${data.metadata.funnel.withinRadius} within ${data.metadata.funnel.radiusKm} km`
-                  : "Sample results"}
-              </span>
-            </div>
             {isLoading ? (
               <LoadingResults />
-            ) : facilities.length > 0 ? (
-              <div className="results-list">
-                {facilities.map((facility) => (
-                  <FacilityCard
-                    key={facility.id}
-                    facility={facility}
-                    selected={selectedId === facility.id}
-                    onSelect={() => onSelectedIdChange(facility.id)}
-                    onOpen={() => setDetailId(facility.id)}
-                  />
-                ))}
-              </div>
+            ) : top ? (
+              <>
+                <TopPick
+                  nearest={sort === "nearest"}
+                  facility={top}
+                  service={service}
+                  index={0}
+                  selected={selectedId === top.id}
+                  onSelect={() => onSelectedIdChange(top.id)}
+                  onOpen={() => setDetailId(top.id)}
+                />
+                {rest.length > 0 && (
+                  <>
+                    <h3 className="board-title">{t.alsoNearby}</h3>
+                    <ol className="board">
+                      {rest.map((facility, index) => (
+                        <BoardRow
+                          key={facility.id}
+                          facility={facility}
+                          service={service}
+                          index={index}
+                          selected={selectedId === facility.id}
+                          onSelect={() => onSelectedIdChange(facility.id)}
+                          onOpen={() => setDetailId(facility.id)}
+                        />
+                      ))}
+                    </ol>
+                  </>
+                )}
+              </>
             ) : (
               <div className="empty-results">
-                <span className="empty-icon">
-                  <SlidersHorizontal size={22} />
-                </span>
-                <h3>No supported facility found</h3>
-                <p>{data?.metadata.warnings[0]}</p>
+                {noGovernmentAtAll ? (
+                  <>
+                    <RaahiSays mood="concerned" size={56}>
+                      <strong>{t.noGovernment}</strong>
+                    </RaahiSays>
+                    <button
+                      className="secondary-button"
+                      type="button"
+                      onClick={() => withTransition(() => setGovernmentOnly(false), "reorder")}
+                    >
+                      {t.showAllHospitals}
+                    </button>
+                  </>
+                ) : radiusKm > 0 && nearestHidden !== null ? (
+                  <>
+                    <RaahiSays mood="concerned" size={56}>
+                      <strong>{t.noneWithin(radiusKm, nearestHidden.toFixed(1))}</strong>
+                    </RaahiSays>
+                    <button
+                      className="secondary-button"
+                      type="button"
+                      onClick={() => withTransition(() => onRadiusChange(widenTo), "reorder")}
+                    >
+                      {widenTo > 0 ? t.showUpTo(widenTo) : t.showAnyDistance}
+                    </button>
+                  </>
+                ) : (
+                  <RaahiSays mood="concerned" size={56}>
+                    <strong>{t.emptyTitle}</strong> {data?.metadata.warnings[0] ?? t.emptyBody}
+                  </RaahiSays>
+                )}
               </div>
             )}
           </div>
@@ -188,7 +312,7 @@ export function ResultsView({
           </div>
         </div>
       </section>
-      <FacilityDetail facility={detailFacility} onClose={() => setDetailId(undefined)} />
+      <FacilityDetail facility={detailFacility} service={service} onClose={() => setDetailId(undefined)} />
     </>
   );
 }

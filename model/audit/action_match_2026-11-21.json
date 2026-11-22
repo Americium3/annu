@@ -1,0 +1,40 @@
+{
+  "review_type": "stratified_manual_service_action_review",
+  "reviewed_at": "2026-11-21",
+  "action_match_table": "workspace.cardinal_virtues.model_facility_action_match",
+  "audit_export_task_run_id": 868619337724583,
+  "sampling": {
+    "method": "45_strong_exact_plus_15_context_exact",
+    "rows": 60
+  },
+  "manual_review": {
+    "correct": 59,
+    "total": 60,
+    "accuracy": 0.9833,
+    "weighted_strong_rate_in_source_table": 0.95,
+    "estimated_weighted_precision": 0.979,
+    "incorrect_sample_numbers": [
+      43
+    ],
+    "by_match_type": {
+      "strong_exact": {
+        "correct": 44,
+        "total": 45,
+        "accuracy": 0.9778
+      },
+      "context_exact": {
+        "correct": 15,
+        "total": 15,
+        "accuracy": 1.0
+      }
+    }
+  },
+  "observations": [
+    "Direct procedure aliases were consistently correct.",
+    "MRI and CT equipment evidence correctly supports the corresponding imaging service.",
+    "Renal dialysis equipment evidence correctly supports dialysis service.",
+    "One generic migraine-treatment phrase was too broad for the specific antimigraine-agent action.",
+    "The exact alias matcher had much better precision than the field-subtype classifier."
+  ],
+  "conclusion": "Use exact canonical action aliases as the primary service-input path. Keep subtype classification and MAxO market estimates as secondary evidence."
+}

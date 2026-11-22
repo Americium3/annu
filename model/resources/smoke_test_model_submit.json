@@ -1,0 +1,32 @@
+{
+  "run_name": "carepath_model_smoke_test",
+  "timeout_seconds": 1200,
+  "environments": [
+    {
+      "environment_key": "smoke_test_env",
+      "spec": {
+        "client": "2",
+        "dependencies": [
+          "mlflow==2.20.3",
+          "numpy==1.26.4",
+          "pandas==2.2.3",
+          "scikit-learn==1.4.2"
+        ]
+      }
+    }
+  ],
+  "tasks": [
+    {
+      "task_key": "smoke_test_model",
+      "environment_key": "smoke_test_env",
+      "timeout_seconds": 1200,
+      "notebook_task": {
+        "notebook_path": "/Users/kevinzh3@andrew.cmu.edu/carepath_model/notebooks/04_smoke_test_model",
+        "source": "WORKSPACE",
+        "base_parameters": {
+          "model_uri": "models:/workspace.carepath_model.model_field_taxonomy@Champion"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,1069 @@
+[
+  {
+    "service_id": "tag:kidney-dialysis",
+    "service_label": "Dialysis",
+    "aliases": [
+      "Dialysis",
+      "hemodialysis",
+      "renal dialysis",
+      "peritoneal dialysis"
+    ],
+    "service_type": "reference_service_tag",
+    "service_group": "Kidney & urinary",
+    "facility_count": 1038,
+    "reference_kind": "service",
+    "parent_action_ids": [],
+    "primary_action_id": "MAXO:0000601",
+    "urgency_level": "routine",
+    "service_contexts": [
+      "reference_service_tag"
+    ],
+    "action_mapping_status": "mapped",
+    "source": "ref_service_tags"
+  },
+  {
+    "service_id": "tag:kidney-transplant",
+    "service_label": "Kidney transplant",
+    "aliases": [
+      "Kidney transplant",
+      "renal transplant"
+    ],
+    "service_type": "reference_service_tag",
+    "service_group": "Kidney & urinary",
+    "facility_count": 437,
+    "reference_kind": "service",
+    "parent_action_ids": [],
+    "primary_action_id": "MAXO:0010043",
+    "urgency_level": "routine",
+    "service_contexts": [
+      "reference_service_tag"
+    ],
+    "action_mapping_status": "mapped",
+    "source": "ref_service_tags"
+  },
+  {
+    "service_id": "tag:angiography",
+    "service_label": "Coronary angiography",
+    "aliases": [
+      "Coronary angiography",
+      "cath lab"
+    ],
+    "service_type": "reference_service_tag",
+    "service_group": "Heart & vessels",
+    "facility_count": 803,
+    "reference_kind": "service",
+    "parent_action_ids": [],
+    "primary_action_id": "MAXO:0001259",
+    "urgency_level": "routine",
+    "service_contexts": [
+      "reference_service_tag"
+    ],
+    "action_mapping_status": "mapped",
+    "source": "ref_service_tags"
+  },
+  {
+    "service_id": "tag:angioplasty",
+    "service_label": "Angioplasty / stenting",
+    "aliases": [
+      "Angioplasty / stenting",
+      "stent",
+      "PTCA"
+    ],
+    "service_type": "reference_service_tag",
+    "service_group": "Heart & vessels",
+    "facility_count": 404,
+    "reference_kind": "service",
+    "parent_action_ids": [],
+    "primary_action_id": "MAXO:0009038",
+    "urgency_level": "routine",
+    "service_contexts": [
+      "reference_service_tag"
+    ],
+    "action_mapping_status": "mapped",
+    "source": "ref_service_tags"
+  },
+  {
+    "service_id": "tag:cardiac-surgery",
+    "service_label": "Heart surgery (bypass / valve)",
+    "aliases": [
+      "Heart surgery (bypass / valve)",
+      "CABG",
+      "bypass surgery",
+      "valve replacement"
+    ],
+    "service_type": "reference_service_tag",
+    "service_group": "Heart & vessels",
+    "facility_count": 514,
+    "reference_kind": "service",
+    "parent_action_ids": [],
+    "primary_action_id": "MAXO:0025001",
+    "urgency_level": "routine",
+    "service_contexts": [
+      "reference_service_tag"
+    ],
+    "action_mapping_status": "mapped",
+    "source": "ref_service_tags"
+  },
+  {
+    "service_id": "tag:pacemaker",
+    "service_label": "Pacemaker implantation",
+    "aliases": [
+      "Pacemaker implantation"
+    ],
+    "service_type": "reference_service_tag",
+    "service_group": "Heart & vessels",
+    "facility_count": 234,
+    "reference_kind": "service",
+    "parent_action_ids": [],
+    "primary_action_id": "MAXO:0009034",
+    "urgency_level": "routine",
+    "service_contexts": [
+      "reference_service_tag"
+    ],
+    "action_mapping_status": "mapped",
+    "source": "ref_service_tags"
+  },
+  {
+    "service_id": "tag:echocardiography",
+    "service_label": "Echocardiography",
+    "aliases": [
+      "Echocardiography",
+      "2D echo"
+    ],
+    "service_type": "reference_service_tag",
+    "service_group": "Heart & vessels",
+    "facility_count": 843,
+    "reference_kind": "service",
+    "parent_action_ids": [],
+    "primary_action_id": "MAXO:0010203",
+    "urgency_level": "routine",
+    "service_contexts": [
+      "reference_service_tag"
+    ],
+    "action_mapping_status": "mapped",
+    "source": "ref_service_tags"
+  },
+  {
+    "service_id": "tag:ecg",
+    "service_label": "ECG",
+    "aliases": [
+      "ECG"
+    ],
+    "service_type": "reference_service_tag",
+    "service_group": "Heart & vessels",
+    "facility_count": 855,
+    "reference_kind": "service",
+    "parent_action_ids": [],
+    "primary_action_id": "MAXO:0000900",
+    "urgency_level": "routine",
+    "service_contexts": [
+      "reference_service_tag"
+    ],
+    "action_mapping_status": "mapped",
+    "source": "ref_service_tags"
+  },
+  {
+    "service_id": "tag:stress-test",
+    "service_label": "Treadmill / stress test (TMT)",
+    "aliases": [
+      "Treadmill / stress test (TMT)"
+    ],
+    "service_type": "reference_service_tag",
+    "service_group": "Heart & vessels",
+    "facility_count": 448,
+    "reference_kind": "service",
+    "parent_action_ids": [],
+    "primary_action_id": null,
+    "urgency_level": "routine",
+    "service_contexts": [
+      "reference_service_tag"
+    ],
+    "action_mapping_status": "capability_only_or_unmapped",
+    "source": "ref_service_tags"
+  },
+  {
+    "service_id": "tag:mri",
+    "service_label": "MRI scan",
+    "aliases": [
+      "MRI scan",
+      "magnetic resonance imaging"
+    ],
+    "service_type": "reference_service_tag",
+    "service_group": "Imaging & diagnostics",
+    "facility_count": 941,
+    "reference_kind": "service",
+    "parent_action_ids": [],
+    "primary_action_id": "MAXO:0000424",
+    "urgency_level": "routine",
+    "service_contexts": [
+      "reference_service_tag"
+    ],
+    "action_mapping_status": "mapped",
+    "source": "ref_service_tags"
+  },
+  {
+    "service_id": "tag:ct-scan",
+    "service_label": "CT scan",
+    "aliases": [
+      "CT scan",
+      "computed tomography"
+    ],
+    "service_type": "reference_service_tag",
+    "service_group": "Imaging & diagnostics",
+    "facility_count": 1502,
+    "reference_kind": "service",
+    "parent_action_ids": [],
+    "primary_action_id": "MAXO:0000571",
+    "urgency_level": "routine",
+    "service_contexts": [
+      "reference_service_tag"
+    ],
+    "action_mapping_status": "mapped",
+    "source": "ref_service_tags"
+  },
+  {
+    "service_id": "tag:x-ray",
+    "service_label": "X-ray",
+    "aliases": [
+      "X-ray"
+    ],
+    "service_type": "reference_service_tag",
+    "service_group": "Imaging & diagnostics",
+    "facility_count": 2469,
+    "reference_kind": "service",
+    "parent_action_ids": [],
+    "primary_action_id": "MAXO:0000595",
+    "urgency_level": "routine",
+    "service_contexts": [
+      "reference_service_tag"
+    ],
+    "action_mapping_status": "mapped",
+    "source": "ref_service_tags"
+  },
+  {
+    "service_id": "tag:ultrasound",
+    "service_label": "Ultrasound / sonography",
+    "aliases": [
+      "Ultrasound / sonography",
+      "sonography",
+      "USG",
+      "Doppler"
+    ],
+    "service_type": "reference_service_tag",
+    "service_group": "Imaging & diagnostics",
+    "facility_count": 2025,
+    "reference_kind": "service",
+    "parent_action_ids": [],
+    "primary_action_id": "MAXO:0000072",
+    "urgency_level": "routine",
+    "service_contexts": [
+      "reference_service_tag"
+    ],
+    "action_mapping_status": "mapped",
+    "source": "ref_service_tags"
+  },
+  {
+    "service_id": "tag:mammography",
+    "service_label": "Mammography",
+    "aliases": [
+      "Mammography"
+    ],
+    "service_type": "reference_service_tag",
+    "service_group": "Imaging & diagnostics",
+    "facility_count": 311,
+    "reference_kind": "service",
+    "parent_action_ids": [],
+    "primary_action_id": "MAXO:0010363",
+    "urgency_level": "routine",
+    "service_contexts": [
+      "reference_service_tag"
+    ],
+    "action_mapping_status": "mapped",
+    "source": "ref_service_tags"
+  },
+  {
+    "service_id": "tag:pet-ct",
+    "service_label": "PET-CT scan",
+    "aliases": [
+      "PET-CT scan"
+    ],
+    "service_type": "reference_service_tag",
+    "service_group": "Imaging & diagnostics",
+    "facility_count": 224,
+    "reference_kind": "service",
+    "parent_action_ids": [],
+    "primary_action_id": "MAXO:0000137",
+    "urgency_level": "routine",
+    "service_contexts": [
+      "reference_service_tag"
+    ],
+    "action_mapping_status": "mapped",
+    "source": "ref_service_tags"
+  },
+  {
+    "service_id": "tag:bone-density",
+    "service_label": "Bone density (DEXA)",
+    "aliases": [
+      "Bone density (DEXA)",
+      "DEXA scan",
+      "osteoporosis test"
+    ],
+    "service_type": "reference_service_tag",
+    "service_group": "Imaging & diagnostics",
+    "facility_count": 196,
+    "reference_kind": "service",
+    "parent_action_ids": [],
+    "primary_action_id": "MAXO:0020004",
+    "urgency_level": "routine",
+    "service_contexts": [
+      "reference_service_tag"
+    ],
+    "action_mapping_status": "mapped",
+    "source": "ref_service_tags"
+  },
+  {
+    "service_id": "tag:pathology-lab",
+    "service_label": "Pathology / blood tests",
+    "aliases": [
+      "Pathology / blood tests",
+      "lab tests",
+      "blood test"
+    ],
+    "service_type": "reference_service_tag",
+    "service_group": "Imaging & diagnostics",
+    "facility_count": 2193,
+    "reference_kind": "service",
+    "parent_action_ids": [],
+    "primary_action_id": null,
+    "urgency_level": "routine",
+    "service_contexts": [
+      "reference_service_tag"
+    ],
+    "action_mapping_status": "capability_only_or_unmapped",
+    "source": "ref_service_tags"
+  },
+  {
+    "service_id": "tag:health-checkup",
+    "service_label": "Health check-up",
+    "aliases": [
+      "Health check-up"
+    ],
+    "service_type": "reference_service_tag",
+    "service_group": "Imaging & diagnostics",
+    "facility_count": 1323,
+    "reference_kind": "service",
+    "parent_action_ids": [],
+    "primary_action_id": null,
+    "urgency_level": "routine",
+    "service_contexts": [
+      "reference_service_tag"
+    ],
+    "action_mapping_status": "capability_only_or_unmapped",
+    "source": "ref_service_tags"
+  },
+  {
+    "service_id": "tag:chemotherapy",
+    "service_label": "Chemotherapy",
+    "aliases": [
+      "Chemotherapy"
+    ],
+    "service_type": "reference_service_tag",
+    "service_group": "Cancer",
+    "facility_count": 290,
+    "reference_kind": "service",
+    "parent_action_ids": [],
+    "primary_action_id": "MAXO:0000647",
+    "urgency_level": "routine",
+    "service_contexts": [
+      "reference_service_tag"
+    ],
+    "action_mapping_status": "mapped",
+    "source": "ref_service_tags"
+  },
+  {
+    "service_id": "tag:radiotherapy",
+    "service_label": "Radiation therapy",
+    "aliases": [
+      "Radiation therapy"
+    ],
+    "service_type": "reference_service_tag",
+    "service_group": "Cancer",
+    "facility_count": 340,
+    "reference_kind": "service",
+    "parent_action_ids": [],
+    "primary_action_id": "MAXO:0000014",
+    "urgency_level": "routine",
+    "service_contexts": [
+      "reference_service_tag"
+    ],
+    "action_mapping_status": "mapped",
+    "source": "ref_service_tags"
+  },
+  {
+    "service_id": "tag:bone-marrow-transplant",
+    "service_label": "Bone marrow transplant",
+    "aliases": [
+      "Bone marrow transplant"
+    ],
+    "service_type": "reference_service_tag",
+    "service_group": "Cancer",
+    "facility_count": 151,
+    "reference_kind": "service",
+    "parent_action_ids": [],
+    "primary_action_id": "MAXO:0010030",
+    "urgency_level": "routine",
+    "service_contexts": [
+      "reference_service_tag"
+    ],
+    "action_mapping_status": "mapped",
+    "source": "ref_service_tags"
+  },
+  {
+    "service_id": "tag:pregnancy-delivery",
+    "service_label": "Pregnancy & childbirth",
+    "aliases": [
+      "Pregnancy & childbirth",
+      "maternity",
+      "antenatal care",
+      "delivery"
+    ],
+    "service_type": "reference_service_tag",
+    "service_group": "Women's health & fertility",
+    "facility_count": 1778,
+    "reference_kind": "service",
+    "parent_action_ids": [],
+    "primary_action_id": null,
+    "urgency_level": "routine",
+    "service_contexts": [
+      "reference_service_tag"
+    ],
+    "action_mapping_status": "capability_only_or_unmapped",
+    "source": "ref_service_tags"
+  },
+  {
+    "service_id": "tag:c-section",
+    "service_label": "Caesarean section",
+    "aliases": [
+      "Caesarean section",
+      "C-section",
+      "LSCS"
+    ],
+    "service_type": "reference_service_tag",
+    "service_group": "Women's health & fertility",
+    "facility_count": 438,
+    "reference_kind": "service",
+    "parent_action_ids": [],
+    "primary_action_id": null,
+    "urgency_level": "urgent",
+    "service_contexts": [
+      "reference_service_tag"
+    ],
+    "action_mapping_status": "capability_only_or_unmapped",
+    "source": "ref_service_tags"
+  },
+  {
+    "service_id": "tag:ivf",
+    "service_label": "IVF",
+    "aliases": [
+      "IVF",
+      "in vitro fertilisation",
+      "test tube baby",
+      "ICSI"
+    ],
+    "service_type": "reference_service_tag",
+    "service_group": "Women's health & fertility",
+    "facility_count": 851,
+    "reference_kind": "service",
+    "parent_action_ids": [],
+    "primary_action_id": null,
+    "urgency_level": "routine",
+    "service_contexts": [
+      "reference_service_tag"
+    ],
+    "action_mapping_status": "capability_only_or_unmapped",
+    "source": "ref_service_tags"
+  },
+  {
+    "service_id": "tag:iui",
+    "service_label": "IUI",
+    "aliases": [
+      "IUI"
+    ],
+    "service_type": "reference_service_tag",
+    "service_group": "Women's health & fertility",
+    "facility_count": 469,
+    "reference_kind": "service",
+    "parent_action_ids": [],
+    "primary_action_id": null,
+    "urgency_level": "routine",
+    "service_contexts": [
+      "reference_service_tag"
+    ],
+    "action_mapping_status": "capability_only_or_unmapped",
+    "source": "ref_service_tags"
+  },
+  {
+    "service_id": "tag:hysterectomy",
+    "service_label": "Hysterectomy",
+    "aliases": [
+      "Hysterectomy"
+    ],
+    "service_type": "reference_service_tag",
+    "service_group": "Women's health & fertility",
+    "facility_count": 433,
+    "reference_kind": "service",
+    "parent_action_ids": [],
+    "primary_action_id": "MAXO:0001058",
+    "urgency_level": "routine",
+    "service_contexts": [
+      "reference_service_tag"
+    ],
+    "action_mapping_status": "mapped",
+    "source": "ref_service_tags"
+  },
+  {
+    "service_id": "tag:pregnancy-termination",
+    "service_label": "Medical termination of pregnancy",
+    "aliases": [
+      "Medical termination of pregnancy",
+      "MTP",
+      "abortion"
+    ],
+    "service_type": "reference_service_tag",
+    "service_group": "Women's health & fertility",
+    "facility_count": 185,
+    "reference_kind": "service",
+    "parent_action_ids": [],
+    "primary_action_id": null,
+    "urgency_level": "routine",
+    "service_contexts": [
+      "reference_service_tag"
+    ],
+    "action_mapping_status": "capability_only_or_unmapped",
+    "source": "ref_service_tags"
+  },
+  {
+    "service_id": "tag:family-planning",
+    "service_label": "Family planning / contraception",
+    "aliases": [
+      "Family planning / contraception"
+    ],
+    "service_type": "reference_service_tag",
+    "service_group": "Women's health & fertility",
+    "facility_count": 667,
+    "reference_kind": "service",
+    "parent_action_ids": [],
+    "primary_action_id": null,
+    "urgency_level": "routine",
+    "service_contexts": [
+      "reference_service_tag"
+    ],
+    "action_mapping_status": "capability_only_or_unmapped",
+    "source": "ref_service_tags"
+  },
+  {
+    "service_id": "tag:nicu",
+    "service_label": "Newborn intensive care (NICU)",
+    "aliases": [
+      "Newborn intensive care (NICU)",
+      "NICU",
+      "SNCU"
+    ],
+    "service_type": "reference_service_tag",
+    "service_group": "Children & newborns",
+    "facility_count": 733,
+    "reference_kind": "service",
+    "parent_action_ids": [],
+    "primary_action_id": null,
+    "urgency_level": "urgent",
+    "service_contexts": [
+      "reference_service_tag"
+    ],
+    "action_mapping_status": "capability_only_or_unmapped",
+    "source": "ref_service_tags"
+  },
+  {
+    "service_id": "tag:picu",
+    "service_label": "Pediatric intensive care (PICU)",
+    "aliases": [
+      "Pediatric intensive care (PICU)"
+    ],
+    "service_type": "reference_service_tag",
+    "service_group": "Children & newborns",
+    "facility_count": 303,
+    "reference_kind": "service",
+    "parent_action_ids": [],
+    "primary_action_id": null,
+    "urgency_level": "urgent",
+    "service_contexts": [
+      "reference_service_tag"
+    ],
+    "action_mapping_status": "capability_only_or_unmapped",
+    "source": "ref_service_tags"
+  },
+  {
+    "service_id": "tag:vaccination",
+    "service_label": "Vaccination",
+    "aliases": [
+      "Vaccination",
+      "immunisation"
+    ],
+    "service_type": "reference_service_tag",
+    "service_group": "Children & newborns",
+    "facility_count": 627,
+    "reference_kind": "service",
+    "parent_action_ids": [],
+    "primary_action_id": "MAXO:0001017",
+    "urgency_level": "routine",
+    "service_contexts": [
+      "reference_service_tag"
+    ],
+    "action_mapping_status": "mapped",
+    "source": "ref_service_tags"
+  },
+  {
+    "service_id": "tag:refractive-surgery",
+    "service_label": "LASIK / vision correction",
+    "aliases": [
+      "LASIK / vision correction",
+      "LASIK",
+      "laser eye surgery"
+    ],
+    "service_type": "reference_service_tag",
+    "service_group": "Eyes",
+    "facility_count": 545,
+    "reference_kind": "service",
+    "parent_action_ids": [],
+    "primary_action_id": null,
+    "urgency_level": "routine",
+    "service_contexts": [
+      "reference_service_tag"
+    ],
+    "action_mapping_status": "capability_only_or_unmapped",
+    "source": "ref_service_tags"
+  },
+  {
+    "service_id": "tag:joint-replacement",
+    "service_label": "Knee / hip replacement",
+    "aliases": [
+      "Knee / hip replacement",
+      "knee replacement",
+      "hip replacement"
+    ],
+    "service_type": "reference_service_tag",
+    "service_group": "Bones, joints & spine",
+    "facility_count": 1381,
+    "reference_kind": "service",
+    "parent_action_ids": [],
+    "primary_action_id": "MAXO:0009047",
+    "urgency_level": "routine",
+    "service_contexts": [
+      "reference_service_tag"
+    ],
+    "action_mapping_status": "mapped",
+    "source": "ref_service_tags"
+  },
+  {
+    "service_id": "tag:arthroscopy",
+    "service_label": "Arthroscopy",
+    "aliases": [
+      "Arthroscopy"
+    ],
+    "service_type": "reference_service_tag",
+    "service_group": "Bones, joints & spine",
+    "facility_count": 724,
+    "reference_kind": "service",
+    "parent_action_ids": [],
+    "primary_action_id": "MAXO:0001182",
+    "urgency_level": "routine",
+    "service_contexts": [
+      "reference_service_tag"
+    ],
+    "action_mapping_status": "mapped",
+    "source": "ref_service_tags"
+  },
+  {
+    "service_id": "tag:spine-surgery",
+    "service_label": "Spine surgery",
+    "aliases": [
+      "Spine surgery"
+    ],
+    "service_type": "reference_service_tag",
+    "service_group": "Bones, joints & spine",
+    "facility_count": 784,
+    "reference_kind": "service",
+    "parent_action_ids": [],
+    "primary_action_id": null,
+    "urgency_level": "routine",
+    "service_contexts": [
+      "reference_service_tag"
+    ],
+    "action_mapping_status": "capability_only_or_unmapped",
+    "source": "ref_service_tags"
+  },
+  {
+    "service_id": "tag:physiotherapy",
+    "service_label": "Physiotherapy & rehabilitation",
+    "aliases": [
+      "Physiotherapy & rehabilitation"
+    ],
+    "service_type": "reference_service_tag",
+    "service_group": "Bones, joints & spine",
+    "facility_count": 1913,
+    "reference_kind": "service",
+    "parent_action_ids": [],
+    "primary_action_id": "MAXO:0000011",
+    "urgency_level": "routine",
+    "service_contexts": [
+      "reference_service_tag"
+    ],
+    "action_mapping_status": "mapped",
+    "source": "ref_service_tags"
+  },
+  {
+    "service_id": "tag:neurosurgery",
+    "service_label": "Brain surgery",
+    "aliases": [
+      "Brain surgery"
+    ],
+    "service_type": "reference_service_tag",
+    "service_group": "Brain & nerves",
+    "facility_count": 1049,
+    "reference_kind": "service",
+    "parent_action_ids": [],
+    "primary_action_id": "MAXO:0000947",
+    "urgency_level": "routine",
+    "service_contexts": [
+      "reference_service_tag"
+    ],
+    "action_mapping_status": "mapped",
+    "source": "ref_service_tags"
+  },
+  {
+    "service_id": "tag:eeg-emg",
+    "service_label": "EEG / EMG / nerve conduction",
+    "aliases": [
+      "EEG / EMG / nerve conduction"
+    ],
+    "service_type": "reference_service_tag",
+    "service_group": "Brain & nerves",
+    "facility_count": 297,
+    "reference_kind": "service",
+    "parent_action_ids": [],
+    "primary_action_id": "MAXO:0000932",
+    "urgency_level": "routine",
+    "service_contexts": [
+      "reference_service_tag"
+    ],
+    "action_mapping_status": "mapped",
+    "source": "ref_service_tags"
+  },
+  {
+    "service_id": "tag:endoscopy",
+    "service_label": "Endoscopy / colonoscopy",
+    "aliases": [
+      "Endoscopy / colonoscopy",
+      "colonoscopy",
+      "gastroscopy",
+      "ERCP"
+    ],
+    "service_type": "reference_service_tag",
+    "service_group": "Digestive & liver",
+    "facility_count": 954,
+    "reference_kind": "service",
+    "parent_action_ids": [],
+    "primary_action_id": "MAXO:0001184",
+    "urgency_level": "routine",
+    "service_contexts": [
+      "reference_service_tag"
+    ],
+    "action_mapping_status": "mapped",
+    "source": "ref_service_tags"
+  },
+  {
+    "service_id": "tag:liver-transplant",
+    "service_label": "Liver transplant",
+    "aliases": [
+      "Liver transplant"
+    ],
+    "service_type": "reference_service_tag",
+    "service_group": "Digestive & liver",
+    "facility_count": 157,
+    "reference_kind": "service",
+    "parent_action_ids": [],
+    "primary_action_id": "MAXO:0001175",
+    "urgency_level": "routine",
+    "service_contexts": [
+      "reference_service_tag"
+    ],
+    "action_mapping_status": "mapped",
+    "source": "ref_service_tags"
+  },
+  {
+    "service_id": "tag:bariatric-surgery",
+    "service_label": "Weight-loss (bariatric) surgery",
+    "aliases": [
+      "Weight-loss (bariatric) surgery"
+    ],
+    "service_type": "reference_service_tag",
+    "service_group": "Digestive & liver",
+    "facility_count": 340,
+    "reference_kind": "service",
+    "parent_action_ids": [],
+    "primary_action_id": null,
+    "urgency_level": "routine",
+    "service_contexts": [
+      "reference_service_tag"
+    ],
+    "action_mapping_status": "capability_only_or_unmapped",
+    "source": "ref_service_tags"
+  },
+  {
+    "service_id": "tag:ent",
+    "service_label": "Ear, nose & throat (ENT)",
+    "aliases": [
+      "Ear, nose & throat (ENT)",
+      "ENT"
+    ],
+    "service_type": "reference_service_tag",
+    "service_group": "Ear, nose & throat",
+    "facility_count": 1574,
+    "reference_kind": "service",
+    "parent_action_ids": [],
+    "primary_action_id": null,
+    "urgency_level": "routine",
+    "service_contexts": [
+      "reference_service_tag"
+    ],
+    "action_mapping_status": "capability_only_or_unmapped",
+    "source": "ref_service_tags"
+  },
+  {
+    "service_id": "tag:pulmonary-function",
+    "service_label": "Lung function test (PFT)",
+    "aliases": [
+      "Lung function test (PFT)"
+    ],
+    "service_type": "reference_service_tag",
+    "service_group": "Lungs & breathing",
+    "facility_count": 426,
+    "reference_kind": "service",
+    "parent_action_ids": [],
+    "primary_action_id": null,
+    "urgency_level": "routine",
+    "service_contexts": [
+      "reference_service_tag"
+    ],
+    "action_mapping_status": "capability_only_or_unmapped",
+    "source": "ref_service_tags"
+  },
+  {
+    "service_id": "tag:cosmetic-surgery",
+    "service_label": "Cosmetic / plastic surgery",
+    "aliases": [
+      "Cosmetic / plastic surgery"
+    ],
+    "service_type": "reference_service_tag",
+    "service_group": "Skin, hair & cosmetic",
+    "facility_count": 1013,
+    "reference_kind": "service",
+    "parent_action_ids": [],
+    "primary_action_id": "MAXO:0009073",
+    "urgency_level": "routine",
+    "service_contexts": [
+      "reference_service_tag"
+    ],
+    "action_mapping_status": "mapped",
+    "source": "ref_service_tags"
+  },
+  {
+    "service_id": "tag:root-canal",
+    "service_label": "Root canal treatment",
+    "aliases": [
+      "Root canal treatment"
+    ],
+    "service_type": "reference_service_tag",
+    "service_group": "Dental",
+    "facility_count": 1595,
+    "reference_kind": "service",
+    "parent_action_ids": [],
+    "primary_action_id": null,
+    "urgency_level": "routine",
+    "service_contexts": [
+      "reference_service_tag"
+    ],
+    "action_mapping_status": "capability_only_or_unmapped",
+    "source": "ref_service_tags"
+  },
+  {
+    "service_id": "tag:dental-implants",
+    "service_label": "Dental implants",
+    "aliases": [
+      "Dental implants"
+    ],
+    "service_type": "reference_service_tag",
+    "service_group": "Dental",
+    "facility_count": 1529,
+    "reference_kind": "service",
+    "parent_action_ids": [],
+    "primary_action_id": "MAXO:0001534",
+    "urgency_level": "routine",
+    "service_contexts": [
+      "reference_service_tag"
+    ],
+    "action_mapping_status": "mapped",
+    "source": "ref_service_tags"
+  },
+  {
+    "service_id": "tag:orthodontics",
+    "service_label": "Braces & aligners",
+    "aliases": [
+      "Braces & aligners"
+    ],
+    "service_type": "reference_service_tag",
+    "service_group": "Dental",
+    "facility_count": 1478,
+    "reference_kind": "service",
+    "parent_action_ids": [],
+    "primary_action_id": null,
+    "urgency_level": "routine",
+    "service_contexts": [
+      "reference_service_tag"
+    ],
+    "action_mapping_status": "capability_only_or_unmapped",
+    "source": "ref_service_tags"
+  },
+  {
+    "service_id": "tag:dentures",
+    "service_label": "Dentures",
+    "aliases": [
+      "Dentures"
+    ],
+    "service_type": "reference_service_tag",
+    "service_group": "Dental",
+    "facility_count": 853,
+    "reference_kind": "service",
+    "parent_action_ids": [],
+    "primary_action_id": "MAXO:0001533",
+    "urgency_level": "routine",
+    "service_contexts": [
+      "reference_service_tag"
+    ],
+    "action_mapping_status": "mapped",
+    "source": "ref_service_tags"
+  },
+  {
+    "service_id": "tag:tooth-extraction",
+    "service_label": "Tooth extraction",
+    "aliases": [
+      "Tooth extraction"
+    ],
+    "service_type": "reference_service_tag",
+    "service_group": "Dental",
+    "facility_count": 864,
+    "reference_kind": "service",
+    "parent_action_ids": [],
+    "primary_action_id": null,
+    "urgency_level": "routine",
+    "service_contexts": [
+      "reference_service_tag"
+    ],
+    "action_mapping_status": "capability_only_or_unmapped",
+    "source": "ref_service_tags"
+  },
+  {
+    "service_id": "tag:emergency-24x7",
+    "service_label": "24/7 emergency",
+    "aliases": [
+      "24/7 emergency"
+    ],
+    "service_type": "reference_service_tag",
+    "service_group": "Emergency & critical care",
+    "facility_count": 3392,
+    "reference_kind": "service",
+    "parent_action_ids": [],
+    "primary_action_id": null,
+    "urgency_level": "emergency",
+    "service_contexts": [
+      "reference_service_tag"
+    ],
+    "action_mapping_status": "capability_only_or_unmapped",
+    "source": "ref_service_tags"
+  },
+  {
+    "service_id": "tag:icu",
+    "service_label": "Intensive care (ICU)",
+    "aliases": [
+      "Intensive care (ICU)"
+    ],
+    "service_type": "reference_service_tag",
+    "service_group": "Emergency & critical care",
+    "facility_count": 2434,
+    "reference_kind": "service",
+    "parent_action_ids": [],
+    "primary_action_id": null,
+    "urgency_level": "urgent",
+    "service_contexts": [
+      "reference_service_tag"
+    ],
+    "action_mapping_status": "capability_only_or_unmapped",
+    "source": "ref_service_tags"
+  },
+  {
+    "service_id": "tag:ambulance",
+    "service_label": "Ambulance",
+    "aliases": [
+      "Ambulance"
+    ],
+    "service_type": "reference_service_tag",
+    "service_group": "Emergency & critical care",
+    "facility_count": 1154,
+    "reference_kind": "service",
+    "parent_action_ids": [],
+    "primary_action_id": null,
+    "urgency_level": "urgent",
+    "service_contexts": [
+      "reference_service_tag"
+    ],
+    "action_mapping_status": "capability_only_or_unmapped",
+    "source": "ref_service_tags"
+  },
+  {
+    "service_id": "tag:blood-bank",
+    "service_label": "Blood bank",
+    "aliases": [
+      "Blood bank"
+    ],
+    "service_type": "reference_service_tag",
+    "service_group": "Emergency & critical care",
+    "facility_count": 629,
+    "reference_kind": "service",
+    "parent_action_ids": [],
+    "primary_action_id": null,
+    "urgency_level": "urgent",
+    "service_contexts": [
+      "reference_service_tag"
+    ],
+    "action_mapping_status": "capability_only_or_unmapped",
+    "source": "ref_service_tags"
+  },
+  {
+    "service_id": "tag:palliative-care",
+    "service_label": "Palliative care",
+    "aliases": [
+      "Palliative care"
+    ],
+    "service_type": "reference_service_tag",
+    "service_group": "Emergency & critical care",
+    "facility_count": 179,
+    "reference_kind": "service",
+    "parent_action_ids": [],
+    "primary_action_id": "MAXO:0000021",
+    "urgency_level": "routine",
+    "service_contexts": [
+      "reference_service_tag"
+    ],
+    "action_mapping_status": "mapped",
+    "source": "ref_service_tags"
+  }
+]
