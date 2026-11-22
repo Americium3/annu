@@ -17,7 +17,7 @@ TABLE_ADDRESS_ALIAS = f"{SCHEMA}.ref_address_alias"   # old / variant spellings 
 
 CACHE_FILE = Path(os.environ.get("CAREPATH_CACHE", Path(__file__).resolve().parent / ".cache" / "snapshot.pkl"))
 
-RADIUS_STEPS_KM = [25, 50, 100, 200]          # search widens until a recommendable provider is found
+RADIUS_STEPS_KM = [25, 50, 100, 200]          # search widens until MIN_POOL_SIZE recommendable providers are found
 DISTANCE_BANDS_KM = [0, 10, 30, 60, 100, 200, 500]
 EMERGENCY_TAG = "emergency-24x7"
 K_MAIN, K_SUPPORT = 3, 2                      # lane A / lane B sizes (as in notebook 70)
