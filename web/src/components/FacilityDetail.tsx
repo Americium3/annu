@@ -1,6 +1,7 @@
 import { ArrowLeft, Check, Copy, ExternalLink, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { operatorLabel, useI18n } from "../i18n";
+import { knownOperator } from "../lib/reason";
 import type { FacilityRecommendation, SourceType } from "../types";
 import { ConfidenceBadge } from "./ConfidenceBadge";
 import { FacilityActions } from "./FacilityActions";
@@ -85,7 +86,7 @@ export function FacilityDetail({ facility, service, onClose }: FacilityDetailPro
       currentFacility.recommendationSummary,
       ...currentFacility.evidence.map(
         (evidence) =>
-          `${evidence.fieldName}: “${evidence.quote}” (${currentFacility.sources.find((source) => source.id === evidence.sourceId)?.domain ?? "source unavailable"})`,
+          `“${evidence.quote}” (${currentFacility.sources.find((source) => source.id === evidence.sourceId)?.domain ?? "source unavailable"})`,
       ),
       `Uncertainty: ${currentFacility.uncertainty.messages.join(" ")}`,
     ].join("\n\n");
@@ -128,7 +129,9 @@ export function FacilityDetail({ facility, service, onClose }: FacilityDetailPro
           <div className="detail-hero">
             <div>
               <p className="detail-kicker">
-                {t.rank(facility.rank)} · {facility.type} · {operatorLabel(t, facility.operatorType)}
+                {[t.rank(facility.rank), facility.type, knownOperator(facility.operatorType) && operatorLabel(t, facility.operatorType)]
+                  .filter(Boolean)
+                  .join(" · ")}
               </p>
               <h2 id="detail-title">{facility.name}</h2>
               <p className="detail-location">
@@ -163,21 +166,12 @@ export function FacilityDetail({ facility, service, onClose }: FacilityDetailPro
                 <li key={message}>{message}</li>
               ))}
             </ul>
-            {facility.uncertainty.missingFields.length > 0 && (
-              <p className="missing-fields">
-                {t.missing}
-                {facility.uncertainty.missingFields.map((field) => (
-                  <code key={field}>{field}</code>
-                ))}
-              </p>
-            )}
           </section>
           )}
 
           <section className="detail-section">
             <div className="detail-section-heading">
               <h3>{t.scoreTitle}</h3>
-              <span className="model-label">{facility.scoreBreakdown.modelVersion}</span>
             </div>
             <div className="score-breakdown">
               {scoreMaximums.map(([key, maximum]) => {
@@ -232,7 +226,6 @@ export function FacilityDetail({ facility, service, onClose }: FacilityDetailPro
                       <span className={`strength strength-${evidence.strength}`}>
                         {strengthLabels[evidence.strength]}
                       </span>
-                      <code>{evidence.fieldName}</code>
                     </p>
                     <div className="evidence-source">
                       <span className={`source-dot source-${source?.sourceType ?? "unknown"}`} />

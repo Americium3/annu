@@ -1,7 +1,8 @@
 import { AlertTriangle, ArrowRight, CheckCircle2, HelpCircle, ShieldAlert } from "lucide-react";
 import { operatorLabel, useI18n } from "../i18n";
 import { transitionName } from "../lib/motion";
-import type { FacilityRecommendation, SourceType } from "../types";
+import { knownOperator, reasonText } from "../lib/reason";
+import type { FacilityRecommendation } from "../types";
 import { FacilityActions } from "./FacilityActions";
 
 export function scoreBand(score: number) {
@@ -12,29 +13,56 @@ type T = ReturnType<typeof useI18n>["t"];
 
 /** One plain sentence on whether the service is confirmed, and by what. */
 export function reasonLine(t: T, facility: FacilityRecommendation) {
-  if (facility.confidence === "medium") return t.reasonMedium;
-  if (facility.confidence === "low") return t.reasonLow;
-  const names: Record<SourceType, string> = {
-    official_site: t.srcListOfficial,
-    government: t.srcListGovernment,
-    directory: t.srcListDirectory,
-    social_media: t.srcListSocial,
-    unknown: t.srcListUnknown,
-  };
-  const kinds = [...new Set(facility.sources.map((source) => source.sourceType))]
-    .slice(0, 2)
-    .map((kind) => names[kind]);
-  return t.reasonHigh(kinds.join(` ${t.and} `));
+  return reasonText(t, facility.confidence, facility.sources.map((source) => source.sourceType));
 }
 
 function Reason({ facility }: { facility: FacilityRecommendation }) {
   const { t } = useI18n();
-  const Icon =
-    facility.confidence === "high" ? CheckCircle2 : facility.confidence === "medium" ? HelpCircle : AlertTriangle;
+  const { text, confirmed } = reasonLine(t, facility);
+  // Only a named source earns the green check; anything else reads as "check first".
+  const level = confirmed ? "high" : facility.confidence === "low" ? "low" : "medium";
+  const Icon = level === "high" ? CheckCircle2 : level === "medium" ? HelpCircle : AlertTriangle;
   return (
-    <p className={`card-reason confidence-${facility.confidence}`}>
+    <p className={`card-reason confidence-${level}`}>
       <Icon size={16} aria-hidden="true" />
-      {reasonLine(t, facility)}
+      {text}
+    </p>
+  );
+}
+
+/**
+ * The other options get a one-word status instead of a sentence; the full
+ * reason is in the tooltip and in "Why this hospital?".
+ */
+function Status({ facility }: { facility: FacilityRecommendation }) {
+  const { t } = useI18n();
+  const { text, confirmed } = reasonLine(t, facility);
+  const risky = facility.confidence === "low" || facility.uncertainty.level === "high";
+  const level = confirmed && !risky ? "high" : risky ? "low" : "medium";
+  const Icon = level === "high" ? CheckCircle2 : level === "medium" ? HelpCircle : AlertTriangle;
+  const label = level === "high" ? t.statusConfirmed : level === "medium" ? t.statusCheck : t.statusNot;
+  return (
+    <p className={`card-reason board-status confidence-${level}`} title={text}>
+      <Icon size={15} aria-hidden="true" />
+      {label}
+      <span className="sr-only">: {text}</span>
+    </p>
+  );
+}
+
+/** "Type · Ownership · Area", leaving out ownership the data doesn't know. */
+function Meta({ facility }: { facility: FacilityRecommendation }) {
+  const { t } = useI18n();
+  const operator = knownOperator(facility.operatorType);
+  return (
+    <p className="facility-meta">
+      {facility.type} ·{" "}
+      {operator && (
+        <>
+          <span className="operator">{operatorLabel(t, operator)}</span> ·{" "}
+        </>
+      )}
+      {facility.address}
     </p>
   );
 }
@@ -93,7 +121,7 @@ function WhyButton({ onOpen }: { onOpen: () => void }) {
  * The answer, set large: the one place this person should most likely go,
  * with the distance as the headline number and one filled action.
  */
-export function TopPick({ facility, service, selected, onSelect, onOpen, nearest = false }: ResultProps & { nearest?: boolean }) {
+export function TopPick({ facility, service, selected, onSelect, onOpen }: ResultProps & { nearest?: boolean }) {
   const { t } = useI18n();
   return (
     <article
@@ -102,15 +130,11 @@ export function TopPick({ facility, service, selected, onSelect, onOpen, nearest
       aria-labelledby={`facility-${facility.id}-name`}
       style={{ "--vt-name": transitionName("result", facility.id) } as React.CSSProperties}
     >
-      <p className="top-pick-label">{nearest ? t.topPickNearest : t.topPick}</p>
       <div className="top-pick-main">
         <Distance km={facility.distanceKm} large />
         <div className="top-pick-body">
           <h3 id={`facility-${facility.id}-name`}>{facility.name}</h3>
-          <p className="facility-meta">
-            {facility.type} · <span className="operator">{operatorLabel(t, facility.operatorType)}</span> ·{" "}
-            {facility.address}
-          </p>
+          <Meta facility={facility} />
           <Reason facility={facility} />
           <Warning facility={facility} />
         </div>
@@ -141,12 +165,8 @@ export function BoardRow({ facility, service, selected, index, onSelect, onOpen 
       <Distance km={facility.distanceKm} />
       <div className="board-body">
         <h3 id={`facility-${facility.id}-name`}>{facility.name}</h3>
-        <p className="facility-meta">
-          {facility.type} · <span className="operator">{operatorLabel(t, facility.operatorType)}</span> ·{" "}
-          {facility.address}
-        </p>
-        <Reason facility={facility} />
-        <Warning facility={facility} />
+        <Meta facility={facility} />
+        <Status facility={facility} />
       </div>
       <div className="board-actions">
         <FacilityActions facility={facility} service={service} compact />

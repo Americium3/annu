@@ -42,12 +42,7 @@ export function FacilityActions({
           <Phone size={17} aria-hidden="true" />
           <span className="action-label">{t.call}</span>
         </a>
-      ) : (
-        <span className="action-missing" title={t.noPhone}>
-          <Phone size={15} aria-hidden="true" />
-          <span className="action-label">{t.noPhone}</span>
-        </span>
-      )}
+      ) : null /* no number: no button, and no line saying so */}
       {share && (
         <a
           className="action-button action-icon"

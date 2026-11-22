@@ -1,6 +1,7 @@
-import { ArrowRight, Check, ChevronDown, Crosshair, LoaderCircle, LocateFixed } from "lucide-react";
+import { ArrowRight, Check, Crosshair, LoaderCircle, LocateFixed } from "lucide-react";
 import { Fragment, useEffect, useRef, useState } from "react";
 import { useI18n } from "../i18n";
+import { DistancePicker } from "./DistancePicker";
 import { fetchLocations, fetchServices } from "../lib/api";
 import { RADIUS_OPTIONS } from "../lib/profile";
 import type { LocationOption, ServiceOption } from "../types";
@@ -23,8 +24,6 @@ interface SearchPanelProps {
   isLoading: boolean;
   onSearch: (values: SearchValues) => void;
 }
-
-const commonSearches = ["Kidney dialysis", "MRI scan", "Emergency C-section", "NICU"];
 
 function matchesService(service: ServiceOption, query: string) {
   const normalized = query.toLowerCase().trim();
@@ -258,22 +257,13 @@ export function SearchPanel({ initialService, initialLocation, radiusKm, isLoadi
       </span>
     ),
     "{distance}": (
-      <span className="blank blank-select">
-        <select
-          id="radius-select"
-          className="blank-input"
-          value={radius}
-          aria-label={t.distanceLabel}
-          onChange={(event) => setRadius(Number(event.target.value))}
-        >
-          {RADIUS_OPTIONS.map((km) => (
-            <option key={km} value={km}>
-              {km === 0 ? t.distanceAny : t.distanceWithin(km)}
-            </option>
-          ))}
-        </select>
-        <ChevronDown className="blank-chevron" size={22} aria-hidden="true" />
-      </span>
+      <DistancePicker
+        id="radius-select"
+        label={t.distanceLabel}
+        value={radius}
+        onChange={setRadius}
+        options={RADIUS_OPTIONS.map((km) => ({ value: km, label: km === 0 ? t.distanceAny : t.distanceWithin(km) }))}
+      />
     ),
   };
 
@@ -306,21 +296,6 @@ export function SearchPanel({ initialService, initialLocation, radiusKm, isLoadi
             {isLoading ? t.finding : t.find}
             {isLoading ? <LoaderCircle className="spin" size={20} /> : <ArrowRight size={20} />}
           </button>
-          <p className="common-searches">
-            <span>{t.commonSearches}</span>
-            {commonSearches.map((name) => (
-              <button
-                key={name}
-                type="button"
-                onClick={() => {
-                  setService(name);
-                  submit(name);
-                }}
-              >
-                {name}
-              </button>
-            ))}
-          </p>
         </div>
       </form>
     </div>

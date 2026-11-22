@@ -413,7 +413,6 @@ h4 {
   }
 }
 
-.top-strip-inner,
 .header-inner,
 .results-section,
 .how-inner,
@@ -502,26 +501,6 @@ h4 {
 /* ==========================================================================
    Top strip and header
    ========================================================================== */
-
-.top-strip {
-  background: var(--surface-2);
-  border-bottom: 1px solid var(--line);
-  font-size: var(--fs-xs);
-}
-
-.top-strip-inner {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 4px 20px;
-  min-height: 36px;
-  padding: 6px 0;
-}
-
-.top-strip-note {
-  color: var(--text-3);
-}
 
 .site-header {
   position: sticky;
@@ -688,32 +667,6 @@ h4 {
 
 .secondary-button:hover {
   background: var(--surface-2);
-}
-
-.common-searches {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 4px 18px;
-  margin-top: 14px;
-  color: var(--text-2);
-  font-size: var(--fs-sm);
-}
-
-.common-searches button {
-  padding: 4px 0;
-  color: var(--brand-ink);
-  background: none;
-  border: 0;
-  font-weight: 600;
-  text-decoration: underline;
-  text-decoration-color: var(--brand-line);
-  text-decoration-thickness: 2px;
-  text-underline-offset: 4px;
-}
-
-.common-searches button:hover {
-  text-decoration-color: currentColor;
 }
 
 .suggestions {
@@ -1000,15 +953,6 @@ h4 {
   color: var(--brand);
 }
 
-.action-missing {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 0 4px;
-  color: var(--text-3);
-  font-size: var(--fs-xs);
-}
-
 .text-button {
   display: inline-flex;
   align-items: center;
@@ -1233,59 +1177,12 @@ h4 {
   font-weight: 700;
 }
 
-.map-legend {
-  position: absolute;
-  z-index: 500;
-  top: 12px;
-  left: 12px;
-  display: grid;
-  gap: 4px;
-  padding: 8px 12px;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-sm);
-  font-size: var(--fs-xs);
-}
-
-.map-legend div {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.map-legend dd {
-  color: var(--text-2);
-}
-
-.legend-pin {
-  width: 11px;
-  height: 11px;
-  background: var(--pin-strong);
-  border-radius: 50% 50% 50% 0;
-  transform: rotate(-45deg);
-}
-
 .legend-pin-mid {
   background: var(--pin-mid);
 }
 
 .legend-pin-low {
   background: var(--pin-low);
-}
-
-.map-note {
-  position: absolute;
-  z-index: 500;
-  bottom: 12px;
-  left: 12px;
-  max-width: calc(100% - 180px);
-  padding: 6px 10px;
-  color: var(--text-3);
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-sm);
-  font-size: var(--fs-2xs);
 }
 
 /* ==========================================================================
@@ -1840,16 +1737,11 @@ h4 {
 }
 
 @media (max-width: 680px) {
-  .top-strip-inner,
-.header-inner,
+  .header-inner,
 .results-section,
 .how-inner,
 .footer-inner {
     width: calc(100% - 32px);
-  }
-
-  .top-strip-note {
-    font-size: var(--fs-2xs);
   }
 
   .header-inner {
@@ -2329,36 +2221,6 @@ h4 {
   background: var(--surface-2);
 }
 
-.setup-prompt {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 4px 14px;
-  margin-top: 16px;
-  padding: 8px 8px 8px 14px;
-  color: var(--text-2);
-  background: rgb(var(--surface-rgb) / 0.7);
-  border: 1px dashed var(--brand-line);
-  border-radius: var(--radius-lg);
-  font-size: var(--fs-sm);
-}
-
-.setup-prompt a {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  color: var(--brand-ink);
-  font-weight: 700;
-}
-
-.setup-dismiss {
-  width: 32px;
-  height: 32px;
-  margin-left: auto;
-  background: transparent;
-  border-color: transparent;
-}
-
 .link-button:disabled {
   color: var(--text-3);
   text-decoration: none;
@@ -2695,10 +2557,6 @@ h4 {
   .account-card {
     width: min(280px, 100%);
   }
-
-  .setup-prompt span {
-    flex-basis: 100%;
-  }
 }
 
 /* ---- recommender messages ---- */
@@ -2722,7 +2580,7 @@ h4 {
   color: var(--text);
 }
 
-.api-error-inner .common-searches {
+.api-error-inner .error-suggestions {
   margin-top: 8px;
 }
 
@@ -2762,7 +2620,6 @@ h4 {
   }
 }
 
-
 /* ==========================================================================
    Layout v4: sentence search, departure board, conversation flows, motion
    ========================================================================== */
@@ -2776,8 +2633,7 @@ h4 {
   --dots: radial-gradient(circle, rgb(var(--brand-rgb) / 0.13) 1px, transparent 1.6px);
 }
 
-.hero-inner,
-.hero-foot {
+.hero-inner {
   width: min(1200px, calc(100% - 48px));
   margin-right: auto;
   margin-left: auto;
@@ -3024,10 +2880,6 @@ h4 {
   min-width: 0;
 }
 
-.blank-select .blank-input {
-  field-sizing: content;
-}
-
 .blank-input {
   max-width: 100%;
   min-width: 3ch;
@@ -3057,12 +2909,6 @@ h4 {
 
 .blank-input::placeholder {
   color: var(--text-faint);
-}
-
-.blank-select .blank-input {
-  padding-right: 0.9em;
-  cursor: pointer;
-  appearance: none;
 }
 
 .blank-chevron {
@@ -3141,15 +2987,6 @@ h4 {
 
 .sentence-actions .common-searches {
   margin: 0;
-}
-
-.hero-foot {
-  margin-top: 28px;
-}
-
-.hero-foot .setup-prompt {
-  margin: 0;
-  animation: rise-in 600ms 260ms var(--ease-out) backwards;
 }
 
 /* ---- results: the answer, then the board ---- */
@@ -3326,12 +3163,6 @@ h4 {
 
 .top-pick.is-selected {
   border-color: var(--brand);
-}
-
-.top-pick-label {
-  color: var(--brand-ink);
-  font-size: var(--fs-sm);
-  font-weight: 700;
 }
 
 .top-pick-main {
@@ -3992,8 +3823,7 @@ html[data-transition="emergency"]::view-transition-new(root) {
 
 @media (max-width: 680px) {
   .hero-inner,
-  .hero-foot,
-  .results-section {
+.results-section {
     width: calc(100% - 32px);
   }
 
@@ -4166,6 +3996,163 @@ html[data-transition="emergency"]::view-transition-new(root) {
     height: 56px;
     font-size: 24px;
   }
+}
+
+/* ---- quieter: notes behind one tap, one-word statuses ---- */
+
+.error-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 16px;
+  font-size: var(--fs-sm);
+}
+
+.error-suggestions button {
+  padding: 4px 0;
+  color: var(--brand-ink);
+  background: none;
+  border: 0;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.results-title-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.results-about {
+  position: relative;
+  flex: 0 0 auto;
+  margin-top: 4px;
+}
+
+.results-about summary {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  color: var(--text-3);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  list-style: none;
+  place-items: center;
+  transition: color var(--dur-fast) ease, background var(--dur-fast) ease;
+}
+
+.results-about summary::-webkit-details-marker {
+  display: none;
+}
+
+.results-about summary:hover,
+.results-about[open] summary {
+  color: var(--brand-ink);
+  background: var(--brand-soft);
+}
+
+.results-about ul {
+  position: absolute;
+  z-index: 60;
+  top: calc(100% + 8px);
+  left: 0;
+  display: grid;
+  gap: 8px;
+  width: min(420px, 80vw);
+  margin: 0;
+  padding: 14px 16px 14px 30px;
+  color: var(--text-2);
+  background: var(--surface-raised);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  font-size: var(--fs-sm);
+  animation: dropdown-in 200ms var(--ease-out);
+}
+
+.board-status {
+  margin-top: 3px;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+}
+
+.emergency-list-head {
+  align-items: center;
+}
+
+.emergency-locating {
+  color: var(--brand);
+}
+
+.emergency-list li {
+  align-items: center;
+}
+
+.board-body .facility-meta {
+  white-space: nowrap;
+}
+
+@media (max-width: 680px) {
+  .board-body .facility-meta {
+    white-space: nowrap;
+  }
+
+  .results-about ul {
+    right: 0;
+    left: auto;
+  }
+}
+
+/* links inside Raahi's speech (the setup offer) must look like links */
+.raahi-bubble a {
+  color: var(--brand-ink);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+/* ---- distance blank: a styled listbox, not the browser's <select> ---- */
+
+.blank-picker-button {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.18em;
+  padding-right: 0.08em;
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.blank-picker .blank-chevron {
+  position: static;
+  flex: 0 0 auto;
+  width: 0.42em;
+  height: 0.42em;
+  align-self: center;
+  transition: transform 260ms var(--ease-spring);
+}
+
+.blank-picker .blank-chevron.is-open {
+  transform: rotate(180deg);
+}
+
+.picker-list {
+  width: min(260px, 80vw);
+}
+
+.picker-option {
+  cursor: pointer;
+}
+
+.picker-option.is-active {
+  background: var(--surface-2);
+}
+
+.picker-option[aria-selected="true"] strong {
+  color: var(--brand-ink);
 }
 
 /* Map tiles are raster images with no dark variant; dim and invert them so the

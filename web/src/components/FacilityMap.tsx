@@ -12,7 +12,6 @@ import { useI18n } from "../i18n";
 import { scoreBand } from "./FacilityCard";
 import { RAAHI_MARK_HTML } from "./Raahi";
 import type { FacilityRecommendation, QueryContext } from "../types";
-import { MapLegend } from "./MapLegend";
 
 interface FacilityMapProps {
   facilities: FacilityRecommendation[];
@@ -151,8 +150,6 @@ export function FacilityMap({
             </Marker>
           ))}
         </MapContainer>
-        <MapLegend />
-        <p className="map-note">{t.mapNote}</p>
       </div>
     </section>
   );

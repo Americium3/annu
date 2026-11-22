@@ -1,4 +1,4 @@
-import { List, Map } from "lucide-react";
+import { Info, List, Map } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { orderFacilities } from "../data/demo";
 import { useMediaQuery } from "../hooks/useMediaQuery";
@@ -121,11 +121,26 @@ export function ResultsView({
     <>
       <section className="results-section" aria-labelledby="results-heading">
         <header className="results-head">
-          <h2 id="results-heading" className="results-title">
-            {data && !isLoading
-              ? t.resultsTitle(facilities.length, service, data.queryContext.location.resolvedName)
-              : t.resultsSearching}
-          </h2>
+          <div className="results-title-row">
+            <h2 id="results-heading" className="results-title">
+              {data && !isLoading
+                ? t.resultsTitle(facilities.length, service, data.queryContext.location.resolvedName)
+                : t.resultsSearching}
+            </h2>
+            {/* The recommender's notes on this search: one tap away, not in the way. */}
+            {data && data.metadata.warnings.length > 0 && !isLoading && facilities.length > 0 && (
+              <details className="results-about">
+                <summary aria-label={t.aboutResults} title={t.aboutResults}>
+                  <Info size={18} aria-hidden="true" />
+                </summary>
+                <ul>
+                  {data.metadata.warnings.map((warning) => (
+                    <li key={warning}>{warning}</li>
+                  ))}
+                </ul>
+              </details>
+            )}
+          </div>
           <div className="results-controls">
             <Segmented<SortMode>
               label={t.sortBy}
@@ -173,13 +188,7 @@ export function ResultsView({
               ]}
             />
           </div>
-          {data && data.metadata.warnings.length > 0 && !isLoading && facilities.length > 0 && (
-            <ul className="results-notices">
-              {data.metadata.warnings.map((warning) => (
-                <li key={warning}>{warning}</li>
-              ))}
-            </ul>
-          )}
+
         </header>
 
         <div className="results-layout">
