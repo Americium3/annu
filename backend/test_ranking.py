@@ -69,7 +69,7 @@ def test_end_to_end():
                                    "evidence_status": "usable"}]))
     pins = pd.DataFrame([{"pincode": "751001", "states": ["ODISHA"], "districts": ["KHORDHA"], "lat": lat0,
                           "lon": lon0, "is_precise": True}])
-    rec = Recommender(Snapshot(tags, pd.DataFrame(idx), pd.DataFrame(facs), pins, "now", "synthetic"))
+    rec = Recommender(Snapshot(tags, pd.DataFrame(idx), pd.DataFrame(facs), pins, "now", "synthetic"), ranking_method="rules")
     out = rec.recommend("dialysis", "", {"latitude": lat0, "longitude": lon0})
     names = [f["name"] for f in out["results"]]
     assert names == ["Good Near Hospital", "Strong Far Hospital", "Equipment Only Clinic"], names

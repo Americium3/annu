@@ -13,3 +13,8 @@ env:
   # Load fresh tables from Databricks on every start.
   - name: CAREPATH_REFRESH
     value: "1"
+  # Production default: cross-encoder reranking of already-eligible facilities.
+  - name: CAREPATH_RANKING_METHOD
+    value: cross_encoder
+  - name: HF_HOME
+    value: /tmp/carepath/huggingface

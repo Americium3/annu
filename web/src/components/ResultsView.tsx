@@ -39,7 +39,7 @@ function LoadingResults() {
 
 /**
  * Results answer "which hospital should I go to?". The recommender's order
- * (proof strength x closeness) is the starting point; the person's own view
+ * (evidence strength x closeness) is the starting point; the person's own view
  * choices (nearest first, government only, government first) are applied on
  * top of it, and every change animates rows to their new places.
  */

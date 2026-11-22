@@ -1,4 +1,4 @@
-"""Backend settings. Recommender rules mirror facilities_qc/00_config.py + 03_recommender_lib.py (section F)."""
+"""Serving policy and the default cross-encoder reranker configuration."""
 from __future__ import annotations
 
 import os
@@ -17,10 +17,23 @@ DISTANCE_BANDS_KM = [0, 10, 30, 60, 100, 200, 500]
 EMERGENCY_TAG = "emergency-24x7"
 K_MAIN, K_SUPPORT = 3, 2                      # lane A / lane B sizes (as in notebook 70)
 RESULT_LIMIT = 8                              # results returned per search (system setting, not a user input)
-RANKING_VERSION = "proof-x-closeness-v3"
+RANKING_METHOD = os.environ.get("CAREPATH_RANKING_METHOD", "cross_encoder")
+RANKING_VERSION = "cross-encoder-x-closeness-v4" if RANKING_METHOD == "cross_encoder" else "proof-x-closeness-v4"
+CROSS_ENCODER_MODEL = os.environ.get("CAREPATH_CROSS_ENCODER_MODEL", "cross-encoder/ms-marco-MiniLM-L6-v2")
+CROSS_ENCODER_REVISION = os.environ.get("CAREPATH_CROSS_ENCODER_REVISION") or None
+CROSS_ENCODER_DEVICE = os.environ.get("CAREPATH_CROSS_ENCODER_DEVICE", "cpu")
+CROSS_ENCODER_BATCH_SIZE = int(os.environ.get("CAREPATH_CROSS_ENCODER_BATCH_SIZE", "32"))
+CROSS_ENCODER_MAX_LENGTH = int(os.environ.get("CAREPATH_CROSS_ENCODER_MAX_LENGTH", "512"))
+CROSS_ENCODER_MAX_EVIDENCE = 5
+# Evidence strength with the cross-encoder (the live default) blends how well the best quote matches the service
+# with proof strength; the 4:3 split keeps the earlier text:evidence weighting. Distance is not a third weight:
+# closeness multiplies the whole evidence score, with the travel distance set per kind of care (above).
+#   evidence = 4/7 x text match + 3/7 x proof strength      rank score = evidence x closeness
+RERANK_WEIGHTS = {"text": 4 / 7, "proof": 3 / 7}
+
 
 # How far people reasonably travel for each kind of care (km). Closeness halves at this distance:
-#   closeness = 1 / (1 + (km / travel_km)^2)      rank score = proof strength x closeness
+#   closeness = 1 / (1 + (km / travel_km)^2)      rank score = evidence strength x closeness
 # Urgent care has to be near; planned specialist care is worth a longer trip.
 TRAVEL_KM_URGENT, TRAVEL_KM_ROUTINE, TRAVEL_KM_DIAGNOSTIC, TRAVEL_KM_PLANNED = 10, 15, 30, 60
 TRAVEL_KM_DEFAULT = 25

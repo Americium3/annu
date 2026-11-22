@@ -1,7 +1,9 @@
 """Service-first recommender (port of facilities_qc/03_recommender_lib.py, section F) + mapping to web/src/types.ts.
 
-Flow: service text → tag → facilities listing the tag → usable evidence + location → widening radius → evidence-first
-sort keys (no total score drives the order). The score shown in the UI is a display summary of the same signals.
+Flow: service text → tag → formal eligibility + location → widening radius → rank score =
+evidence strength × closeness. Evidence strength blends the cross-encoder's text match (live default) with
+proof strength; closeness depends on how far people travel for this kind of care. Facilities with weak proof
+are always listed after those with solid proof. Rules-only ranking (proof × closeness) is an explicit opt-in.
 """
 from __future__ import annotations
 
@@ -16,6 +18,7 @@ import pandas as pd
 
 import config
 from data_store import Snapshot, haversine_km
+from cross_encoder import CrossEncoderScorer, CrossEncoderError
 
 
 class ServiceNotFound(Exception):
@@ -76,17 +79,23 @@ def proof_strength(df: pd.DataFrame) -> pd.Series:
     return tier * equipment * other * location
 
 
-def rank_candidates(ok: pd.DataFrame, tag: str) -> pd.DataFrame:
-    """Order eligible facilities: solid proof before weak proof; within each, rank score = proof x closeness
-    (ties: nearer first)."""
+def rank_candidates(ok: pd.DataFrame, tag: str, text_match: pd.Series | None = None) -> pd.DataFrame:
+    """Order eligible facilities: solid proof before weak proof; within each, rank score = evidence x closeness
+    (ties: nearer first, then id). Evidence is proof strength alone, or blended with the cross-encoder's
+    text match when one is given."""
     out = ok.copy()
-    travel = travel_km(tag)
     out["proof"] = proof_strength(out)
-    out["closeness"] = closeness(out["distance_km"].to_numpy(), travel)
-    out["rank_score"] = out["proof"] * out["closeness"]
+    out["closeness"] = closeness(out["distance_km"].to_numpy(), travel_km(tag))
+    if text_match is None:
+        out["evidence_strength"] = out["proof"]
+    else:
+        w = config.RERANK_WEIGHTS
+        out["text_match"] = text_match.reindex(out.index).astype(float)
+        out["evidence_strength"] = w["text"] * out["text_match"] + w["proof"] * out["proof"]
+    out["rank_score"] = out["evidence_strength"] * out["closeness"]
     out["solid_proof"] = (out["proof"] >= config.PROOF_SOLID_MIN) & ~out["only_equipment"].astype(bool)
-    return out.sort_values(["solid_proof", "rank_score", "distance_km", "n_explicit_usable"],
-                           ascending=[False, False, True, False])
+    return out.sort_values(["solid_proof", "rank_score", "distance_km", "n_explicit_usable", "unique_id"],
+                           ascending=[False, False, True, False, True])
 
 
 _PHONE_SPLIT = re.compile(r"[,;/|]| or |\n")
@@ -115,8 +124,17 @@ def contact_website(raw) -> str | None:
 
 
 class Recommender:
-    def __init__(self, snap: Snapshot):
+    def __init__(self, snap: Snapshot, scorer=None, ranking_method=None):
         self.snap = snap
+        self.ranking_method = ranking_method or config.RANKING_METHOD
+        if self.ranking_method not in {"cross_encoder", "rules"}:
+            raise ValueError("CAREPATH_RANKING_METHOD must be cross_encoder or rules")
+        self.ranking_version = ("cross-encoder-x-closeness-v4" if self.ranking_method == "cross_encoder"
+                                else "proof-x-closeness-v4")
+        self.scorer = scorer if scorer is not None else CrossEncoderScorer(
+            config.CROSS_ENCODER_MODEL, config.CROSS_ENCODER_REVISION, config.CROSS_ENCODER_DEVICE,
+            config.CROSS_ENCODER_BATCH_SIZE, config.CROSS_ENCODER_MAX_LENGTH,
+        )
         self.tags = snap.tags.set_index("tag_id")
         # service phrases → tag ids
         self.phrases: dict[str, set[str]] = {}
@@ -146,6 +164,49 @@ class Recommender:
         self.cities = (pts.groupby(["city", "state_u"])
                           .agg(lat=("loc_lat", "median"), lon=("loc_lon", "median"), n=("loc_lat", "size")).reset_index())
         self.states = set(self.districts["state"]) | set(self.cities["state_u"])
+
+    def warmup(self):
+        if self.ranking_method == "cross_encoder":
+            self.scorer.warmup()
+
+    def ranking_info(self):
+        return {"method": self.ranking_method, "version": self.ranking_version,
+                "formula": "evidence x closeness; closeness = 1 / (1 + (km / travel_km)^2)",
+                **({"scorer": self.scorer.info(), "weights": config.RERANK_WEIGHTS}
+                   if self.ranking_method == "cross_encoder" else {})}
+
+    def _cross_encoder_order(self, within, tag, label):
+        """Text match for already-formal candidates, then the shared ranking. No CE threshold certifies capability."""
+        within = within.copy()
+        if within.empty:
+            return rank_candidates(within, tag)
+        query = " ".join(dict.fromkeys([label, *self.tags.loc[tag, "synonyms"], *config.SERVICE_INPUT_SYNONYMS.get(tag, [])]))
+        selected, texts = {}, []
+        for idx, row in within.iterrows():
+            # Keep evidence selection independent of model score and stable across requests.
+            usable = [e for e in row["evidence"] if e.get("evidence_status") == "usable"
+                      and isinstance(e.get("text"), str) and e["text"].strip()]
+            usable.sort(key=lambda e: (0 if e.get("field") in {"procedure", "capability", "description"} else 1,
+                                       str(e.get("field", "")), str(e.get("pos", e.get("item_idx", ""))), e["text"]))
+            # Repeated identical text must not consume the evidence cap.
+            unique = {}
+            for item in usable:
+                unique.setdefault(item["text"], item)
+            usable = list(unique.values())[:config.CROSS_ENCODER_MAX_EVIDENCE]
+            if not usable:
+                raise CrossEncoderError("Formal candidate has no usable evidence text; rebuild the serving index before reranking.")
+            selected[idx] = (len(texts), usable)
+            texts.extend(e["text"] for e in usable)
+        scores = self.scorer.score(query, texts)
+        for idx, (start, evidence) in selected.items():
+            local = scores[start:start + len(evidence)]
+            best = max(range(len(local)), key=local.__getitem__)
+            within.at[idx, "ce_text_score"] = float(local[best])
+            best_ev = evidence[best]
+            within.at[idx, "ce_evidence_ref"] = f"{best_ev.get('field')}:{best_ev.get('pos', best_ev.get('item_idx', ''))}"
+            within.at[idx, "ce_best_quote"] = best_ev["text"]
+            within.at[idx, "ce_item_count"] = len(evidence)
+        return rank_candidates(within, tag, text_match=within["ce_text_score"])
 
     # ------------------------------------------------------------------ catalog / suggestions
     def services(self) -> list[dict]:
@@ -285,10 +346,13 @@ class Recommender:
         first_step = next((r for r in steps if r >= 2 * travel), steps[-1])
         candidates = [r for r in steps if r >= first_step]
         radius = next((r for r in candidates if (ok["distance_km"] <= r).any()), steps[-1])
-        within = rank_candidates(ok[ok["distance_km"] <= radius], tag)
+        pool = ok[ok["distance_km"] <= radius]
+        within = (self._cross_encoder_order(pool, tag, label) if self.ranking_method == "cross_encoder"
+                  else rank_candidates(pool, tag))
         blocked = prov[(prov["eligibility"] == "review_blocked") & (prov["distance_km"] <= radius)]
-        picked = within.head(limit).assign(lane=["A"] * min(config.K_MAIN, len(within)) +
-                                                ["C"] * max(0, min(limit, len(within)) - config.K_MAIN))
+
+        picked = within.head(limit).copy()
+        picked["lane"] = ["A" if i < config.K_MAIN else "C" for i in range(len(picked))]
 
         results = [self._facility(r, i + 1, label, loc, radius) for i, (_, r) in enumerate(picked.iterrows())]
 
@@ -321,7 +385,7 @@ class Recommender:
             },
             "results": results,
             "metadata": {
-                "requestId": rid, "rankingVersion": config.RANKING_VERSION,
+                "requestId": rid, "rankingVersion": self.ranking_version, "ranking": self.ranking_info(),
                 "generatedAt": pd.Timestamp.now("UTC").isoformat(timespec="seconds"),
                 "totalCandidates": int(len(within)), "returnedCount": len(results), "isPartialResult": len(within) > limit,
                 "executionTimeMs": int((time.time() - t0) * 1000), "warnings": warnings,
@@ -380,7 +444,22 @@ class Recommender:
         }
         # The number shown is the rank score itself, so the order and the number always agree.
         total = int(round(100 * float(r["rank_score"])))
-        sb.update({"totalScore": total, "modelVersion": config.RANKING_VERSION})
+        sb.update({"totalScore": total, "modelVersion": self.ranking_version})
+        reranking = None
+        if self.ranking_method == "cross_encoder":
+            # Components add up to the rank score: text and proof shares of evidence strength, each times closeness.
+            w, c = config.RERANK_WEIGHTS, float(r["closeness"])
+            sb = {"serviceMatchScore": 100 * c * w["text"] * float(r["text_match"]),
+                  "evidenceScore": 100 * c * w["proof"] * float(r["proof"]),
+                  "distanceScore": 0, "sourceScore": 0, "locationQualityScore": 0, "capacityScore": 0, "penaltyScore": 0,
+                  "totalScore": total, "modelVersion": self.ranking_version}
+            reranking = {"method": "cross_encoder", "model": self.scorer.model_name,
+                         "textScore": float(r["text_match"]), "evidenceScore": float(r["proof"]),
+                         "distanceScore": c, "totalScore": float(r["rank_score"]),
+                         "weights": w, "bestEvidenceRef": r["ce_evidence_ref"], "bestEvidenceText": r["ce_best_quote"],
+                         "scoredItemCount": int(r["ce_item_count"]),
+                         "scoreMeaning": "(text match and proof strength) x closeness for this kind of care; "
+                                         "not clinical quality or availability"}
 
         reasons, msgs, missing = [], ["Current availability, hours, beds and cost are not in the data."], ["current_availability"]
         if only_eq:
@@ -411,11 +490,17 @@ class Recommender:
                                r["pincode"], n_src or None, ltier == "point_verified" or None]
         completeness = int(round(100 * sum(1 for v in completeness_fields if isinstance(v, str) and v or
                                            (not isinstance(v, str) and pd.notna(v) and v)) / len(completeness_fields)))
-        lane_tag = {"A": "Nearest with explicit evidence", "B": "Farther, more supporting detail",
-                    "C": "More options"}[r["lane"]]
+        lane_tag = ("Service relevance and distance" if self.ranking_method == "cross_encoder" else
+                    {"A": "Nearest with explicit evidence", "B": "Farther, more supporting detail", "C": "More options"}[r["lane"]])
         tags = [lane_tag] + (["24/7 emergency listed"] if r["lists_emergency_24x7"] else []) + [dist_txt]
         # locality only: the UI appends district, state and PIN itself (no street address in the dataset)
         address = _s(r["city_raw"]) or _s(r["district"]) or _s(r["state"])
+        summary = (f"Lists {label}: {int(r['n_explicit_usable'])} supporting statement(s) in "
+                   f"{', '.join(fields) or 'no usable field'} (evidence tier {tier}). {dist_txt.capitalize()}"
+                   + ("" if point else f" ({'PIN area' if ltier == 'pin_area' else 'from ' + loc['note']})") + ".")
+        if reranking is not None:
+            summary += (f" Best matching service text: {r['ce_best_quote']} "
+                        "Order balances service-text relevance, eligibility and distance.")
         return {
             "id": uid, "rank": rank, "name": _s(r["name"]) or "(unnamed facility)",
             "type": (r["facility_category"] or "facility").title() if isinstance(r["facility_category"], str) else "Facility",
@@ -423,10 +508,9 @@ class Recommender:
             "address": address, "district": _s(r["district"]), "state": _s(r["state"]),
             "pincode": _s(r["pincode"]), "latitude": float(r["rec_lat"]), "longitude": float(r["rec_lon"]),
             "distanceKm": round(d, 1), "totalScore": total, "confidence": conf,
-            "recommendationSummary": (f"Lists {label}: {int(r['n_explicit_usable'])} supporting statement(s) in "
-                                      f"{', '.join(fields) or 'no usable field'} (evidence tier {tier}). {dist_txt.capitalize()}"
-                                      + ("" if point else f" ({'PIN area' if ltier == 'pin_area' else 'from ' + loc['note']})") + "."),
+            "recommendationSummary": summary,
             "scoreBreakdown": sb,
+            **({"reranking": reranking} if reranking is not None else {}),
             "evidence": evidence,
             "sources": sources,
             "locationQuality": {"label": {"point_verified": "High confidence", "point_unverified": "Medium confidence",
@@ -439,6 +523,8 @@ class Recommender:
             # Why it ranks here: rank score = proof strength x closeness (see config.py).
             "rankFactors": {
                 "proof": round(float(r["proof"]), 2), "closeness": round(float(r["closeness"]), 2),
+                "textMatch": round(float(r["text_match"]), 2) if "text_match" in r else None,
+                "evidence": round(float(r["evidence_strength"]), 2),
                 "score": round(float(r["rank_score"]), 2), "travelKm": travel_km(r["tag_id"]) if "tag_id" in r else None,
                 "proofTier": tier, "onlyEquipment": only_eq, "mentionsOther": bool(r["n_explicit_elsewhere"] > 0),
                 "locationTier": ltier, "statements": int(r["n_explicit_usable"]),

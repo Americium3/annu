@@ -127,6 +127,7 @@ const en = {
   scoreModel: "Rules model v0.1",
   scoreService: "Offers this service",
   scoreEvidence: "Quality of proof",
+  scoreEligibility: "Eligibility checks",
   scoreSource: "Trust in sources",
   scoreDistance: "Distance",
   scoreLocation: "Location checked",
@@ -164,13 +165,13 @@ const en = {
     "Records that merge two facilities, contradict their own location, or describe another institution are not recommended.",
   how3Title: "Score the proof",
   how3Body:
-    "Clear statements that a facility offers the care score highest; a single mention or equipment alone scores lower, and so does a location known only by PIN code.",
+    "A language model checks how closely the hospital's own words describe the care. Clear statements score highest; a single mention, equipment alone, or a location known only by PIN code score lower.",
   how4Title: "Weigh the distance for this kind of care",
   how4Body:
     "Closeness halves at about 10 km for emergencies and births, 15 km for dialysis and routine care, 30 km for scans and 60 km for planned surgery.",
-  how5Title: "Rank by proof × closeness",
+  how5Title: "Rank by evidence × closeness",
   how5Body:
-    "The two are multiplied into one rank score. Weak proof is always listed after solid proof, however close it is, and anything we couldn't confirm is flagged.",
+    "Evidence and closeness are multiplied into one rank score. Weak proof is always listed after solid proof, however close it is, and anything we couldn't confirm is flagged.",
 
   // emergency
   emergencyDoorTitle: "Emergency?",
@@ -290,7 +291,9 @@ const en = {
   kmUnit: "km",
 
   rankTitle: "Why it's ranked here",
-  rankLede: (rank: number) => `Rank ${rank}. Every hospital gets a rank score: proof strength × closeness.`,
+  rankLede: (rank: number) => `Rank ${rank}. Every hospital gets a rank score: evidence strength × closeness.`,
+  textMatchLabel: "Text match",
+  textMatchNote: "How closely the hospital's own words describe the care you asked for.",
   proofLabel: "Proof strength",
   closenessLabel: "Closeness",
   proofTier1: "Its records clearly state that it offers this service.",
@@ -304,7 +307,7 @@ const en = {
   closenessNote: (km: string, travel: number) =>
     `${km} km away. For this kind of care, up to about ${travel} km still counts as near.`,
   rankFormula: (proof: number, closeness: number, score: number) =>
-    `Proof ${proof} × closeness ${closeness} = rank score ${score}`,
+    `Evidence ${proof} × closeness ${closeness} = rank score ${score}`,
   rankWeak: "Weak proof: listed after every hospital with solid proof, however close it is.",
   // footer
   footerNote: "Not medical advice. In an emergency, call 108.",
@@ -421,6 +424,7 @@ const hi: Dict = {
   scoreModel: "नियम मॉडल v0.1",
   scoreService: "यह सेवा देता है",
   scoreEvidence: "सबूत की गुणवत्ता",
+  scoreEligibility: "पात्रता जाँच",
   scoreSource: "स्रोत पर भरोसा",
   scoreDistance: "दूरी",
   scoreLocation: "लोकेशन की जाँच",
@@ -455,7 +459,7 @@ const hi: Dict = {
   how2Title: "भरोसे लायक न होने वाले रिकॉर्ड अलग",
   how2Body: "जो रिकॉर्ड दो संस्थाओं को मिला देते हैं, अपनी ही लोकेशन से टकराते हैं, या किसी और संस्था का ब्योरा देते हैं, उनकी सिफ़ारिश नहीं होती।",
   how3Title: "सबूत को अंक",
-  how3Body: "साफ़ बयान कि यह इलाज मिलता है, सबसे ज़्यादा अंक पाता है; सिर्फ़ एक ज़िक्र या सिर्फ़ उपकरण कम पाते हैं, और सिर्फ़ पिन कोड वाली लोकेशन भी।",
+  how3Body: "एक भाषा मॉडल देखता है कि अस्पताल के अपने शब्द इलाज से कितना मेल खाते हैं। साफ़ बयान कि यह इलाज मिलता है, सबसे ज़्यादा अंक पाता है; सिर्फ़ एक ज़िक्र या सिर्फ़ उपकरण कम पाते हैं, और सिर्फ़ पिन कोड वाली लोकेशन भी।",
   how4Title: "इलाज के हिसाब से दूरी का वज़न",
   how4Body: "इमरजेंसी और प्रसव के लिए करीब 10 किमी, डायलिसिस और रोज़मर्रा के इलाज के लिए 15 किमी, जाँच के लिए 30 किमी और तय सर्जरी के लिए 60 किमी पर नज़दीकी आधी हो जाती है।",
   how5Title: "सबूत × नज़दीकी से क्रम",
@@ -575,6 +579,8 @@ const hi: Dict = {
 
   rankTitle: "यह इस क्रम पर क्यों है",
   rankLede: (rank) => `क्रम ${rank}। हर अस्पताल को एक स्कोर मिलता है: सबूत की मज़बूती × नज़दीकी।`,
+  textMatchLabel: "शब्दों का मिलान",
+  textMatchNote: "अस्पताल के अपने शब्द आपके माँगे इलाज से कितना मेल खाते हैं।",
   proofLabel: "सबूत की मज़बूती",
   closenessLabel: "नज़दीकी",
   proofTier1: "इसके रिकॉर्ड साफ़ बताते हैं कि यह सेवा मिलती है।",

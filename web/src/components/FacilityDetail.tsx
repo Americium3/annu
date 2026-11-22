@@ -253,6 +253,20 @@ function RankExplanation({ facility }: { facility: FacilityRecommendation }) {
         <h3 id="rank-title">{t.rankTitle}</h3>
       </div>
       <p className="rank-lede">{t.rankLede(facility.rank)}</p>
+      {f.textMatch != null && (
+        <div className="rank-factor">
+          <div className="score-row">
+            <span>{t.textMatchLabel}</span>
+            <div className="score-track">
+              <i style={{ width: `${pct(f.textMatch)}%` }} />
+            </div>
+            <strong>{pct(f.textMatch)}</strong>
+          </div>
+          <ul className="rank-reasons">
+            <li>{t.textMatchNote}</li>
+          </ul>
+        </div>
+      )}
       <div className="rank-factor">
         <div className="score-row">
           <span>{t.proofLabel}</span>
@@ -280,7 +294,7 @@ function RankExplanation({ facility }: { facility: FacilityRecommendation }) {
         </ul>
       </div>
       <p className="rank-formula">
-        {t.rankFormula(pct(f.proof), pct(f.closeness), pct(f.score))}
+        {t.rankFormula(pct(f.evidence ?? f.proof), pct(f.closeness), pct(f.score))}
       </p>
       {!f.solidProof && <p className="rank-weak">{t.rankWeak}</p>}
       <p className="score-disclaimer">{t.scoreDisclaimer}</p>

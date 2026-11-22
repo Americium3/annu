@@ -103,6 +103,10 @@ export interface RankFactors {
   statements: number;
   /** False: weak proof, always listed after every facility with solid proof. */
   solidProof: boolean;
+  /** 0-1 cross-encoder match between the best quote and the service; null in rules mode. */
+  textMatch?: number | null;
+  /** 0-1 evidence strength: proof alone, or blended with text match. */
+  evidence?: number;
 }
 
 export interface FacilityRecommendation {
@@ -119,7 +123,7 @@ export interface FacilityRecommendation {
   phone?: string;
   /** The facility's own website, when the data has one. */
   website?: string;
-  /** Why it ranks where it does: rank score = proof strength x closeness. */
+  /** Why it ranks where it does: rank score = evidence strength x closeness. */
   rankFactors?: RankFactors;
   latitude: number;
   longitude: number;
@@ -128,6 +132,20 @@ export interface FacilityRecommendation {
   confidence: ConfidenceLevel;
   recommendationSummary: string;
   scoreBreakdown: ScoreBreakdown;
+  reranking?: {
+    method: "cross_encoder";
+    model: string;
+    textScore: number;
+    evidenceScore: number;
+    distanceScore: number;
+    totalScore: number;
+    /** Shares of evidence strength: evidence = text x textMatch + proof x proofStrength. */
+    weights: { text: number; proof: number };
+    bestEvidenceRef: string;
+    bestEvidenceText: string;
+    scoredItemCount: number;
+    scoreMeaning: string;
+  };
   evidence: EvidenceItem[];
   sources: SourceReference[];
   locationQuality: {
